@@ -1,0 +1,8 @@
+:root{
+	--filter-dark-red: brightness(10%) sepia(100) saturate(100) hue-rotate(25deg);
+	--filter-bright-red: brightness(10%) sepia(100) saturate(100) hue-rotate(0deg);
+	--filter-blue: brightness(10%) sepia(100) saturate(100) hue-rotate(250deg);
+	--filter-dark-green: brightness(80%) sepia(0.2) saturate(20) hue-rotate(70deg);
+	--filter-purple: brightness(10%) sepia(100) saturate(100) hue-rotate(280deg);
+	--filter-light-pink: brightness(90%) sepia(10) hue-rotate(270deg);
+}

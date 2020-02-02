@@ -1,0 +1,377 @@
+<!DOCTYPE html lang="en">
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
+        <script src="https://kit.fontawesome.com/2a15db2084.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
+        <link href="styles/colors.css" rel="stylesheet" />
+        <link href="skins/default/styles/resources.css" rel="stylesheet" />
+        <script>
+            $(function() {
+                loadSettings();
+                createColorSelects();
+
+                $("[id$=Color]").each(function () {
+                    setExampleColor(this);
+                });
+
+                $("[id$=Color]").change(function() {
+                    setExampleColor(this);
+                });
+            });
+
+            function setExampleColor(element){
+                let selector = $(element).attr("id").replace("Color", "");
+                $(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            }
+
+            function titleCase(string) {
+                return string.toLowerCase().split(' ').map(function(word) {
+                    return word.replace(word[0], word[0].toUpperCase());
+                }).join(' ');
+            }
+
+            function createColorSelects(){
+                for (let colorFilter of getBarColors()){
+                    let color = colorFilter.replace("--filter-", "").replace("-", " ");
+                    $("[id$=Color]").append(`<option value="${colorFilter}">${titleCase(color)}</option>`);
+                }
+            }
+
+            function getBarColors(){
+                let colorArray = Array.from(
+                    document.styleSheets).filter(sheet => sheet.href === null || sheet.href.startsWith(window.location.origin))
+                    .reduce((acc, sheet) => (acc = [...acc, ...Array.from(sheet.cssRules).reduce((def, rule) => (def = rule.selectorText === ":root" ? [...def, ...Array.from(rule.style).filter(name => name.startsWith("--"))]: def), [])]), []
+                );
+                return colorArray;
+            }
+
+            function loadSettings(){
+                if(localStorage.getItem("settings") !== null){
+                    let settings = JSON.parse(localStorage.getItem("settings"));
+
+                    $("#healthBarEnabled").attr("value", settings.healthbar.enabled);
+                    $("#healthX").attr("value", settings.healthbar.x);
+                    $("#healthY").attr("value", settings.healthbar.y);
+                    
+                    $("#manaX").attr("value", settings.manabar.x);
+                    $("#manaY").attr("value", settings.manabar.y);
+                    
+                    $("#buffX").attr("value", settings.bufftimerbar.x);
+                    $("#buffY").attr("value", settings.bufftimerbar.y);
+
+                    $("#dotX").attr("value", settings.dottimerbar.x);
+                    $("#dotY").attr("value", settings.dottimerbar.y);
+
+                    $("#pulltimerX").attr("value", settings.timerbar.x);
+                    $("#pulltimerY").attr("value", settings.timerbar.y);
+                }
+            }
+
+            function saveSettings(){
+                let settings = {
+                    healthbar: {
+                        x: $("#health-bar").css("left"),
+                        y: $("#health-bar").css("top")
+                    },
+                    manabar: {
+                        x: $("#mana-bar").css("left"),
+                        y: $("#mana-bar").css("top")
+                    },
+                    timerbar: {
+                        x: $("#timer-bar").css("left"),
+                        y: $("#timer-bar").css("top")
+                    },dottimerbar: {
+                        x: $("#dot-timer-bar").css("left"),
+                        y: $("#dot-timer-bar").css("top")
+                    },bufftimerbar: {
+                        x: $("#buff-timer-bar").css("left"),
+                        y: $("#buff-timer-bar").css("top")
+                    }
+                };
+                localStorage.setItem("settings", JSON.stringify(settings));
+            }
+        </script>
+        <style>
+            #healthExample::-webkit-progress-value {
+                filter: var(--healthColor);
+            }
+            #manaExample::-webkit-progress-value {
+                filter: var(--manaColor);
+            }
+        </style>
+        <title>ZeffUI Settings</title>
+    </head>
+    <body>
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="page-header">
+                        <h1 id="settings">Settings</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <br />
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="healthBarEnabled" checked="">
+                                <label class="custom-control-label" for="healthBarEnabled">Healthbar</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="healthX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="healthY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthY">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="healthTextEnabled" checked="">
+                                    <label class="custom-control-label" for="healthTextEnabled">Health Text</label>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="healthFormat">Text Format</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthFormat">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="healthColor">Color</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="healthColor" >
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-4 text-right" for="healthExample">Example</label>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="healthExample" value="5000" max="10000" data-label="5000 / 10000"></progress>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="manaBarEnabled" checked="">
+                                <label class="custom-control-label" for="manaBarEnabled">Manabar</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="manaX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="manaY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaY">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="manaTextEnabled" checked="">
+                                    <label class="custom-control-label" for="manaTextEnabled">Mana Text</label>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="manaFormat">Text Format</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaFormat">
+                                </div>                                    
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="manaColor">Color</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="manaColor" >
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-4 text-right" for="manaExample">Example</label>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" value="5000" max="10000" data-label="5000 / 10000"></progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="buffBarEnabled" checked="">
+                                <label class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="buffX">Position Anchor X</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="buffY">Position Anchor Y</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="buffGrowDirection">Grow Direction</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="buffGrowDirection">
+                                        <option selected="" value="1">Down</option>
+                                        <option value="2">Up</option>
+                                        <option value="3">Left</option>
+                                        <option value="3">Right</option>
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="buffPadding">Padding</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffPadding">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="buffTextEnabled" checked="">
+                                    <label class="custom-control-label" for="buffTextEnabled">Buff Text</label>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="buffFormat">Text Format</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffFormat">
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="dotBarEnabled" checked="">
+                                <label class="custom-control-label" for="dotBarEnabled">DoT Timers</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="dotX">Position Anchor X</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="dotY">Position Anchor Y</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="dotGrowDirection">Grow Direction</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="dotGrowDirection">
+                                        <option selected="" value="1">Down</option>
+                                        <option value="2">Up</option>
+                                        <option value="3">Left</option>
+                                        <option value="3">Right</option>
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="dotPadding">Padding</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotPadding">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="multiDotEnabled">
+                                    <label class="custom-control-label" for="multiDotEnabled">MultiDoT</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="dotTextEnabled" checked="">
+                                    <label class="custom-control-label" for="dotTextEnabled">DoT Text</label>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="dotFormat">Text Format</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotFormat">
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled" checked="">
+                                <label class="custom-control-label" for="dotBarEnabled">Pulltimers</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="pulltimerX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="pulltimerY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerY">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="pulltimerTextEnabled" checked="">
+                                    <label class="custom-control-label" for="pulltimerTextEnabled">Pulltimer Text</label>
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="pulltimerFormat">Text Format</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFormat">
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

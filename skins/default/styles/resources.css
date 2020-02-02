@@ -1,0 +1,75 @@
+#grid {
+	position: absolute; 
+	left: 0px; 
+	top: 0px;
+	z-index: -1;
+}
+.bar {
+	position: absolute;
+	width: 154;
+	height: 15;
+}
+.small-image {
+	position: absolute;
+	width: auto;
+	height: 22;
+	border: 0;
+}
+#dot-image {
+	display: none;
+}
+#buff-image {
+	display: none;
+}
+#dot-timer-bar {
+	left: 0px; 
+	top: 100px;
+	display: none;
+}
+#buff-timer-bar {
+	left: 0px;
+	top: 116px;
+	display: none;
+}
+#timer-bar {
+	left: 0px; 
+	top: 200px;
+	display: none;
+}
+#health-bar {
+	left: 0px;
+	top: 216px;
+}
+#mana-bar {
+	left: 0px; 
+	top: 232px;
+}
+#health-bar::-webkit-progress-value {
+	filter: var(--filter-dark-green);
+}
+#mana-bar::-webkit-progress-value {
+	filter: var(--filter-light-pink);
+}
+#timer-bar::-webkit-progress-value {
+	filter: var(--filter-bright-red);
+}
+progress[value] {	
+	-webkit-appearance: none;
+}
+progress[value]::-webkit-progress-bar {
+	background: rgba(0,0,0,0);
+	background-image: url("../images/bar.png");
+}
+progress[value]::-webkit-progress-value {
+	background: rgba(0,0,0,0);	
+	background-image: url("../images/fill.png");
+}
+progress:after {
+	position: relative; left: 5px; top: -14px;
+	font-family: Arial, Times, serif;
+	font-weight: bold;
+	color: white;
+	content: attr(data-label);
+	font-size: 10px;
+	z-index: 10;
+}

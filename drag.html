@@ -1,0 +1,383 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
+<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
+<script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+<script src="data/regex.js"></script>
+<script src="data/abilities.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/fontawesome.min.css" />
+<link rel="stylesheet" href="styles/colors.css" />
+<link rel="stylesheet" href="skins/default/styles/resources.css" />
+<script>
+var locked = true;
+var gridshown = false;
+const UPDATE_INTERVAL = 10;
+
+var currentPlayer = null;
+var currentStats = {
+	skillSpeed: 0,
+	spellSpeed: 0
+};
+
+var activeDotBars = new Map();
+var activeBuffBars = new Map();
+var activeCountdowns = new Map();
+
+var canvas = $('#grid').attr({width: window.innerWidth, height: window.innerHeight});
+
+$(function() {
+	loadSettings();
+	$("[id$=bar]").draggable(
+		{
+			stop: function (event, ui) {
+				saveSettings();
+			}
+		}
+	);
+	$("[id$=bar]").draggable("disable");
+});
+
+$(function(){
+    $(':root').contextMenu({
+        selector: 'body', 
+        callback: function(key, options) {
+			switch(key){
+				case "lock":
+					toggleLock();
+					break;
+				case "grid":
+					toggleGrid();
+					break;
+				case "import":
+					importSettings();
+					break;
+				case "export":
+					exportSettings();
+					break;
+				case "settings":
+					window.open("settings.html");
+					break;
+			}
+        },
+        items: {
+            "lock": {name: "Lock/Unlock Bars", icon: "fas fa-lock-open"},
+			"grid": {name: "Toggle Grid", icon: "fas fa-border-all"},
+			"import": {name: "Import Settings", icon: "fas fa-upload"},
+			"export": {name: "Export Settings", icon: "fas fa-download"},
+			"settings": {name: "Settings", icon: "fas fa-cog"},
+            "sep1": "---------",
+            "quit": {name: "Close", icon: function($element, key, item){ return 'context-menu-icon context-menu-icon-quit'; }}
+        }
+    });
+});
+
+function loadSettings(){
+	if(localStorage.getItem("settings") !== null){
+		let settings = JSON.parse(localStorage.getItem("settings"));
+
+		$("#health-bar").css("left", settings.healthbar.x);
+		$("#health-bar").css("top", settings.healthbar.y);
+		
+		$("#mana-bar").css("left", settings.manabar.x);
+		$("#mana-bar").css("top", settings.manabar.y);
+
+		$("#timer-bar").css("left", settings.timerbar.x);
+		$("#timer-bar").css("top", settings.timerbar.y);
+
+		$("#dot-timer-bar").css("left", settings.dottimerbar.x);
+		$("#dot-timer-bar").css("top", settings.dottimerbar.y);
+		
+		$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
+		$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
+	}
+}
+
+function importSettings(){
+	$(`<div>
+			<br />
+			Copy in your settings string to import <br />
+			<input type="text" placeholder="Copy settings string here" id="settingstext"><br />
+			<span id="importalert"></span>
+		</div>`).dialog({
+		modal: true,
+		title: "Import Settings",
+		buttons: {
+			"OK": function (){
+				let settings = JSON.parse(atob($('#settingstext').val()));
+				if(settings.hasOwnProperty("healthbar")){
+					localStorage.setItem("settings", JSON.stringify(settings));
+					loadSettings();
+					$(this).dialog('close');
+				}else{
+					$('#importalert').text("Invalid settings string, please doublecheck what you have pasted in.")
+				}
+			},
+			'Cancel': function () {
+				$(this).dialog('close');
+			}
+		}
+	});
+}
+
+function saveSettings(){
+	let settings = {
+		healthbar: {
+			x: $("#health-bar").css("left").replace("px", ""),
+			y: $("#health-bar").css("top").replace("px", "")
+		},
+		manabar: {
+			x: $("#mana-bar").css("left").replace("px", ""),
+			y: $("#mana-bar").css("top").replace("px", "")
+		},
+		timerbar: {
+			x: $("#timer-bar").css("left").replace("px", ""),
+			y: $("#timer-bar").css("top").replace("px", "")
+		},
+		dottimerbar: {
+			x: $("#dot-timer-bar").css("left").replace("px", ""),
+			y: $("#dot-timer-bar").css("top").replace("px", "")
+		},
+		bufftimerbar: {
+			x: $("#buff-timer-bar").css("left").replace("px", ""),
+			y: $("#buff-timer-bar").css("top").replace("px", "")
+		}
+	};
+	localStorage.setItem("settings", JSON.stringify(settings));
+}
+
+function exportSettings(){
+	if(localStorage.getItem("settings") == null){
+		saveSettings();
+	}
+	$(`<div>
+			<br />
+			Copy this string and keep it safe! <br />
+			<input type="text" value="${btoa(localStorage.getItem("settings"))}" onclick="this.select();"">
+		</div>`).dialog({
+		modal: true,
+		title: "Export Settings",
+		buttons: {
+			"OK": function (){
+				$(this).dialog('close');
+			}
+		}
+	});
+}
+
+function startTimer(duration, selector, hideTimer = false){
+	let timems = duration * 1000;
+	$(selector).attr("max", timems);
+	$(selector).attr("value", timems);
+	$(selector).attr("data-label", timems);
+
+	if(hideTimer) $(selector).show();
+
+	let timeLeft = timems;
+	let countdownTimer = setInterval(function(){
+		timeLeft -= UPDATE_INTERVAL;
+		$(selector).attr("value", timeLeft);
+		$(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
+		if(timeLeft <= 0){
+			clearInterval(countdownTimer);
+			setTimeout(function(){
+				if(hideTimer) $(selector).hide();
+			}, UPDATE_INTERVAL);			
+		}
+	}, UPDATE_INTERVAL);
+	activeCountdowns.set(selector, countdownTimer);
+}
+
+function resetTimers(){
+	for(let [selector, countdownTimer] of activeCountdowns){
+		clearInterval(countdownTimer);
+	}
+	for(let [id, selector] of activeBuffBars){
+		$(selector).remove();
+		$(selector.replace("bar", "image")).remove();
+	}
+	for(let [id, selector] of activeDotBars){
+		$(selector).remove();
+		$(selector.replace("bar", "image")).remove();
+	}
+	activeBuffBars.clear();
+	activeDotBars.clear();
+	activeCountdowns.clear();
+}
+
+function drawGrid(){
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+
+	let canvas = $('#grid').attr({width: window.innerWidth, height: window.innerHeight});
+	let canvasContext = canvas.get(0).getContext("2d");
+	canvasContext.beginPath();
+
+	for (var x = 0; x <= width; x+= 25){
+		canvasContext.moveTo(0.5 + x, 0);
+		canvasContext.lineTo(0.5 + x, height);
+	}
+
+	for (var y = 0; y <= height; y+= 25){
+		canvasContext.moveTo(0, 0.5 + y);
+		canvasContext.lineTo(width, 0.5 + y);
+	}
+
+	canvasContext.strokeStyle = "black";
+    canvasContext.stroke();
+}
+
+function clearGrid(){
+	let canvas = $('#grid').attr({width: window.innerWidth, height: window.innerHeight});
+	let canvasContext = $('#grid').get(0).getContext("2d");
+	canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function toggleLock(){
+	if(locked){
+		$("#timer-bar").show();
+		$("#dot-timer-bar").show();
+		$("#buff-timer-bar").show();
+		$("[id$=bar]").draggable("enable");
+		locked = false;
+	}else{
+		$("#timer-bar").hide();
+		$("#dot-timer-bar").hide();
+		$("#buff-timer-bar").hide();
+		$("[id$=bar]").draggable("disable");
+		locked = true;
+	}	
+}
+
+function toggleGrid(){
+	if(!gridshown){
+		drawGrid();
+		gridshown = true;
+	}else{
+		clearGrid();
+		gridshown = false;
+	}	
+}
+
+document.addEventListener('onOverlayStateUpdate', function(e) {
+	if (!e.detail.isLocked) {
+		$(":root").css("background", "rgba(0,0,255,0.5)");
+	}else{
+		$(":root").css("background", "");
+	}
+});
+
+addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
+addOverlayListener("onLogEvent", (e) => onLogEvent(e));
+addOverlayListener("onPartyWipe", (e) => onPartyWipe(e));
+addOverlayListener("onZoneChangedEvent", (e) => onChangeZone(e));
+
+startOverlayEvents();
+
+function onPlayerChangedEvent(e){
+	if(currentPlayer !== null && currentPlayer.job !== e.detail.job){
+		resetTimers();
+	}
+	currentPlayer = e.detail;
+	$("#health-bar").attr("max", currentPlayer.maxHP);
+	$("#health-bar").attr("value", currentPlayer.currentHP);
+	$("#health-bar").attr("data-label", `${currentPlayer.currentHP} / ${currentPlayer.maxHP}`);
+	$("#mana-bar").attr("max", currentPlayer.maxMP);
+	$("#mana-bar").attr("value", currentPlayer.currentMP);
+	$("#mana-bar").attr("data-label", `${currentPlayer.currentMP} / ${currentPlayer.maxMP}`);
+}
+
+function onLogEvent(e){
+	for (logLine of e.detail.logs){		
+		for(let logType of Object.keys(regexList)){
+			let regexObject = regexList[logType];
+			let regex = new RegExp(regexObject.regex);
+			if(regex.test(logLine)){
+				let matches = regexObject.matches;
+				for(let match of Object.keys(matches)){
+					console.log(logLine);
+					let matchObject = matches[match];
+					let innerRegex = new RegExp(matchObject.regex);
+					let regexMatch = innerRegex.exec(logLine);
+					if(regexMatch !== null){
+						let logFunction = window[matchObject.function];
+						if (typeof logFunction === "function") logFunction(regexMatch.groups);
+					}
+				}
+			}
+		}
+	}
+}
+
+function onPartyWipe(e){
+	resetTimers();
+}
+
+function onChangeZone(e){
+	resetTimers();
+}
+
+function startCountdownTimer(parameters){
+	startTimer(parameters.seconds, "#timer-bar", true);
+}
+
+function handlePlayerStats(parameters){
+	currentStats.skillSpeed = (1000 + Math.floor(130 * (parameters.sks - 380) / 3300)) / 1000;
+	currentStats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - 380) / 3300)) / 1000;
+}
+
+function handleEffect(parameters){
+	if(parameters.player === currentPlayer.name){
+		if(parameters.player === currentPlayer.name){
+			// Effect is a self-buff.
+		}else{
+			// Effect is a DoT
+		}
+		let ability = abilityList.find(x => x.name == parameters.effect);
+		console.log(parameters);
+		console.log(ability);
+		let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
+		let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
+		let selectorBar = `#${ability.id}-bar`;
+		let selectorImage = `#${ability.id}-image`;
+
+		if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
+			let activeCount = 0;
+			switch(ability.type){
+				case "DoT":{
+					activeDotBars.set(ability.id, selectorBar);
+					activeCount = activeDotBars.size;
+					break;
+				}
+				case "Buff":{
+					activeBuffBars.set(ability.id, selectorBar);
+					activeCount = activeBuffBars.size;
+					break;
+				}
+			}
+			let newBar = $(targetBarSelector).clone().prop("id", selectorBar.replace("#", ""));
+			$(targetBarSelector).after(newBar);
+			let newImage = $(targetImageSelector).clone().prop("id", selectorImage.replace("#", ""));
+			$(targetImageSelector).after(newImage);
+
+			$(selectorBar).show();
+			$(selectorBar).css("left", $(targetBarSelector).css("left"));
+			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (16 * activeCount));
+
+			$(selectorImage).show();
+			$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
+			$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
+			$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (16 * activeCount) - 4);
+		}
+		if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
+		startTimer(parameters.duration, selectorBar);
+	}
+}
+</script>
+<canvas id="grid"></canvas>
+<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar" value="10" data-label="0.0"></progress>
+<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar" value="10" data-label="0.0"></progress>
+<progress width="154" height="15" id="timer-bar" class="bar" value="10" data-label="0.0"></progress>
+<progress width="154" height="15" id="health-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
+<progress width="154" height="15" id="mana-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
