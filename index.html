@@ -101,6 +101,12 @@ function loadSettings(){
 	if(!settings.healthbar.color) settings.healthbar.color = "--filter-dark-green";
 	$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
 
+	if(settings.healthbar.scale){
+		$("#health-bar").css("width", settings.healthbar.scale * 154);
+		$("#health-bar").css("height", settings.healthbar.scale * 15);
+	}else{
+		settings.healthbar.scale = 1;
+	}
 
 	if(settings.healthbar.x){
 		$("#health-bar").css("left", settings.healthbar.x);
@@ -129,6 +135,13 @@ function loadSettings(){
 	if(!settings.manabar.color) settings.manabar.color = "--filter-light-pink";
 	$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
 	
+	if(settings.manabar.scale){
+		$("#mana-bar").css("width", settings.manabar.scale * 154);
+		$("#mana-bar").css("height", settings.manabar.scale * 15);
+	}else{
+		settings.manabar.scale = 1;
+	}
+
 	if(settings.manabar.x){
 		$("#mana-bar").css("left", settings.manabar.x);
 	}else{
@@ -149,6 +162,13 @@ function loadSettings(){
 	if(!settings.timerbar.textenabled) settings.timerbar.textenabled = true;
 	if(!settings.timerbar.color) settings.timerbar.color = "--filter-dark-red";
 	$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
+
+	if(settings.timerbar.scale){
+		$("#timer-bar").css("width", settings.timerbar.scale * 154);
+		$("#timer-bar").css("height", settings.timerbar.scale * 15);
+	}else{
+		settings.timerbar.scale = 1;
+	}
 
 	if(settings.timerbar.x){
 		$("#timer-bar").css("left", settings.timerbar.x);
@@ -173,7 +193,13 @@ function loadSettings(){
 	if(!settings.dottimerbar.growdirection) settings.dottimerbar.growdirection = 1;
 	if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 20;
 
-
+	if(settings.dottimerbar.scale){
+		$("#dot-timer-bar").css("width", settings.dottimerbar.scale * 154);
+		$("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
+	}else{
+		settings.dottimerbar.scale = 1;
+	}
+	
 	if(settings.dottimerbar.x){
 		$("#dot-timer-bar").css("left", settings.dottimerbar.x);
 	}else{
@@ -195,6 +221,13 @@ function loadSettings(){
 	if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
 	if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
 	if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 20;
+	
+	if(settings.bufftimerbar.scale){
+		$("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 154);
+		$("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
+	}else{
+		settings.bufftimerbar.scale = 1;
+	}
 
 	if(settings.bufftimerbar.x){
 		$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
@@ -209,7 +242,7 @@ function loadSettings(){
 	}
 
 	currentSettings = settings;
-	//saveSettings();
+	saveSettings();
 }
 
 
@@ -244,18 +277,33 @@ function saveSettings(){
 	
 	currentSettings.healthbar.x = parseInt($("#health-bar").css("left").replace("px", ""));
 	currentSettings.healthbar.y = parseInt($("#health-bar").css("top").replace("px", ""));
+	$("#health-bar").css("--healthFontSize", currentSettings.healthbar.scale * 10);
+	$("#health-bar").css("--healthFontX", currentSettings.healthbar.scale * 5);
+	$("#health-bar").css("--healthFontY", currentSettings.healthbar.scale * -14);
 
 	currentSettings.manabar.x = parseInt($("#mana-bar").css("left").replace("px", ""));
 	currentSettings.manabar.y = parseInt($("#mana-bar").css("top").replace("px", ""));
+	$("#mana-bar").css("--manaFontSize", currentSettings.manabar.scale * 10);
+	$("#mana-bar").css("--manaFontX", currentSettings.manabar.scale * 5);
+	$("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
 
 	currentSettings.timerbar.x = parseInt($("#timer-bar").css("left").replace("px", ""));
 	currentSettings.timerbar.y = parseInt($("#timer-bar").css("top").replace("px", ""));
+	$("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
+	$("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 5);
+	$("#timer-bar").css("--timerFontY", currentSettings.timerbar.scale * -14);
 
 	currentSettings.dottimerbar.x = parseInt($("#dot-timer-bar").css("left").replace("px", ""));
 	currentSettings.dottimerbar.y = parseInt($("#dot-timer-bar").css("top").replace("px", ""));
+	$("#dot-timer-bar").css("--dotFontSize", currentSettings.dottimerbar.scale * 10);
+	$("#dot-timer-bar").css("--dotFontX", currentSettings.dottimerbar.scale * 5);
+	$("#dot-timer-bar").css("--dotFontY", currentSettings.dottimerbar.scale * -14);
 	
 	currentSettings.bufftimerbar.x = parseInt($("#buff-timer-bar").css("left").replace("px", ""));
 	currentSettings.bufftimerbar.y = parseInt($("#buff-timer-bar").css("top").replace("px", ""));
+	$("#buff-timer-bar").css("--buffFontSize", currentSettings.bufftimerbar.scale * 10);
+	$("#buff-timer-bar").css("--buffFontX", currentSettings.bufftimerbar.scale * 5);
+	$("#buff-timer-bar").css("--buffFontY", currentSettings.bufftimerbar.scale * -14);
 	
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 	
@@ -483,7 +531,10 @@ function handleEffect(parameters){
 
 			$(selectorBar).show();
 			$(selectorBar).addClass(`bar-${ability.id}`);
+			$(selectorBar).addClass(`${ability.type.toLowerCase()}-font-size`);
 			addFilterColorToElement(`bar-${ability.id}`, ability.color);
+
+			$(targetBarSelector).attr("data-font-size", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 10);
 
 			switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
 				case "1": {
@@ -515,29 +566,32 @@ function handleEffect(parameters){
 			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
 				$(selectorImage).show();
 				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
+				$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
+				$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22)
+
 				switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
 					case "1": {
 						// Down					
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
+						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						break;
 					}
 					case "2": {
 						// Up
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
+						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						break;
 					}
 					case "3": {
 						// Left
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - 4);
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 20);
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
 						break;
 					}
 					case "4": {
 						// Right
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - 4);
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 20);
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
 						break;
 					}
 				}

@@ -47,11 +47,36 @@
 #health-bar::-webkit-progress-value {
 	filter: var(--healthBarColor);
 }
+#health-bar:after {
+	font-size: var(--healthFontSize);
+	left: var(--healthFontX);
+	top: var(--healthFontY);
+}
 #mana-bar::-webkit-progress-value {
 	filter: var(--manaBarColor);
 }
+#mana-bar:after {
+	font-size: var(--manaFontSize);
+	left: var(--manaFontX);
+	top: var(--manaFontY);
+}
 #timer-bar::-webkit-progress-value {
 	filter: var(--pulltimerBarColor);
+}
+#timer-bar:after {
+	font-size: var(--timerFontSize);
+	left: var(--timerFontX);
+	top: var(--timerFontY);
+}
+.dot-font-size:after {
+	font-size: var(--dotFontSize);
+	left: var(--dotFontX);
+	top: var(--dotFontY);
+}
+.buff-font-size:after {
+	font-size: var(--buffFontSize);
+	left: var(--buffFontX);
+	top: var(--buffFontY);
 }
 progress[value] {	
 	-webkit-appearance: none;
@@ -59,17 +84,23 @@ progress[value] {
 progress[value]::-webkit-progress-bar {
 	background: rgba(0,0,0,0);
 	background-image: url("../images/bar.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	image-rendering: pixelated;
 }
 progress[value]::-webkit-progress-value {
 	background: rgba(0,0,0,0);	
 	background-image: url("../images/fill.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	-webkit-background-size: cover;
+	image-rendering: pixelated;
 }
 progress:after {
-	position: relative; left: 5px; top: -14px;
+	position: relative;
 	font-family: Arial, Times, serif;
 	font-weight: bold;
 	color: white;
 	content: attr(data-label);
-	font-size: 10px;
 	z-index: 10;
 }

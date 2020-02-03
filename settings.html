@@ -23,6 +23,10 @@
                 $("[id$=GrowDirection]").change(function() {
                     setPadding(this);
                 });
+                
+                $("[id$=Scale]").change(function() {
+                    setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
+                });
 
                 createColorSelects();
                 loadSettings();
@@ -31,9 +35,9 @@
             function setPadding(element){
                 let selector = $(element).attr("id").replace("GrowDirection", "");
                 if($(element).val() <= 2){
-                    $(`#${selector}Padding`).val(20);
+                    $(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 20);
                 }else{
-                    $(`#${selector}Padding`).val(180);
+                    $(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 180);
                 }
             }
 
@@ -71,6 +75,7 @@
                     $("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
                     $("#healthColor").val(settings.healthbar.color);
                     setExampleColor($("#healthColor"));
+                    $("#healthScale").attr("value", settings.healthbar.scale);
                     $("#healthX").attr("value", settings.healthbar.x);
                     $("#healthY").attr("value", settings.healthbar.y);
                     
@@ -78,6 +83,7 @@
                     $("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
                     $("#manaColor").val(settings.manabar.color);
                     setExampleColor($("#manaColor"));
+                    $("#manaScale").attr("value", settings.manabar.scale);
                     $("#manaX").attr("value", settings.manabar.x);
                     $("#manaY").attr("value", settings.manabar.y);
 
@@ -85,6 +91,7 @@
                     $("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
                     $("#pulltimerColor").val(settings.timerbar.color);
                     setExampleColor($("#pulltimerColor"));
+                    $("#pulltimerScale").attr("value", settings.timerbar.scale);
                     $("#pulltimerX").attr("value", settings.timerbar.x);
                     $("#pulltimerY").attr("value", settings.timerbar.y);
 
@@ -94,6 +101,7 @@
                     $("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
                     $("#dotGrowDirection").val(settings.dottimerbar.growdirection);
                     $("#dotPadding").attr("value", settings.dottimerbar.padding);
+                    $("#dotScale").attr("value", settings.dottimerbar.scale);
                     $("#dotX").attr("value", settings.dottimerbar.x);
                     $("#dotY").attr("value", settings.dottimerbar.y);
                     
@@ -102,6 +110,7 @@
                     $("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
                     $("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
                     $("#buffPadding").attr("value", settings.bufftimerbar.padding);
+                    $("#buffScale").attr("value", settings.bufftimerbar.scale);
                     $("#buffX").attr("value", settings.bufftimerbar.x);
                     $("#buffY").attr("value", settings.bufftimerbar.y);
                 }
@@ -113,6 +122,7 @@
                         enabled: $("#healthBarEnabled").is(":checked"),
                         textenabled: $("#healthTextEnabled").is(":checked"),
                         color: $("#healthColor").val(),
+                        scale: $("#healthScale").val(),
                         x: $("#healthX").val(),
                         y: $("#healthY").val()
                     },
@@ -120,6 +130,7 @@
                         enabled: $("#manaBarEnabled").is(":checked"),
                         textenabled: $("#manaTextEnabled").is(":checked"),
                         color: $("#manaColor").val(),
+                        scale: $("#manaScale").val(),
                         x: $("#manaX").val(),
                         y: $("#manaY").val()
                     },
@@ -127,6 +138,7 @@
                         enabled: $("#pulltimerBarEnabled").is(":checked"),
                         textenabled: $("#pulltimerTextEnabled").is(":checked"),
                         color: $("#pulltimerColor").val(),
+                        scale: $("#pulltimerScale").val(),
                         x: $("#pulltimerX").val(),
                         y: $("#pulltimerY").val()
                     },
@@ -137,6 +149,7 @@
                         multidotenabled: $("#multiDotEnabled").is(":checked"),
                         growdirection: $("#dotGrowDirection").val(),
                         padding: $("#dotPadding").val(),
+                        scale: $("#dotScale").val(),
                         x: $("#dotX").val(),
                         y: $("#dotY").val()
                     },
@@ -146,6 +159,7 @@
                         imageenabled: $("#buffImageEnabled").is(":checked"),
                         growdirection: $("#buffGrowDirection").val(),
                         padding: $("#buffPadding").val(),
+                        scale: $("#buffScale").val(),
                         x: $("#buffX").val(),
                         y: $("#buffY").val()
                     }
@@ -203,6 +217,12 @@
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthY">
                                 </div>
                             </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="healthScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthScale">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="healthTextEnabled" checked="">
@@ -249,6 +269,12 @@
                                 <label class="col-sm-4" for="manaY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="manaScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaScale">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -299,6 +325,12 @@
                                 <label class="col-sm-4" for="buffY">Position Anchor Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="buffScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffScale">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -359,6 +391,12 @@
                                 <label class="col-sm-4" for="dotY">Position Anchor Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="dotScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotScale">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
