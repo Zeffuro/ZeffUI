@@ -45,13 +45,13 @@
 	top: 232px;
 }
 #health-bar::-webkit-progress-value {
-	filter: var(--filter-dark-green);
+	filter: var(--healthBarColor);
 }
 #mana-bar::-webkit-progress-value {
-	filter: var(--filter-light-pink);
+	filter: var(--manaBarColor);
 }
 #timer-bar::-webkit-progress-value {
-	filter: var(--filter-bright-red);
+	filter: var(--pulltimerBarColor);
 }
 progress[value] {	
 	-webkit-appearance: none;

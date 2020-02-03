@@ -12,9 +12,6 @@
         <link href="skins/default/styles/resources.css" rel="stylesheet" />
         <script>
             $(function() {
-                loadSettings();
-                createColorSelects();
-
                 $("[id$=Color]").each(function () {
                     setExampleColor(this);
                 });
@@ -22,6 +19,9 @@
                 $("[id$=Color]").change(function() {
                     setExampleColor(this);
                 });
+
+                createColorSelects();
+                loadSettings();
             });
 
             function setExampleColor(element){
@@ -54,46 +54,91 @@
                 if(localStorage.getItem("settings") !== null){
                     let settings = JSON.parse(localStorage.getItem("settings"));
 
-                    $("#healthBarEnabled").attr("value", settings.healthbar.enabled);
+                    $("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
+                    $("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
+                    $("#healthColor").val(settings.healthbar.color);
+                    setExampleColor($("#healthColor"));
                     $("#healthX").attr("value", settings.healthbar.x);
                     $("#healthY").attr("value", settings.healthbar.y);
                     
+                    $("#manaBarEnabled").prop("checked", settings.manabar.enabled);
+                    $("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
+                    $("#manaColor").val(settings.manabar.color);
+                    setExampleColor($("#manaColor"));
                     $("#manaX").attr("value", settings.manabar.x);
                     $("#manaY").attr("value", settings.manabar.y);
-                    
-                    $("#buffX").attr("value", settings.bufftimerbar.x);
-                    $("#buffY").attr("value", settings.bufftimerbar.y);
 
-                    $("#dotX").attr("value", settings.dottimerbar.x);
-                    $("#dotY").attr("value", settings.dottimerbar.y);
-
+                    $("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
+                    $("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
+                    $("#pulltimerColor").val(settings.timerbar.color);
+                    setExampleColor($("#pulltimerColor"));
                     $("#pulltimerX").attr("value", settings.timerbar.x);
                     $("#pulltimerY").attr("value", settings.timerbar.y);
+
+                    $("#dotBarEnabled").prop("checked", settings.dottimerbar.enabled);
+                    $("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
+                    $("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
+                    $("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
+                    $("#dotGrowDirection").attr("value", settings.dottimerbar.growdirection);
+                    $("#dotPadding").attr("value", settings.dottimerbar.padding);
+                    $("#dotX").attr("value", settings.dottimerbar.x);
+                    $("#dotY").attr("value", settings.dottimerbar.y);
+                    
+                    $("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
+                    $("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
+                    $("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
+                    $("#buffGrowDirection").attr("value", settings.bufftimerbar.growdirection);
+                    $("#buffPadding").attr("value", settings.bufftimerbar.padding);
+                    $("#buffX").attr("value", settings.bufftimerbar.x);
+                    $("#buffY").attr("value", settings.bufftimerbar.y);
                 }
             }
 
             function saveSettings(){
                 let settings = {
                     healthbar: {
-                        x: $("#health-bar").css("left"),
-                        y: $("#health-bar").css("top")
+                        enabled: $("#healthBarEnabled").is(":checked"),
+                        textenabled: $("#healthTextEnabled").is(":checked"),
+                        color: $("#healthColor").val(),
+                        x: $("#healthX").val(),
+                        y: $("#healthY").val()
                     },
                     manabar: {
-                        x: $("#mana-bar").css("left"),
-                        y: $("#mana-bar").css("top")
+                        enabled: $("#manaBarEnabled").is(":checked"),
+                        textenabled: $("#manaTextEnabled").is(":checked"),
+                        color: $("#manaColor").val(),
+                        x: $("#manaX").val(),
+                        y: $("#manaY").val()
                     },
                     timerbar: {
-                        x: $("#timer-bar").css("left"),
-                        y: $("#timer-bar").css("top")
-                    },dottimerbar: {
-                        x: $("#dot-timer-bar").css("left"),
-                        y: $("#dot-timer-bar").css("top")
-                    },bufftimerbar: {
-                        x: $("#buff-timer-bar").css("left"),
-                        y: $("#buff-timer-bar").css("top")
+                        enabled: $("#pulltimerBarEnabled").is(":checked"),
+                        textenabled: $("#pulltimerTextEnabled").is(":checked"),
+                        color: $("#manaColor").val(),
+                        x: $("#pulltimerX").val(),
+                        y: $("#pulltimerY").val()
+                    }
+                    ,dottimerbar: {
+                        enabled: $("#dotBarEnabled").is(":checked"),
+                        textenabled: $("#dotBarTextEnabled").is(":checked"),
+                        imageenabled: $("#dotImageEnabled").is(":checked"),
+                        multidotenabled: $("#multiDotEnabled").is(":checked"),
+                        growdirection: $("#dotGrowDirection").val(),
+                        padding: $("#dotPadding").val(),
+                        x: $("#dotX").val(),
+                        y: $("#dotY").val()
+                    }
+                    ,bufftimerbar: {
+                        enabled: $("#buffBarEnabled").is(":checked"),
+                        textenabled: $("#buffBarTextEnabled").is(":checked"),
+                        imageenabled: $("#buffImageEnabled").is(":checked"),
+                        growdirection: $("#buffGrowDirection").val(),
+                        padding: $("#buffPadding").val(),
+                        x: $("#buffX").val(),
+                        y: $("#buffY").val()
                     }
                 };
                 localStorage.setItem("settings", JSON.stringify(settings));
+                loadUISettings();
             }
         </script>
         <style>
@@ -102,6 +147,9 @@
             }
             #manaExample::-webkit-progress-value {
                 filter: var(--manaColor);
+            }
+            #pulltimerExample::-webkit-progress-value {
+                filter: var(--pulltimerColor);
             }
         </style>
         <title>ZeffUI Settings</title>
@@ -133,13 +181,13 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="healthX">Position X</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthX">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="healthY">Position Y</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthY">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthY">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -157,7 +205,7 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="healthColor">Color</label>
                                 <div class="col-sm-6">
-                                    <select class="form-control form-control-sm" id="healthColor" >
+                                    <select class="form-control form-control-sm" id="healthColor">
                                     </select>
                                 </div>                                    
                             </div>
@@ -181,13 +229,13 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="manaX">Position X</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaX">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="manaY">Position Y</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaY">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaY">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -231,13 +279,13 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="buffX">Position Anchor X</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffX">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="buffY">Position Anchor Y</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffY">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -254,7 +302,13 @@
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="buffPadding">Padding</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffPadding">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffPadding">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="buffImageEnabled">
+                                    <label class="custom-control-label" for="buffImageEnabled">Image</label>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -285,13 +339,13 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="dotX">Position Anchor X</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotX">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="dotY">Position Anchor Y</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotY">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -308,7 +362,13 @@
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="dotPadding">Padding</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotPadding">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotPadding">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="dotImageEnabled">
+                                    <label class="custom-control-label" for="dotImageEnabled">Image</label>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -339,7 +399,7 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled" checked="">
-                                <label class="custom-control-label" for="dotBarEnabled">Pulltimers</label>
+                                <label class="custom-control-label" for="pulltimerBarEnabled">Pulltimers</label>
                             </div>
                         </div>
                         <div class="card-body">
@@ -347,13 +407,13 @@
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="pulltimerX">Position X</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerX">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
                                 <label class="col-sm-4" for="pulltimerY">Position Y</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerY">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerY">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -368,9 +428,28 @@
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFormat">
                                 </div>                                    
                             </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="pulltimerColor">Color</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="pulltimerColor" >
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-4 text-right" for="pulltimerExample">Example</label>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="pulltimerExample" value="5800" max="10000" data-label="5.8"></progress>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="saveSettings()">Save Settings</button>
+                </div>                
+            </div>
+            <div class="row">
+                <br />
             </div>
         </div>
     </body>

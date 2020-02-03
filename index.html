@@ -15,6 +15,7 @@ var locked = true;
 var gridshown = false;
 const UPDATE_INTERVAL = 10;
 
+var currentSettings = null;
 var currentPlayer = null;
 var currentStats = {
 	skillSpeed: 0,
@@ -37,10 +38,8 @@ $(function() {
 		}
 	);
 	$("[id$=bar]").draggable("disable");
-});
 
-$(function(){
-    $(':root').contextMenu({
+	$(':root').contextMenu({
         selector: 'body', 
         callback: function(key, options) {
 			switch(key){
@@ -57,7 +56,13 @@ $(function(){
 					exportSettings();
 					break;
 				case "settings":
-					window.open("settings.html");
+					let openSettings = window.open("settings.html");
+					var settingsTimer = setInterval(function() {   
+						if(openSettings.closed) {  
+							clearInterval(settingsTimer);  
+							loadSettings();  
+						}  
+					}, 1000); 
 					break;
 			}
         },
@@ -77,20 +82,109 @@ function loadSettings(){
 	if(localStorage.getItem("settings") !== null){
 		let settings = JSON.parse(localStorage.getItem("settings"));
 
-		$("#health-bar").css("left", settings.healthbar.x);
-		$("#health-bar").css("top", settings.healthbar.y);
+		if(!settings.healthbar.hasOwnProperty("enabled")) {
+			settings.healthbar.enabled = true;
+			$("#health-bar").show();
+		}
 		
-		$("#mana-bar").css("left", settings.manabar.x);
-		$("#mana-bar").css("top", settings.manabar.y);
+		if(!settings.healthbar.enabled) $("#health-bar").hide();
 
-		$("#timer-bar").css("left", settings.timerbar.x);
-		$("#timer-bar").css("top", settings.timerbar.y);
+		if(!settings.healthbar.hasOwnProperty("textenabled")) settings.healthbar.textenabled = true;
+		if(!settings.healthbar.color) settings.healthbar.color = "--filter-dark-green";
+		$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
 
-		$("#dot-timer-bar").css("left", settings.dottimerbar.x);
-		$("#dot-timer-bar").css("top", settings.dottimerbar.y);
+
+		if(settings.healthbar.x){
+			$("#health-bar").css("left", settings.healthbar.x);
+		}else{
+			settings.healthbar.x = 0;
+		}
+
+		if(settings.healthbar.y){
+			$("#health-bar").css("top", settings.healthbar.y);
+		}else{
+			settings.healthbar.y = 216;
+		}
+
+		if(!settings.manabar.hasOwnProperty("enabled")) {
+			settings.manabar.enabled = true;
+			$("#mana-bar").show();
+		}
 		
-		$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
-		$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
+		if(!settings.manabar.enabled) $("#mana-bar").hide();
+
+		if(!settings.manabar.hasOwnProperty("textenabled")) settings.manabar.textenabled = true;
+		if(!settings.manabar.color) settings.manabar.color = "--filter-light-pink";
+		$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
+		
+		if(settings.manabar.x){
+			$("#mana-bar").css("left", settings.manabar.x);
+		}else{
+			settings.manabar.x = 0;
+		}
+
+		if(settings.manabar.y){
+			$("#mana-bar").css("top", settings.manabar.y);
+		}else{
+			settings.manabar.y = 232;
+		}
+
+		if(!settings.timerbar.enabled) settings.timerbar.enabled = true;
+		if(!settings.timerbar.textenabled) settings.timerbar.textenabled = true;
+		if(!settings.timerbar.color) settings.timerbar.color = "--filter-dark-red";
+		$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
+
+		if(settings.timerbar.x){
+			$("#timer-bar").css("left", settings.timerbar.x);
+		}else{
+			settings.timerbar.x = 0;
+		}
+
+		if(settings.timerbar.y){
+			$("#timer-bar").css("top", settings.timerbar.y);
+		}else{
+			settings.timerbar.y = 200;
+		}
+
+		if(!settings.dottimerbar.enabled) settings.dottimerbar.enabled = true;
+		if(!settings.dottimerbar.textenabled) settings.dottimerbar.textenabled = true;
+		if(!settings.dottimerbar.imageenabled) settings.dottimerbar.imageenabled = true;
+		if(!settings.dottimerbar.multidotenabled) settings.dottimerbar.multidotenabled = false;
+		if(!settings.dottimerbar.growdirection) settings.dottimerbar.growdirection = 1;
+		if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 16;
+
+
+		if(settings.dottimerbar.x){
+			$("#dot-timer-bar").css("left", settings.dottimerbar.x);
+		}else{
+			settings.dottimerbar.x = 0;
+		}
+
+		if(settings.dottimerbar.y){
+			$("#dot-timer-bar").css("top", settings.dottimerbar.y);
+		}else{
+			settings.dottimerbar.y = 100;
+		}
+
+		if(!settings.bufftimerbar.enabled) settings.bufftimerbar.enabled = true;
+		if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
+		if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
+		if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
+		if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 16;
+
+		if(settings.bufftimerbar.x){
+			$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
+		}else{
+			settings.bufftimerbar.x = 0;
+		}
+
+		if(settings.bufftimerbar.y){
+			$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
+		}else{
+			settings.bufftimerbar.y = 116;
+		}
+		currentSettings = settings;
+		saveSettings();
 	}
 }
 
@@ -122,29 +216,19 @@ function importSettings(){
 }
 
 function saveSettings(){
-	let settings = {
-		healthbar: {
-			x: $("#health-bar").css("left").replace("px", ""),
-			y: $("#health-bar").css("top").replace("px", "")
-		},
-		manabar: {
-			x: $("#mana-bar").css("left").replace("px", ""),
-			y: $("#mana-bar").css("top").replace("px", "")
-		},
-		timerbar: {
-			x: $("#timer-bar").css("left").replace("px", ""),
-			y: $("#timer-bar").css("top").replace("px", "")
-		},
-		dottimerbar: {
-			x: $("#dot-timer-bar").css("left").replace("px", ""),
-			y: $("#dot-timer-bar").css("top").replace("px", "")
-		},
-		bufftimerbar: {
-			x: $("#buff-timer-bar").css("left").replace("px", ""),
-			y: $("#buff-timer-bar").css("top").replace("px", "")
-		}
-	};
-	localStorage.setItem("settings", JSON.stringify(settings));
+	currentSettings.healthbar.x = $("#health-bar").css("left").replace("px", "");
+	currentSettings.healthbar.y = $("#health-bar").css("top").replace("px", "");
+
+	currentSettings.manabar.x = $("#mana-bar").css("left").replace("px", "");
+	currentSettings.manabar.y = $("#mana-bar").css("top").replace("px", "");
+
+	currentSettings.dottimerbar.x = $("#dot-timer-bar").css("left").replace("px", "");
+	currentSettings.dottimerbar.y = $("#dot-timer-bar").css("top").replace("px", "");
+	
+	currentSettings.bufftimerbar.x = $("#buff-timer-bar").css("left").replace("px", "");
+	currentSettings.bufftimerbar.y = $("#buff-timer-bar").css("top").replace("px", "");
+	
+	localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
 
 function exportSettings(){
@@ -282,10 +366,11 @@ function onPlayerChangedEvent(e){
 	currentPlayer = e.detail;
 	$("#health-bar").attr("max", currentPlayer.maxHP);
 	$("#health-bar").attr("value", currentPlayer.currentHP);
-	$("#health-bar").attr("data-label", `${currentPlayer.currentHP} / ${currentPlayer.maxHP}`);
+	$("#health-bar").attr("data-label", currentSettings.healthbar.textenabled ? `${currentPlayer.currentHP} / ${currentPlayer.maxHP}` : "");
+
 	$("#mana-bar").attr("max", currentPlayer.maxMP);
 	$("#mana-bar").attr("value", currentPlayer.currentMP);
-	$("#mana-bar").attr("data-label", `${currentPlayer.currentMP} / ${currentPlayer.maxMP}`);
+	$("#mana-bar").attr("data-label", currentSettings.manabar.textenabled ? `${currentPlayer.currentMP} / ${currentPlayer.maxMP}` : "");
 }
 
 function onLogEvent(e){
@@ -363,12 +448,15 @@ function handleEffect(parameters){
 
 			$(selectorBar).show();
 			$(selectorBar).css("left", $(targetBarSelector).css("left"));
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (16 * activeCount));
+			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentsettings[`ability.type${timerbar}`].padding * activeCount));
 
-			$(selectorImage).show();
-			$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
-			$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-			$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (16 * activeCount) - 4);
+			if(currentsettings[`ability.type${timerbar}`].imageenabled){
+				$(selectorImage).show();
+				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
+				$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
+				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentsettings[`ability.type${timerbar}`].padding * activeCount) - 4);
+			}
+			
 		}
 		if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
 		startTimer(parameters.duration, selectorBar);
@@ -376,8 +464,8 @@ function handleEffect(parameters){
 }
 </script>
 <canvas id="grid"></canvas>
-<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar" value="10" data-label="0.0"></progress>
-<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar" value="10" data-label="0.0"></progress>
-<progress width="154" height="15" id="timer-bar" class="bar" value="10" data-label="0.0"></progress>
+<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar" value="10" data-label="DoT Timers Anchor"></progress>
+<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar" value="10" data-label="Buff Timers Anchor"></progress>
+<progress width="154" height="15" id="timer-bar" class="bar" value="10" data-label="Pulltimer"></progress>
 <progress width="154" height="15" id="health-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
 <progress width="154" height="15" id="mana-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
