@@ -20,9 +20,22 @@
                     setExampleColor(this);
                 });
 
+                $("[id$=GrowDirection]").change(function() {
+                    setPadding(this);
+                });
+
                 createColorSelects();
                 loadSettings();
             });
+
+            function setPadding(element){
+                let selector = $(element).attr("id").replace("GrowDirection", "");
+                if($(element).val() <= 2){
+                    $(`#${selector}Padding`).val(20);
+                }else{
+                    $(`#${selector}Padding`).val(180);
+                }
+            }
 
             function setExampleColor(element){
                 let selector = $(element).attr("id").replace("Color", "");
