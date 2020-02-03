@@ -152,7 +152,7 @@ function loadSettings(){
 		if(!settings.dottimerbar.imageenabled) settings.dottimerbar.imageenabled = true;
 		if(!settings.dottimerbar.multidotenabled) settings.dottimerbar.multidotenabled = false;
 		if(!settings.dottimerbar.growdirection) settings.dottimerbar.growdirection = 1;
-		if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 16;
+		if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 20;
 
 
 		if(settings.dottimerbar.x){
@@ -171,7 +171,7 @@ function loadSettings(){
 		if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
 		if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
 		if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
-		if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 16;
+		if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 20;
 
 		if(settings.bufftimerbar.x){
 			$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
@@ -454,13 +454,13 @@ function handleEffect(parameters){
 			$(selectorBar).css("left", $(targetBarSelector).css("left"));
 			$(selectorBar).addClass(`bar-${ability.id}`);
 			addFilterColorToElement(`bar-${ability.id}`, ability.color);
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * activeCount));
+			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 
 			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
 				$(selectorImage).show();
 				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
 				$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * activeCount) - 4);
+				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
 			}
 			
 		}
