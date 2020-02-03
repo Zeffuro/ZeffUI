@@ -82,112 +82,115 @@ $(function() {
 function loadSettings(){
 	if(localStorage.getItem("settings") !== null){
 		let settings = JSON.parse(localStorage.getItem("settings"));
-
-		if(!settings.healthbar.hasOwnProperty("enabled")) {
-			settings.healthbar.enabled = true;
-			$("#health-bar").show();
-		}
-		
-		if(!settings.healthbar.enabled) $("#health-bar").hide();
-
-		if(!settings.healthbar.hasOwnProperty("textenabled")) settings.healthbar.textenabled = true;
-		if(!settings.healthbar.color) settings.healthbar.color = "--filter-dark-green";
-		$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
-
-
-		if(settings.healthbar.x){
-			$("#health-bar").css("left", settings.healthbar.x);
-		}else{
-			settings.healthbar.x = 0;
-		}
-
-		if(settings.healthbar.y){
-			$("#health-bar").css("top", settings.healthbar.y);
-		}else{
-			settings.healthbar.y = 216;
-		}
-
-		if(!settings.manabar.hasOwnProperty("enabled")) {
-			settings.manabar.enabled = true;
-			$("#mana-bar").show();
-		}
-		
-		if(!settings.manabar.enabled) $("#mana-bar").hide();
-
-		if(!settings.manabar.hasOwnProperty("textenabled")) settings.manabar.textenabled = true;
-		if(!settings.manabar.color) settings.manabar.color = "--filter-light-pink";
-		$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
-		
-		if(settings.manabar.x){
-			$("#mana-bar").css("left", settings.manabar.x);
-		}else{
-			settings.manabar.x = 0;
-		}
-
-		if(settings.manabar.y){
-			$("#mana-bar").css("top", settings.manabar.y);
-		}else{
-			settings.manabar.y = 232;
-		}
-
-		if(!settings.timerbar.enabled) settings.timerbar.enabled = true;
-		if(!settings.timerbar.textenabled) settings.timerbar.textenabled = true;
-		if(!settings.timerbar.color) settings.timerbar.color = "--filter-dark-red";
-		$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
-
-		if(settings.timerbar.x){
-			$("#timer-bar").css("left", settings.timerbar.x);
-		}else{
-			settings.timerbar.x = 0;
-		}
-
-		if(settings.timerbar.y){
-			$("#timer-bar").css("top", settings.timerbar.y);
-		}else{
-			settings.timerbar.y = 200;
-		}
-
-		if(!settings.dottimerbar.enabled) settings.dottimerbar.enabled = true;
-		if(!settings.dottimerbar.textenabled) settings.dottimerbar.textenabled = true;
-		if(!settings.dottimerbar.imageenabled) settings.dottimerbar.imageenabled = true;
-		if(!settings.dottimerbar.multidotenabled) settings.dottimerbar.multidotenabled = false;
-		if(!settings.dottimerbar.growdirection) settings.dottimerbar.growdirection = 1;
-		if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 20;
-
-
-		if(settings.dottimerbar.x){
-			$("#dot-timer-bar").css("left", settings.dottimerbar.x);
-		}else{
-			settings.dottimerbar.x = 0;
-		}
-
-		if(settings.dottimerbar.y){
-			$("#dot-timer-bar").css("top", settings.dottimerbar.y);
-		}else{
-			settings.dottimerbar.y = 100;
-		}
-
-		if(!settings.bufftimerbar.enabled) settings.bufftimerbar.enabled = true;
-		if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
-		if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
-		if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
-		if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 20;
-
-		if(settings.bufftimerbar.x){
-			$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
-		}else{
-			settings.bufftimerbar.x = 0;
-		}
-
-		if(settings.bufftimerbar.y){
-			$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
-		}else{
-			settings.bufftimerbar.y = 116;
-		}
-		currentSettings = settings;
-		saveSettings();
+	}else{
+		settings = {};
 	}
+
+	if(!settings.healthbar.hasOwnProperty("enabled")) {
+		settings.healthbar.enabled = true;
+		$("#health-bar").show();
+	}
+	
+	if(!settings.healthbar.enabled) $("#health-bar").hide();
+
+	if(!settings.healthbar.hasOwnProperty("textenabled")) settings.healthbar.textenabled = true;
+	if(!settings.healthbar.color) settings.healthbar.color = "--filter-dark-green";
+	$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
+
+
+	if(settings.healthbar.x){
+		$("#health-bar").css("left", settings.healthbar.x);
+	}else{
+		settings.healthbar.x = 0;
+	}
+
+	if(settings.healthbar.y){
+		$("#health-bar").css("top", settings.healthbar.y);
+	}else{
+		settings.healthbar.y = 216;
+	}
+
+	if(!settings.manabar.hasOwnProperty("enabled")) {
+		settings.manabar.enabled = true;
+		$("#mana-bar").show();
+	}
+	
+	if(!settings.manabar.enabled) $("#mana-bar").hide();
+
+	if(!settings.manabar.hasOwnProperty("textenabled")) settings.manabar.textenabled = true;
+	if(!settings.manabar.color) settings.manabar.color = "--filter-light-pink";
+	$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
+	
+	if(settings.manabar.x){
+		$("#mana-bar").css("left", settings.manabar.x);
+	}else{
+		settings.manabar.x = 0;
+	}
+
+	if(settings.manabar.y){
+		$("#mana-bar").css("top", settings.manabar.y);
+	}else{
+		settings.manabar.y = 232;
+	}
+
+	if(!settings.timerbar.enabled) settings.timerbar.enabled = true;
+	if(!settings.timerbar.textenabled) settings.timerbar.textenabled = true;
+	if(!settings.timerbar.color) settings.timerbar.color = "--filter-dark-red";
+	$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
+
+	if(settings.timerbar.x){
+		$("#timer-bar").css("left", settings.timerbar.x);
+	}else{
+		settings.timerbar.x = 0;
+	}
+
+	if(settings.timerbar.y){
+		$("#timer-bar").css("top", settings.timerbar.y);
+	}else{
+		settings.timerbar.y = 200;
+	}
+
+	if(!settings.dottimerbar.enabled) settings.dottimerbar.enabled = true;
+	if(!settings.dottimerbar.textenabled) settings.dottimerbar.textenabled = true;
+	if(!settings.dottimerbar.imageenabled) settings.dottimerbar.imageenabled = true;
+	if(!settings.dottimerbar.multidotenabled) settings.dottimerbar.multidotenabled = false;
+	if(!settings.dottimerbar.growdirection) settings.dottimerbar.growdirection = 1;
+	if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 20;
+
+
+	if(settings.dottimerbar.x){
+		$("#dot-timer-bar").css("left", settings.dottimerbar.x);
+	}else{
+		settings.dottimerbar.x = 0;
+	}
+
+	if(settings.dottimerbar.y){
+		$("#dot-timer-bar").css("top", settings.dottimerbar.y);
+	}else{
+		settings.dottimerbar.y = 100;
+	}
+
+	if(!settings.bufftimerbar.enabled) settings.bufftimerbar.enabled = true;
+	if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
+	if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
+	if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
+	if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 20;
+
+	if(settings.bufftimerbar.x){
+		$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
+	}else{
+		settings.bufftimerbar.x = 0;
+	}
+
+	if(settings.bufftimerbar.y){
+		$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
+	}else{
+		settings.bufftimerbar.y = 116;
+	}
+	currentSettings = settings;
+	saveSettings();
 }
+
 
 function importSettings(){
 	$(`<div>
