@@ -5,11 +5,12 @@
 <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
 <script src="data/regex.js"></script>
 <script src="data/abilities.js"></script>
+<style></style>
+<link rel="stylesheet" href="skins/default/styles/resources.css" />
+<link rel="stylesheet" href="styles/colors.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/fontawesome.min.css" />
-<link rel="stylesheet" href="styles/colors.css" />
-<link rel="stylesheet" href="skins/default/styles/resources.css" />
 <script>
 var locked = true;
 var gridshown = false;
@@ -344,8 +345,8 @@ function toggleGrid(){
 	}	
 }
 
-function addFilterColorToElement(elementId, filterColor){
-	document.styleSheets[0].insertRule(`${elementId}::-webkit-progress-value { filter: var(${filterColor}) }`);
+function addFilterColorToElement(classId, filterColor){
+	$("style").append(`.${classId}::-webkit-progress-value { filter: var(${filterColor}); }`);
 }
 
 document.addEventListener('onOverlayStateUpdate', function(e) {
@@ -451,7 +452,8 @@ function handleEffect(parameters){
 
 			$(selectorBar).show();
 			$(selectorBar).css("left", $(targetBarSelector).css("left"));
-			addFilterColorToElement(selectorBar, ability.color);
+			$(selectorBar).addClass(`bar-${ability.id}`);
+			addFilterColorToElement(`bar-${ability.id}`, ability.color);
 			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * activeCount));
 
 			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){

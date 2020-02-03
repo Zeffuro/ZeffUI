@@ -98,7 +98,7 @@ var abilityList = [
         id: 1201,
         name: "Caustic Bite",
         type: "DoT",
-        icon: "/i/012000/012617.png",
+        icon: "/i/012000/012616.png",
         color: "--filter-light-pink",
         order: 0
     },
@@ -106,7 +106,7 @@ var abilityList = [
         id: 1200,
         name: "Stormbite",
         type: "DoT",
-        icon: "/i/012000/012616.png",
+        icon: "/i/012000/012617.png",
         color: "--filter-baby-blue",
         order: 1
     },
