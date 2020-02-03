@@ -344,6 +344,10 @@ function toggleGrid(){
 	}	
 }
 
+function addFilterColorToElement(elementId, filterColor){
+	document.styleSheets[0].insertRule(`${elementId}::-webkit-progress-value { filter: var(${filterColor}) }`);
+}
+
 document.addEventListener('onOverlayStateUpdate', function(e) {
 	if (!e.detail.isLocked) {
 		$(":root").css("background", "rgba(0,0,255,0.5)");
@@ -420,8 +424,7 @@ function handleEffect(parameters){
 			// Effect is a DoT
 		}
 		let ability = abilityList.find(x => x.name == parameters.effect);
-		console.log(parameters);
-		console.log(ability);
+
 		let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 		let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
 		let selectorBar = `#${ability.id}-bar`;
@@ -448,13 +451,14 @@ function handleEffect(parameters){
 
 			$(selectorBar).show();
 			$(selectorBar).css("left", $(targetBarSelector).css("left"));
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentsettings[`ability.type${timerbar}`].padding * activeCount));
+			addFilterColorToElement(selectorBar, ability.color);
+			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * activeCount));
 
-			if(currentsettings[`ability.type${timerbar}`].imageenabled){
+			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
 				$(selectorImage).show();
 				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
 				$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentsettings[`ability.type${timerbar}`].padding * activeCount) - 4);
+				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * activeCount) - 4);
 			}
 			
 		}

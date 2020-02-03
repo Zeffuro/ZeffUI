@@ -1,8 +1,18 @@
 :root{
 	--filter-dark-red: brightness(10%) sepia(100) saturate(100) hue-rotate(25deg);
 	--filter-bright-red: brightness(10%) sepia(100) saturate(100) hue-rotate(0deg);
-	--filter-blue: brightness(10%) sepia(100) saturate(100) hue-rotate(250deg);
+	--filter-baby-blue: brightness(100%) sepia(100) hue-rotate(150deg);
+	--filter-green-blue: brightness(90%) sepia(100) saturate(3) hue-rotate(110deg);
+	--filter-toxic-green: brightness(120%) sepia(100) saturate(5) hue-rotate(60deg);
+	--filter-light-blue: brightness(50%) sepia(100) saturate(10) hue-rotate(180deg);
+	--filter-dark-blue: brightness(10%) sepia(100) saturate(100) hue-rotate(250deg);
 	--filter-dark-green: brightness(80%) sepia(0.2) saturate(20) hue-rotate(70deg);
+	--filter-jungle-green: brightness(100%) sepia(0.2) saturate(20) hue-rotate(30deg);
 	--filter-purple: brightness(10%) sepia(100) saturate(100) hue-rotate(280deg);
+	--filter-fuchsia: brightness(50%) sepia(100) saturate(10) hue-rotate(260deg);
 	--filter-light-pink: brightness(90%) sepia(10) hue-rotate(270deg);
+	--filter-light-gold: brightness(100%) sepia(100) hue-rotate(10deg);
+	--filter-dark-gold: brightness(100%) sepia(100) saturate(3) hue-rotate(10deg);
+	--filter-orange: brightness(100%) sepia(100) saturate(3) hue-rotate(340deg);
+	--filter-grey: "";
 }
