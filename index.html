@@ -80,10 +80,13 @@ $(function() {
 });
 
 function loadSettings(){
+	let settings = {};
 	if(localStorage.getItem("settings") !== null){
 		let settings = JSON.parse(localStorage.getItem("settings"));
-	}else{
-		settings = {};
+	}
+
+	if(!settings.hasOwnProperty("healthbar")) {
+		settings.healthbar = {};
 	}
 
 	if(!settings.healthbar.hasOwnProperty("enabled")) {
@@ -110,6 +113,10 @@ function loadSettings(){
 		settings.healthbar.y = 216;
 	}
 
+	if(!settings.hasOwnProperty("manabar")) {
+		settings.manabar = {};
+	}
+
 	if(!settings.manabar.hasOwnProperty("enabled")) {
 		settings.manabar.enabled = true;
 		$("#mana-bar").show();
@@ -133,6 +140,10 @@ function loadSettings(){
 		settings.manabar.y = 232;
 	}
 
+	if(!settings.hasOwnProperty("timerbar")) {
+		settings.timerbar = {};
+	}
+
 	if(!settings.timerbar.enabled) settings.timerbar.enabled = true;
 	if(!settings.timerbar.textenabled) settings.timerbar.textenabled = true;
 	if(!settings.timerbar.color) settings.timerbar.color = "--filter-dark-red";
@@ -148,6 +159,10 @@ function loadSettings(){
 		$("#timer-bar").css("top", settings.timerbar.y);
 	}else{
 		settings.timerbar.y = 200;
+	}
+
+	if(!settings.hasOwnProperty("dottimerbar")) {
+		settings.dottimerbar = {};
 	}
 
 	if(!settings.dottimerbar.enabled) settings.dottimerbar.enabled = true;
@@ -170,6 +185,10 @@ function loadSettings(){
 		settings.dottimerbar.y = 100;
 	}
 
+	if(!settings.hasOwnProperty("bufftimerbar")) {
+		settings.bufftimerbar = {};
+	}
+
 	if(!settings.bufftimerbar.enabled) settings.bufftimerbar.enabled = true;
 	if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
 	if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
@@ -187,6 +206,7 @@ function loadSettings(){
 	}else{
 		settings.bufftimerbar.y = 116;
 	}
+
 	currentSettings = settings;
 	saveSettings();
 }
