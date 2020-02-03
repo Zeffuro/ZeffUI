@@ -174,13 +174,13 @@ function loadSettings(){
 	if(!settings.dottimerbar.padding) settings.dottimerbar.padding = 20;
 
 
-	if(!settings.dottimerbar.x){
+	if(settings.dottimerbar.x){
 		$("#dot-timer-bar").css("left", settings.dottimerbar.x);
 	}else{
 		settings.dottimerbar.x = 0;
 	}
 
-	if(!settings.dottimerbar.y){
+	if(settings.dottimerbar.y){
 		$("#dot-timer-bar").css("top", settings.dottimerbar.y);
 	}else{
 		settings.dottimerbar.y = 100;
@@ -196,13 +196,13 @@ function loadSettings(){
 	if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = 1;
 	if(!settings.bufftimerbar.padding) settings.bufftimerbar.padding = 20;
 
-	if(!settings.bufftimerbar.x){
+	if(settings.bufftimerbar.x){
 		$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
 	}else{
 		settings.bufftimerbar.x = 0;
 	}
 
-	if(!settings.bufftimerbar.y){
+	if(settings.bufftimerbar.y){
 		$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
 	}else{
 		settings.bufftimerbar.y = 116;
@@ -247,6 +247,9 @@ function saveSettings(){
 
 	currentSettings.manabar.x = parseInt($("#mana-bar").css("left").replace("px", ""));
 	currentSettings.manabar.y = parseInt($("#mana-bar").css("top").replace("px", ""));
+
+	currentSettings.timerbar.x = parseInt($("#timer-bar").css("left").replace("px", ""));
+	currentSettings.timerbar.y = parseInt($("#timer-bar").css("top").replace("px", ""));
 
 	currentSettings.dottimerbar.x = parseInt($("#dot-timer-bar").css("left").replace("px", ""));
 	currentSettings.dottimerbar.y = parseInt($("#dot-timer-bar").css("top").replace("px", ""));
@@ -454,7 +457,7 @@ function handleEffect(parameters){
 
 		let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 		let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
-		let selectorBar = `#${ability.id}-bar`;
+		let selectorBar = `#${ability.id}-timer`;
 		let selectorImage = `#${ability.id}-image`;
 
 		if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
@@ -477,16 +480,60 @@ function handleEffect(parameters){
 			$(targetImageSelector).after(newImage);
 
 			$(selectorBar).show();
-			$(selectorBar).css("left", $(targetBarSelector).css("left"));
 			$(selectorBar).addClass(`bar-${ability.id}`);
 			addFilterColorToElement(`bar-${ability.id}`, ability.color);
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+
+			switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
+				case 1: {
+					// Down					
+					$(selectorBar).css("left", $(targetBarSelector).css("left"));
+					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+				}
+				case 2: {
+					// Up
+					$(selectorBar).css("left", $(targetBarSelector).css("left"));
+					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+				}
+				case 3: {
+					// Left
+					$(selectorBar).css("top", $(targetBarSelector).css("top"));
+					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+				}
+				case 4: {
+					// Right
+					$(selectorBar).css("top", $(targetBarSelector).css("top"));
+					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+				}
+			}
+
+			
 
 			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
 				$(selectorImage).show();
 				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
-				$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
-				$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
+				switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
+					case 1: {
+						// Down					
+						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
+					}
+					case 2: {
+						// Up
+						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - 20);
+						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - 4);
+					}
+					case 3: {
+						// Left
+						$(selectorBar).css("top", $(targetBarSelector).css("top"));
+						$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+					}
+					case 4: {
+						// Right
+						$(selectorBar).css("top", $(targetBarSelector).css("top"));
+						$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+					}
+				}
+				
 			}
 			
 		}

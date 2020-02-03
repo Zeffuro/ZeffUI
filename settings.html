@@ -79,7 +79,7 @@
                     $("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
                     $("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
                     $("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
-                    $("#dotGrowDirection").attr("value", settings.dottimerbar.growdirection);
+                    $("#dotGrowDirection").val(settings.dottimerbar.growdirection);
                     $("#dotPadding").attr("value", settings.dottimerbar.padding);
                     $("#dotX").attr("value", settings.dottimerbar.x);
                     $("#dotY").attr("value", settings.dottimerbar.y);
@@ -87,7 +87,7 @@
                     $("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
                     $("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
                     $("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
-                    $("#buffGrowDirection").attr("value", settings.bufftimerbar.growdirection);
+                    $("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
                     $("#buffPadding").attr("value", settings.bufftimerbar.padding);
                     $("#buffX").attr("value", settings.bufftimerbar.x);
                     $("#buffY").attr("value", settings.bufftimerbar.y);
@@ -113,7 +113,7 @@
                     timerbar: {
                         enabled: $("#pulltimerBarEnabled").is(":checked"),
                         textenabled: $("#pulltimerTextEnabled").is(":checked"),
-                        color: $("#manaColor").val(),
+                        color: $("#pulltimerColor").val(),
                         x: $("#pulltimerX").val(),
                         y: $("#pulltimerY").val()
                     },
@@ -138,7 +138,7 @@
                     }
                 };
                 localStorage.setItem("settings", JSON.stringify(settings));
-                loadUISettings();
+                window.close();
             }
         </script>
         <style>

@@ -207,6 +207,23 @@ var abilityList = [
         order: 1
     },
     // GNB
+    // DoTs
+    {
+        id: 1837,
+        name: "Sonic Break",
+        type: "DoT",
+        icon: "/i/013000/013607.png",
+        color: "--filter-light-blue",
+        order: 0
+    },
+    {
+        id: 1838,
+        name: "Bow Shock",
+        type: "DoT",
+        icon: "/i/013000/013608.png",
+        color: "--filter-light-gold",
+        order: 1
+    },
     // Buffs
     {
         id: 1831,
