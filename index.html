@@ -607,11 +607,11 @@ function handleEffect(parameters){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
 		}
 		if(ability.type === "DoT" || ability.type === "Buff"){
+			let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
+			let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
+			let selectorBar = `#${ability.id}-timer`;
+			let selectorImage = `#${ability.id}-image`;
 			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
-				let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
-				let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
-				let selectorBar = `#${ability.id}-timer`;
-				let selectorImage = `#${ability.id}-image`;
 				let activeCount = 0;
 				switch(ability.type){
 					case "DoT":{
@@ -697,10 +697,10 @@ function handleEffect(parameters){
 						}
 					}
 					
-				}			
-				if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
-				startTimer(parameters.duration, selectorBar);
-			}
+				}
+			}						
+			if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
+			startTimer(parameters.duration, selectorBar);
 		}
 	}
 }
