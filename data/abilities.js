@@ -368,6 +368,24 @@ var abilityList = [
         color: "--filter-grey",
         order: 1
     },
+    // Stacks
+    {
+        id: 1865,
+        name: "Meditation",
+        type: "Stacks",
+        icon: "/i/019000/019501.png",
+        color: "--filter-dark-red",
+        order: 0
+    },
+    {
+        id: 16487,
+        name: "Shoha",
+        type: "StackSpender",
+        icon: "/i/003000/003184.png",
+        color: "--filter-dark-red",
+        order: 0
+    },
+    
     // SCH
     // DoTs
     {
@@ -443,6 +461,23 @@ var abilityList = [
         icon: "/i/012000/012683.png",
         color: "--filter-baby-blue",
         order: 1
+    },
+    // Stacks
+    {
+        id: 1212,
+        name: "Further Ruin",
+        type: "Stacks",
+        icon: "/i/019000/019481.png",
+        color: "--filter-dark-blue",
+        order: 0
+    },
+    {
+        id: 7426,
+        name: "Ruin IV",
+        type: "StackSpender",
+        icon: "/i/002000/002686.png",
+        color: "--filter-dark-blue",
+        order: 0
     },
     // WAR
     // Buffs

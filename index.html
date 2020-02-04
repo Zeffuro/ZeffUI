@@ -5,7 +5,11 @@
 <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
 <script src="data/regex.js"></script>
 <script src="data/abilities.js"></script>
-<style></style>
+<style>
+	body{
+		overflow: hidden;
+	}
+</style>
 <link rel="stylesheet" href="skins/default/styles/resources.css" />
 <link rel="stylesheet" href="styles/colors.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
@@ -20,8 +24,12 @@ var currentSettings = null;
 var currentPlayer = null;
 var currentStats = {
 	skillSpeed: 0,
-	spellSpeed: 0
+	spellSpeed: 0,
+	stacks: 0,
+	maxStacks: 0
 };
+
+var blockRuinGained = false;
 
 var activeDotBars = new Map();
 var activeBuffBars = new Map();
@@ -241,6 +249,44 @@ function loadSettings(){
 		settings.bufftimerbar.y = 116;
 	}
 
+	if(!settings.hasOwnProperty("stacksbar")) {
+		settings.stacksbar = {};
+	}
+
+	if(!settings.stacksbar.hasOwnProperty("enabled")) {
+		settings.stacksbar.enabled = true;
+		$("#stacks-bar").show();
+	}
+	
+	if(!settings.stacksbar.enabled) $("#stacks-bar").hide();
+
+	if(!settings.stacksbar.color) settings.stacksbar.color = "--filter-bright-red";
+	$("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
+
+	if(settings.stacksbar.scale){
+		$("#stacks-bar").attr("width", settings.stacksbar.scale * (4 * 25));
+		$("#stacks-bar").attr("height", settings.stacksbar.scale * 21);
+		$("#stacks-1").attr("width", settings.stacksbar.scale * 25);
+		$("#stacks-2").attr("width", settings.stacksbar.scale * 25);
+		$("#stacks-3").attr("width", settings.stacksbar.scale * 25);
+		$("#stacks-4").attr("width", settings.stacksbar.scale * 25);
+		$("[id^=stacks-background]").css("margin-left", 0 - (settings.stacksbar.scale * 4));
+	}else{
+		settings.stacksbar.scale = 1;
+	}
+
+	if(settings.stacksbar.x){
+		$("#stacks-bar").css("left", settings.stacksbar.x);
+	}else{
+		settings.stacksbar.x = 0;
+	}
+
+	if(settings.stacksbar.y){
+		$("#stacks-bar").css("top", settings.stacksbar.y);
+	}else{
+		settings.stacksbar.y = 170;
+	}
+
 	currentSettings = settings;
 	saveSettings();
 }
@@ -304,6 +350,9 @@ function saveSettings(){
 	$("#buff-timer-bar").css("--buffFontSize", currentSettings.bufftimerbar.scale * 10);
 	$("#buff-timer-bar").css("--buffFontX", currentSettings.bufftimerbar.scale * 5);
 	$("#buff-timer-bar").css("--buffFontY", currentSettings.bufftimerbar.scale * -14);
+
+	currentSettings.stacksbar.x = parseInt($("#stacks-bar").css("left").replace("px", ""));
+	currentSettings.stacksbar.y = parseInt($("#stacks-bar").css("top").replace("px", ""));
 	
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 	
@@ -402,14 +451,55 @@ function toggleLock(){
 		$("#dot-timer-bar").show();
 		$("#buff-timer-bar").show();
 		$("[id$=bar]").draggable("enable");
+		adjustJobStacks(2,4, true);
 		locked = false;
 	}else{
 		$("#timer-bar").hide();
 		$("#dot-timer-bar").hide();
 		$("#buff-timer-bar").hide();
 		$("[id$=bar]").draggable("disable");
+		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);
 		locked = true;
 	}	
+}
+
+function adjustJobStacks(value, max, noAdd = false){
+	if(!noAdd){
+		currentStats.stacks = value;
+		if(currentPlayer.job === "SAM" && currentStats.maxStacks === 0 && !noAdd){
+			initializeSam(true);
+			max = 3;
+		}
+		if(currentPlayer.job === "SMN" && currentStats.maxStacks === 0 && !noAdd){
+			initializeSmn(true);
+			max = 4;
+		}
+	}
+	
+	for(i = 1; i <= 4; i++){
+		let backgroundSelector = `#stacks-background-${i}`;
+		let selector = `#stacks-${i}`;
+		if(i <= max){
+			if($(backgroundSelector).hasClass("stack-hidden")){
+				$(backgroundSelector).removeClass("stack-hidden");
+			}
+		}else{
+			if(!$(backgroundSelector).hasClass("stack-hidden")){
+				$(backgroundSelector).addClass("stack-hidden");
+			}
+		}
+		$(selector).attr("src", i <= value ? "skins/default/images/arrow-fill.png" : "skins/default/images/arrow-fill-empty.png");
+	}
+}
+
+function initializeSam(addStack = false){
+	currentStats.stacks = addStack ? 1 : 0;
+	currentStats.maxStacks = 3;
+}
+
+function initializeSmn(addStack = false){
+	currentStats.stacks = addStack ? 1 : 0;
+	currentStats.maxStacks = 4;
 }
 
 function toggleGrid(){
@@ -443,6 +533,14 @@ startOverlayEvents();
 
 function onPlayerChangedEvent(e){
 	if(currentPlayer !== null && currentPlayer.job !== e.detail.job){
+		if(e.detail.job === "SAM") {
+			initializeSam();
+			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		}
+		if(e.detail.job === "SMN") {
+			initializeSmn();
+			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		}
 		resetTimers();
 	}
 	currentPlayer = e.detail;
@@ -456,18 +554,20 @@ function onPlayerChangedEvent(e){
 }
 
 function onLogEvent(e){
-	for (logLine of e.detail.logs){		
+	for (logLine of e.detail.logs){
+		//console.log(logLine);
 		for(let logType of Object.keys(regexList)){
 			let regexObject = regexList[logType];
 			let regex = new RegExp(regexObject.regex);
 			if(regex.test(logLine)){
 				let matches = regexObject.matches;
 				for(let match of Object.keys(matches)){
-					console.log(logLine);
+					//console.log(logLine);
 					let matchObject = matches[match];
 					let innerRegex = new RegExp(matchObject.regex);
 					let regexMatch = innerRegex.exec(logLine);
 					if(regexMatch !== null){
+						console.log(logLine);
 						let logFunction = window[matchObject.function];
 						if (typeof logFunction === "function") logFunction(regexMatch.groups);
 					}
@@ -478,6 +578,8 @@ function onLogEvent(e){
 }
 
 function onPartyWipe(e){
+	if(currentPlayer.job === "SAM") initializeSam();
+	if(currentPlayer.job === "SMN") initializeSmn();
 	resetTimers();
 }
 
@@ -496,116 +598,144 @@ function handlePlayerStats(parameters){
 
 function handleEffect(parameters){
 	if(parameters.player === currentPlayer.name){
-		if(parameters.player === currentPlayer.name){
-			// Effect is a self-buff.
-		}else{
-			// Effect is a DoT
+		let ability = undefined;
+		ability = abilityList.find(x => x.name == parameters.effect);
+		if(ability === undefined){
+			return;
 		}
-		let ability = abilityList.find(x => x.name == parameters.effect);
-
-		
-
-		if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
-
-			let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
-			let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
-			let selectorBar = `#${ability.id}-timer`;
-			let selectorImage = `#${ability.id}-image`;
-			let activeCount = 0;
-			switch(ability.type){
-				case "DoT":{
-					activeDotBars.set(ability.id, selectorBar);
-					activeCount = activeDotBars.size;
-					break;
+		if(ability.type === "Stacks"){
+			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
+		}
+		if(ability.type === "DoT" || ability.type === "Buff"){
+			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
+				let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
+				let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
+				let selectorBar = `#${ability.id}-timer`;
+				let selectorImage = `#${ability.id}-image`;
+				let activeCount = 0;
+				switch(ability.type){
+					case "DoT":{
+						activeDotBars.set(ability.id, selectorBar);
+						activeCount = activeDotBars.size;
+						break;
+					}
+					case "Buff":{
+						activeBuffBars.set(ability.id, selectorBar);
+						activeCount = activeBuffBars.size;
+						break;
+					}
 				}
-				case "Buff":{
-					activeBuffBars.set(ability.id, selectorBar);
-					activeCount = activeBuffBars.size;
-					break;
-				}
-			}
-			let newBar = $(targetBarSelector).clone().prop("id", selectorBar.replace("#", ""));
-			$(targetBarSelector).after(newBar);
-			let newImage = $(targetImageSelector).clone().prop("id", selectorImage.replace("#", ""));
-			$(targetImageSelector).after(newImage);
+				let newBar = $(targetBarSelector).clone().prop("id", selectorBar.replace("#", ""));
+				$(targetBarSelector).after(newBar);
+				let newImage = $(targetImageSelector).clone().prop("id", selectorImage.replace("#", ""));
+				$(targetImageSelector).after(newImage);
 
-			$(selectorBar).show();
-			$(selectorBar).addClass(`bar-${ability.id}`);
-			$(selectorBar).addClass(`${ability.type.toLowerCase()}-font-size`);
-			addFilterColorToElement(`bar-${ability.id}`, ability.color);
+				$(selectorBar).show();
+				$(selectorBar).addClass(`bar-${ability.id}`);
+				$(selectorBar).addClass(`${ability.type.toLowerCase()}-font-size`);
+				addFilterColorToElement(`bar-${ability.id}`, ability.color);
 
-			$(targetBarSelector).attr("data-font-size", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 10);
-
-			switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
-				case "1": {
-					// Down					
-					$(selectorBar).css("left", $(targetBarSelector).css("left"));
-					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
-					break;
-				}
-				case "2": {
-					// Up
-					$(selectorBar).css("left", $(targetBarSelector).css("left"));
-					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
-					break;
-				}
-				case "3": {
-					// Left
-					$(selectorBar).css("top", $(targetBarSelector).css("top"));
-					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
-					break;
-				}
-				case "4": {
-					// Right
-					$(selectorBar).css("top", $(targetBarSelector).css("top"));
-					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
-					break;
-				}
-			}			
-
-			if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
-				$(selectorImage).show();
-				$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
-				$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
-				$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22)
+				$(targetBarSelector).attr("data-font-size", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 10);
 
 				switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
 					case "1": {
 						// Down					
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+						$(selectorBar).css("left", $(targetBarSelector).css("left"));
+						$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 						break;
 					}
 					case "2": {
 						// Up
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+						$(selectorBar).css("left", $(targetBarSelector).css("left"));
+						$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 						break;
 					}
 					case "3": {
 						// Left
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
-						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+						$(selectorBar).css("top", $(targetBarSelector).css("top"));
+						$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 						break;
 					}
 					case "4": {
 						// Right
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
-						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+						$(selectorBar).css("top", $(targetBarSelector).css("top"));
+						$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 						break;
 					}
-				}
-				
-			}			
-			if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
-			startTimer(parameters.duration, selectorBar);
+				}			
+
+				if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
+					$(selectorImage).show();
+					$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
+					$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
+					$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22)
+
+					switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
+						case "1": {
+							// Down					
+							$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+							$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+							break;
+						}
+						case "2": {
+							// Up
+							$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+							$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+							break;
+						}
+						case "3": {
+							// Left
+							$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+							$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+							break;
+						}
+						case "4": {
+							// Right
+							$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
+							$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
+							break;
+						}
+					}
+					
+				}			
+				if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
+				startTimer(parameters.duration, selectorBar);
+			}
+		}
+	}
+}
+
+function handleSkill(parameters){
+	if(parameters.player === currentPlayer.name){
+		let ability = undefined;
+		ability = abilityList.find(x => x.id == parseInt(parameters.skillid, 16));
+		if(ability === undefined){
+			return;
+		}
+		if(ability.name === "Shoha"){
+			adjustJobStacks(0, currentStats.maxStacks);
+		}
+		if(ability.name === "Ruin IV"){
+			adjustJobStacks(currentStats.stacks - 1, currentStats.maxStacks);
+			blockRuinGained = true;
+			setTimeout(function(){
+				blockRuinGained = false;
+			}, 1000);
 		}
 	}
 }
 </script>
-<canvas id="grid"></canvas>
-<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar" value="10" data-label="DoT Timers Anchor"></progress>
-<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar" value="10" data-label="Buff Timers Anchor"></progress>
-<progress width="154" height="15" id="timer-bar" class="bar" value="10" data-label="Pulltimer"></progress>
-<progress width="154" height="15" id="health-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
-<progress width="154" height="15" id="mana-bar" class="bar" value="1" data-label="10000 / 10000"></progress>
+<body>
+	<canvas id="grid"></canvas>
+	<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar styled-bar" value="10" data-label="DoT Timers Anchor"></progress>
+	<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar styled-bar" value="10" data-label="Buff Timers Anchor"></progress>
+	<div id="stacks-bar" data-label="Job Stacks Anchor" style="padding-left: 10px">
+		<div id="stacks-background-1" class="stack-background stack-hidden"><img id="stacks-1" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-2" class="stack-background stack-hidden"><img id="stacks-2" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-3" class="stack-background stack-hidden"><img id="stacks-3" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-4" class="stack-background stack-hidden"><img id="stacks-4" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+	</div>
+	<progress width="154" height="15" id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
+	<progress width="154" height="15" id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
+	<progress width="154" height="15" id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
+</body>

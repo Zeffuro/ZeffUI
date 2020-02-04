@@ -22,7 +22,7 @@ var regexList =
         regex: "] 1A:",
         matches: [
             {
-                "regex": "1A:(?<targetid>[A-F0-9]{8}):(?<target>[\\w-'èéêîïôàæûç, ]{1,99}) gains the effect of (?<effect>[-a-zA-Z' ]{2,31}) from (?<player>[a-zA-Z-' ]{2,31}) for (?<duration>\\d{1,3}\\.?(\\d{1,2})?) Seconds\.",
+                "regex": "1A:(?<targetid>[A-F0-9]{8}):(?<target>[\\w-'èéêîïôàæûç, ]{1,99}) gains the effect of (?<effect>[-a-zA-Z' ]{2,31}) from (?<player>[a-zA-Z-' ]{2,31}) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\.",
                 "function": "handleEffect"
             }
         ]
@@ -30,7 +30,10 @@ var regexList =
     "15":{
         regex: "] 15:",
         matches: [
-
+            {
+                "regex": "15:(?<targetid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):",
+                "function": "handleSkill"
+            }
         ]
     }
 }

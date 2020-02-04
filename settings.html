@@ -23,8 +23,12 @@
                 $("[id$=GrowDirection]").change(function() {
                     setPadding(this);
                 });
-                
-                $("[id$=Scale]").change(function() {
+
+                $("#dotScale").change(function() {
+                    setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
+                });
+
+                $("#buffScale").change(function() {
                     setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
                 });
 
@@ -43,7 +47,14 @@
 
             function setExampleColor(element){
                 let selector = $(element).attr("id").replace("Color", "");
-                $(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                if(!selector.startsWith("stacks")){
+                    $(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                }else{
+                    $(`#${selector}-1`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                    $(`#${selector}-2`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                    $(`#${selector}-3`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                    $(`#${selector}-4`).css(`--${selector}Color`, `var(${$(element).val()})`);
+                }
             }
 
             function titleCase(string) {
@@ -113,6 +124,13 @@
                     $("#buffScale").attr("value", settings.bufftimerbar.scale);
                     $("#buffX").attr("value", settings.bufftimerbar.x);
                     $("#buffY").attr("value", settings.bufftimerbar.y);
+
+                    $("#stacksBarEnabled").prop("checked", settings.stacksbar.enabled);
+                    $("#stacksColor").val(settings.stacksbar.color);
+                    setExampleColor($("#stacksColor"));
+                    $("#stacksScale").attr("value", settings.stacksbar.scale);
+                    $("#stacksX").attr("value", settings.stacksbar.x);
+                    $("#stacksY").attr("value", settings.stacksbar.y);
                 }
             }
 
@@ -162,6 +180,13 @@
                         scale: $("#buffScale").val(),
                         x: $("#buffX").val(),
                         y: $("#buffY").val()
+                    },
+                    stacksbar: {
+                        enabled: $("#stacksBarEnabled").is(":checked"),
+                        color: $("#stacksColor").val(),
+                        scale: $("#stacksScale").val(),
+                        x: $("#stacksX").val(),
+                        y: $("#stacksY").val()
                     }
                 };
                 localStorage.setItem("settings", JSON.stringify(settings));
@@ -244,7 +269,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="control-label col-sm-4 text-right" for="healthExample">Example</label>
-                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="healthExample" value="5000" max="10000" data-label="5000 / 10000"></progress>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="healthExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
                             </div>                            
                         </div>
                     </div>
@@ -298,7 +323,7 @@
                             </div>
                             <div class="form-group row">
                                 <label class="control-label col-sm-4 text-right" for="manaExample">Example</label>
-                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" value="5000" max="10000" data-label="5000 / 10000"></progress>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
                             </div>
                         </div>
                     </div>
@@ -488,8 +513,56 @@
                             </div>
                             <div class="form-group row">
                                 <label class="control-label col-sm-4 text-right" for="pulltimerExample">Example</label>
-                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="pulltimerExample" value="5800" max="10000" data-label="5.8"></progress>
+                                &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="pulltimerExample" class="styled-bar" value="5800" max="10000" data-label="5.8"></progress>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="stacksBarEnabled" checked="">
+                                <label class="custom-control-label" for="stacksBarEnabled">Stacks Bar</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="stacksX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="stacksY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="stacksScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksScale">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="stacksColor">Color</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="stacksColor">
+                                    </select>
+                                </div>                                    
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-sm-4 text-right" for="stacksExample">Example</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <div id="stacksExample" data-label="Job Stacks Anchor" style="padding-left: 10px">
+                                    <div class="stack-background"><img id="stacks-1" class="stack-color" src="skins/default/images/arrow-fill.png" /></div>
+                                    <div class="stack-background"><img id="stacks-2" class="stack-color" src="skins/default/images/arrow-fill.png" /></div>
+                                    <div class="stack-background"><img id="stacks-3" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+                                    <div class="stack-background"><img id="stacks-4" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
