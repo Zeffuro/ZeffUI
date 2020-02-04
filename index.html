@@ -20,6 +20,7 @@ var locked = true;
 var gridshown = false;
 const UPDATE_INTERVAL = 10;
 
+var inCombat = false;
 var currentSettings = null;
 var currentPlayer = null;
 var currentStats = {
@@ -39,6 +40,7 @@ var canvas = $('#grid').attr({width: window.innerWidth, height: window.innerHeig
 
 $(function() {
 	loadSettings();
+	toggleHideOutOfCombatElements();
 	$("[id$=bar]").draggable(
 		{
 			stop: function (event, ui) {
@@ -105,6 +107,10 @@ function loadSettings(){
 	
 	if(!settings.healthbar.enabled) $("#health-bar").hide();
 
+	if(!settings.healthbar.hasOwnProperty("hideoutofcombat")) {
+		settings.healthbar.hideoutofcombat = false;
+	}
+
 	if(!settings.healthbar.hasOwnProperty("textenabled")) settings.healthbar.textenabled = true;
 	if(!settings.healthbar.color) settings.healthbar.color = "--filter-dark-green";
 	$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
@@ -138,6 +144,10 @@ function loadSettings(){
 	}
 	
 	if(!settings.manabar.enabled) $("#mana-bar").hide();
+
+	if(!settings.manabar.hasOwnProperty("hideoutofcombat")) {
+		settings.manabar.hideoutofcombat = false;
+	}
 
 	if(!settings.manabar.hasOwnProperty("textenabled")) settings.manabar.textenabled = true;
 	if(!settings.manabar.color) settings.manabar.color = "--filter-light-pink";
@@ -195,6 +205,8 @@ function loadSettings(){
 	}
 
 	if(!settings.dottimerbar.enabled) settings.dottimerbar.enabled = true;
+	if(!settings.dottimerbar.hideoutofcombat) settings.dottimerbar.hideoutofcombat = false;
+	if(!settings.dottimerbar.hidewhendroppedoff) settings.dottimerbar.hidewhendroppedoff = false;
 	if(!settings.dottimerbar.textenabled) settings.dottimerbar.textenabled = true;
 	if(!settings.dottimerbar.imageenabled) settings.dottimerbar.imageenabled = true;
 	if(!settings.dottimerbar.multidotenabled) settings.dottimerbar.multidotenabled = false;
@@ -225,6 +237,8 @@ function loadSettings(){
 	}
 
 	if(!settings.bufftimerbar.enabled) settings.bufftimerbar.enabled = true;
+	if(!settings.bufftimerbar.hideoutofcombat) settings.bufftimerbar.hideoutofcombat = false;
+	if(!settings.bufftimerbar.hidewhendroppedoff) settings.bufftimerbar.hidewhendroppedoff = false;
 	if(!settings.bufftimerbar.textenabled) settings.bufftimerbar.textenabled = true;
 	if(!settings.bufftimerbar.imageenabled) settings.bufftimerbar.imageenabled = true;
 	if(!settings.bufftimerbar.growdirection) settings.bufftimerbar.growdirection = "1";
@@ -259,6 +273,8 @@ function loadSettings(){
 	}
 	
 	if(!settings.stacksbar.enabled) $("#stacks-bar").hide();
+
+	if(!settings.stacksbar.hideoutofcombat) settings.stacksbar.hideoutofcombat = false;
 
 	if(!settings.stacksbar.color) settings.stacksbar.color = "--filter-bright-red";
 	$("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
@@ -393,11 +409,24 @@ function startTimer(duration, selector, hideTimer = false){
 		if(timeLeft <= 0){
 			clearInterval(countdownTimer);
 			setTimeout(function(){
-				if(hideTimer) $(selector).hide();
+				if(hideTimer && selector !== "#timer-bar"){
+					if(selector !== "#timer-bar"){
+						removeTimerBar(selector);
+					}else{
+						$(selector).hide();
+					}					
+				}
 			}, UPDATE_INTERVAL);			
 		}
 	}, UPDATE_INTERVAL);
 	activeCountdowns.set(selector, countdownTimer);
+}
+
+function removeTimerBar(selector){
+	$(selector).remove();
+	$(selector.replace("timer", "image")).remove();
+	if(activeBuffBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeBuffBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
+	if(activeDotBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeDotBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
 }
 
 function resetTimers(){
@@ -405,12 +434,10 @@ function resetTimers(){
 		clearInterval(countdownTimer);
 	}
 	for(let [id, selector] of activeBuffBars){
-		$(selector).remove();
-		$(selector.replace("bar", "image")).remove();
+		removeTimerBar(selector);
 	}
 	for(let [id, selector] of activeDotBars){
-		$(selector).remove();
-		$(selector.replace("bar", "image")).remove();
+		removeTimerBar(selector);
 	}
 	activeBuffBars.clear();
 	activeDotBars.clear();
@@ -452,6 +479,9 @@ function toggleLock(){
 		$("#buff-timer-bar").show();
 		$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
+		if(!inCombat){
+			toggleHideOutOfCombatElements();
+		}
 		locked = false;
 	}else{
 		$("#timer-bar").hide();
@@ -459,8 +489,21 @@ function toggleLock(){
 		$("#buff-timer-bar").hide();
 		$("[id$=bar]").draggable("disable");
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);
+		if(!inCombat){
+			toggleHideOutOfCombatElements();
+		}
 		locked = true;
 	}	
+}
+
+function toggleHideOutOfCombatElements(){
+	currentSettings.healthbar.hideoutofcombat && !inCombat ? $("#health-bar").addClass("hide-in-combat") : $("#health-bar").removeClass("hide-in-combat");
+	currentSettings.manabar.hideoutofcombat && !inCombat  ? $("#mana-bar").addClass("hide-in-combat") : $("#mana-bar").removeClass("hide-in-combat");
+	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-timer]").addClass("hide-in-combat") : $("[id$=dot-timer]").removeClass("hide-in-combat");
+	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-image]").addClass("hide-in-combat") : $("[id$=dot-image]").removeClass("hide-in-combat");
+	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-timer]").addClass("hide-in-combat") : $("[id$=buff-timer]").removeClass("hide-in-combat");
+	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-image]").addClass("hide-in-combat") : $("[id$=buff-image]").removeClass("hide-in-combat");
+	currentSettings.stacksbar.hideoutofcombat && !inCombat ? $("#stacks-bar").addClass("hide-in-combat") : $("#stacks-bar").removeClass("hide-in-combat");
 }
 
 function adjustJobStacks(value, max, noAdd = false){
@@ -527,6 +570,7 @@ document.addEventListener('onOverlayStateUpdate', function(e) {
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
 addOverlayListener("onPartyWipe", (e) => onPartyWipe(e));
+addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
 addOverlayListener("onZoneChangedEvent", (e) => onChangeZone(e));
 
 startOverlayEvents();
@@ -587,6 +631,15 @@ function onChangeZone(e){
 	resetTimers();
 }
 
+function onInCombatChangedEvent(e){
+	if(inCombat === e.detail.inGameCombat){
+		return;
+	}
+
+	inCombat = e.detail.inGameCombat;
+	toggleHideOutOfCombatElements();
+}
+
 function startCountdownTimer(parameters){
 	startTimer(parameters.seconds, "#timer-bar", true);
 }
@@ -609,8 +662,8 @@ function handleEffect(parameters){
 		if(ability.type === "DoT" || ability.type === "Buff"){
 			let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 			let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
-			let selectorBar = `#${ability.id}-timer`;
-			let selectorImage = `#${ability.id}-image`;
+			let selectorBar = `#${ability.id}-${ability.type.toLowerCase()}-timer`;
+			let selectorImage = `#${ability.id}-${ability.type.toLowerCase()}-image`;
 			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
 				let activeCount = 0;
 				switch(ability.type){
@@ -700,7 +753,7 @@ function handleEffect(parameters){
 				}
 			}						
 			if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar))
-			startTimer(parameters.duration, selectorBar);
+			startTimer(parameters.duration, selectorBar, currentSettings[`${ability.type.toLowerCase()}timerbar`].hidewhendroppedoff);
 		}
 	}
 }

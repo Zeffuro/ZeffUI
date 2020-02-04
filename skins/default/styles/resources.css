@@ -16,6 +16,9 @@
 	image-rendering: pixelated;
 	float: left;
 }
+.hide-in-combat {
+	visibility: hidden;
+}
 .stack-hidden {
 	visibility: hidden;
 }
