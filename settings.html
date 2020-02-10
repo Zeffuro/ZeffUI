@@ -12,199 +12,220 @@
         <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
         <script>
             $(function() {
-                $("[id$=Color]").each(function () {
-                    setExampleColor(this);
-                });
+            	$("[id$=Color]").each(function () {
+            		setExampleColor(this);
+            	});
 
-                $("[id$=Color]").change(function() {
-                    setExampleColor(this);
-                });
+            	$("[id$=Color]").change(function() {
+            		setExampleColor(this);
+            	});
 
-                $("[id$=GrowDirection]").change(function() {
-                    setPadding(this);
-                });
+            	$("[id$=GrowDirection]").change(function() {
+            		setPadding(this);
+            	});
 
-                $("#dotScale").change(function() {
-                    setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
-                });
+            	$("#dotScale").change(function() {
+            		setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
+            	});
 
-                $("#buffScale").change(function() {
-                    setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
-                });
+            	$("#buffScale").change(function() {
+            		setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
+            	});
 
-                createColorSelects();
-                loadSettings();
+            	createColorSelects();
+            	loadSettings();
             });
 
             function setPadding(element){
-                let selector = $(element).attr("id").replace("GrowDirection", "");
-                if($(element).val() <= 2){
-                    $(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 20);
-                }else{
-                    $(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 180);
-                }
+            	let selector = $(element).attr("id").replace("GrowDirection", "");
+            	if($(element).val() <= 2){
+            		$(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 20);
+            	}else{
+            		$(`#${selector}Padding`).val($(`#${selector}Scale`).val() * 180);
+            	}
             }
 
             function setExampleColor(element){
-                let selector = $(element).attr("id").replace("Color", "");
-                if(!selector.startsWith("stacks")){
-                    $(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
-                }else{
-                    $(`#${selector}-1`).css(`--${selector}Color`, `var(${$(element).val()})`);
-                    $(`#${selector}-2`).css(`--${selector}Color`, `var(${$(element).val()})`);
-                    $(`#${selector}-3`).css(`--${selector}Color`, `var(${$(element).val()})`);
-                    $(`#${selector}-4`).css(`--${selector}Color`, `var(${$(element).val()})`);
-                }
+            	let selector = $(element).attr("id").replace("Color", "");
+            	if(!selector.startsWith("stacks")){
+            		$(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            	}else{
+            		$(`#${selector}-1`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            		$(`#${selector}-2`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            		$(`#${selector}-3`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            		$(`#${selector}-4`).css(`--${selector}Color`, `var(${$(element).val()})`);
+            	}
             }
 
             function titleCase(string) {
-                return string.toLowerCase().split(' ').map(function(word) {
-                    return word.replace(word[0], word[0].toUpperCase());
-                }).join(' ');
+            	return string.toLowerCase().split(" ").map(function(word) {
+            		return word.replace(word[0], word[0].toUpperCase());
+            	}).join(" ");
             }
 
             function createColorSelects(){
-                for (let colorFilter of getBarColors()){
-                    let color = colorFilter.replace("--filter-", "").replace("-", " ");
-                    $("[id$=Color]").append(`<option value="${colorFilter}">${titleCase(color)}</option>`);
-                }
+            	for (let colorFilter of getBarColors()){
+            		let color = colorFilter.replace("--filter-", "").replace("-", " ");
+            		$("[id$=Color]").append(`<option value="${colorFilter}">${titleCase(color)}</option>`);
+            	}
             }
 
             function getBarColors(){
-                let colorArray = Array.from(
-                    document.styleSheets).filter(sheet => sheet.href === null || sheet.href.startsWith(window.location.origin))
-                    .reduce((acc, sheet) => (acc = [...acc, ...Array.from(sheet.cssRules).reduce((def, rule) => (def = rule.selectorText === ":root" ? [...def, ...Array.from(rule.style).filter(name => name.startsWith("--"))]: def), [])]), []
-                );
-                return colorArray;
+            	let colorArray = Array.from(
+            		document.styleSheets).filter(sheet => sheet.href === null || sheet.href.startsWith(window.location.origin))
+            		.reduce((acc, sheet) => (acc = [...acc, ...Array.from(sheet.cssRules).reduce((def, rule) => (def = rule.selectorText === ":root" ? [...def, ...Array.from(rule.style).filter(name => name.startsWith("--"))]: def), [])]), []
+            		);
+            	return colorArray;
             }
 
             function loadSettings(){
-                if(localStorage.getItem("settings") !== null){
-                    let settings = JSON.parse(localStorage.getItem("settings"));
+            	if(localStorage.getItem("settings") !== null){
+            		let settings = JSON.parse(localStorage.getItem("settings"));
 
-                    $("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
-                    $("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
-                    $("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
-                    $("#healthColor").val(settings.healthbar.color);
-                    setExampleColor($("#healthColor"));
-                    $("#healthScale").attr("value", settings.healthbar.scale);
-                    $("#healthX").attr("value", settings.healthbar.x);
-                    $("#healthY").attr("value", settings.healthbar.y);
+            		$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
+            		$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
+            		$("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
+            		$("#healthColor").val(settings.healthbar.color);
+            		setExampleColor($("#healthColor"));
+            		$("#healthScale").attr("value", settings.healthbar.scale);
+            		$("#healthX").attr("value", settings.healthbar.x);
+            		$("#healthY").attr("value", settings.healthbar.y);
                     
-                    $("#manaBarEnabled").prop("checked", settings.manabar.enabled);
-                    $("#manaHideOutOfCombat").prop("checked", settings.manabar.hideoutofcombat);
-                    $("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
-                    $("#manaColor").val(settings.manabar.color);
-                    setExampleColor($("#manaColor"));
-                    $("#manaScale").attr("value", settings.manabar.scale);
-                    $("#manaX").attr("value", settings.manabar.x);
-                    $("#manaY").attr("value", settings.manabar.y);
+            		$("#manaBarEnabled").prop("checked", settings.manabar.enabled);
+            		$("#manaHideOutOfCombat").prop("checked", settings.manabar.hideoutofcombat);
+            		$("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
+            		$("#manaColor").val(settings.manabar.color);
+            		setExampleColor($("#manaColor"));
+            		$("#manaScale").attr("value", settings.manabar.scale);
+            		$("#manaX").attr("value", settings.manabar.x);
+            		$("#manaY").attr("value", settings.manabar.y);
 
-                    $("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
-                    $("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
-                    $("#pulltimerColor").val(settings.timerbar.color);
-                    setExampleColor($("#pulltimerColor"));
-                    $("#pulltimerScale").attr("value", settings.timerbar.scale);
-                    $("#pulltimerX").attr("value", settings.timerbar.x);
-                    $("#pulltimerY").attr("value", settings.timerbar.y);
+            		$("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
+            		$("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
+            		$("#pulltimerColor").val(settings.timerbar.color);
+            		setExampleColor($("#pulltimerColor"));
+            		$("#pulltimerScale").attr("value", settings.timerbar.scale);
+            		$("#pulltimerX").attr("value", settings.timerbar.x);
+            		$("#pulltimerY").attr("value", settings.timerbar.y);
 
-                    $("#dotBarEnabled").prop("checked", settings.dottimerbar.enabled);
-                    $("#dotHideOutOfCombat").prop("checked", settings.dottimerbar.hideoutofcombat);
-                    $("#dotHideWhenDroppedOff").prop("checked", settings.dottimerbar.hidewhendroppedoff);
-                    $("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
-                    $("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
-                    $("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
-                    $("#dotGrowDirection").val(settings.dottimerbar.growdirection);
-                    $("#dotPadding").attr("value", settings.dottimerbar.padding);
-                    $("#dotScale").attr("value", settings.dottimerbar.scale);
-                    $("#dotX").attr("value", settings.dottimerbar.x);
-                    $("#dotY").attr("value", settings.dottimerbar.y);
+            		$("#dotBarEnabled").prop("checked", settings.dottimerbar.enabled);
+            		$("#dotHideOutOfCombat").prop("checked", settings.dottimerbar.hideoutofcombat);
+            		$("#dotHideWhenDroppedOff").prop("checked", settings.dottimerbar.hidewhendroppedoff);
+            		$("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
+            		$("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
+            		$("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
+            		$("#dotGrowDirection").val(settings.dottimerbar.growdirection);
+            		$("#dotPadding").attr("value", settings.dottimerbar.padding);
+            		$("#dotScale").attr("value", settings.dottimerbar.scale);
+            		$("#dotX").attr("value", settings.dottimerbar.x);
+            		$("#dotY").attr("value", settings.dottimerbar.y);
                     
-                    $("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
-                    $("#buffHideOutOfCombat").prop("checked", settings.bufftimerbar.hideoutofcombat);
-                    $("#buffHideWhenDroppedOff").prop("checked", settings.bufftimerbar.hidewhendroppedoff);
-                    $("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
-                    $("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
-                    $("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
-                    $("#buffPadding").attr("value", settings.bufftimerbar.padding);
-                    $("#buffScale").attr("value", settings.bufftimerbar.scale);
-                    $("#buffX").attr("value", settings.bufftimerbar.x);
-                    $("#buffY").attr("value", settings.bufftimerbar.y);
+            		$("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
+            		$("#buffHideOutOfCombat").prop("checked", settings.bufftimerbar.hideoutofcombat);
+            		$("#buffHideWhenDroppedOff").prop("checked", settings.bufftimerbar.hidewhendroppedoff);
+            		$("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
+            		$("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
+            		$("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
+            		$("#buffPadding").attr("value", settings.bufftimerbar.padding);
+            		$("#buffScale").attr("value", settings.bufftimerbar.scale);
+            		$("#buffX").attr("value", settings.bufftimerbar.x);
+            		$("#buffY").attr("value", settings.bufftimerbar.y);
 
-                    $("#stacksBarEnabled").prop("checked", settings.stacksbar.enabled);
-                    $("#stacksHideOutOfCombat").prop("checked", settings.stacksbar.hideoutofcombat);
-                    $("#stacksColor").val(settings.stacksbar.color);
-                    setExampleColor($("#stacksColor"));
-                    $("#stacksScale").attr("value", settings.stacksbar.scale);
-                    $("#stacksX").attr("value", settings.stacksbar.x);
-                    $("#stacksY").attr("value", settings.stacksbar.y);
-                }
+            		$("#stacksBarEnabled").prop("checked", settings.stacksbar.enabled);
+            		$("#stacksHideOutOfCombat").prop("checked", settings.stacksbar.hideoutofcombat);
+            		$("#stacksColor").val(settings.stacksbar.color);
+            		setExampleColor($("#stacksColor"));
+            		$("#stacksScale").attr("value", settings.stacksbar.scale);
+            		$("#stacksX").attr("value", settings.stacksbar.x);
+            		$("#stacksY").attr("value", settings.stacksbar.y);
+
+            		$("#raidbuffBarEnabled").prop("checked", settings.raidbuffs.enabled);
+            		$("#raidbuffHideOutOfCombat").prop("checked", settings.raidbuffs.hideoutofcombat);
+            		$("#raidbuffHideWhenSolo").prop("checked", settings.raidbuffs.hidewhensolo);
+            		$("#raidbuffAlwaysShow").prop("checked", settings.raidbuffs.alwaysshow);
+            		$("#raidbuffColumns").attr("value", settings.raidbuffs.columns);
+            		$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
+            		$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
+            		$("#raidbuffX").attr("value", settings.raidbuffs.x);
+            		$("#raidbuffY").attr("value", settings.raidbuffs.y);
+            	}
             }
 
             function saveSettings(){
-                let settings = {
-                    healthbar: {
-                        enabled: $("#healthBarEnabled").is(":checked"),
-                        hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
-                        textenabled: $("#healthTextEnabled").is(":checked"),
-                        color: $("#healthColor").val(),
-                        scale: $("#healthScale").val(),
-                        x: $("#healthX").val(),
-                        y: $("#healthY").val()
-                    },
-                    manabar: {
-                        enabled: $("#manaBarEnabled").is(":checked"),
-                        hideoutofcombat: $("#manaHideOutOfCombat").is(":checked"),
-                        textenabled: $("#manaTextEnabled").is(":checked"),
-                        color: $("#manaColor").val(),
-                        scale: $("#manaScale").val(),
-                        x: $("#manaX").val(),
-                        y: $("#manaY").val()
-                    },
-                    timerbar: {
-                        enabled: $("#pulltimerBarEnabled").is(":checked"),
-                        textenabled: $("#pulltimerTextEnabled").is(":checked"),
-                        color: $("#pulltimerColor").val(),
-                        scale: $("#pulltimerScale").val(),
-                        x: $("#pulltimerX").val(),
-                        y: $("#pulltimerY").val()
-                    },
-                    dottimerbar: {
-                        enabled: $("#dotBarEnabled").is(":checked"),
-                        hideoutofcombat: $("#dotHideOutOfCombat").is(":checked"),
-                        hidewhendroppedoff: $("#dotHideWhenDroppedOff").is(":checked"),
-                        textenabled: $("#dotBarTextEnabled").is(":checked"),
-                        imageenabled: $("#dotImageEnabled").is(":checked"),
-                        multidotenabled: $("#multiDotEnabled").is(":checked"),
-                        growdirection: $("#dotGrowDirection").val(),
-                        padding: $("#dotPadding").val(),
-                        scale: $("#dotScale").val(),
-                        x: $("#dotX").val(),
-                        y: $("#dotY").val()
-                    },
-                    bufftimerbar: {
-                        enabled: $("#buffBarEnabled").is(":checked"),
-                        hideoutofcombat: $("#buffHideOutOfCombat").is(":checked"),
-                        hidewhendroppedoff: $("#buffHideWhenDroppedOff").is(":checked"),
-                        textenabled: $("#buffBarTextEnabled").is(":checked"),
-                        imageenabled: $("#buffImageEnabled").is(":checked"),
-                        growdirection: $("#buffGrowDirection").val(),
-                        padding: $("#buffPadding").val(),
-                        scale: $("#buffScale").val(),
-                        x: $("#buffX").val(),
-                        y: $("#buffY").val()
-                    },
-                    stacksbar: {
-                        enabled: $("#stacksBarEnabled").is(":checked"),
-                        hideoutofcombat: $("#stacksHideOutOfCombat").is(":checked"),
-                        color: $("#stacksColor").val(),
-                        scale: $("#stacksScale").val(),
-                        x: $("#stacksX").val(),
-                        y: $("#stacksY").val()
-                    }
-                };
-                localStorage.setItem("settings", JSON.stringify(settings));
-                window.close();
+            	let settings = {
+            		healthbar: {
+            			enabled: $("#healthBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
+            			textenabled: $("#healthTextEnabled").is(":checked"),
+            			color: $("#healthColor").val(),
+            			scale: $("#healthScale").val(),
+            			x: $("#healthX").val(),
+            			y: $("#healthY").val()
+            		},
+            		manabar: {
+            			enabled: $("#manaBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#manaHideOutOfCombat").is(":checked"),
+            			textenabled: $("#manaTextEnabled").is(":checked"),
+            			color: $("#manaColor").val(),
+            			scale: $("#manaScale").val(),
+            			x: $("#manaX").val(),
+            			y: $("#manaY").val()
+            		},
+            		timerbar: {
+            			enabled: $("#pulltimerBarEnabled").is(":checked"),
+            			textenabled: $("#pulltimerTextEnabled").is(":checked"),
+            			color: $("#pulltimerColor").val(),
+            			scale: $("#pulltimerScale").val(),
+            			x: $("#pulltimerX").val(),
+            			y: $("#pulltimerY").val()
+            		},
+            		dottimerbar: {
+            			enabled: $("#dotBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#dotHideOutOfCombat").is(":checked"),
+            			hidewhendroppedoff: $("#dotHideWhenDroppedOff").is(":checked"),
+            			textenabled: $("#dotBarTextEnabled").is(":checked"),
+            			imageenabled: $("#dotImageEnabled").is(":checked"),
+            			multidotenabled: $("#multiDotEnabled").is(":checked"),
+            			growdirection: $("#dotGrowDirection").val(),
+            			padding: $("#dotPadding").val(),
+            			scale: $("#dotScale").val(),
+            			x: $("#dotX").val(),
+            			y: $("#dotY").val()
+            		},
+            		bufftimerbar: {
+            			enabled: $("#buffBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#buffHideOutOfCombat").is(":checked"),
+            			hidewhendroppedoff: $("#buffHideWhenDroppedOff").is(":checked"),
+            			textenabled: $("#buffBarTextEnabled").is(":checked"),
+            			imageenabled: $("#buffImageEnabled").is(":checked"),
+            			growdirection: $("#buffGrowDirection").val(),
+            			padding: $("#buffPadding").val(),
+            			scale: $("#buffScale").val(),
+            			x: $("#buffX").val(),
+            			y: $("#buffY").val()
+            		},
+            		stacksbar: {
+            			enabled: $("#stacksBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#stacksHideOutOfCombat").is(":checked"),
+            			color: $("#stacksColor").val(),
+            			scale: $("#stacksScale").val(),
+            			x: $("#stacksX").val(),
+            			y: $("#stacksY").val()
+            		},
+            		raidbuffs: {
+            			enabled: $("#raidbuffBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#raidbuffHideOutOfCombat").is(":checked"),
+            			hidewhensolo: $("#raidbuffHideWhenSolo").is(":checked"),
+            			alwaysshow: $("#raidbuffAlwaysShow").is(":checked"),
+            			columns: $("#raidbuffColumns").val(),
+            			padding: $("#raidbuffPadding").val(),
+            			scale: $("#raidbuffScale").val(),
+            			x: $("#raidbuffX").val(),
+            			y: $("#raidbuffY").val()
+            		},
+            	};
+            	localStorage.setItem("settings", JSON.stringify(settings));
+            	window.close();
             }
         </script>
         <style>
@@ -619,6 +640,69 @@
                                     <div class="stack-background"><img id="stacks-4" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
                                 </div>
                             </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="raidbuffBarEnabled" checked="">
+                                <label class="custom-control-label" for="raidbuffBarEnabled">Raidbuffs</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="raidbuffX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="raidbuffY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="raidbuffPadding">Padding</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffPadding">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="raidbuffScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffScale">
+                                </div>
+                            </div>                            
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="raidbuffColumns">Columns per row</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffColumns">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideWhenSolo" checked="">
+                                    <label class="custom-control-label" for="raidbuffHideWhenSolo">Hide when not in Party</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideOutOfCombat" checked="">
+                                    <label class="custom-control-label" for="raidbuffHideOutOfCombat">Hide out of Combat</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow" checked="">
+                                    <label class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
