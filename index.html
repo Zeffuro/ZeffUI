@@ -1022,7 +1022,7 @@ function handleEffect(parameters){
 
 function handleSkill(parameters){
 	let byYou = (parameters.player === currentPlayer.name);
-	let onYou = byYou;
+	let onYou = false;
 	if (parameters.target){
 		if(parameters.target === currentPlayer.name) onYou = true;
 	}
@@ -1084,7 +1084,7 @@ function handleSkill(parameters){
 				}
 			}
 			else{
-				startRaidAbilityTimers(playerIndex, ability);
+				startRaidAbilityTimers(playerIndex, ability, onYou);
 			}
 		}
 	}	

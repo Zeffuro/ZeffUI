@@ -790,7 +790,7 @@ var abilityList = [
 	{
 		id: 248,
 		name: "Circle of Scorn",
-		job: "NIN",
+		job: "PLD",
 		type: "DoT",
 		icon: "/i/010000/010158.png",
 		color: "--filter-orange",
@@ -799,7 +799,7 @@ var abilityList = [
 	{
 		id: 725,
 		name: "Goring Blade",
-		job: "NIN",
+		job: "PLD",
 		type: "DoT",
 		icon: "/i/012000/012507.png",
 		color: "--filter-orange",
@@ -809,7 +809,7 @@ var abilityList = [
 	{
 		id: 76,
 		name: "Fight or Flight",
-		job: "NIN",
+		job: "PLD",
 		type: "Buff",
 		icon: "/i/010000/010155.png",
 		color: "--filter-light-purple",
@@ -818,7 +818,7 @@ var abilityList = [
 	{
 		id: 1368,
 		name: "Requiescat",
-		job: "NIN",
+		job: "PLD",
 		type: "Buff",
 		icon: "/i/012000/012514.png",
 		color: "--filter-dark-blue",

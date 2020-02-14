@@ -43,6 +43,15 @@ var regexList =
 				"function": "handleSkill"
 			}
 		]
+	},
+	"16":{
+		regex: "] 16:",
+		matches: [
+			{
+				"regex": "16:(?<playerid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):(?<skillname>[-a-zA-Z' ]{2,31}):(?<targetid>[A-F0-9]{8})?:(?<target>[a-zA-Z-' ]{2,31})?:(?<power>\\d)?",
+				"function": "handleSkill"
+			}
+		]
 	}
 }
 ;
