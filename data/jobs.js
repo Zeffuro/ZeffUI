@@ -162,7 +162,7 @@ var jobList = [
 		position_type: "Caster"
 	},
 	{
-		id: 26,
+		id: 27,
 		name: "SMN",
 		type: "DPS",
 		position_type: "Caster"

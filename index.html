@@ -568,6 +568,7 @@ function generateRaidBuffs(){
 	for(let partyMember of currentPartyList){
 		for(let ability of abilityList.filter(x => x.type === "RaidBuff" && x.job === partyMember.job.name && x.level <= currentPlayer.level)){
 			let pushAbility = true;
+			console.log(ability);
 			if(ability.hasOwnProperty("extra")){
 				if(ability.extra.hasOwnProperty("is_card") || ability.extra.hasOwnProperty("is_song") || ability.extra.hasOwnProperty("is_ss") || ability.extra.hasOwnProperty("is_ts")) pushAbility = false;
 			}
@@ -823,6 +824,7 @@ function onPartyWipe(e){
 	if(currentPlayer.job === "SAM") initializeSam();
 	if(currentPlayer.job === "SMN") initializeSmn();
 	resetTimers();
+	generateRaidBuffs();
 }
 
 function onChangeZone(e){
@@ -906,11 +908,6 @@ function handleEffect(parameters){
 					}
 					if(onYou){
 						ability.duration = 5;
-						console.log("hi");
-						console.log(abilityHolder);
-						console.log(ability);
-						console.log(playerIndex);
-
 						startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 					}
 				}
@@ -1084,6 +1081,11 @@ function handleSkill(parameters){
 				}
 			}
 			else{
+				if ((!onYou && ability.name === "Dragon Sight") || (byYou && ability.name === "Battle Voice")){
+					onYou = false;
+				}else{
+					onYou = true;
+				}
 				startRaidAbilityTimers(playerIndex, ability, onYou);
 			}
 		}
