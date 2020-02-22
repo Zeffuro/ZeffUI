@@ -11,7 +11,7 @@
 		overflow: hidden;
 	}
 </style>
-<link rel="stylesheet" href="skins/default/styles/resources.css" />
+<link rel="stylesheet" href="styles/resources.css" />
 <link rel="stylesheet" href="styles/colors.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.css" />
@@ -98,6 +98,17 @@ function loadSettings(){
 
 	if(localStorage.getItem("settings") !== null){
 		settings = JSON.parse(localStorage.getItem("settings"));
+	}
+
+	// SKIN SETTINGS
+	if(!settings.hasOwnProperty("skin")) {
+		settings.skin = "default";
+	}
+
+	if($("#skin").length == 0){
+		$("head").append(`<link id="skin" rel="stylesheet" href="skins/${settings.skin}/styles/resources.css">`);
+	}else{
+		$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
 	}
 
 	// HEALTHBAR SETTINGS
@@ -358,6 +369,7 @@ function loadSettings(){
 	currentSettings = settings;
 	saveSettings();
 	
+	generateJobStacks();
 	if(!currentSettings.raidbuffs.hidewhensolo) $("#raid-buffs-bar").show();
 }
 
@@ -505,11 +517,11 @@ function stopAbilityTimer(selector, previousIcon = null){
 			$(selector.replace("duration", "active")).hide();
 			
 			if($(selector.replace("duration", "cooldown")).text().length !== 0){
-				$(selector.replace("duration", "overlay")).attr("src", "skins/default/images/icon-overlay-cooldown.png");
+				$(selector.replace("duration", "overlay")).attr("src", `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png`);
 			}
 		}
 		if(selector.endsWith("cooldown")){
-			$(selector.replace("cooldown", "overlay")).attr("src", "skins/default/images/icon-overlay.png");
+			$(selector.replace("cooldown", "overlay")).attr("src", `skins/${currentSettings.skin}/images/icon-overlay.png`);
 		}
 	}else{
 		$(selector.replace("-duration", "").replace("-cooldown", "")).remove();
@@ -561,6 +573,13 @@ function drawGrid(){
 	canvasContext.stroke();
 }
 
+function generateJobStacks(){
+	$("#stacks-bar").empty();
+	for(let i = 1; i <=4; i++){
+		$("#stacks-bar").append(`<div id="stacks-background-${i}" class="stack-background stack-hidden"><img id="stacks-${i}" class="stack-color" src="skins/${currentSettings.skin}/images/arrow-fill-empty.png" /></div>`);
+	}	
+}
+
 function generateRaidBuffs(){
 	let raidAbilityList = [];
 	$("#raid-buffs-bar").empty();
@@ -606,8 +625,8 @@ function generateRaidBuffAbility(playerIndex, ability, row, generateRow = false)
 	}
 	$(`#raid-buffs-row-${row}`).append(`<div id="raid-buffs-${playerIndex}-${ability.id}" class="ability-container" style="padding-right: ${currentSettings.raidbuffs.padding};"></div>`);
 	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-image" class="ability-image" src="https://xivapi.com${ability.icon}" width="${currentSettings.raidbuffs.scale * 40}" height="${currentSettings.raidbuffs.scale * 40}" style="left: ${currentSettings.raidbuffs.scale * 4}; top: ${currentSettings.raidbuffs.scale * 2};" />`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-active" class="icon-active" src="skins/default/images/combo.gif" width="${currentSettings.raidbuffs.scale * 42}" height="${currentSettings.raidbuffs.scale * 42}" style="left: ${currentSettings.raidbuffs.scale * 3}; top: ${currentSettings.raidbuffs.scale * 1}; display: none;" />`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-overlay" class="icon-overlay" src="skins/default/images/icon-overlay.png" width="${currentSettings.raidbuffs.scale * 48}" height="${currentSettings.raidbuffs.scale * 48}" />`);
+	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${currentSettings.raidbuffs.scale * 42}" height="${currentSettings.raidbuffs.scale * 42}" style="left: ${currentSettings.raidbuffs.scale * 3}; top: ${currentSettings.raidbuffs.scale * 1}; display: none;" />`);
+	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${currentSettings.raidbuffs.scale * 48}" height="${currentSettings.raidbuffs.scale * 48}" />`);
 	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<span id="raid-buffs-${playerIndex}-${ability.id}-cooldown" class="ability-text text-cooldown" style="padding-top: ${currentSettings.raidbuffs.scale * 8}; padding-left: ${currentSettings.raidbuffs.scale * 2}; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${currentSettings.raidbuffs.scale * 24};"></span>`);
 	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<span id="raid-buffs-${playerIndex}-${ability.id}-duration" class="ability-text text-duration" style="padding-top: ${currentSettings.raidbuffs.scale * 8}; padding-left: ${currentSettings.raidbuffs.scale * 2}; --durationOutline: black; --durationColor: orange; --durationFontSize: ${currentSettings.raidbuffs.scale * 24};"></span>`);
 }
@@ -630,7 +649,7 @@ function startRaidAbilityTimers(playerIndex, ability, onYou = true, abilityHolde
 		if(!currentSettings.raidbuffs.alwaysshow){
 			generateRaidBuffAbility(playerIndex, ability, Math.ceil(activeRaidBuffs.size / currentSettings.raidbuffs.columns), true);
 		}
-		$(`${selector}-overlay`).attr("src", "skins/default/images/icon-overlay.png");
+		$(`${selector}-overlay`).attr("src", `skins/${currentSettings.skin}/images/icon-overlay.png`);
 		$(`${selector}-active`).show();
 		$(`${selector}-duration`).show();
 		$(`${selector}-duration`).text(ability.duration);
@@ -644,7 +663,7 @@ function startRaidAbilityTimers(playerIndex, ability, onYou = true, abilityHolde
 		}
 		
 	}else{
-		$(`${selector}-overlay`).attr("src", ability.cooldown > 0 ? "skins/default/images/icon-overlay-cooldown.png" : "skins/default/images/icon-overlay.png");
+		$(`${selector}-overlay`).attr("src", ability.cooldown > 0 ? `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png` : `skins/${currentSettings.skin}/images/icon-overlay.png`);
 		$(`${selector}-cooldown`).show();
 		$(`${selector}-cooldown`).text(ability.cooldown);
 	}
@@ -720,7 +739,7 @@ function adjustJobStacks(value, max, noAdd = false){
 				$(backgroundSelector).addClass("stack-hidden");
 			}
 		}
-		$(selector).attr("src", i <= value ? "skins/default/images/arrow-fill.png" : "skins/default/images/arrow-fill-empty.png");
+		$(selector).attr("src", i <= value ? `skins/${currentSettings.skin}/images/arrow-fill.png` : `skins/${currentSettings.skin}/images/arrow-fill-empty.png`);
 	}
 }
 
@@ -880,7 +899,8 @@ function onInstanceStart(parameters){
 }
 
 function onInstanceEnd(parameters){
-	
+	resetTimers();
+	generateRaidBuffs();
 }
 
 function handlePlayerStats(parameters){
@@ -1097,10 +1117,10 @@ function handleSkill(parameters){
 	<img id="dot-image" class="small-image" /><progress width="154" height="15" id="dot-timer-bar" class="bar styled-bar" value="10" data-label="DoT Timers Anchor"></progress>
 	<img id="buff-image" class="small-image" /><progress width="154" height="15" id="buff-timer-bar" class="bar styled-bar" value="10" data-label="Buff Timers Anchor"></progress>
 	<div id="stacks-bar" data-label="Job Stacks Anchor" style="padding-left: 10px">
-		<div id="stacks-background-1" class="stack-background stack-hidden"><img id="stacks-1" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
-		<div id="stacks-background-2" class="stack-background stack-hidden"><img id="stacks-2" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
-		<div id="stacks-background-3" class="stack-background stack-hidden"><img id="stacks-3" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
-		<div id="stacks-background-4" class="stack-background stack-hidden"><img id="stacks-4" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-1" class="stack-background stack-hidden"><img id="stacks-1" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-2" class="stack-background stack-hidden"><img id="stacks-2" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-3" class="stack-background stack-hidden"><img id="stacks-3" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
+		<div id="stacks-background-4" class="stack-background stack-hidden"><img id="stacks-4" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
 	</div>
 	<div id="raid-buffs-bar">
 

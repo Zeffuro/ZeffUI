@@ -7,7 +7,7 @@
         <script src="https://kit.fontawesome.com/2a15db2084.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <link href="styles/colors.css" rel="stylesheet" />
-        <link href="skins/default/styles/resources.css" rel="stylesheet" />
+        <link href="styles/resources.css" rel="stylesheet" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
         <script>
@@ -33,6 +33,7 @@
             	});
 
             	createColorSelects();
+            	createSkinSelects();
             	loadSettings();
             });
 
@@ -70,6 +71,16 @@
             	}
             }
 
+            function createSkinSelects(){
+            	$("#skinSelect").append(`<option value="default">Default (by Square Enix)</option>`);
+            	$("#skinSelect").append(`<option value="material-dark">Material Dark (by skotlex)</option>`);
+            	$("#skinSelect").append(`<option value="material-discord">Material Discord (by skotlex)</option>`);
+            }
+
+            function loadSkin(){
+            	$("#skin").attr("href", `skins/${$("#skinSelect").val()}/styles/resources.css`);
+            }
+
             function getBarColors(){
             	let colorArray = Array.from(
             		document.styleSheets).filter(sheet => sheet.href === null || sheet.href.startsWith(window.location.origin))
@@ -80,7 +91,15 @@
 
             function loadSettings(){
             	if(localStorage.getItem("settings") !== null){
-            		let settings = JSON.parse(localStorage.getItem("settings"));
+            		let settings = JSON.parse(localStorage.getItem("settings"));                    
+
+            		if($("#skin").length == 0){
+            			$("head").append(`<link id="skin" rel="stylesheet" href="skins/${settings.skin}/styles/resources.css">`);
+            		}else{
+            			$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
+            		}
+
+            		$("#skinSelect").val(settings.skin);
 
             		$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
             		$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
@@ -153,6 +172,7 @@
 
             function saveSettings(){
             	let settings = {
+            		skin: $("#skinSelect").val(),
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
             			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
@@ -253,7 +273,29 @@
             </div>
             <div class="row">
                 <br />
+            </div>            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            General Options
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Here you can find general options for ZeffUI.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="skinSelect">Skin</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="skinSelect" onchange="loadSkin()">
+                                    </select>
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="row">
+                <br />
+            </div>  
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
@@ -264,7 +306,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for your healthbar.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="healthX">Position X</label>
                                 <div class="col-sm-8">
@@ -324,7 +366,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for your manabar.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="manaX">Position X</label>
                                 <div class="col-sm-8">
@@ -386,7 +428,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for your personal buffs.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="buffX">Position Anchor X</label>
                                 <div class="col-sm-8">
@@ -464,7 +506,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for your personal debuffs.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="dotX">Position Anchor X</label>
                                 <div class="col-sm-8">
@@ -550,7 +592,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for the pulltimer.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="pulltimerX">Position X</label>
                                 <div class="col-sm-8">
@@ -598,7 +640,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for your personal stacks.</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="stacksX">Position X</label>
                                 <div class="col-sm-8">
@@ -654,7 +696,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <p class="card-text">Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only).</p>
                             <div class="form-group row text-right">
                                 <label class="control-label col-sm-4" for="raidbuffX">Position X</label>
                                 <div class="col-sm-8">
