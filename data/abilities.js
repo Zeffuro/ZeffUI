@@ -739,22 +739,13 @@ var abilityList = [
 		order: 1
 	},
 	{
-		id: 7395,
-		name: "Riddle of Fire",
+		id: 1181,
+		name: "Riddle Of Fire",
 		job: "MNK",
 		type: "Buff",
 		icon: "/i/012000/012528.png",
 		color: "--filter-bright-red",
 		order: 2
-	},
-	{
-		id: 7395,
-		name: "Leaden Fist",
-		job: "MNK",
-		type: "Buff",
-		icon: "/i/002000/002542.png",
-		color: "--filter-dark-gold",
-		order: 3
 	},
 	// Raid Buffs
 	{
