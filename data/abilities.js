@@ -753,7 +753,7 @@ var abilityList = [
 		job: "MNK",
 		type: "Buff",
 		icon: "/i/002000/002542.png",
-		color: "--filter-bright-red",
+		color: "--filter-dark-gold",
 		order: 3
 	},
 	// Raid Buffs
