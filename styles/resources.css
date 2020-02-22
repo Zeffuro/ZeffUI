@@ -9,12 +9,6 @@
 	height: 22;
 	border: 0;
 }
-.stack-background {
-	background-size: cover;
-	position: relative;
-	image-rendering: pixelated;
-	float: left;
-}
 .ability-row {
 	position: relative;
 	clear: both;
@@ -151,16 +145,6 @@
 }
 progress[value] {	
 	-webkit-appearance: none;
-}
-.styled-bar::-webkit-progress-bar {
-	background: rgba(0,0,0,0);
-	background-size: cover;
-	image-rendering: pixelated;
-}
-.styled-bar::-webkit-progress-value {
-	background: rgba(0,0,0,0);
-	background-size: cover;
-	image-rendering: pixelated;
 }
 progress:after {
 	position: relative;

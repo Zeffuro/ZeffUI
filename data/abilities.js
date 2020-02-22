@@ -738,16 +738,34 @@ var abilityList = [
 		color: "--filter-grey",
 		order: 1
 	},
+	{
+		id: 7395,
+		name: "Riddle of Fire",
+		job: "MNK",
+		type: "Buff",
+		icon: "/i/012000/012528.png",
+		color: "--filter-bright-red",
+		order: 2
+	},
+	{
+		id: 7395,
+		name: "Leaden Fist",
+		job: "MNK",
+		type: "Buff",
+		icon: "/i/002000/002542.png",
+		color: "--filter-bright-red",
+		order: 3
+	},
 	// Raid Buffs
 	{
 		id: 7396,
 		name: "Brotherhood",
-		job: "DRG",
+		job: "MNK",
 		level: 70,
 		duration: 15,
 		cooldown: 90,
 		type: "RaidBuff",
-		icon: "/i/002000/002585.png",
+		icon: "/i/002000/002542.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
