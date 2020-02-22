@@ -799,7 +799,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 60,
 		type: "RaidBuff",
-		icon: "/i/003000/003218.png",
+		icon: "/i/000000/000618.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
