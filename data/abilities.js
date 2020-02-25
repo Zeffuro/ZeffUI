@@ -90,6 +90,8 @@ var abilityList = [
 		name: "Divination",
 		job: "AST",
 		level: 50,
+		duration: 15,
+		cooldown: 120,
 		type: "RaidBuff",
 		icon: "/i/003000/003553.png",
 		color: "--filter-light-gold",
