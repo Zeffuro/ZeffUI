@@ -790,6 +790,18 @@ var abilityList = [
 		order: 0
 	},
 	{
+		id: 14217,
+		name: "Aurora",
+		job: "GNB",
+		level: 68,
+		duration: 18,
+		cooldown: 60,
+		type: "Mitigation",
+		icon: "/i/003000/003415.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	{
 		id: 16140,
 		name: "Camouflage",
 		job: "GNB",
@@ -799,7 +811,7 @@ var abilityList = [
 		type: "Mitigation",
 		icon: "/i/003000/003404.png",
 		color: "--filter-light-blue",
-		order: 1
+		order: 2
 	},
 	{
 		id: 16148,
@@ -811,7 +823,7 @@ var abilityList = [
 		type: "Mitigation",
 		icon: "/i/003000/003412.png",
 		color: "--filter-light-blue",
-		order: 2
+		order: 3
 	},
 	{
 		id: 16160,
@@ -823,7 +835,7 @@ var abilityList = [
 		type: "Mitigation",
 		icon: "/i/003000/003424.png",
 		color: "--filter-light-blue",
-		order: 3
+		order: 4
 	},
 	{
 		id: 16152,
@@ -835,7 +847,7 @@ var abilityList = [
 		type: "Mitigation",
 		icon: "/i/003000/003416.png",
 		color: "--filter-light-blue",
-		order: 4
+		order: 5
 	},
 	// MCH
 	// DoTs

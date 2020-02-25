@@ -1063,7 +1063,7 @@ function handleEffect(parameters){
 			if(onYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
 		if(ability.type === "Mitigation"){
-			if(onYou) startAbilityIconTimers(playerIndex, ability, true);
+			if(onYou || byYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
 		if(ability.type === "Stacks" && byYou){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
