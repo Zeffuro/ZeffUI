@@ -706,7 +706,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/003000/003076.png",
+		icon: "/i/003000/003075.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
