@@ -1078,7 +1078,7 @@ var abilityList = [
 		order: 5
 	},
 	{
-		id: 3540,
+		id: 30,
 		name: "Hallowed Ground",
 		job: "PLD",
 		level: 50,

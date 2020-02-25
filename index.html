@@ -1063,7 +1063,18 @@ function handleEffect(parameters){
 			if(onYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
 		if(ability.type === "Mitigation"){
-			if(onYou || byYou) startAbilityIconTimers(playerIndex, ability, true);
+			if(onYou || byYou) {
+				if(ability.hasOwnProperty("extra")){
+					if(ability.hasOwnProperty("shares_cooldown")){
+						startAbilityIconTimers(playerIndex, ability, true);
+						startAbilityIconTimers(playerIndex, abilityList.find(x => x.id === ability.extra.shares_cooldown), false);
+					}
+				}else{
+					console.log(parameters);
+					startAbilityIconTimers(playerIndex, ability, true);
+				}
+			}
+			
 		}
 		if(ability.type === "Stacks" && byYou){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
@@ -1241,7 +1252,7 @@ function handleSkill(parameters){
 			}
 		}
 		if(ability.type === "Mitigation"){
-			startAbilityIconTimers(playerIndex, ability, onYou);
+			if(onYou || byYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
 	}	
 }

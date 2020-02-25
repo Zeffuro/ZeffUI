@@ -166,9 +166,9 @@
             		$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
             		$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
             		$("#raidbuffX").attr("value", settings.raidbuffs.x);
-                    $("#raidbuffY").attr("value", settings.raidbuffs.y);
+            		$("#raidbuffY").attr("value", settings.raidbuffs.y);
                     
-                    $("#mitigationBarEnabled").prop("checked", settings.mitigation.enabled);
+            		$("#mitigationBarEnabled").prop("checked", settings.mitigation.enabled);
             		$("#mitigationHideOutOfCombat").prop("checked", settings.mitigation.hideoutofcombat);
             		$("#mitigationHideWhenSolo").prop("checked", settings.mitigation.hidewhensolo);
             		$("#mitigationAlwaysShow").prop("checked", settings.mitigation.alwaysshow);
@@ -265,7 +265,9 @@
             			y: $("#mitigationY").val()
             		},
             	};
+            	console.log(settings);
             	localStorage.setItem("settings", JSON.stringify(settings));
+            	console.log(JSON.parse(localStorage.getItem("settings")));
             	window.close();
             }
         </script>
@@ -487,7 +489,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="buffImageEnabled">
+                                    <input type="checkbox" class="custom-control-input" id="buffImageEnabled" checked="false">
                                     <label class="custom-control-label" for="buffImageEnabled">Image</label>
                                 </div>
                             </div>
