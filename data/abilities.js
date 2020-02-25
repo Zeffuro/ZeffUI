@@ -1,4 +1,41 @@
 var abilityList = [
+	// ROLE ACTIONS
+	{
+		id: 7531,
+		name: "Rampart",
+		job: "Tank",
+		level: 8,
+		duration: 20,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/000000/000801.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 7548,
+		name: "Arm's Length",
+		job: "Tank",
+		level: 32,
+		duration: 6,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/000000/000822.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	{
+		id: 7535,
+		name: "Reprisal",
+		job: "Tank",
+		level: 32,
+		duration: 10,
+		cooldown: 60,
+		type: "Mitigation",
+		icon: "/i/000000/000806.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
 	// AST
 	// DoTs
 	{
@@ -648,6 +685,67 @@ var abilityList = [
 		color: "--filter-bright-red",
 		order: 1
 	},
+	// Mitigation
+	{
+		id: 3634,
+		name: "Dark Mind",
+		job: "DRK",
+		level: 45,
+		duration: 10,
+		cooldown: 60,
+		type: "Mitigation",
+		icon: "/i/003000/003076.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 3636,
+		name: "Shadow Wall",
+		job: "DRK",
+		level: 46,
+		duration: 15,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/003000/003076.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	{
+		id: 7393,
+		name: "The Blackest Night",
+		job: "DRK",
+		level: 70,
+		duration: 7,
+		cooldown: 15,
+		type: "Mitigation",
+		icon: "/i/003000/003081.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
+	{
+		id: 16471,
+		name: "Dark Missionary",
+		job: "DRK",
+		level: 76,
+		duration: 15,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/003000/003087.png",
+		color: "--filter-light-blue",
+		order: 3
+	},
+	{
+		id: 3638,
+		name: "Living Dead",
+		job: "DRK",
+		level: 50,
+		duration: 10,
+		cooldown: 300,
+		type: "Mitigation",
+		icon: "/i/003000/003077.png",
+		color: "--filter-light-blue",
+		order: 4
+	},
 	// GNB
 	// DoTs
 	{
@@ -677,6 +775,67 @@ var abilityList = [
 		icon: "/i/013000/013601.png",
 		color: "--filter-light-blue",
 		order: 0
+	},
+	// Mitigation
+	{
+		id: 16161,
+		name: "Heart of Stone",
+		job: "GNB",
+		level: 68,
+		duration: 7,
+		cooldown: 25,
+		type: "Mitigation",
+		icon: "/i/003000/003425.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 16140,
+		name: "Camouflage",
+		job: "GNB",
+		level: 6,
+		duration: 20,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/003000/003404.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	{
+		id: 16148,
+		name: "Nebula",
+		job: "GNB",
+		level: 38,
+		duration: 15,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/003000/003412.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
+	{
+		id: 16160,
+		name: "Heart of Light",
+		job: "GNB",
+		level: 64,
+		duration: 15,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/003000/003424.png",
+		color: "--filter-light-blue",
+		order: 3
+	},
+	{
+		id: 16152,
+		name: "Superbolide",
+		job: "GNB",
+		level: 50,
+		duration: 8,
+		cooldown: 360,
+		type: "Mitigation",
+		icon: "/i/003000/003416.png",
+		color: "--filter-light-blue",
+		order: 4
 	},
 	// MCH
 	// DoTs
@@ -832,6 +991,91 @@ var abilityList = [
 		icon: "/i/012000/012514.png",
 		color: "--filter-dark-blue",
 		order: 1
+	},
+	// Mitigation
+	{
+		id: 17,
+		name: "Sentinel",
+		job: "PLD",
+		level: 38,
+		duration: 15,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/000000/000151.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 3542,
+		name: "Sheltron",
+		job: "PLD",
+		level: 35,
+		duration: 6,
+		cooldown: 5,
+		type: "Mitigation",
+		icon: "/i/002000/002510.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	{
+		id: 7382,
+		name: "Intervention",
+		job: "PLD",
+		level: 62,
+		duration: 6,
+		cooldown: 10,
+		type: "Mitigation",
+		icon: "/i/002000/002512.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
+	{
+		id: 27,
+		name: "Cover",
+		job: "PLD",
+		level: 45,
+		duration: 12,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/002000/002501.png",
+		color: "--filter-light-blue",
+		order: 3
+	},
+	{
+		id: 7385,
+		name: "Passage of Arms",
+		job: "PLD",
+		level: 70,
+		duration: 18,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/002000/002515.png",
+		color: "--filter-light-blue",
+		order: 4
+	},
+	{
+		id: 3540,
+		name: "Divine Veil",
+		job: "PLD",
+		level: 56,
+		duration: 30,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/002000/002508.png",
+		color: "--filter-light-blue",
+		order: 5
+	},
+	{
+		id: 3540,
+		name: "Hallowed Ground",
+		job: "PLD",
+		level: 50,
+		duration: 10,
+		cooldown: 420,
+		type: "Mitigation",
+		icon: "/i/002000/002502.png",
+		color: "--filter-light-blue",
+		order: 6
 	},
 	// RDM
 	// Raid Buffs
@@ -1055,6 +1299,85 @@ var abilityList = [
 		icon: "/i/010000/010263.png",
 		color: "--filter-light-purple",
 		order: 2
+	},
+	// Mitigation
+	{
+		id: 3551,
+		name: "Raw Intuition",
+		job: "WAR",
+		level: 56,
+		duration: 6,
+		cooldown: 25,
+		type: "Mitigation",
+		icon: "/i/002000/002559.png",
+		color: "--filter-light-blue",
+		order: 0,
+		extra: {
+			shares_cooldown: 16464
+		}
+	},
+	{
+		id: 16464,
+		name: "Nascent Flash",
+		job: "WAR",
+		level: 76,
+		duration: 6,
+		cooldown: 25,
+		type: "Mitigation",
+		icon: "/i/002000/002567.png",
+		color: "--filter-light-blue",
+		order: 1,
+		extra: {
+			shares_cooldown: 3551
+		}
+	},
+	{
+		id: 40,
+		name: "Thrill of Battle",
+		job: "WAR",
+		level: 30,
+		duration: 10,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/000000/000263.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
+	{
+		id: 44,
+		name: "Vengeance",
+		job: "WAR",
+		level: 45,
+		duration: 15,
+		cooldown: 120,
+		type: "Mitigation",
+		icon: "/i/000000/000267.png",
+		color: "--filter-light-blue",
+		order: 3
+	},
+	{
+		id: 7388,
+		name: "Shake It Off",
+		job: "WAR",
+		level: 68,
+		duration: 15,
+		cooldown: 90,
+		type: "Mitigation",
+		icon: "/i/002000/002563.png",
+		color: "--filter-light-blue",
+		order: 4
+	},
+	{
+		id: 43,
+		name: "Holmgang",
+		job: "WAR",
+		level: 68,
+		duration: 8,
+		cooldown: 240,
+		type: "Mitigation",
+		icon: "/i/000000/000266.png",
+		color: "--filter-light-blue",
+		order: 5
 	},
 	// WHM
 	// DoTs

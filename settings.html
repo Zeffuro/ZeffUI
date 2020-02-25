@@ -166,7 +166,17 @@
             		$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
             		$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
             		$("#raidbuffX").attr("value", settings.raidbuffs.x);
-            		$("#raidbuffY").attr("value", settings.raidbuffs.y);
+                    $("#raidbuffY").attr("value", settings.raidbuffs.y);
+                    
+                    $("#mitigationBarEnabled").prop("checked", settings.mitigation.enabled);
+            		$("#mitigationHideOutOfCombat").prop("checked", settings.mitigation.hideoutofcombat);
+            		$("#mitigationHideWhenSolo").prop("checked", settings.mitigation.hidewhensolo);
+            		$("#mitigationAlwaysShow").prop("checked", settings.mitigation.alwaysshow);
+            		$("#mitigationColumns").attr("value", settings.mitigation.columns);
+            		$("#mitigationPadding").attr("value", settings.mitigation.padding);
+            		$("#mitigationScale").attr("value", settings.mitigation.scale);
+            		$("#mitigationX").attr("value", settings.mitigation.x);
+            		$("#mitigationY").attr("value", settings.mitigation.y);
             	}
             }
 
@@ -242,6 +252,17 @@
             			scale: $("#raidbuffScale").val(),
             			x: $("#raidbuffX").val(),
             			y: $("#raidbuffY").val()
+            		},
+            		mitigation: {
+            			enabled: $("#mitigationBarEnabled").is(":checked"),
+            			hideoutofcombat: $("#mitigationHideOutOfCombat").is(":checked"),
+            			hidewhensolo: $("#mitigationHideWhenSolo").is(":checked"),
+            			alwaysshow: $("#mitigationAlwaysShow").is(":checked"),
+            			columns: $("#mitigationColumns").val(),
+            			padding: $("#mitigationPadding").val(),
+            			scale: $("#mitigationScale").val(),
+            			x: $("#mitigationX").val(),
+            			y: $("#mitigationY").val()
             		},
             	};
             	localStorage.setItem("settings", JSON.stringify(settings));
@@ -743,6 +764,67 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow" checked="">
                                     <label class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="mitigationBarEnabled" checked="">
+                                <label class="custom-control-label" for="mitigationBarEnabled">Mitigations</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Here you can set your options for your mitigation bar.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="mitigationX">Position X</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationX">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="mitigationY">Position Y</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationY">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="mitigationPadding">Padding</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationPadding">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="mitigationScale">Scale</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationScale">
+                                </div>
+                            </div>                            
+                            <div class="form-group row text-right">
+                                <label class="col-sm-4" for="mitigationColumns">Columns per row</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationColumns">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationHideWhenSolo" checked="">
+                                    <label class="custom-control-label" for="mitigationHideWhenSolo">Hide when not in Party</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationHideOutOfCombat" checked="">
+                                    <label class="custom-control-label" for="mitigationHideOutOfCombat">Hide out of Combat</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow" checked="">
+                                    <label class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
                             </div>
                         </div>

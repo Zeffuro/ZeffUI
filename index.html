@@ -37,6 +37,7 @@ var blockRuinGained = false;
 var activeDotBars = new Map();
 var activeBuffBars = new Map();
 var activeRaidBuffs = new Map();
+var activeMitigations = new Map();
 var activeCountdowns = new Map();
 
 //var canvas = $("#grid").attr({width: window.innerWidth, height: window.innerHeight}); d
@@ -75,7 +76,8 @@ $(function() {
 					if(openSettings.closed) {  
 						clearInterval(settingsTimer);  
 						loadSettings();
-						generateRaidBuffs();
+						generateRaidBuffs();						
+						generateMitigation();
 					}  
 				}, 1000); 
 				break;
@@ -366,11 +368,52 @@ function loadSettings(){
 		settings.raidbuffs.y = 216;
 	}
 
+	// RAIDBUFF SETTINGS
+	if(!settings.hasOwnProperty("mitigation")) {
+		settings.mitigation = {};
+	}
+
+	if(!settings.mitigation.hasOwnProperty("enabled")) {
+		settings.mitigation.enabled = true;
+		$("#mitigation-bar").show();
+	}
+	
+	if(!settings.mitigation.enabled) $("#mitigation-bar").hide();
+
+	if(!settings.mitigation.hasOwnProperty("hideoutofcombat")) {
+		settings.mitigation.hideoutofcombat = false;
+	}
+
+	if(!settings.mitigation.hasOwnProperty("alwaysshow")) {
+		settings.mitigation.alwaysshow = true;
+	}
+
+	if(!settings.mitigation.hasOwnProperty("hidewhensolo")) {
+		settings.mitigation.hidewhensolo = false;
+	}
+
+	if(!settings.mitigation.padding) settings.mitigation.padding = "5";
+	if(!settings.mitigation.scale) settings.mitigation.scale = "1";
+	if(!settings.mitigation.columns) settings.mitigation.columns = 8;
+
+	if(settings.mitigation.x){
+		$("#mitigation-bar").css("left", settings.mitigation.x);
+	}else{
+		settings.mitigation.x = 0;
+	}
+
+	if(settings.mitigation.y){
+		$("#mitigation-bar").css("top", settings.mitigation.y);
+	}else{
+		settings.mitigation.y = 240;
+	}
+
 	currentSettings = settings;
 	saveSettings();
 	
 	generateJobStacks();
 	if(!currentSettings.raidbuffs.hidewhensolo) $("#raid-buffs-bar").show();
+	if(!currentSettings.mitigation.hidewhensolo) $("#mitigation-bar").show();
 }
 
 function importSettings(){
@@ -436,6 +479,9 @@ function saveSettings(){
 
 	currentSettings.raidbuffs.x = parseInt($("#raid-buffs-bar").css("left").replace("px", ""));
 	currentSettings.raidbuffs.y = parseInt($("#raid-buffs-bar").css("top").replace("px", ""));
+
+	currentSettings.mitigation.x = parseInt($("#mitigation-bar").css("left").replace("px", ""));
+	currentSettings.mitigation.y = parseInt($("#mitigation-bar").css("top").replace("px", ""));
 	
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
@@ -601,41 +647,110 @@ function generateRaidBuffs(){
 		}
 		playerIndex++;
 	}
-	if(currentSettings.raidbuffs.alwaysshow) generateRaidBuffElements(raidAbilityList, currentSettings.raidbuffs.columns);
+	if(currentSettings.raidbuffs.alwaysshow) generateIconBarElements("RaidBuff", raidAbilityList, currentSettings.raidbuffs.columns);
 }
 
-function generateRaidBuffElements(raidAbilityList, columns){
-	let rows = Math.ceil(raidAbilityList.length / columns);	
+function generateMitigation(){
+	let mitigationAbilityList = [];
+	$("#mitigation-bar").empty();
+	let playerIndex = 0;
+	let currentJob = jobList.find(x => x.name === currentPlayer.job);
+	for(let ability of abilityList.filter(x => x.type === "Mitigation" && x.level <= currentPlayer.level)){
+		let pushAbility = false;
+		if(ability.job === currentJob.name || ability.job === currentJob.type){
+			pushAbility = true;
+			console.log(ability);
+		}
+		if(pushAbility){
+			mitigationAbilityList.push({
+				player: currentPlayer.name,
+				playerIndex: playerIndex,
+				ability: ability
+			});
+		}			
+	}
+	if(currentSettings.mitigation.alwaysshow) generateIconBarElements("Mitigation", mitigationAbilityList, currentSettings.mitigation.columns);
+}
+
+function generateIconBarElements(selector, iconAbilityList, columns){
+	let barSelector;
+	let selectedSettings;
+	switch(selector){
+	case "RaidBuff":{
+		barSelector = "raid-buffs";
+		selectedSettings = currentSettings.raidbuffs;
+		break;
+	}
+	case "Mitigation":{
+		barSelector = "mitigation";
+		selectedSettings = currentSettings.mitigation;
+		break;
+	}
+	}
+	let rows = Math.ceil(iconAbilityList.length / columns);	
 	let abilityIndex = 0;
 	for(let i = 1; i <= rows; i++){
-		$("#raid-buffs-bar").append(`<div id="raid-buffs-row-${i}" class="ability-row" style="padding-top: ${currentSettings.raidbuffs.padding};"></div>`);
+		$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding};"></div>`);
 		for (let j = 1; j <= columns; j++){
-			let raidAbility = raidAbilityList[abilityIndex];
-			generateRaidBuffAbility(raidAbility.playerIndex, raidAbility.ability, i);			
-			if(abilityIndex == raidAbilityList.length - 1) break;
+			let ability = iconAbilityList[abilityIndex];
+			console.log(ability.ability);
+			generateAbilityIcon(ability.playerIndex, ability.ability, i);			
+			if(abilityIndex == iconAbilityList.length - 1) break;
 			abilityIndex++;
 		}
 	}
 }
 
-function generateRaidBuffAbility(playerIndex, ability, row, generateRow = false){
+function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
+	let barSelector;
+	let selectedSettings;
+	switch(ability.type){
+	case "RaidBuff":{
+		barSelector = "raid-buffs";
+		selectedSettings = currentSettings.raidbuffs;
+		break;
+	}
+	case "Mitigation":{
+		barSelector = "mitigation";
+		selectedSettings = currentSettings.mitigation;
+		break;
+	}
+	}
 	if(generateRow){
 		if(row === 0) row = 1;
-		if($(`#raid-buffs-row-${row}`).length === 0) $("#raid-buffs-bar").append(`<div id="raid-buffs-row-${row}" class="ability-row" style="padding-top: ${currentSettings.raidbuffs.padding};"></div>`);
+		if($(`#${barSelector}-row-${row}`).length === 0) $(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding};"></div>`);
 	}
-	$(`#raid-buffs-row-${row}`).append(`<div id="raid-buffs-${playerIndex}-${ability.id}" class="ability-container" style="padding-right: ${currentSettings.raidbuffs.padding};"></div>`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-image" class="ability-image" src="https://xivapi.com${ability.icon}" width="${currentSettings.raidbuffs.scale * 40}" height="${currentSettings.raidbuffs.scale * 40}" style="left: ${currentSettings.raidbuffs.scale * 4}; top: ${currentSettings.raidbuffs.scale * 2};" />`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${currentSettings.raidbuffs.scale * 42}" height="${currentSettings.raidbuffs.scale * 42}" style="left: ${currentSettings.raidbuffs.scale * 3}; top: ${currentSettings.raidbuffs.scale * 1}; display: none;" />`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<img id="raid-buffs-${playerIndex}-${ability.id}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${currentSettings.raidbuffs.scale * 48}" height="${currentSettings.raidbuffs.scale * 48}" />`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<span id="raid-buffs-${playerIndex}-${ability.id}-cooldown" class="ability-text text-cooldown" style="padding-top: ${currentSettings.raidbuffs.scale * 8}; padding-left: ${currentSettings.raidbuffs.scale * 2}; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${currentSettings.raidbuffs.scale * 24};"></span>`);
-	$(`#raid-buffs-${playerIndex}-${ability.id}`).append(`<span id="raid-buffs-${playerIndex}-${ability.id}-duration" class="ability-text text-duration" style="padding-top: ${currentSettings.raidbuffs.scale * 8}; padding-left: ${currentSettings.raidbuffs.scale * 2}; --durationOutline: black; --durationColor: orange; --durationFontSize: ${currentSettings.raidbuffs.scale * 24};"></span>`);
+
+	$(`#${barSelector}-row-${row}`).append(`<div id="${barSelector}-${playerIndex}-${ability.id}" class="ability-container" style="padding-right: ${selectedSettings.padding};"></div>`);
+	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-image" class="ability-image" src="https://xivapi.com${ability.icon}" width="${selectedSettings.scale * 40}" height="${selectedSettings.scale * 40}" style="left: ${selectedSettings.scale * 4}; top: ${selectedSettings.scale * 2};" />`);
+	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${selectedSettings.scale * 42}" height="${selectedSettings.scale * 42}" style="left: ${selectedSettings.scale * 3}; top: ${selectedSettings.scale * 1}; display: none;" />`);
+	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${selectedSettings.scale * 48}" height="${selectedSettings.scale * 48}" />`);
+	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<span id="${barSelector}-${playerIndex}-${ability.id}-cooldown" class="ability-text text-cooldown" style="padding-top: ${selectedSettings.scale * 8}; padding-left: ${selectedSettings.scale * 2}; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${selectedSettings.scale * 24};"></span>`);
+	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<span id="${barSelector}-${playerIndex}-${ability.id}-duration" class="ability-text text-duration" style="padding-top: ${selectedSettings.scale * 8}; padding-left: ${selectedSettings.scale * 2}; --durationOutline: black; --durationColor: orange; --durationFontSize: ${selectedSettings.scale * 24};"></span>`);
 }
 
-function startRaidAbilityTimers(playerIndex, ability, onYou = true, abilityHolder = null){
+function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
 	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
 	let usingAbilityHolder = !(abilityHolder === null);
-	let selector = `#raid-buffs-${playerIndex}-${abilityUsed.id}`;
-	if(activeRaidBuffs.has(ability.id)){	
+	let barSelector;
+	let selectedActive;
+	let selectedSettings;
+	switch(ability.type){
+	case "RaidBuff":{
+		barSelector = "raid-buffs";
+		selectedActive = activeRaidBuffs;
+		selectedSettings = currentSettings.raidbuffs;
+		break;
+	}
+	case "Mitigation":{
+		barSelector = "mitigation";
+		selectedActive = activeMitigations;
+		selectedSettings = currentSettings.mitigation;
+		break;
+	}
+	}
+	let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
+	if(selectedActive.has(ability.id)){	
 		if(activeCountdowns.has(`${selector}-duration`)){
 			clearInterval(activeCountdowns.get(`${selector}-duration`));
 		}
@@ -646,8 +761,8 @@ function startRaidAbilityTimers(playerIndex, ability, onYou = true, abilityHolde
 		stopAbilityTimer(`${selector}-duration`, null);
 	}
 	if(onYou){
-		if(!currentSettings.raidbuffs.alwaysshow){
-			generateRaidBuffAbility(playerIndex, ability, Math.ceil(activeRaidBuffs.size / currentSettings.raidbuffs.columns), true);
+		if(!selectedSettings.alwaysshow){
+			generateAbilityIcon(playerIndex, ability, Math.ceil(selectedActive.size / selectedSettings.columns), true);
 		}
 		$(`${selector}-overlay`).attr("src", `skins/${currentSettings.skin}/images/icon-overlay.png`);
 		$(`${selector}-active`).show();
@@ -667,8 +782,17 @@ function startRaidAbilityTimers(playerIndex, ability, onYou = true, abilityHolde
 		$(`${selector}-cooldown`).show();
 		$(`${selector}-cooldown`).text(ability.cooldown);
 	}
-	if(currentSettings.raidbuffs.alwaysshow) startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
-	activeRaidBuffs.set(ability.id, selector);
+	if(selectedSettings.alwaysshow) startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
+	switch(ability.type){
+	case "RaidBuff":{
+		activeRaidBuffs.set(ability.id, selector);
+		break;
+	}
+	case "Mitigation":{
+		activeMitigations.set(ability.id, selector);
+		break;
+	}
+	}
 }
 
 function clearGrid(){
@@ -844,6 +968,7 @@ function onPartyWipe(e){
 	if(currentPlayer.job === "SMN") initializeSmn();
 	resetTimers();
 	generateRaidBuffs();
+	generateMitigation();
 }
 
 function onChangeZone(e){
@@ -878,7 +1003,8 @@ function setupSoloParty(){
 		name: currentPlayer.name,
 		worldId: null
 	});
-	generateRaidBuffs();
+	generateRaidBuffs();	
+	generateMitigation();
 }
 
 function onInCombatChangedEvent(e){
@@ -896,11 +1022,13 @@ function startCountdownTimer(parameters){
 
 function onInstanceStart(parameters){
 	generateRaidBuffs();
+	generateMitigation();
 }
 
 function onInstanceEnd(parameters){
 	resetTimers();
 	generateRaidBuffs();
+	generateMitigation();
 }
 
 function handlePlayerStats(parameters){
@@ -923,16 +1051,19 @@ function handleEffect(parameters){
 					let abilityHolder = abilityList.find(x => x.name === "Song");
 					if(byYou){
 						ability.duration = 30;
-						startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+						startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 						return;
 					}
 					if(onYou){
 						ability.duration = 5;
-						startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+						startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 					}
 				}
 			}
-			if(onYou) startRaidAbilityTimers(playerIndex, ability, true);
+			if(onYou) startAbilityIconTimers(playerIndex, ability, true);
+		}
+		if(ability.type === "Mitigation"){
+			if(onYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
 		if(ability.type === "Stacks" && byYou){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
@@ -1066,11 +1197,11 @@ function handleSkill(parameters){
 				if(ability.extra.is_card){
 					let abilityHolder = abilityList.find(x => x.name === "Play");
 					if(onYou){
-						startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+						startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 					}
 				}
 				if(ability.extra.cooldown_only){
-					startRaidAbilityTimers(playerIndex, ability, false);
+					startAbilityIconTimers(playerIndex, ability, false);
 				}
 				if(ability.extra.is_song){
 					let abilityHolder = abilityList.find(x => x.name === "Song");
@@ -1088,16 +1219,16 @@ function handleSkill(parameters){
 								stopAbilityTimer(`${selector}-duration`, null);
 							}
 						}
-						startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+						startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 					} 
 				}
 				if(ability.extra.is_ss){
 					let abilityHolder = abilityList.find(x => x.id === 15997);
-					startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+					startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 				}
 				if(ability.extra.is_ts){
 					let abilityHolder = abilityList.find(x => x.id === 16004);
-					startRaidAbilityTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
+					startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 				}
 			}
 			else{
@@ -1106,8 +1237,11 @@ function handleSkill(parameters){
 				}else{
 					onYou = true;
 				}
-				startRaidAbilityTimers(playerIndex, ability, onYou);
+				startAbilityIconTimers(playerIndex, ability, onYou);
 			}
+		}
+		if(ability.type === "Mitigation"){
+			startAbilityIconTimers(playerIndex, ability, onYou);
 		}
 	}	
 }
@@ -1122,9 +1256,8 @@ function handleSkill(parameters){
 		<div id="stacks-background-3" class="stack-background stack-hidden"><img id="stacks-3" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
 		<div id="stacks-background-4" class="stack-background stack-hidden"><img id="stacks-4" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
 	</div>
-	<div id="raid-buffs-bar">
-
-	</div>
+	<div id="raid-buffs-bar"></div>
+	<div id="mitigation-bar"></div>
 	<progress width="154" height="15" id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
 	<progress width="154" height="15" id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
 	<progress width="154" height="15" id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
