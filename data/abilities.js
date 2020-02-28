@@ -1134,27 +1134,7 @@ var abilityList = [
 		icon: "/i/013000/013302.png",
 		color: "--filter-grey",
 		order: 1
-	},
-	// Stacks
-	{
-		id: 1865,
-		name: "Meditation",
-		job: "SAM",
-		type: "Stacks",
-		icon: "/i/019000/019501.png",
-		color: "--filter-dark-red",
-		order: 0
-	},
-	{
-		id: 16487,
-		name: "Shoha",
-		job: "SAM",
-		type: "StackSpender",
-		icon: "/i/003000/003184.png",
-		color: "--filter-dark-red",
-		order: 0
-	},
-    
+	},    
 	// SCH
 	// DoTs
 	{

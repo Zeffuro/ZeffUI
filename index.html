@@ -694,10 +694,6 @@ function toggleHideOutOfCombatElements(){
 function adjustJobStacks(value, max, noAdd = false){
 	if(!noAdd){
 		currentStats.stacks = value;
-		if(currentPlayer.job === "SAM" && currentStats.maxStacks === 0 && !noAdd){
-			initializeSam(true);
-			max = 3;
-		}
 		if(currentPlayer.job === "SMN" && currentStats.maxStacks === 0 && !noAdd){
 			initializeSmn(true);
 			max = 4;
@@ -718,11 +714,6 @@ function adjustJobStacks(value, max, noAdd = false){
 		}
 		$(selector).attr("src", i <= value ? `skins/${currentSettings.skin}/images/arrow-fill.png` : `skins/${currentSettings.skin}/images/arrow-fill-empty.png`);
 	}
-}
-
-function initializeSam(addStack = false){
-	currentStats.stacks = addStack ? 1 : 0;
-	currentStats.maxStacks = 3;
 }
 
 function initializeSmn(addStack = false){
@@ -764,10 +755,6 @@ startOverlayEvents();
 function onPlayerChangedEvent(e){
 	let changePartyList = false;
 	if(currentPlayer !== null && currentPlayer.job !== e.detail.job){
-		if(e.detail.job === "SAM") {
-			initializeSam();
-			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
-		}
 		if(e.detail.job === "SMN") {
 			initializeSmn();
 			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
@@ -817,7 +804,6 @@ function onLogEvent(e){
 }
 
 function onPartyWipe(e){
-	if(currentPlayer.job === "SAM") initializeSam();
 	if(currentPlayer.job === "SMN") initializeSmn();
 	resetTimers();
 	generateRaidBuffs();
