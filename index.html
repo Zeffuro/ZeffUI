@@ -500,7 +500,7 @@ function generateRaidBuffs(){
 		}
 		playerIndex++;
 	}
-	if(currentSettings.raidbuffs.alwaysshow) generateIconBarElements("RaidBuff", raidAbilityList, currentSettings.raidbuffs.columns);
+	if(currentSettings.raidbuffs.alwaysshow && currentSettings.raidbuffs.enabled) generateIconBarElements("RaidBuff", raidAbilityList, currentSettings.raidbuffs.columns);
 }
 
 function generateMitigation(){
@@ -522,7 +522,7 @@ function generateMitigation(){
 			});
 		}			
 	}
-	if(currentSettings.mitigation.alwaysshow) generateIconBarElements("Mitigation", mitigationAbilityList, currentSettings.mitigation.columns);
+	if(currentSettings.mitigation.alwaysshow && currentSettings.mitigation.enabled) generateIconBarElements("Mitigation", mitigationAbilityList, currentSettings.mitigation.columns);
 }
 
 function generateIconBarElements(selector, iconAbilityList, columns){
