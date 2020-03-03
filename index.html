@@ -374,7 +374,7 @@ function startBarTimer(duration, selector, hideTimer = false){
 		if(timeLeft <= 0){
 			clearInterval(countdownTimer);
 			setTimeout(function(){
-				if(hideTimer && selector !== "#timer-bar"){
+				if(hideTimer){
 					if(selector !== "#timer-bar"){
 						removeTimerBar(selector);
 					}else{
