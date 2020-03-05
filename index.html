@@ -821,6 +821,7 @@ function onLogEvent(e){
 			let regexObject = regexList[logType];
 			let regex = new RegExp(regexObject.regex);
 			if(regex.test(logLine)){
+				console.log(logLine);
 				let matches = regexObject.matches;
 				for(let match of Object.keys(matches)){
 					//console.log(logLine);

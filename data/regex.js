@@ -5,8 +5,16 @@ var regexList =
 		matches: [
 			// CHINESE
 			{
-				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\([a-zA-Z-' ]{2,31}\\)",
+				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\（[a-zA-Z-' ]{2,31}\\）",
 				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "“.*”任务开始。",
+				"function": "onInstanceStart"
+			},
+			{
+				"regex": "“.*”任务结束了。",
+				"function": "onInstanceEnd"
 			},
 			// ENGLISH
 			{
@@ -21,34 +29,58 @@ var regexList =
 				"regex": "[\\w-'èéêîïôàæûç,:\\-() ]{1,99} has ended\\.",
 				"function": "onInstanceEnd"
 			},
-			// FRENCH
+			// FRENCH La mission “La Crique aux tributs” commence.
 			{
-				"regex": "Début du combat dans (?<seconds>[0-9]{1,2}) secondes ! \\([a-zA-Z-' ]{2,31}\\)",
+				"regex": "Début du combat dans (?<seconds>[0-9]{1,2}) secondes! \\([a-zA-Z-' ]{2,31}\\)",
 				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "La mission “.*” commence\\.",
+				"function": "onInstanceStart"
+			},
+			{
+				"regex": "La mission “.*” prend fin\\.",
+				"function": "onInstanceEnd"
 			},
 			// GERMAN
 			{
 				"regex": "Noch (?<seconds>[0-9]{1,2}) Sekunden bis Kampfbeginn! \\([a-zA-Z-' ]{2,31}\\)",
 				"function": "startCountdownTimer"
 			},
-			// JAPANESE
 			{
-				"regex": "戦闘開始まで(?<seconds>[0-9]{1,2})秒！\\（[a-zA-Z-' ]{2,31}\\）",
-				"function": "startCountdownTimer"
-			},
-			{
-				"regex": "の攻略を開始した。",
+				"regex": "„.*“ hat begonnen\\.",
 				"function": "onInstanceStart"
 			},
 			{
-				"regex": "の攻略を終了した。",
+				"regex": "„.*“ wurde beendet\\.",
+				"function": "onInstanceEnd"
+			},
+			// JAPANESE
+			{
+				"regex": "戦闘開始まで(?<seconds>[0-9]{1,2})秒！ \\（[a-zA-Z-' ]{2,31}\\）",
+				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "「.*」の攻略を開始した。",
+				"function": "onInstanceStart"
+			},
+			{
+				"regex": "「.*」の攻略を終了した。",
 				"function": "onInstanceEnd"
 			},
 			// KOREAN
 			{
-				"regex": "/전투 시작 (?<seconds>[0-9]{1,2})초 전! \\([a-zA-Z-' ]{2,31}\\)",
+				"regex": "/전투 시작 (?<seconds>[0-9]{1,2})초 전! \\（[a-zA-Z-' ]{2,31}\\）",
 				"function": "startCountdownTimer"
-			}
+			},
+			{
+				"regex": ".* 공략을 시작합니다.",
+				"function": "onInstanceStart"
+			},
+			{
+				"regex": ".* 공략을 종료했습니다.",
+				"function": "onInstanceEnd"
+			},
 		]
 	},
 	"0C": {

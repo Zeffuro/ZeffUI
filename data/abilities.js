@@ -1048,7 +1048,7 @@ var abilityList = [
 		order: 0
 	},
 	{
-		id: 18131,
+		id: 16151,
 		name: "Aurora",
 		name_de: "Aurora",
 		name_en: "Aurora",
