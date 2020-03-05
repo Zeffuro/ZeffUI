@@ -823,7 +823,6 @@ function onLogEvent(e){
 			if(regex.test(logLine)){
 				let matches = regexObject.matches;
 				for(let match of Object.keys(matches)){
-					//console.log(logLine);
 					let matchObject = matches[match];
 					let innerRegex = new RegExp(matchObject.regex);
 					let regexMatch = innerRegex.exec(logLine);
