@@ -8,7 +8,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/000000/000801.png",
+		icon: "https://xivapi.com/i/000000/000801.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -20,7 +20,7 @@ var abilityList = [
 		duration: 6,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/000000/000822.png",
+		icon: "https://xivapi.com/i/000000/000822.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
@@ -32,7 +32,7 @@ var abilityList = [
 		duration: 10,
 		cooldown: 60,
 		type: "Mitigation",
-		icon: "/i/000000/000806.png",
+		icon: "https://xivapi.com/i/000000/000806.png",
 		color: "--filter-light-blue",
 		order: 2
 	},
@@ -43,7 +43,7 @@ var abilityList = [
 		name: "Combust",
 		job: "AST",
 		type: "DoT",
-		icon: "/i/013000/013213.png",
+		icon: "https://xivapi.com/i/013000/013213.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -52,7 +52,7 @@ var abilityList = [
 		name: "Combust II",
 		job: "AST",
 		type: "DoT",
-		icon: "/i/013000/013214.png",
+		icon: "https://xivapi.com/i/013000/013214.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -61,7 +61,7 @@ var abilityList = [
 		name: "Combust III",
 		job: "AST",
 		type: "DoT",
-		icon: "/i/013000/013248.png",
+		icon: "https://xivapi.com/i/013000/013248.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -71,7 +71,7 @@ var abilityList = [
 		name: "Divination",
 		job: "AST",
 		type: "Buff",
-		icon: "/i/013000/013245.png",
+		icon: "https://xivapi.com/i/013000/013245.png",
 		color: "--filter-light-gold",
 		order: 0
 	},
@@ -80,7 +80,7 @@ var abilityList = [
 		name: "Lightspeed",
 		job: "AST",
 		type: "Buff",
-		icon: "/i/013000/013220.png",
+		icon: "https://xivapi.com/i/013000/013220.png",
 		color: "--filter-light-gold",
 		order: 1
 	},
@@ -93,7 +93,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003553.png",
+		icon: "https://xivapi.com/i/003000/003553.png",
 		color: "--filter-light-gold",
 		order: 0
 	},
@@ -106,7 +106,7 @@ var abilityList = [
 		duration: 0,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003102.png",
+		icon: "https://xivapi.com/i/003000/003102.png",
 		color: "--filter-light-gold",
 		order: 0
 	},
@@ -118,7 +118,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003110.png",
+		icon: "https://xivapi.com/i/003000/003110.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -133,7 +133,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003112.png",
+		icon: "https://xivapi.com/i/003000/003112.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -148,7 +148,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003113.png",
+		icon: "https://xivapi.com/i/003000/003113.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -163,7 +163,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003111.png",
+		icon: "https://xivapi.com/i/003000/003111.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -178,7 +178,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003114.png",
+		icon: "https://xivapi.com/i/003000/003114.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -193,7 +193,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003115.png",
+		icon: "https://xivapi.com/i/003000/003115.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -208,7 +208,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003147.png",
+		icon: "https://xivapi.com/i/003000/003147.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -223,7 +223,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/003000/003146.png",
+		icon: "https://xivapi.com/i/003000/003146.png",
 		color: "--filter-light-gold",
 		order: 0,
 		extra: {
@@ -237,7 +237,7 @@ var abilityList = [
 		name: "Thunder",
 		job: "BLM",
 		type: "DoT",
-		icon: "/i/010000/010457.png",
+		icon: "https://xivapi.com/i/010000/010457.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -246,7 +246,7 @@ var abilityList = [
 		name: "Thunder II",
 		job: "BLM",
 		type: "DoT",
-		icon: "/i/010000/010458.png",
+		icon: "https://xivapi.com/i/010000/010458.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -255,7 +255,7 @@ var abilityList = [
 		name: "Thunder III",
 		job: "BLM",
 		type: "DoT",
-		icon: "/i/010000/010459.png",
+		icon: "https://xivapi.com/i/010000/010459.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -264,7 +264,7 @@ var abilityList = [
 		name: "Thunder IV",
 		job: "BLM",
 		type: "DoT",
-		icon: "/i/012000/012657.png",
+		icon: "https://xivapi.com/i/012000/012657.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -275,7 +275,7 @@ var abilityList = [
 		name: "Venomous Bite",
 		job: "BRD",
 		type: "DoT",
-		icon: "/i/010000/010352.png",
+		icon: "https://xivapi.com/i/010000/010352.png",
 		color: "--filter-light-pink",
 		order: 0
 	},
@@ -284,7 +284,7 @@ var abilityList = [
 		name: "Windbite",
 		job: "BRD",
 		type: "DoT",
-		icon: "/i/010000/010360.png",
+		icon: "https://xivapi.com/i/010000/010360.png",
 		color: "--filter-baby-blue",
 		order: 1
 	},
@@ -293,7 +293,7 @@ var abilityList = [
 		name: "Caustic Bite",
 		job: "BRD",
 		type: "DoT",
-		icon: "/i/012000/012616.png",
+		icon: "https://xivapi.com/i/012000/012616.png",
 		color: "--filter-light-pink",
 		order: 0
 	},
@@ -302,7 +302,7 @@ var abilityList = [
 		name: "Stormbite",
 		job: "BRD",
 		type: "DoT",
-		icon: "/i/012000/012617.png",
+		icon: "https://xivapi.com/i/012000/012617.png",
 		color: "--filter-baby-blue",
 		order: 1
 	},
@@ -312,7 +312,7 @@ var abilityList = [
 		name: "Raging Strikes",
 		job: "BRD",
 		type: "Buff",
-		icon: "/i/010000/010354.png",
+		icon: "https://xivapi.com/i/010000/010354.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -325,7 +325,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 180,
 		type: "RaidBuff",
-		icon: "/i/002000/002601.png",
+		icon: "https://xivapi.com/i/002000/002601.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -337,7 +337,7 @@ var abilityList = [
 		duration: 5,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/005000/005315.png",
+		icon: "https://xivapi.com/i/005000/005315.png",
 		color: "--filter-light-gold",
 		order: 0
 	},
@@ -349,7 +349,7 @@ var abilityList = [
 		duration: 30,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/002000/002607.png",
+		icon: "https://xivapi.com/i/002000/002607.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -364,7 +364,7 @@ var abilityList = [
 		duration: 30,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/002000/002602.png",
+		icon: "https://xivapi.com/i/002000/002602.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -379,7 +379,7 @@ var abilityList = [
 		duration: 30,
 		cooldown: 0,
 		type: "RaidBuff",
-		icon: "/i/002000/002603.png",
+		icon: "https://xivapi.com/i/002000/002603.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -393,7 +393,7 @@ var abilityList = [
 		name: "Devilment",
 		job: "DNC",
 		type: "Buff",
-		icon: "/i/013000/013714.png",
+		icon: "https://xivapi.com/i/013000/013714.png",
 		color: "--filter-dark-green",
 		order: 4
 	},
@@ -402,7 +402,7 @@ var abilityList = [
 		name: "Improvisation",
 		job: "DNC",
 		type: "Buff",
-		icon: "/i/013000/013716.png",
+		icon: "https://xivapi.com/i/013000/013716.png",
 		color: "--filter-jungle-green",
 		order: 3
 	},
@@ -411,7 +411,7 @@ var abilityList = [
 		name: "Standard Finish",
 		job: "DNC",
 		type: "Buff",
-		icon: "/i/013000/013708.png",
+		icon: "https://xivapi.com/i/013000/013708.png",
 		color: "--filter-green-blue",
 		order: 1
 	},
@@ -420,7 +420,7 @@ var abilityList = [
 		name: "Technical Finish",
 		job: "DNC",
 		type: "Buff",
-		icon: "/i/013000/013709.png",
+		icon: "https://xivapi.com/i/013000/013709.png",
 		color: "--filter-bright-red",
 		order: 2
 	},
@@ -433,7 +433,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003471.png",
+		icon: "https://xivapi.com/i/003000/003471.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -445,7 +445,7 @@ var abilityList = [
 		duration: 0,
 		cooldown: 30,
 		type: "RaidBuff",
-		icon: "/i/003000/003459.png",
+		icon: "https://xivapi.com/i/003000/003459.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -460,7 +460,7 @@ var abilityList = [
 		duration: 60,
 		cooldown: 30,
 		type: "RaidBuff",
-		icon: "/i/003000/003459.png",
+		icon: "https://xivapi.com/i/003000/003459.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -477,7 +477,7 @@ var abilityList = [
 		duration: 60,
 		cooldown: 30,
 		type: "RaidBuff",
-		icon: "/i/003000/003459.png",
+		icon: "https://xivapi.com/i/003000/003459.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -494,7 +494,7 @@ var abilityList = [
 		duration: 60,
 		cooldown: 30,
 		type: "RaidBuff",
-		icon: "/i/003000/003459.png",
+		icon: "https://xivapi.com/i/003000/003459.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -511,7 +511,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -526,7 +526,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -543,7 +543,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -560,7 +560,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -577,7 +577,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -594,7 +594,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003474.png",
+		icon: "https://xivapi.com/i/003000/003474.png",
 		color: "--filter-dark-red",
 		order: 0,
 		extra: {
@@ -610,7 +610,7 @@ var abilityList = [
 		name: "Chaos Thrust",
 		job: "DRG",
 		type: "DoT",
-		icon: "/i/010000/010307.png",
+		icon: "https://xivapi.com/i/010000/010307.png",
 		color: "--filter-light-purple",
 		order: 0
 	},
@@ -620,7 +620,7 @@ var abilityList = [
 		name: "Disembowel",
 		job: "DRG",
 		type: "Buff",
-		icon: "/i/012000/012576.png",
+		icon: "https://xivapi.com/i/012000/012576.png",
 		color: "--filter-grey",
 		order: 0
 	},
@@ -629,7 +629,7 @@ var abilityList = [
 		name: "Dragon Sight",
 		job: "DRG",
 		type: "Buff",
-		icon: "/i/012000/012581.png",
+		icon: "https://xivapi.com/i/012000/012581.png",
 		color: "--filter-dark-red",
 		order: 1
 	},
@@ -638,7 +638,7 @@ var abilityList = [
 		name: "Lance Charge",
 		job: "DRG",
 		type: "Buff",
-		icon: "/i/010000/010304.png",
+		icon: "https://xivapi.com/i/010000/010304.png",
 		color: "--filter-dark-red",
 		order: 2
 	},
@@ -651,7 +651,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 180,
 		type: "RaidBuff",
-		icon: "/i/002000/002585.png",
+		icon: "https://xivapi.com/i/002000/002585.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -663,7 +663,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/002000/002587.png",
+		icon: "https://xivapi.com/i/002000/002587.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -674,7 +674,7 @@ var abilityList = [
 		name: "Blood Weapon",
 		job: "DRK",
 		type: "Buff",
-		icon: "/i/013000/013109.png",
+		icon: "https://xivapi.com/i/013000/013109.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -683,7 +683,7 @@ var abilityList = [
 		name: "Delirium",
 		job: "DRK",
 		type: "Buff",
-		icon: "/i/013000/013121.png",
+		icon: "https://xivapi.com/i/013000/013121.png",
 		color: "--filter-bright-red",
 		order: 1
 	},
@@ -696,7 +696,7 @@ var abilityList = [
 		duration: 10,
 		cooldown: 60,
 		type: "Mitigation",
-		icon: "/i/003000/003076.png",
+		icon: "https://xivapi.com/i/003000/003076.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -708,7 +708,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/003000/003075.png",
+		icon: "https://xivapi.com/i/003000/003075.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
@@ -720,7 +720,7 @@ var abilityList = [
 		duration: 7,
 		cooldown: 15,
 		type: "Mitigation",
-		icon: "/i/003000/003081.png",
+		icon: "https://xivapi.com/i/003000/003081.png",
 		color: "--filter-light-blue",
 		order: 2
 	},
@@ -732,7 +732,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/003000/003087.png",
+		icon: "https://xivapi.com/i/003000/003087.png",
 		color: "--filter-light-blue",
 		order: 3
 	},
@@ -744,7 +744,7 @@ var abilityList = [
 		duration: 10,
 		cooldown: 300,
 		type: "Mitigation",
-		icon: "/i/003000/003077.png",
+		icon: "https://xivapi.com/i/003000/003077.png",
 		color: "--filter-light-blue",
 		order: 4
 	},
@@ -755,7 +755,7 @@ var abilityList = [
 		name: "Sonic Break",
 		job: "GNB",
 		type: "DoT",
-		icon: "/i/013000/013607.png",
+		icon: "https://xivapi.com/i/013000/013607.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -764,7 +764,7 @@ var abilityList = [
 		name: "Bow Shock",
 		job: "GNB",
 		type: "DoT",
-		icon: "/i/013000/013608.png",
+		icon: "https://xivapi.com/i/013000/013608.png",
 		color: "--filter-light-gold",
 		order: 1
 	},
@@ -774,7 +774,7 @@ var abilityList = [
 		name: "No Mercy",
 		job: "GNB",
 		type: "Buff",
-		icon: "/i/013000/013601.png",
+		icon: "https://xivapi.com/i/013000/013601.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -787,7 +787,7 @@ var abilityList = [
 		duration: 7,
 		cooldown: 25,
 		type: "Mitigation",
-		icon: "/i/003000/003425.png",
+		icon: "https://xivapi.com/i/003000/003425.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -799,7 +799,7 @@ var abilityList = [
 		duration: 18,
 		cooldown: 60,
 		type: "Mitigation",
-		icon: "/i/003000/003415.png",
+		icon: "https://xivapi.com/i/003000/003415.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
@@ -811,7 +811,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/003000/003404.png",
+		icon: "https://xivapi.com/i/003000/003404.png",
 		color: "--filter-light-blue",
 		order: 2
 	},
@@ -823,7 +823,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/003000/003412.png",
+		icon: "https://xivapi.com/i/003000/003412.png",
 		color: "--filter-light-blue",
 		order: 3
 	},
@@ -835,7 +835,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/003000/003424.png",
+		icon: "https://xivapi.com/i/003000/003424.png",
 		color: "--filter-light-blue",
 		order: 4
 	},
@@ -847,7 +847,7 @@ var abilityList = [
 		duration: 8,
 		cooldown: 360,
 		type: "Mitigation",
-		icon: "/i/003000/003416.png",
+		icon: "https://xivapi.com/i/003000/003416.png",
 		color: "--filter-light-blue",
 		order: 5
 	},
@@ -858,7 +858,7 @@ var abilityList = [
 		name: "Bioblaster",
 		job: "MCH",
 		type: "DoT",
-		icon: "/i/013000/013020.png",
+		icon: "https://xivapi.com/i/013000/013020.png",
 		color: "--filter-toxic-green",
 		order: 0
 	},
@@ -868,7 +868,7 @@ var abilityList = [
 		name: "Hypercharge",
 		job: "MCH",
 		type: "Buff",
-		icon: "/i/013000/013012.png",
+		icon: "https://xivapi.com/i/013000/013012.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -877,7 +877,7 @@ var abilityList = [
 		name: "Wildfire",
 		job: "MCH",
 		type: "Buff",
-		icon: "/i/013000/013019.png",
+		icon: "https://xivapi.com/i/013000/013019.png",
 		color: "--filter-orange",
 		order: 1
 	},
@@ -888,7 +888,7 @@ var abilityList = [
 		name: "Demolish",
 		job: "MNK",
 		type: "DoT",
-		icon: "/i/010000/010218.png",
+		icon: "https://xivapi.com/i/010000/010218.png",
 		color: "--filter-light-purple",
 		order: 0
 	},
@@ -898,7 +898,7 @@ var abilityList = [
 		name: "Ring of Fire",
 		job: "MNK",
 		type: "Buff",
-		icon: "/i/015000/015628.png",
+		icon: "https://xivapi.com/i/015000/015628.png",
 		color: "--filter-bright-red",
 		order: 0
 	},
@@ -907,7 +907,7 @@ var abilityList = [
 		name: "Twin Snakes",
 		job: "MNK",
 		type: "Buff",
-		icon: "/i/010000/010216.png",
+		icon: "https://xivapi.com/i/010000/010216.png",
 		color: "--filter-grey",
 		order: 1
 	},
@@ -916,7 +916,7 @@ var abilityList = [
 		name: "Riddle Of Fire",
 		job: "MNK",
 		type: "Buff",
-		icon: "/i/012000/012528.png",
+		icon: "https://xivapi.com/i/012000/012528.png",
 		color: "--filter-bright-red",
 		order: 2
 	},
@@ -929,7 +929,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 90,
 		type: "RaidBuff",
-		icon: "/i/002000/002542.png",
+		icon: "https://xivapi.com/i/002000/002542.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -940,7 +940,7 @@ var abilityList = [
 		name: "Shadow Fang",
 		job: "NIN",
 		type: "DoT",
-		icon: "/i/010000/010612.png",
+		icon: "https://xivapi.com/i/010000/010612.png",
 		color: "--filter-baby-blue",
 		order: 0
 	},
@@ -950,7 +950,7 @@ var abilityList = [
 		name: "Huton",
 		job: "NIN",
 		type: "Buff",
-		icon: "/i/012000/012903.png",
+		icon: "https://xivapi.com/i/012000/012903.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
@@ -963,7 +963,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 60,
 		type: "RaidBuff",
-		icon: "/i/000000/000618.png",
+		icon: "https://xivapi.com/i/000000/000618.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -974,7 +974,7 @@ var abilityList = [
 		name: "Circle of Scorn",
 		job: "PLD",
 		type: "DoT",
-		icon: "/i/010000/010158.png",
+		icon: "https://xivapi.com/i/010000/010158.png",
 		color: "--filter-orange",
 		order: 0
 	},
@@ -983,7 +983,7 @@ var abilityList = [
 		name: "Goring Blade",
 		job: "PLD",
 		type: "DoT",
-		icon: "/i/012000/012507.png",
+		icon: "https://xivapi.com/i/012000/012507.png",
 		color: "--filter-orange",
 		order: 1
 	},
@@ -993,7 +993,7 @@ var abilityList = [
 		name: "Fight or Flight",
 		job: "PLD",
 		type: "Buff",
-		icon: "/i/010000/010155.png",
+		icon: "https://xivapi.com/i/010000/010155.png",
 		color: "--filter-light-purple",
 		order: 0
 	},
@@ -1002,7 +1002,7 @@ var abilityList = [
 		name: "Requiescat",
 		job: "PLD",
 		type: "Buff",
-		icon: "/i/012000/012514.png",
+		icon: "https://xivapi.com/i/012000/012514.png",
 		color: "--filter-dark-blue",
 		order: 1
 	},
@@ -1015,7 +1015,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/000000/000151.png",
+		icon: "https://xivapi.com/i/000000/000151.png",
 		color: "--filter-light-blue",
 		order: 0
 	},
@@ -1027,7 +1027,7 @@ var abilityList = [
 		duration: 6,
 		cooldown: 5,
 		type: "Mitigation",
-		icon: "/i/002000/002510.png",
+		icon: "https://xivapi.com/i/002000/002510.png",
 		color: "--filter-light-blue",
 		order: 1
 	},
@@ -1039,7 +1039,7 @@ var abilityList = [
 		duration: 6,
 		cooldown: 10,
 		type: "Mitigation",
-		icon: "/i/002000/002512.png",
+		icon: "https://xivapi.com/i/002000/002512.png",
 		color: "--filter-light-blue",
 		order: 2
 	},
@@ -1051,7 +1051,7 @@ var abilityList = [
 		duration: 12,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/002000/002501.png",
+		icon: "https://xivapi.com/i/002000/002501.png",
 		color: "--filter-light-blue",
 		order: 3
 	},
@@ -1063,7 +1063,7 @@ var abilityList = [
 		duration: 18,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/002000/002515.png",
+		icon: "https://xivapi.com/i/002000/002515.png",
 		color: "--filter-light-blue",
 		order: 4
 	},
@@ -1075,7 +1075,7 @@ var abilityList = [
 		duration: 30,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/002000/002508.png",
+		icon: "https://xivapi.com/i/002000/002508.png",
 		color: "--filter-light-blue",
 		order: 5
 	},
@@ -1087,7 +1087,7 @@ var abilityList = [
 		duration: 10,
 		cooldown: 420,
 		type: "Mitigation",
-		icon: "/i/002000/002502.png",
+		icon: "https://xivapi.com/i/002000/002502.png",
 		color: "--filter-light-blue",
 		order: 6
 	},
@@ -1101,7 +1101,7 @@ var abilityList = [
 		duration: 20,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/003000/003218.png",
+		icon: "https://xivapi.com/i/003000/003218.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -1112,7 +1112,7 @@ var abilityList = [
 		name: "Higanbana",
 		job: "SAM",
 		type: "DoT",
-		icon: "/i/013000/013304.png",
+		icon: "https://xivapi.com/i/013000/013304.png",
 		color: "--filter-orange",
 		order: 0
 	},
@@ -1122,7 +1122,7 @@ var abilityList = [
 		name: "Jinpu",
 		job: "SAM",
 		type: "Buff",
-		icon: "/i/013000/013301.png",
+		icon: "https://xivapi.com/i/013000/013301.png",
 		color: "--filter-light-gold",
 		order: 0
 	},
@@ -1131,7 +1131,7 @@ var abilityList = [
 		name: "Shifu",
 		job: "SAM",
 		type: "Buff",
-		icon: "/i/013000/013302.png",
+		icon: "https://xivapi.com/i/013000/013302.png",
 		color: "--filter-grey",
 		order: 1
 	},    
@@ -1142,7 +1142,7 @@ var abilityList = [
 		name: "Bio",
 		job: "SCH",
 		type: "DoT",
-		icon: "/i/010000/010504.png",
+		icon: "https://xivapi.com/i/010000/010504.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -1151,7 +1151,7 @@ var abilityList = [
 		name: "Bio II",
 		job: "SCH",
 		type: "DoT",
-		icon: "/i/010000/010505.png",
+		icon: "https://xivapi.com/i/010000/010505.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -1160,7 +1160,7 @@ var abilityList = [
 		name: "Biolysis",
 		job: "SCH",
 		type: "DoT",
-		icon: "/i/012000/012812.png",
+		icon: "https://xivapi.com/i/012000/012812.png",
 		color: "--filter-baby-blue",
 		order: 0
 	},
@@ -1173,7 +1173,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "RaidBuff",
-		icon: "/i/002000/002815.png",
+		icon: "https://xivapi.com/i/002000/002815.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -1184,7 +1184,7 @@ var abilityList = [
 		name: "Bio",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/010000/010504.png",
+		icon: "https://xivapi.com/i/010000/010504.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -1193,7 +1193,7 @@ var abilityList = [
 		name: "Bio II",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/010000/010505.png",
+		icon: "https://xivapi.com/i/010000/010505.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -1202,7 +1202,7 @@ var abilityList = [
 		name: "Bio III",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/012000/012682.png",
+		icon: "https://xivapi.com/i/012000/012682.png",
 		color: "--filter-dark-green",
 		order: 0
 	},
@@ -1211,7 +1211,7 @@ var abilityList = [
 		name: "Miasma",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/010000/010506.png",
+		icon: "https://xivapi.com/i/010000/010506.png",
 		color: "--filter-baby-blue",
 		order: 1
 	},
@@ -1220,7 +1220,7 @@ var abilityList = [
 		name: "Miasma II",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/010000/010507.png",
+		icon: "https://xivapi.com/i/010000/010507.png",
 		color: "--filter-baby-blue",
 		order: 1
 	},
@@ -1229,7 +1229,7 @@ var abilityList = [
 		name: "Miasma III",
 		job: "SMN",
 		type: "DoT",
-		icon: "/i/012000/012683.png",
+		icon: "https://xivapi.com/i/012000/012683.png",
 		color: "--filter-baby-blue",
 		order: 1
 	},
@@ -1239,7 +1239,7 @@ var abilityList = [
 		name: "Further Ruin",
 		job: "SMN",
 		type: "Stacks",
-		icon: "/i/019000/019481.png",
+		icon: "https://xivapi.com/i/019000/019481.png",
 		color: "--filter-dark-blue",
 		order: 0
 	},
@@ -1248,7 +1248,7 @@ var abilityList = [
 		name: "Ruin IV",
 		job: "SMN",
 		type: "StackSpender",
-		icon: "/i/002000/002686.png",
+		icon: "https://xivapi.com/i/002000/002686.png",
 		color: "--filter-dark-blue",
 		order: 0
 	},
@@ -1261,7 +1261,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 180,
 		type: "RaidBuff",
-		icon: "/i/002000/002688.png",
+		icon: "https://xivapi.com/i/002000/002688.png",
 		color: "--filter-dark-red",
 		order: 0
 	},
@@ -1272,7 +1272,7 @@ var abilityList = [
 		name: "Berserk",
 		job: "WAR",
 		type: "Buff",
-		icon: "/i/010000/010253.png",
+		icon: "https://xivapi.com/i/010000/010253.png",
 		color: "--filter-bright-red",
 		order: 0
 	},
@@ -1281,7 +1281,7 @@ var abilityList = [
 		name: "Inner Release",
 		job: "WAR",
 		type: "Buff",
-		icon: "/i/012000/012556.png",
+		icon: "https://xivapi.com/i/012000/012556.png",
 		color: "--filter-bright-red",
 		order: 1
 	},
@@ -1290,7 +1290,7 @@ var abilityList = [
 		name: "Storm's Eye",
 		job: "WAR",
 		type: "Buff",
-		icon: "/i/010000/010263.png",
+		icon: "https://xivapi.com/i/010000/010263.png",
 		color: "--filter-light-purple",
 		order: 2
 	},
@@ -1303,7 +1303,7 @@ var abilityList = [
 		duration: 6,
 		cooldown: 25,
 		type: "Mitigation",
-		icon: "/i/002000/002559.png",
+		icon: "https://xivapi.com/i/002000/002559.png",
 		color: "--filter-light-blue",
 		order: 0,
 		extra: {
@@ -1318,7 +1318,7 @@ var abilityList = [
 		duration: 6,
 		cooldown: 25,
 		type: "Mitigation",
-		icon: "/i/002000/002567.png",
+		icon: "https://xivapi.com/i/002000/002567.png",
 		color: "--filter-light-blue",
 		order: 1,
 		extra: {
@@ -1333,7 +1333,7 @@ var abilityList = [
 		duration: 10,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/000000/000263.png",
+		icon: "https://xivapi.com/i/000000/000263.png",
 		color: "--filter-light-blue",
 		order: 2
 	},
@@ -1345,7 +1345,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 120,
 		type: "Mitigation",
-		icon: "/i/000000/000267.png",
+		icon: "https://xivapi.com/i/000000/000267.png",
 		color: "--filter-light-blue",
 		order: 3
 	},
@@ -1357,7 +1357,7 @@ var abilityList = [
 		duration: 15,
 		cooldown: 90,
 		type: "Mitigation",
-		icon: "/i/002000/002563.png",
+		icon: "https://xivapi.com/i/002000/002563.png",
 		color: "--filter-light-blue",
 		order: 4
 	},
@@ -1369,7 +1369,7 @@ var abilityList = [
 		duration: 8,
 		cooldown: 240,
 		type: "Mitigation",
-		icon: "/i/000000/000266.png",
+		icon: "https://xivapi.com/i/000000/000266.png",
 		color: "--filter-light-blue",
 		order: 5
 	},
@@ -1380,7 +1380,7 @@ var abilityList = [
 		name: "Aero",
 		job: "WHM",
 		type: "DoT",
-		icon: "/i/010000/010403.png",
+		icon: "https://xivapi.com/i/010000/010403.png",
 		color: "--filter-green-blue",
 		order: 0
 	},
@@ -1389,7 +1389,7 @@ var abilityList = [
 		name: "Aero II",
 		job: "WHM",
 		type: "DoT",
-		icon: "/i/010000/010409.png",
+		icon: "https://xivapi.com/i/010000/010409.png",
 		color: "--filter-green-blue",
 		order: 0
 	},
@@ -1398,7 +1398,7 @@ var abilityList = [
 		name: "Aero III",
 		job: "WHM",
 		type: "DoT",
-		icon: "/i/012000/012630.png",
+		icon: "https://xivapi.com/i/012000/012630.png",
 		color: "--filter-green-blue",
 		order: 0
 	},
@@ -1407,7 +1407,7 @@ var abilityList = [
 		name: "Dia",
 		job: "WHM",
 		type: "DoT",
-		icon: "/i/012000/012635.png",
+		icon: "https://xivapi.com/i/012000/012635.png",
 		color: "--filter-baby-blue",
 		order: 0
 	},
@@ -1417,7 +1417,7 @@ var abilityList = [
 		name: "Presence of Mind",
 		job: "WHM",
 		type: "Buff",
-		icon: "/i/012000/012627.png",
+		icon: "https://xivapi.com/i/012000/012627.png",
 		color: "--filter-baby-blue",
 		order: 0
 	},

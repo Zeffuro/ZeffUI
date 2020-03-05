@@ -8,6 +8,26 @@ var regexList =
 				"function": "startCountdownTimer"
 			},
 			{
+				"regex": "Début du combat dans (?<seconds>[0-9]{1,2}) secondes ! \\([a-zA-Z-' ]{2,31}\\)",
+				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "Noch (?<seconds>[0-9]{1,2}) Sekunden bis Kampfbeginn! \\([a-zA-Z-' ]{2,31}\\)",
+				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\([a-zA-Z-' ]{2,31}\\)",
+				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "戦闘開始まで(?<seconds>[0-9]{1,2})秒！\\([a-zA-Z-' ]{2,31}\\)",
+				"function": "startCountdownTimer"
+			},
+			{
+				"regex": "/전투 시작 (?<seconds>[0-9]{1,2})초 전! \\([a-zA-Z-' ]{2,31}\\)",
+				"function": "startCountdownTimer"
+			},
+			{
 				"regex": "[\\w-'èéêîïôàæûç,:\\-() ]{1,99} has begun\\.",
 				"function": "onInstanceStart"
 			},

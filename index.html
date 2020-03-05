@@ -40,6 +40,8 @@ var activeRaidBuffs = new Map();
 var activeMitigations = new Map();
 var activeCountdowns = new Map();
 
+var isDraggingRightElement = false;
+
 //var canvas = $("#grid").attr({width: window.innerWidth, height: window.innerHeight}); d
 
 $(function() {
@@ -47,7 +49,23 @@ $(function() {
 	toggleHideOutOfCombatElements();
 	$("[id$=bar]").draggable(
 		{
+			//https://blog.praveen.science/changing-the-origins-of-draggable-possible/
+			drag: function() {
+				if($(this).css("right") != null){
+					isDraggingRightElement = true;
+					$(this).css({
+						"right": "auto"
+					});
+				}
+			},
 			stop: function () {
+				if(isDraggingRightElement){
+					$(this).css({
+						"right": ($(window).width() - ($(this).offset().left + $(this).outerWidth())),
+						"left": "auto"
+					});
+					isDraggingRightElement = false;
+				}				
 				saveSettings();
 			}
 		}
@@ -64,12 +82,6 @@ $(function() {
 			case "grid":
 				toggleGrid();
 				break;
-			case "import":
-				importSettings();
-				break;
-			case "export":
-				exportSettings();
-				break;
 			case "settings":
 				let openSettings = window.open("settings.html");
 				var settingsTimer = setInterval(function() {   
@@ -84,13 +96,11 @@ $(function() {
 			}
 		},
 		items: {
-			"lock": {name: "Lock/Unlock Bars", icon: "fas fa-lock-open"},
-			"grid": {name: "Toggle Grid", icon: "fas fa-border-all"},
-			"import": {name: "Import Settings", icon: "fas fa-upload"},
-			"export": {name: "Export Settings", icon: "fas fa-download"},
-			"settings": {name: "Settings", icon: "fas fa-cog"},
+			"lock": {name: language.find(x => x.id === "lock").string, icon: "fas fa-lock-open"},
+			"grid": {name: language.find(x => x.id === "grid").string, icon: "fas fa-border-all"},
+			"settings": {name: language.find(x => x.id === "settings").string, icon: "fas fa-cog"},
 			"sep1": "---------",
-			"quit": {name: "Close", icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
+			"quit": {name: language.find(x => x.id === "close").string, icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
 		}
 	});
 });
@@ -115,7 +125,17 @@ function loadSettings(){
 	}else{
 		$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
 	}
+
+	// LANGUAGE SETTINGS
+	checkAndInitializeSetting(settings, "language", "en");
 	
+	if($("#language").length == 0){
+		// eslint-disable-next-line no-useless-escape
+		$("head").append(`<script src="data/language/${settings.language}.js"><\/script>`);
+	}else{
+		$("#language").attr("src", `data/language/${settings.language}.js`);
+	}
+
 	// HEALTHBAR SETTINGS
 	checkAndInitializeSetting(settings, "healthbar", {});
 	checkAndInitializeSetting(settings.healthbar, "enabled", true);
@@ -232,6 +252,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.raidbuffs, "alwaysshow", true);
 	checkAndInitializeSetting(settings.raidbuffs, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.raidbuffs, "hidewhensolo", false);
+	checkAndInitializeSetting(settings.raidbuffs, "growleft", false);
 	checkAndInitializeSetting(settings.raidbuffs, "padding", 5);
 	checkAndInitializeSetting(settings.raidbuffs, "scale", 1);
 	checkAndInitializeSetting(settings.raidbuffs, "columns", 8);
@@ -241,7 +262,7 @@ function loadSettings(){
 	settings.raidbuffs.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	settings.raidbuffs.hidewhensolo ? $("#raid-buffs-bar").hide() : $("#raid-buffs-bar").show();
 
-	$("#raid-buffs-bar").css("left", settings.raidbuffs.x);
+	$("#raid-buffs-bar").css(settings.raidbuffs.growleft ? "right" : "left", settings.raidbuffs.x);
 	$("#raid-buffs-bar").css("top", settings.raidbuffs.y);
 
 	// MITIGATION SETTINGS
@@ -250,6 +271,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "alwaysshow", true);
 	checkAndInitializeSetting(settings.mitigation, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.mitigation, "hidewhensolo", false);
+	checkAndInitializeSetting(settings.mitigation, "growleft", false);
 	checkAndInitializeSetting(settings.mitigation, "padding", 5);
 	checkAndInitializeSetting(settings.mitigation, "scale", 1);
 	checkAndInitializeSetting(settings.mitigation, "padding", 5);
@@ -260,7 +282,7 @@ function loadSettings(){
 	settings.mitigation.enabled ? $("#raid-buffs-bar").show() : $("#stacks-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
-	$("#mitigation-bar").css("left", settings.mitigation.x);
+	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
 	$("#mitigation-bar").css("top", settings.mitigation.y);
 
 	currentSettings = settings;
@@ -543,7 +565,7 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 	let rows = Math.ceil(iconAbilityList.length / columns);	
 	let abilityIndex = 0;
 	for(let i = 1; i <= rows; i++){
-		$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding};"></div>`);
+		$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
 		for (let j = 1; j <= columns; j++){
 			let ability = iconAbilityList[abilityIndex];
 			console.log(ability.ability);
@@ -571,15 +593,28 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 	}
 	if(generateRow){
 		if(row === 0) row = 1;
-		if($(`#${barSelector}-row-${row}`).length === 0) $(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding};"></div>`);
+		if($(`#${barSelector}-row-${row}`).length === 0) $(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${row}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
 	}
 
-	$(`#${barSelector}-row-${row}`).append(`<div id="${barSelector}-${playerIndex}-${ability.id}" class="ability-container" style="padding-right: ${selectedSettings.padding};"></div>`);
-	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-image" class="ability-image" src="https://xivapi.com${ability.icon}" width="${selectedSettings.scale * 40}" height="${selectedSettings.scale * 40}" style="left: ${selectedSettings.scale * 4}; top: ${selectedSettings.scale * 2};" />`);
-	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${selectedSettings.scale * 42}" height="${selectedSettings.scale * 42}" style="left: ${selectedSettings.scale * 3}; top: ${selectedSettings.scale * 1}; display: none;" />`);
-	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<img id="${barSelector}-${playerIndex}-${ability.id}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${selectedSettings.scale * 48}" height="${selectedSettings.scale * 48}" />`);
-	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<span id="${barSelector}-${playerIndex}-${ability.id}-cooldown" class="ability-text text-cooldown" style="padding-top: ${selectedSettings.scale * 8}; padding-left: ${selectedSettings.scale * 2}; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${selectedSettings.scale * 24};"></span>`);
-	$(`#${barSelector}-${playerIndex}-${ability.id}`).append(`<span id="${barSelector}-${playerIndex}-${ability.id}-duration" class="ability-text text-duration" style="padding-top: ${selectedSettings.scale * 8}; padding-left: ${selectedSettings.scale * 2}; --durationOutline: black; --durationColor: orange; --durationFontSize: ${selectedSettings.scale * 24};"></span>`);
+	let iconWidth = selectedSettings.scale * 40;
+	let iconHeight = selectedSettings.scale * 40;
+	let activeWidth = selectedSettings.scale * 42;
+	let activeHeight = selectedSettings.scale * 42;
+	let boxWidth = selectedSettings.scale * 48;
+	let boxHeight = selectedSettings.scale * 48;
+	let overlayWidth = selectedSettings.scale * 48;
+	let overlayHeight = selectedSettings.scale * 48;
+	let lineHeight = selectedSettings.scale * 44;
+
+	let abilitySelector = `${barSelector}-${playerIndex}-${ability.id}`;
+	let containerSelector = `#${abilitySelector}-container`;
+
+	$(`#${barSelector}-row-${row}-box`).append(`<div id="${abilitySelector}-container" class="ability-container" style="width: ${boxWidth}px; height: ${boxHeight}px; padding-right: ${selectedSettings.padding}px;"></div>`);
+	$(containerSelector).append(`<img id="${abilitySelector}-image" class="ability-image" src="${ability.icon}" width="${iconWidth}px" height="${iconHeight}px" style="top: ${selectedSettings.scale * 2}px;" />`);
+	$(containerSelector).append(`<img id="${abilitySelector}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${activeWidth}px" height="${activeHeight}px" style="top: ${selectedSettings.scale * 1}px; display: none;" />`);
+	$(containerSelector).append(`<img id="${abilitySelector}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${overlayWidth}px" height="${overlayHeight}px" />`);
+	$(containerSelector).append(`<span id="${abilitySelector}-cooldown" class="ability-text text-cooldown" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${selectedSettings.scale * 24}px;"></span>`);
+	$(containerSelector).append(`<span id="${abilitySelector}-duration" class="ability-text text-duration" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; --durationOutline: black; --durationColor: orange; --durationFontSize: ${selectedSettings.scale * 24}px;"></span>`);
 }
 
 function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
@@ -623,8 +658,8 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		$(`${selector}-duration`).text(ability.duration);
 		$(`${selector}-cooldown`).hide();
 		if(usingAbilityHolder){
-			let previousIcon = `https://xivapi.com${abilityHolder.icon}`;
-			$(`${selector}-image`).attr("src", `https://xivapi.com${ability.icon}`);
+			let previousIcon = `${abilityHolder.icon}`;
+			$(`${selector}-image`).attr("src", `${ability.icon}`);
 			startAbilityTimer(ability.duration, `${selector}-duration`, previousIcon);
 		}else{
 			startAbilityTimer(ability.duration, `${selector}-duration`);
@@ -978,7 +1013,7 @@ function handleEffect(parameters){
 
 				if(currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled){
 					$(selectorImage).show();
-					$(selectorImage).attr("src", `https://xivapi.com${ability.icon}`);
+					$(selectorImage).attr("src", `${ability.icon}`);
 					$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
 					$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22);
 
@@ -1106,8 +1141,8 @@ function handleSkill(parameters){
 		<div id="stacks-background-3" class="stack-background stack-hidden"><img id="stacks-3" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
 		<div id="stacks-background-4" class="stack-background stack-hidden"><img id="stacks-4" class="stack-color" src="skins/material-dark/images/arrow-fill-empty.png" /></div>
 	</div>
-	<div id="raid-buffs-bar"></div>
-	<div id="mitigation-bar"></div>
+	<div id="raid-buffs-bar" style="position: absolute;"></div>
+	<div id="mitigation-bar" style="position: absolute;"></div>
 	<progress width="154" height="15" id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
 	<progress width="154" height="15" id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
 	<progress width="154" height="15" id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>

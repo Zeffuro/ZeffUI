@@ -5,7 +5,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
         <script src="https://kit.fontawesome.com/2a15db2084.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>  
+        <script src="data/abilities.js"></script>
         <link href="styles/colors.css" rel="stylesheet" />
         <link href="styles/resources.css" rel="stylesheet" />
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -32,8 +33,6 @@
             		setPadding($(`#${$(this).attr("id").replace("Scale", "GrowDirection")}`));
             	});
 
-            	createColorSelects();
-            	createSkinSelects();
             	loadSettings();
             });
 
@@ -66,15 +65,24 @@
 
             function createColorSelects(){
             	for (let colorFilter of getBarColors()){
-            		let color = colorFilter.replace("--filter-", "").replace("-", " ");
-            		$("[id$=Color]").append(`<option value="${colorFilter}">${titleCase(color)}</option>`);
+            		let color = colorFilter.replace("--filter-", "").replace("-", "");
+            		let colorString = language.find(x => x.id === `color${color}`).string;
+            		$("[id$=Color]").append(`<option value="${colorFilter}">${titleCase(colorString)}</option>`);
             	}
             }
 
             function createSkinSelects(){
-            	$("#skinSelect").append(`<option value="default">Default (by Square Enix)</option>`);
-            	$("#skinSelect").append(`<option value="material-dark">Material Dark (by skotlex)</option>`);
-            	$("#skinSelect").append(`<option value="material-discord">Material Discord (by skotlex)</option>`);
+            	$("#skinSelect").append(`<option value="default">${language.find(x => x.id === "skindefault").string}</option>`);
+            	$("#skinSelect").append(`<option value="material-dark">${language.find(x => x.id === "skinmaterialdark").string}</option>`);
+            	$("#skinSelect").append(`<option value="material-discord">${language.find(x => x.id === "skinmaterialdiscord").string}</option>`);
+            }
+
+            function processLanguage(){
+            	$("[id^=lang]").each(function() {
+            		let id = $(this).attr("id").split("_")[1];
+            		let string = language.find(x => x.id === id).string;
+            		$(this).text(string);
+            	});
             }
 
             function loadSkin(){
@@ -98,6 +106,16 @@
             		}else{
             			$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
             		}
+
+            		if($("#language").length == 0){
+            			$("head").append(`<script src="data/language/${settings.language}.js"><\/script>`);
+            		}else{
+            			$("#language").attr("src", `data/language/${settings.language}.js`);
+            		}
+                    
+            		processLanguage();
+            		createColorSelects();
+            		createSkinSelects();
 
             		$("#skinSelect").val(settings.skin);
 
@@ -162,6 +180,7 @@
             		$("#raidbuffHideOutOfCombat").prop("checked", settings.raidbuffs.hideoutofcombat);
             		$("#raidbuffHideWhenSolo").prop("checked", settings.raidbuffs.hidewhensolo);
             		$("#raidbuffAlwaysShow").prop("checked", settings.raidbuffs.alwaysshow);
+            		$("#raidbuffGrowLeft").prop("checked", settings.raidbuffs.growleft);
             		$("#raidbuffColumns").attr("value", settings.raidbuffs.columns);
             		$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
             		$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
@@ -172,6 +191,7 @@
             		$("#mitigationHideOutOfCombat").prop("checked", settings.mitigation.hideoutofcombat);
             		$("#mitigationHideWhenSolo").prop("checked", settings.mitigation.hidewhensolo);
             		$("#mitigationAlwaysShow").prop("checked", settings.mitigation.alwaysshow);
+            		$("#mitigationGrowLeft").prop("checked", settings.mitigation.growleft);
             		$("#mitigationColumns").attr("value", settings.mitigation.columns);
             		$("#mitigationPadding").attr("value", settings.mitigation.padding);
             		$("#mitigationScale").attr("value", settings.mitigation.scale);
@@ -247,6 +267,7 @@
             			hideoutofcombat: $("#raidbuffHideOutOfCombat").is(":checked"),
             			hidewhensolo: $("#raidbuffHideWhenSolo").is(":checked"),
             			alwaysshow: $("#raidbuffAlwaysShow").is(":checked"),
+            			growleft: $("#raidbuffGrowLeft").is(":checked"),
             			columns: $("#raidbuffColumns").val(),
             			padding: $("#raidbuffPadding").val(),
             			scale: $("#raidbuffScale").val(),
@@ -258,6 +279,7 @@
             			hideoutofcombat: $("#mitigationHideOutOfCombat").is(":checked"),
             			hidewhensolo: $("#mitigationHideWhenSolo").is(":checked"),
             			alwaysshow: $("#mitigationAlwaysShow").is(":checked"),
+            			growleft: $("#mitigationGrowLeft").is(":checked"),
             			columns: $("#mitigationColumns").val(),
             			padding: $("#mitigationPadding").val(),
             			scale: $("#mitigationScale").val(),
@@ -265,9 +287,7 @@
             			y: $("#mitigationY").val()
             		},
             	};
-            	console.log(settings);
             	localStorage.setItem("settings", JSON.stringify(settings));
-            	console.log(JSON.parse(localStorage.getItem("settings")));
             	window.close();
             }
         </script>
@@ -290,7 +310,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="page-header">
-                        <h1 id="settings">Settings</h1>
+                        <h1 id="lang_settingsheader">Settings</h1>
                     </div>
                 </div>
             </div>
@@ -300,13 +320,13 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
-                        <div class="card-header">
+                        <div id="lang_generaloptions" class="card-header">
                             General Options
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can find general options for ZeffUI.</p>
+                            <p id="lang_generaldescription" class="card-text">Here you can find general options for ZeffUI.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="skinSelect">Skin</label>
+                                <label id="lang_skin" class="control-label col-sm-4" for="skinSelect">Skin</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="skinSelect" onchange="loadSkin()">
                                     </select>
@@ -325,25 +345,25 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="healthBarEnabled" checked="">
-                                <label class="custom-control-label" for="healthBarEnabled">Healthbar</label>
+                                <label id="lang_healthbar" class="custom-control-label" for="healthBarEnabled">Healthbar</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your healthbar.</p>
+                            <p id="lang_healthbardescription" class="card-text">Here you can set your options for your healthbar.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="healthX">Position X</label>
+                                <label id="lang_posx" class="control-label col-sm-4" for="healthX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="healthY">Position Y</label>
+                                <label id="lang_posy" class="col-sm-4" for="healthY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="healthScale">Scale</label>
+                                <label id="lang_scale" class="col-sm-4" for="healthScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="healthScale">
                                 </div>
@@ -351,30 +371,30 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="healthHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="healthHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat" class="custom-control-label" for="healthHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="healthTextEnabled" checked="">
-                                    <label class="custom-control-label" for="healthTextEnabled">Health Text</label>
+                                    <label id="lang_healthtext" class="custom-control-label" for="healthTextEnabled">Health Text</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="healthFormat">Text Format</label>
+                                <label id="lang_textformat" class="control-label col-sm-4" for="healthFormat">Text Format</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthFormat">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="healthColor">Color</label>
+                                <label id="lang_color" class="control-label col-sm-4" for="healthColor">Color</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="healthColor">
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-sm-4 text-right" for="healthExample">Example</label>
+                                <label id="lang_example" class="control-label col-sm-4 text-right" for="healthExample">Example</label>
                                 &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="healthExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
                             </div>                            
                         </div>
@@ -385,25 +405,25 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="manaBarEnabled" checked="">
-                                <label class="custom-control-label" for="manaBarEnabled">Manabar</label>
+                                <label id="lang_manabar" class="custom-control-label" for="manaBarEnabled">Manabar</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your manabar.</p>
+                            <p id="lang_manabardescription" class="card-text">Here you can set your options for your manabar.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="manaX">Position X</label>
+                                <label id="lang_posx_1" class="control-label col-sm-4" for="manaX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="manaY">Position Y</label>
+                                <label id="lang_posy_1" class="col-sm-4" for="manaY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="manaScale">Scale</label>
+                                <label id="lang_scale_1" class="col-sm-4" for="manaScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="manaScale">
                                 </div>
@@ -411,30 +431,30 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="manaHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="manaHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_1" class="custom-control-label" for="manaHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="manaTextEnabled" checked="">
-                                    <label class="custom-control-label" for="manaTextEnabled">Mana Text</label>
+                                    <label id="lang_manatext" class="custom-control-label" for="manaTextEnabled">Mana Text</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="manaFormat">Text Format</label>
+                                <label id="lang_textformat_1" class="control-label col-sm-4" for="manaFormat">Text Format</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="manaFormat">
                                 </div>                                    
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="manaColor">Color</label>
+                                <label id="lang_color_1" class="control-label col-sm-4" for="manaColor">Color</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="manaColor" >
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-sm-4 text-right" for="manaExample">Example</label>
+                                <label id="lang_example_1" class="control-label col-sm-4 text-right" for="manaExample">Example</label>
                                 &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
                             </div>
                         </div>
@@ -447,42 +467,42 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="buffBarEnabled" checked="">
-                                <label class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
+                                <label id="lang_bufftimers" class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your personal buffs.</p>
+                            <p id="lang_bufftimersdescription" class="card-text">Here you can set your options for your personal buffs.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="buffX">Position Anchor X</label>
+                                <label id="lang_posx_2" class="control-label col-sm-4" for="buffX">Position Anchor X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="buffY">Position Anchor Y</label>
+                                <label id="lang_posy_2" class="col-sm-4" for="buffY">Position Anchor Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="buffScale">Scale</label>
+                                <label id="lang_scale_2" class="col-sm-4" for="buffScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="buffScale">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="buffGrowDirection">Grow Direction</label>
+                                <label id="lang_growdirection" class="control-label col-sm-4" for="buffGrowDirection">Grow Direction</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="buffGrowDirection">
-                                        <option selected="" value="1">Down</option>
-                                        <option value="2">Up</option>
-                                        <option value="3">Left</option>
-                                        <option value="3">Right</option>
+                                        <option id="lang_down" selected="" value="1">Down</option>
+                                        <option id="lang_up" value="2">Up</option>
+                                        <option id="lang_left" value="3">Left</option>
+                                        <option id="lang_right" value="3">Right</option>
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="buffPadding">Padding</label>
+                                <label id="lang_padding" class="col-sm-4" for="buffPadding">Padding</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffPadding">
                                 </div>
@@ -490,29 +510,29 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="buffImageEnabled" checked="false">
-                                    <label class="custom-control-label" for="buffImageEnabled">Image</label>
+                                    <label id="lang_image" class="custom-control-label" for="buffImageEnabled">Image</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="buffHideWhenDroppedOff" checked="">
-                                    <label class="custom-control-label" for="buffHideWhenDroppedOff">Hide when dropped off</label>
+                                    <label id="lang_droppedoff" class="custom-control-label" for="buffHideWhenDroppedOff">Hide when dropped off</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="buffHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="buffHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_2" class="custom-control-label" for="buffHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="buffTextEnabled" checked="">
-                                    <label class="custom-control-label" for="buffTextEnabled">Buff Text</label>
+                                    <label id="lang_bufftext" class="custom-control-label" for="buffTextEnabled">Buff Text</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="buffFormat">Text Format</label>
+                                <label id="lang_textformat_2" class="control-label col-sm-4" for="buffFormat">Text Format</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="buffFormat">
                                 </div>                                    
@@ -525,42 +545,42 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="dotBarEnabled" checked="">
-                                <label class="custom-control-label" for="dotBarEnabled">DoT Timers</label>
+                                <label id="lang_dottimers" class="custom-control-label" for="dotBarEnabled">DoT Timers</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your personal debuffs.</p>
+                            <p id="lang_dottimersdescription" class="card-text">Here you can set your options for your personal debuffs.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="dotX">Position Anchor X</label>
+                                <label id="lang_posx_3" class="control-label col-sm-4" for="dotX">Position Anchor X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="dotY">Position Anchor Y</label>
+                                <label id="lang_posy_3" class="col-sm-4" for="dotY">Position Anchor Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="dotScale">Scale</label>
+                                <label id="lang_scale_3" class="col-sm-4" for="dotScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="dotScale">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="dotGrowDirection">Grow Direction</label>
+                                <label id="lang_growdirection_1" class="control-label col-sm-4" for="dotGrowDirection">Grow Direction</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="dotGrowDirection">
-                                        <option selected="" value="1">Down</option>
-                                        <option value="2">Up</option>
-                                        <option value="3">Left</option>
-                                        <option value="3">Right</option>
+                                        <option id="lang_down_1" selected="" value="1">Down</option>
+                                        <option id="lang_up_1" value="2">Up</option>
+                                        <option id="lang_left_1" value="3">Left</option>
+                                        <option id="lang_right_1" value="3">Right</option>
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="dotPadding">Padding</label>
+                                <label id="lang_padding_1" class="col-sm-4" for="dotPadding">Padding</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotPadding">
                                 </div>
@@ -568,35 +588,35 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="dotImageEnabled">
-                                    <label class="custom-control-label" for="dotImageEnabled">Image</label>
+                                    <label id="lang_image_1" class="custom-control-label" for="dotImageEnabled">Image</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="multiDotEnabled">
-                                    <label class="custom-control-label" for="multiDotEnabled">MultiDoT</label>
+                                    <label id="lang_multidot" class="custom-control-label" for="multiDotEnabled">MultiDoT (not implemented yet)</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="dotHideWhenDroppedOff" checked="">
-                                    <label class="custom-control-label" for="dotHideWhenDroppedOff">Hide when dropped off</label>
+                                    <label id="lang_droppedoff_1" class="custom-control-label" for="dotHideWhenDroppedOff">Hide when dropped off</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="dotHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="dotHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_3" class="custom-control-label" for="dotHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="dotTextEnabled" checked="">
-                                    <label class="custom-control-label" for="dotTextEnabled">DoT Text</label>
+                                    <label id="lang_dottext" class="custom-control-label" for="dotTextEnabled">DoT Text</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="dotFormat">Text Format</label>
+                                <label id="lang_textformat_3" class="control-label col-sm-4" for="dotFormat">Text Format</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="dotFormat">
                                 </div>                                    
@@ -611,25 +631,25 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled" checked="">
-                                <label class="custom-control-label" for="pulltimerBarEnabled">Pulltimers</label>
+                                <label id="lang_pulltimers" class="custom-control-label" for="pulltimerBarEnabled">Pulltimers</label>
                             </div>
                         </div>
                         <div class="card-body">
                             <p class="card-text">Here you can set your options for the pulltimer.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="pulltimerX">Position X</label>
+                                <label id="lang_posx_4" class="control-label col-sm-4" for="pulltimerX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="pulltimerY">Position Y</label>
+                                <label id="lang_posy_4" class="col-sm-4" for="pulltimerY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="pulltimerScale">Scale</label>
+                                <label id="lang_scale_4" class="col-sm-4" for="pulltimerScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="pulltimerScale">
                                 </div>
@@ -637,24 +657,24 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="pulltimerTextEnabled" checked="">
-                                    <label class="custom-control-label" for="pulltimerTextEnabled">Pulltimer Text</label>
+                                    <label id="lang_pulltimertext" class="custom-control-label" for="pulltimerTextEnabled">Pulltimer Text</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="pulltimerFormat">Text Format</label>
+                                <label id="lang_textformat_4" class="control-label col-sm-4" for="pulltimerFormat">Text Format</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFormat">
                                 </div>                                    
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="pulltimerColor">Color</label>
+                                <label id="lang_color_2" class="control-label col-sm-4" for="pulltimerColor">Color</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="pulltimerColor" >
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-sm-4 text-right" for="pulltimerExample">Example</label>
+                                <label id="lang_example_2" class="control-label col-sm-4 text-right" for="pulltimerExample">Example</label>
                                 &nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="pulltimerExample" class="styled-bar" value="5800" max="10000" data-label="5.8"></progress>
                             </div>
                         </div>
@@ -665,25 +685,25 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="stacksBarEnabled" checked="">
-                                <label class="custom-control-label" for="stacksBarEnabled">Stacks Bar</label>
+                                <label id="lang_stacksbar" class="custom-control-label" for="stacksBarEnabled">Stacks Bar</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your personal stacks.</p>
+                            <p id="stacksbardescription" class="card-text">Here you can set your options for your personal stacks.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="stacksX">Position X</label>
+                                <label id="lang_posx_5" class="control-label col-sm-4" for="stacksX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="stacksY">Position Y</label>
+                                <label id="lang_posy_5" class="col-sm-4" for="stacksY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="stacksScale">Scale</label>
+                                <label id="lang_scale_5" class="col-sm-4" for="stacksScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="stacksScale">
                                 </div>
@@ -691,18 +711,18 @@
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="stacksHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="stacksHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_4" class="custom-control-label" for="stacksHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="stacksColor">Color</label>
+                                <label id="lang_color_3" class="control-label col-sm-4" for="stacksColor">Color</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="stacksColor">
                                     </select>
                                 </div>                                    
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-sm-4 text-right" for="stacksExample">Example</label>
+                                <label id="lang_example_3" class="control-label col-sm-4 text-right" for="stacksExample">Example</label>
                                 &nbsp;&nbsp;&nbsp;
                                 <div id="stacksExample" data-label="Job Stacks Anchor" style="padding-left: 10px">
                                     <div class="stack-background"><img id="stacks-1" class="stack-color" src="skins/default/images/arrow-fill.png" /></div>
@@ -721,57 +741,63 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="raidbuffBarEnabled" checked="">
-                                <label class="custom-control-label" for="raidbuffBarEnabled">Raidbuffs</label>
+                                <label id="lang_raidbuffs" class="custom-control-label" for="raidbuffBarEnabled">Raidbuffs</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only).</p>
+                            <p id="lang_raidbuffdescription" class="card-text">Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only).</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="raidbuffX">Position X</label>
+                                <label id="lang_posx_6" class="control-label col-sm-4" for="raidbuffX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="raidbuffY">Position Y</label>
+                                <label id="lang_posy_6" class="col-sm-4" for="raidbuffY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="raidbuffPadding">Padding</label>
+                                <label id="lang_padding_2" class="col-sm-4" for="raidbuffPadding">Padding</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffPadding">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="raidbuffScale">Scale</label>
+                                <label id="lang_scale_6" class="col-sm-4" for="raidbuffScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="raidbuffScale">
                                 </div>
                             </div>                            
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="raidbuffColumns">Columns per row</label>
+                                <label id="lang_columns" class="col-sm-4" for="raidbuffColumns">Columns per row</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffColumns">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft" checked="">
+                                    <label id="lang_growleft" class="custom-control-label" for="raidbuffGrowLeft">Grow icons to the left</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="raidbuffHideWhenSolo" checked="">
-                                    <label class="custom-control-label" for="raidbuffHideWhenSolo">Hide when not in Party</label>
+                                    <label id="lang_hidesolo" class="custom-control-label" for="raidbuffHideWhenSolo">Hide when not in Party</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="raidbuffHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="raidbuffHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_5" class="custom-control-label" for="raidbuffHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow" checked="">
-                                    <label class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
+                                    <label id="lang_alwaysshow" class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
                             </div>
                         </div>
@@ -782,57 +808,63 @@
                         <div class="card-header">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="mitigationBarEnabled" checked="">
-                                <label class="custom-control-label" for="mitigationBarEnabled">Mitigations</label>
+                                <label id="lang_mitigations" class="custom-control-label" for="mitigationBarEnabled">Mitigations</label>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">Here you can set your options for your mitigation bar.</p>
+                            <p id="lang_mitigationdescription" class="card-text">Here you can set your options for your mitigation bar.</p>
                             <div class="form-group row text-right">
-                                <label class="control-label col-sm-4" for="mitigationX">Position X</label>
+                                <label id="lang_posx_7" class="control-label col-sm-4" for="mitigationX">Position X</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationX">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="mitigationY">Position Y</label>
+                                <label id="lang_posy_7" class="col-sm-4" for="mitigationY">Position Y</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationY">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="mitigationPadding">Padding</label>
+                                <label id="lang_padding_3" class="col-sm-4" for="mitigationPadding">Padding</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationPadding">
                                 </div>
                             </div>
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="mitigationScale">Scale</label>
+                                <label id="lang_scale_7" class="col-sm-4" for="mitigationScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="mitigationScale">
                                 </div>
                             </div>                            
                             <div class="form-group row text-right">
-                                <label class="col-sm-4" for="mitigationColumns">Columns per row</label>
+                                <label id="lang_columns_1" class="col-sm-4" for="mitigationColumns">Columns per row</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationColumns">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationGrowLeft" checked="">
+                                    <label id="lang_growleft_1" class="custom-control-label" for="mitigationGrowLeft">Grow abilities to the left</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="mitigationHideWhenSolo" checked="">
-                                    <label class="custom-control-label" for="mitigationHideWhenSolo">Hide when not in Party</label>
+                                    <label id="lang_hidesolo_1" class="custom-control-label" for="mitigationHideWhenSolo">Hide when not in Party</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="mitigationHideOutOfCombat" checked="">
-                                    <label class="custom-control-label" for="mitigationHideOutOfCombat">Hide out of Combat</label>
+                                    <label id="lang_hideoutofcombat_6" class="custom-control-label" for="mitigationHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow" checked="">
-                                    <label class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
+                                    <label id="lang_alwaysshow_1" class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
                             </div>
                         </div>
@@ -841,7 +873,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="saveSettings()">Save Settings</button>
+                    <button id="lang_savesettings" type="button" class="btn btn-primary btn-lg" onclick="saveSettings()">Save Settings</button>
                 </div>                
             </div>
             <div class="row">
