@@ -12,6 +12,8 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
         <script>
+            var currentSettings = null;
+
             $(function() {
             	$("[id$=Color]").each(function () {
             		setExampleColor(this);
@@ -76,6 +78,12 @@
             	$("#skinSelect").append(`<option value="material-dark">${language.find(x => x.id === "skinmaterialdark").string}</option>`);
             	$("#skinSelect").append(`<option value="material-discord">${language.find(x => x.id === "skinmaterialdiscord").string}</option>`);
             }
+			
+            function createOverrideSelects(){
+            	for (let ability of abilityList){
+            		$("#overrideSelect").append(`<option value="${ability.id}">${ability.job}: ${ability.name} (${ability.type})</option>`);
+            	}
+            }
 
             function processLanguage(){
             	$("[id^=lang_]").each(function() {
@@ -90,12 +98,17 @@
             	});
             }
 
+            function loadAbility(){
+
+            }
+
             function loadSkin(){
             	$("#skin").attr("href", `skins/${$("#skinSelect").val()}/styles/resources.css`);
             }
 
             function loadLanguage(){
             	$("#language").attr("src", `data/language/${$("#langSelect").val()}.js`);
+            	saveSettings(false);
             }
 
             function getBarColors(){
@@ -108,7 +121,8 @@
 
             function loadSettings(){
             	if(localStorage.getItem("settings") !== null){
-            		let settings = JSON.parse(localStorage.getItem("settings"));                    
+            		let settings = JSON.parse(localStorage.getItem("settings"));
+            		currentSettings = settings;
 
             		if($("#skin").length == 0){
             			$("head").append(`<link id="skin" rel="stylesheet" href="skins/${settings.skin}/styles/resources.css">`);
@@ -117,6 +131,7 @@
             		}
 
             		if($("#language").length == 0){
+            			// eslint-disable-next-line no-useless-escape
             			$("head").append(`<script src="data/language/${settings.language}.js"><\/script>`);
             		}else{
             			$("#language").attr("src", `data/language/${settings.language}.js`);
@@ -125,6 +140,7 @@
             		processLanguage();
             		createColorSelects();
             		createSkinSelects();
+            		createOverrideSelects();
 
             		$("#skinSelect").val(settings.skin);
             		$("#langSelect").val(settings.language);
@@ -210,10 +226,11 @@
             	}
             }
 
-            function saveSettings(){
+            function saveSettings(closeWindow = true){
             	let settings = {
             		skin: $("#skinSelect").val(),
             		language: $("#langSelect").val(),
+            		override: currentSettings.override,
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
             			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
@@ -299,7 +316,10 @@
             		},
             	};
             	localStorage.setItem("settings", JSON.stringify(settings));
-            	window.close();
+            	if(closeWindow)	
+            		window.close();
+            	else
+            		location.reload();
             }
         </script>
         <style>
@@ -890,6 +910,25 @@
                                     <input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow" checked="">
                                     <label id="lang_alwaysshow_1" class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="row">
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div id="lang_overrideoptions" class="card-header">
+                            Override Options
+                        </div>
+                        <div class="card-body">
+                            <p id="lang_overridedescription" class="card-text">Here you can change specific default settings for all abilities.</p>
+                            <div class="form-group row text-right">
+                                <label id="lang_ability" class="control-label col-sm-4" for="overrideSelect">Ability</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="overrideSelect" onchange="loadAbility()">                                        
+                                    </select>
+                                </div>                                    
                             </div>
                         </div>
                     </div>
