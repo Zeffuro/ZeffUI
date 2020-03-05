@@ -258,7 +258,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.raidbuffs, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.raidbuffs, "hidewhensolo", false);
 	checkAndInitializeSetting(settings.raidbuffs, "growleft", false);
-	checkAndInitializeSetting(settings.raidbuffs, "padding", 5);
+	checkAndInitializeSetting(settings.raidbuffs, "padding", 0);
 	checkAndInitializeSetting(settings.raidbuffs, "scale", 1);
 	checkAndInitializeSetting(settings.raidbuffs, "columns", 8);
 	checkAndInitializeSetting(settings.raidbuffs, "x", 0);
@@ -277,9 +277,8 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.mitigation, "hidewhensolo", false);
 	checkAndInitializeSetting(settings.mitigation, "growleft", false);
-	checkAndInitializeSetting(settings.mitigation, "padding", 5);
+	checkAndInitializeSetting(settings.mitigation, "padding", 0);
 	checkAndInitializeSetting(settings.mitigation, "scale", 1);
-	checkAndInitializeSetting(settings.mitigation, "padding", 5);
 	checkAndInitializeSetting(settings.mitigation, "columns", 8);
 	checkAndInitializeSetting(settings.mitigation, "x", 0);
 	checkAndInitializeSetting(settings.mitigation, "y", 240);
@@ -824,6 +823,7 @@ function onLogEvent(e){
 			if(regex.test(logLine)){
 				let matches = regexObject.matches;
 				for(let match of Object.keys(matches)){
+					//console.log(logLine);
 					let matchObject = matches[match];
 					let innerRegex = new RegExp(matchObject.regex);
 					let regexMatch = innerRegex.exec(logLine);
@@ -913,7 +913,7 @@ function handleEffect(parameters){
 	let onYou = (parameters.target === currentPlayer.name);
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
-	for (ability of abilityList.filter(x => x[`${name}_${currentSettings.language}`] == parameters.effect)){
+	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`] == parameters.effect)){
 		if(ability === undefined) return;
 
 		if(ability.type === "RaidBuff"){
