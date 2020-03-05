@@ -78,15 +78,24 @@
             }
 
             function processLanguage(){
-            	$("[id^=lang]").each(function() {
+            	$("[id^=lang_]").each(function() {
             		let id = $(this).attr("id").split("_")[1];
-            		let string = language.find(x => x.id === id).string;
-            		$(this).text(string);
+            		let object = language.find(x => x.id === id);
+            		if(object != null){
+            			let string = language.find(x => x.id === id).string;
+            			$(this).text(string);
+            		}else{
+            			console.log(`Missing translation for ${id}`);
+            		}
             	});
             }
 
             function loadSkin(){
             	$("#skin").attr("href", `skins/${$("#skinSelect").val()}/styles/resources.css`);
+            }
+
+            function loadLanguage(){
+            	$("#language").attr("src", `data/language/${$("#langSelect").val()}.js`);
             }
 
             function getBarColors(){
@@ -118,6 +127,7 @@
             		createSkinSelects();
 
             		$("#skinSelect").val(settings.skin);
+            		$("#langSelect").val(settings.language);
 
             		$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
             		$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
@@ -203,6 +213,7 @@
             function saveSettings(){
             	let settings = {
             		skin: $("#skinSelect").val(),
+            		language: $("#langSelect").val(),
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
             			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
@@ -325,6 +336,19 @@
                         </div>
                         <div class="card-body">
                             <p id="lang_generaldescription" class="card-text">Here you can find general options for ZeffUI.</p>
+                            <div class="form-group row text-right">
+                                <label id="lang_language" class="control-label col-sm-4" for="langSelect">Language</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="langSelect" onchange="loadLanguage()">                                        
+                                        <option selected="" value="en">English (default)</option>
+                                        <option value="de">Deutsch</option>
+                                        <option value="fr">Français</option>
+                                        <option value="jp">日本語</option>
+                                        <option value="cn">普通话</option>
+                                        <option value="kr">한국어</option>
+                                    </select>
+                                </div>                                    
+                            </div>
                             <div class="form-group row text-right">
                                 <label id="lang_skin" class="control-label col-sm-4" for="skinSelect">Skin</label>
                                 <div class="col-sm-6">

@@ -915,7 +915,7 @@ function handleEffect(parameters){
 	let onYou = (parameters.target === currentPlayer.name);
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
-	for (ability of abilityList.filter(x => x.name == parameters.effect)){
+	for (ability of abilityList.filter(x => x[`${name}_${currentSettings.language}`] == parameters.effect)){
 		if(ability === undefined) return;
 
 		if(ability.type === "RaidBuff"){
@@ -1051,7 +1051,6 @@ function handleEffect(parameters){
 		}
 	}
 }
-
 
 function handleSkill(parameters){
 	let byYou = (parameters.player === currentPlayer.name);
