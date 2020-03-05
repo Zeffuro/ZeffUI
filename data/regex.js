@@ -96,7 +96,7 @@ var regexList =
 		regex: "] 1A:",
 		matches: [
 			{
-				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>[\\w-'èéêîïôàæûç, ]{1,99}) gains the effect of (?<effect>[-a-zA-Z' ]{2,31}) from (?<player>[a-zA-Z-' ]{2,31}) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\\.",
+				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[a-zA-Z-' ]{2,31}) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\\.",
 				"function": "handleEffect"
 			}
 		]

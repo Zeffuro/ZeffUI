@@ -163,7 +163,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings, "manabar", {});
 	checkAndInitializeSetting(settings.manabar, "enabled", true);
 	checkAndInitializeSetting(settings.manabar, "hideoutofcombat", false);
-	checkAndInitializeSetting(settings.manabar, "textenabled", false);
+	checkAndInitializeSetting(settings.manabar, "textenabled", true);
 	checkAndInitializeSetting(settings.manabar, "color", "--filter-light-pink");
 	checkAndInitializeSetting(settings.manabar, "scale", 1);
 	checkAndInitializeSetting(settings.manabar, "x", 0);
@@ -915,7 +915,6 @@ function handleEffect(parameters){
 	let ability = undefined;
 	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`] == parameters.effect)){
 		if(ability === undefined) return;
-
 		if(ability.type === "RaidBuff"){
 			if(ability.name === "Standard Step" || ability.name === "Technical Step") return;
 			if(ability.hasOwnProperty("extra")){
