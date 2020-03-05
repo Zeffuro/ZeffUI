@@ -508,7 +508,6 @@ function generateRaidBuffs(){
 	for(let partyMember of currentPartyList){
 		for(let ability of abilityList.filter(x => x.type === "RaidBuff" && x.job === partyMember.job.name && x.level <= currentPlayer.level)){
 			let pushAbility = true;
-			console.log(ability);
 			if(ability.hasOwnProperty("extra")){
 				if(ability.extra.hasOwnProperty("is_card") || ability.extra.hasOwnProperty("is_song") || ability.extra.hasOwnProperty("is_ss") || ability.extra.hasOwnProperty("is_ts")) pushAbility = false;
 			}
@@ -534,7 +533,6 @@ function generateMitigation(){
 		let pushAbility = false;
 		if(ability.job === currentJob.name || ability.job === currentJob.type){
 			pushAbility = true;
-			console.log(ability);
 		}
 		if(pushAbility){
 			mitigationAbilityList.push({
@@ -568,7 +566,6 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 		$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
 		for (let j = 1; j <= columns; j++){
 			let ability = iconAbilityList[abilityIndex];
-			console.log(ability.ability);
 			generateAbilityIcon(ability.playerIndex, ability.ability, i);			
 			if(abilityIndex == iconAbilityList.length - 1) break;
 			abilityIndex++;
@@ -816,20 +813,16 @@ function onPlayerChangedEvent(e){
 
 function onLogEvent(e){
 	for (let logLine of e.detail.logs){
-		//console.log(logLine);
 		for(let logType of Object.keys(regexList)){
 			let regexObject = regexList[logType];
 			let regex = new RegExp(regexObject.regex);
 			if(regex.test(logLine)){
-				console.log(logLine);
 				let matches = regexObject.matches;
 				for(let match of Object.keys(matches)){
-					//console.log(logLine);
 					let matchObject = matches[match];
 					let innerRegex = new RegExp(matchObject.regex);
 					let regexMatch = innerRegex.exec(logLine);
 					if(regexMatch !== null){
-						console.log(logLine);
 						let logFunction = window[matchObject.function];
 						if (typeof logFunction === "function") logFunction(regexMatch.groups);
 					}
@@ -866,7 +859,6 @@ function generatePartyList(party){
 			worldId: partyMember.worldId
 		});
 	}
-	console.log(currentPartyList);
 	if(currentPartyList.length != 0) generateRaidBuffs();
 }
 
@@ -945,7 +937,6 @@ function handleEffect(parameters){
 						startAbilityIconTimers(playerIndex, abilityList.find(x => x.id === ability.extra.shares_cooldown), false);
 					}
 				}else{
-					console.log(parameters);
 					startAbilityIconTimers(playerIndex, ability, true);
 				}
 			}
@@ -1077,7 +1068,6 @@ function handleSkill(parameters){
 			}, 1000);
 		}
 		if(ability.type === "RaidBuff"){
-			console.log(ability);
 			if(ability.hasOwnProperty("extra")){
 				if(ability.extra.is_card){
 					let abilityHolder = abilityList.find(x => x.name === "Play");
