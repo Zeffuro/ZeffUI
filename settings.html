@@ -81,8 +81,11 @@
 			
             function createOverrideSelects(){
             	for (let ability of abilityList){
-            		$("#overrideSelect").append(`<option value="${ability.id}">${ability.job}: ${ability.name} (${ability.type})</option>`);
+            		let override = currentSettings.override.abilities.find(x => x.id == ability.id);
+            		$("#overrideSelect").append(`<option value="${ability.id}">${override != null ? "[Override] " : "" }${ability.job}: ${ability.name} (${ability.type})</option>`);
             	}
+            	loadAbility();
+            	toggleOverride();
             }
 
             function processLanguage(){
@@ -98,8 +101,91 @@
             	});
             }
 
-            function loadAbility(){
+            function toggleOverride(){
+            	let checked = $("#abilityOverrideEnabled").is(":checked");
+            	let id = $("#overrideSelect").val();
+            	let override = currentSettings.override.abilities.find(x => x.id == id);
+            	
+            	if(checked){
+            		$("#abilityEnabled").removeAttr("disabled");
+            		$("#abilityColor").removeAttr("disabled");
+            		$("#abilityDuration").removeAttr("disabled");
+            		$("#abilityCooldown").removeAttr("disabled");
+            		if (override == null) currentSettings.override.abilities.push(abilityList.find(x => x.id == id));
+            	}else{
+            		$("#abilityEnabled").attr("disabled","disabled");
+            		$("#abilityColor").attr("disabled","disabled");
+            		$("#abilityDuration").attr("disabled","disabled");
+            		$("#abilityCooldown").attr("disabled","disabled");
+            		currentSettings.override.abilities = currentSettings.override.abilities.filter(x => x.id != id);
+            	}
+            }
 
+            function saveOverride(type){
+            	let id = $("#overrideSelect").val();
+            	switch(type){
+            	case "color":
+            		currentSettings.override.abilities.find(x => x.id == id).color = $("#abilityColor").val();
+            		break;
+            	case "enabled":
+            		currentSettings.override.abilities.find(x => x.id == id).enabled = $("#abilityEnabled").is(":checked");
+            		break;
+            	case "cooldown":
+            		currentSettings.override.abilities.find(x => x.id == id).cooldown = $("#abilityCooldown").val();
+            		break;
+            	case "duration":
+            		currentSettings.override.abilities.find(x => x.id == id).duration = $("#abilityDuration").val();
+            		break;
+            	}
+            }
+
+            function loadAbility(){
+            	let id = $("#overrideSelect").val();
+            	let ability = abilityList.find(x => x.id == id);
+            	let override = currentSettings.override.abilities.find(x => x.id == id);
+            	if (override != null) ability = override;
+            	$("#abilityEnabled").prop("checked", ability.enabled);
+            	$("#abilityOverrideEnabled").prop("checked", override != null);
+            	switch(ability.type){
+            	case "Buff":
+            		$("#abilityColorDiv").show();
+            		$("#abilityColor").val(ability.color);
+            		$("#abilityDurationDiv").hide();
+            		$("#abilityCooldownDiv").hide();
+            		break;
+            	case "DoT":
+            		$("#abilityColorDiv").show();
+            		$("#abilityColor").val(ability.color);
+            		$("#abilityDurationDiv").hide();
+            		$("#abilityCooldownDiv").hide();
+            		break;
+            	case "Stacks":
+            		$("#abilityColorDiv").show();
+            		$("#abilityColor").val(ability.color);
+            		$("#abilityDurationDiv").hide();
+            		$("#abilityCooldownDiv").hide();
+            		break;
+            	case "StackSpender":
+            		$("#abilityColorDiv").hide();
+            		$("#abilityDurationDiv").hide();
+            		$("#abilityCooldownDiv").hide();
+            		break;
+            	case "RaidBuff":
+            		$("#abilityColorDiv").hide();
+            		$("#abilityDurationDiv").show();
+            	    $("#abilityDuration").val(ability.duration);
+            		$("#abilityCooldownDiv").show();
+            	    $("#abilityCooldown").val(ability.cooldown);
+            		break;
+            	case "Mitigation":
+            		$("#abilityColorDiv").hide();
+            		$("#abilityDurationDiv").show();
+            	    $("#abilityDuration").val(ability.duration);
+            		$("#abilityCooldownDiv").show();
+            	    $("#abilityCooldown").val(ability.cooldown);
+            		break;
+            	}
+            	toggleOverride();
             }
 
             function loadSkin(){
@@ -928,7 +1014,38 @@
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="overrideSelect" onchange="loadAbility()">                                        
                                     </select>
-                                </div>                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="abilityOverrideEnabled" checked="" onchange="toggleOverride()">
+                                    <label id="lang_overridedefaults" class="custom-control-label" for="abilityOverrideEnabled">Override Defaults</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="abilityEnabled" checked="" onchange="saveOverride('enabled')">
+                                    <label id="lang_abilityenabled" class="custom-control-label" for="abilityEnabled">Ability Enabled</label>
+                                </div>
+                            </div>
+                            <div id="abilityColorDiv" class="form-group row text-right">
+                                <label id="lang_color_4" class="control-label col-sm-4" for="abilityColor">Color</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="abilityColor" onchange="saveOverride('color')">
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="abilityDurationDiv" class="form-group row text-right">
+                                <label id="lang_duration" class="control-label col-sm-4" for="abilityDuration">Duration</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityDuration" onchange="saveOverride('duration')">
+                                </div>
+                            </div>
+                            <div id="abilityCooldownDiv" class="form-group row text-right">
+                                <label id="lang_cooldown" class="control-label col-sm-4" for="abilityCooldown">Cooldown</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityCooldown" onchange="saveOverride('cooldown')">
+                                </div>
                             </div>
                         </div>
                     </div>
