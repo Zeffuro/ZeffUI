@@ -979,26 +979,26 @@ function handleEffect(parameters){
 
 				$(targetBarSelector).attr("data-font-size", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 10);
 
-				switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
-				case "1": {
+				switch(parseInt(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection)){
+				case 1: {
 					// Down					
 					$(selectorBar).css("left", $(targetBarSelector).css("left"));
 					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 					break;
 				}
-				case "2": {
+				case 2: {
 					// Up
 					$(selectorBar).css("left", $(targetBarSelector).css("left"));
 					$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 					break;
 				}
-				case "3": {
+				case 3: {
 					// Left
 					$(selectorBar).css("top", $(targetBarSelector).css("top"));
 					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
 					break;
 				}
-				case "4": {
+				case 4: {
 					// Right
 					$(selectorBar).css("top", $(targetBarSelector).css("top"));
 					$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
@@ -1012,26 +1012,26 @@ function handleEffect(parameters){
 					$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
 					$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22);
 
-					switch(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection){
-					case "1": {
+					switch(parseInt(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection)){
+					case 1: {
 						// Down					
 						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
 						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						break;
 					}
-					case "2": {
+					case 2: {
 						// Up
 						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
 						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						break;
 					}
-					case "3": {
+					case 3: {
 						// Left
 						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						$(selectorImage).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
 						break;
 					}
-					case "4": {
+					case 4: {
 						// Right
 						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4));
 						$(selectorImage).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20));
