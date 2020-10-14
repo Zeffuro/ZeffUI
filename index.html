@@ -1,4 +1,4 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
 <script src="https://kit.fontawesome.com/2a15db2084.js"></script>
@@ -41,8 +41,6 @@ var activeMitigations = new Map();
 var activeCountdowns = new Map();
 
 var isDraggingRightElement = false;
-
-//var canvas = $("#grid").attr({width: window.innerWidth, height: window.innerHeight}); d
 
 $(function() {
 	loadSettings();
@@ -283,7 +281,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "x", 0);
 	checkAndInitializeSetting(settings.mitigation, "y", 240);
 	
-	settings.mitigation.enabled ? $("#raid-buffs-bar").show() : $("#stacks-bar").hide();
+	settings.mitigation.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
 	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
