@@ -281,7 +281,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "x", 0);
 	checkAndInitializeSetting(settings.mitigation, "y", 240);
 	
-	settings.mitigation.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
+	settings.mitigation.enabled ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
 	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
