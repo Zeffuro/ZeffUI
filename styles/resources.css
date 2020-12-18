@@ -1,3 +1,7 @@
+* {
+	font-family: var(--defaultFont);
+}
+
 .bar {
 	position: absolute;
 	width: 154px;
@@ -50,14 +54,12 @@
 .text-duration {
 	color: var(--durationColor);
 	font-size: var(--durationFontSize);
-	font-family: Arial, Times, serif;
 	font-weight: bold;
 	-webkit-text-stroke: 1.5px var(--durationOutline);
 }
 .text-cooldown {
 	color: var(--cooldownColor);
 	font-size: var(--cooldownFontSize);
-	font-family: Arial, Times, serif;
 	font-weight: bold;
 	-webkit-text-stroke: 1.5px var(--cooldownOutline);
 }
@@ -110,6 +112,7 @@
 }
 #health-bar:after {
 	font-size: var(--healthFontSize);
+	font-family: var(--healthFont);
 	left: var(--healthFontX);
 	top: var(--healthFontY);
 }
@@ -118,6 +121,7 @@
 }
 #mana-bar:after {
 	font-size: var(--manaFontSize);
+	font-family: var(--manaFont);
 	left: var(--manaFontX);
 	top: var(--manaFontY);
 }
@@ -126,16 +130,19 @@
 }
 #timer-bar:after {
 	font-size: var(--timerFontSize);
+	font-family: var(--timerFont);
 	left: var(--timerFontX);
 	top: var(--timerFontY);
 }
 .dot-font-size:after {
 	font-size: var(--dotFontSize);
+	font-family: var(--dotFont);
 	left: var(--dotFontX);
 	top: var(--dotFontY);
 }
 .buff-font-size:after {
 	font-size: var(--buffFontSize);
+	font-family: var(--buffFont);
 	left: var(--buffFontX);
 	top: var(--buffFontY);
 }

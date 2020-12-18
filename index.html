@@ -69,38 +69,6 @@ $(function() {
 		}
 	);
 	$("[id$=bar]").draggable("disable");
-
-	$(":root").contextMenu({
-		selector: "body", 
-		callback: function(key) {
-			switch(key){
-			case "lock":
-				toggleLock();
-				break;
-			case "grid":
-				toggleGrid();
-				break;
-			case "settings":
-				let openSettings = window.open("settings.html");
-				var settingsTimer = setInterval(function() {   
-					if(openSettings.closed) {  
-						clearInterval(settingsTimer);  
-						loadSettings();
-						generateRaidBuffs();						
-						generateMitigation();
-					}  
-				}, 1000); 
-				break;
-			}
-		},
-		items: {
-			"lock": {name: language.find(x => x.id === "lock").string, icon: "fas fa-lock-open"},
-			"grid": {name: language.find(x => x.id === "grid").string, icon: "fas fa-border-all"},
-			"settings": {name: language.find(x => x.id === "settings").string, icon: "fas fa-cog"},
-			"sep1": "---------",
-			"quit": {name: language.find(x => x.id === "close").string, icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
-		}
-	});
 });
 
 // Thanks MikeMatrix
@@ -123,6 +91,9 @@ function loadSettings(){
 	// SKIN SETTINGS
 	checkAndInitializeSetting(settings, "skin", "default");
 
+	checkAndInitializeSetting(settings, "font", "Arial");
+	$("*").css("--defaultFont", `${settings.font}`);
+
 	if($("#skin").length == 0){
 		$("head").append(`<link id="skin" rel="stylesheet" href="skins/${settings.skin}/styles/resources.css">`);
 	}else{
@@ -133,8 +104,9 @@ function loadSettings(){
 	checkAndInitializeSetting(settings, "language", "en");
 	
 	if($("#language").length == 0){
-		// eslint-disable-next-line no-useless-escape
-		$("head").append(`<script src="data/language/${settings.language}.js"><\/script>`);
+		$.getScript(`data/language/${settings.language}.js`, function() {
+			loadContextMenu();
+		});
 	}else{
 		$("#language").attr("src", `data/language/${settings.language}.js`);
 	}
@@ -148,6 +120,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.healthbar, "scale", 1);
 	checkAndInitializeSetting(settings.healthbar, "x", 0);
 	checkAndInitializeSetting(settings.healthbar, "y", 216);
+	checkAndInitializeSetting(settings.healthbar, "font", "Arial");
 
 	settings.healthbar.enabled ? $("#health-bar").show() : $("#health-bar").hide();
 
@@ -156,6 +129,7 @@ function loadSettings(){
 	$("#health-bar").css("height", settings.healthbar.scale * 15);
 	$("#health-bar").css("left", settings.healthbar.x);
 	$("#health-bar").css("top", settings.healthbar.y);
+	$("#health-bar").css("--healthFont", settings.healthbar.font);
 
 	// MANABAR SETTINGS
 	checkAndInitializeSetting(settings, "manabar", {});
@@ -166,14 +140,16 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.manabar, "scale", 1);
 	checkAndInitializeSetting(settings.manabar, "x", 0);
 	checkAndInitializeSetting(settings.manabar, "y", 232);
+	checkAndInitializeSetting(settings.manabar, "font", "Arial");
 
-	settings.healthbar.enabled ? $("#mana-bar").show() : $("#mana-bar").hide();
+	settings.manabar.enabled ? $("#mana-bar").show() : $("#mana-bar").hide();
 
 	$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
 	$("#mana-bar").css("width", settings.manabar.scale * 154);
 	$("#mana-bar").css("height", settings.manabar.scale * 15);
 	$("#mana-bar").css("left", settings.manabar.x);
 	$("#mana-bar").css("top", settings.manabar.y);
+	$("#mana-bar").css("--manaFont", settings.manabar.font);
 
 	// PULLTIMER SETTINGS
 	checkAndInitializeSetting(settings, "timerbar", {});
@@ -183,12 +159,14 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.timerbar, "scale", 1);
 	checkAndInitializeSetting(settings.timerbar, "x", 0);
 	checkAndInitializeSetting(settings.timerbar, "y", 200);
+	checkAndInitializeSetting(settings.timerbar, "font", "Arial");
 
 	$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
 	$("#timer-bar").css("width", settings.timerbar.scale * 154);
 	$("#timer-bar").css("height", settings.timerbar.scale * 15);
 	$("#timer-bar").css("left", settings.timerbar.x);
 	$("#timer-bar").css("top", settings.timerbar.y);
+	$("#timer-bar").css("--timerFont", settings.timerbar.font);
 
 	// DOT TIMER SETTINGS
 	checkAndInitializeSetting(settings, "dottimerbar", {});
@@ -203,11 +181,13 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.dottimerbar, "scale", 1);
 	checkAndInitializeSetting(settings.dottimerbar, "x", 0);
 	checkAndInitializeSetting(settings.dottimerbar, "y", 100);
+	checkAndInitializeSetting(settings.dottimerbar, "font", "Arial");
 
 	$("#dot-timer-bar").css("width", settings.dottimerbar.scale * 154);
 	$("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
 	$("#dot-timer-bar").css("left", settings.dottimerbar.x);
 	$("#dot-timer-bar").css("top", settings.dottimerbar.y);
+	$("#dot-timer-bar").css("--dotFont", settings.dottimerbar.font);
 
 	// BUFF TIMER SETTINGS
 	checkAndInitializeSetting(settings, "bufftimerbar", {});
@@ -221,11 +201,13 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.bufftimerbar, "scale", 1);
 	checkAndInitializeSetting(settings.bufftimerbar, "x", 0);
 	checkAndInitializeSetting(settings.bufftimerbar, "y", 100);
+	checkAndInitializeSetting(settings.bufftimerbar, "font", "Arial");
 
 	$("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 154);
 	$("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
 	$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
 	$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
+	$("#buff-timer-bar").css("--buffFont", settings.bufftimerbar.font);
 
 	// STACKBAR SETTINGS
 	checkAndInitializeSetting(settings, "stacksbar", {});
@@ -261,12 +243,14 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.raidbuffs, "columns", 8);
 	checkAndInitializeSetting(settings.raidbuffs, "x", 0);
 	checkAndInitializeSetting(settings.raidbuffs, "y", 216);
+	checkAndInitializeSetting(settings.raidbuffs, "font", "Arial");
 
 	settings.raidbuffs.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	settings.raidbuffs.hidewhensolo ? $("#raid-buffs-bar").hide() : $("#raid-buffs-bar").show();
 
 	$("#raid-buffs-bar").css(settings.raidbuffs.growleft ? "right" : "left", settings.raidbuffs.x);
 	$("#raid-buffs-bar").css("top", settings.raidbuffs.y);
+	$("#raid-buffs-bar").css("font-family", settings.raidbuffs.font);
 
 	// MITIGATION SETTINGS
 	checkAndInitializeSetting(settings, "mitigation", {});
@@ -280,17 +264,54 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "columns", 8);
 	checkAndInitializeSetting(settings.mitigation, "x", 0);
 	checkAndInitializeSetting(settings.mitigation, "y", 240);
+	checkAndInitializeSetting(settings.mitigation, "font", "Arial");
 	
 	settings.mitigation.enabled ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
 	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
 	$("#mitigation-bar").css("top", settings.mitigation.y);
+	$("#mitigation-bar").css("font-family", settings.mitigation.font);
 
 	currentSettings = settings;
 	saveSettings();
 	
 	generateJobStacks();
+	console.log("ZeffUI fully loaded.");
+}
+
+function loadContextMenu(){
+	$(":root").contextMenu({
+		selector: "body", 
+		callback: function(key) {
+			switch(key){
+			case "lock":
+				toggleLock();
+				break;
+			case "grid":
+				toggleGrid();
+				break;
+			case "settings":
+				let openSettings = window.open("settings.html");
+				var settingsTimer = setInterval(function() {   
+					if(openSettings.closed) {  
+						clearInterval(settingsTimer);  
+						loadSettings();
+						generateRaidBuffs();						
+						generateMitigation();
+					}  
+				}, 1000); 
+				break;
+			}
+		},
+		items: {
+			"lock": {name: language.find(x => x.id === "lock").string, icon: "fas fa-lock-open"},
+			"grid": {name: language.find(x => x.id === "grid").string, icon: "fas fa-border-all"},
+			"settings": {name: language.find(x => x.id === "settings").string, icon: "fas fa-cog"},
+			"sep1": "---------",
+			"quit": {name: language.find(x => x.id === "close").string, icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
+		}
+	});
 }
 
 function importSettings(){
@@ -912,6 +933,10 @@ function handleEffect(parameters){
 	let ability = undefined;
 	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`] == parameters.effect)){
 		if(ability === undefined) return;
+		if(currentSettings.override.abilities.some(x => x.name === ability.name)){
+			ability = currentSettings.override.abilities.find(x => x.name === ability.name);
+		}
+		if(!ability.enabled) return;
 		if(ability.type === "RaidBuff"){
 			if(ability.name === "Standard Step" || ability.name === "Technical Step") return;
 			if(ability.hasOwnProperty("extra")){
@@ -1055,9 +1080,11 @@ function handleSkill(parameters){
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
 	for (ability of abilityList.filter(x => x.id == parseInt(parameters.skillid, 16))){
-		if(ability === undefined){
-			return;
+		if(ability === undefined) return;
+		if(currentSettings.override.abilities.some(x => x.id == parseInt(parameters.skillid, 16))){
+			ability = currentSettings.override.abilities.find(x => x.id == parseInt(parameters.skillid, 16));
 		}
+		if(!ability.enabled) return;
 		if(ability.name === "Shoha" && byYou){
 			adjustJobStacks(0, currentStats.maxStacks);
 		}
