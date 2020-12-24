@@ -956,7 +956,7 @@ function handleEffect(parameters){
 		}
 		if(!ability.enabled) return;
 		if(ability.type === "RaidBuff"){
-			if(ability.name === "Standard Step" || ability.name === "Technical Step") return;
+			if(ability.name === "Standard Step" || ability.name === "Technical Step" || ability.name === "Embolden") return;
 			if(ability.hasOwnProperty("extra")){
 				if(ability.extra.is_song){
 					let abilityHolder = abilityList.find(x => x.name === "Song");
