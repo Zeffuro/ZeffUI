@@ -79,33 +79,47 @@
 	left: 0px; 
 	top: 100px;
 	display: none;
+	touch-action: none;
 }
 #buff-timer-bar {
 	left: 0px;
 	top: 116px;
 	display: none;
+	touch-action: none;
 }
 #stacks-bar {
+	position: absolute;
 	left: 0px; 
 	top: 170px;
+	touch-action: none;
 }
 #timer-bar {
 	left: 0px; 
 	top: 200px;
 	display: none;
+	touch-action: none;
 }
 #health-bar {
 	left: 0px;
 	top: 216px;
+	touch-action: none;
 }
 #mana-bar {
 	left: 0px; 
 	top: 232px;
+	touch-action: none;
 }
 #raid-buffs-bar {
 	left: 0px; 
 	top: 248;
 	display: none;
+	touch-action: none;
+}
+#mitigation-bar {
+	left: 0px; 
+	top: 264;
+	display: none;
+	touch-action: none;
 }
 #health-bar::-webkit-progress-value {
 	filter: var(--healthBarColor);

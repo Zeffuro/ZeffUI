@@ -215,16 +215,16 @@
             	case "RaidBuff":
             		$("#abilityColorDiv").hide();
             		$("#abilityDurationDiv").show();
-            	    $("#abilityDuration").val(ability.duration);
+            		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
-            	    $("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityCooldown").val(ability.cooldown);
             		break;
             	case "Mitigation":
             		$("#abilityColorDiv").hide();
             		$("#abilityDurationDiv").show();
-            	    $("#abilityDuration").val(ability.duration);
+            		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
-            	    $("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityCooldown").val(ability.cooldown);
             		break;
             	}
             	toggleOverride();
@@ -318,6 +318,8 @@
             		$("#healthColor").val(settings.healthbar.color);
             		setExampleColor($("#healthColor"));
             		$("#healthScale").attr("value", settings.healthbar.scale);
+            		$("#healthRotationRange").val(settings.healthbar.rotation);
+            		$("#healthRotation").val(settings.healthbar.rotation);
             		$("#healthX").attr("value", settings.healthbar.x);
             		$("#healthY").attr("value", settings.healthbar.y);
                     
@@ -327,6 +329,8 @@
             		$("#manaColor").val(settings.manabar.color);
             		setExampleColor($("#manaColor"));
             		$("#manaScale").attr("value", settings.manabar.scale);
+            		$("#manaRotationRange").val(settings.manabar.rotation);
+            		$("#manaRotation").val(settings.manabar.rotation);
             		$("#manaX").attr("value", settings.manabar.x);
             		$("#manaY").attr("value", settings.manabar.y);
 
@@ -335,6 +339,8 @@
             		$("#pulltimerColor").val(settings.timerbar.color);
             		setExampleColor($("#pulltimerColor"));
             		$("#pulltimerScale").attr("value", settings.timerbar.scale);
+            		$("#pulltimerRotationRange").val(settings.timerbar.rotation);
+            		$("#pulltimerRotation").val(settings.timerbar.rotation);
             		$("#pulltimerX").attr("value", settings.timerbar.x);
             		$("#pulltimerY").attr("value", settings.timerbar.y);
 
@@ -347,6 +353,8 @@
             		$("#dotGrowDirection").val(settings.dottimerbar.growdirection);
             		$("#dotPadding").attr("value", settings.dottimerbar.padding);
             		$("#dotScale").attr("value", settings.dottimerbar.scale);
+            		$("#dotRotationRange").val(settings.dottimerbar.rotation);
+            		$("#dotRotation").val(settings.dottimerbar.rotation);
             		$("#dotX").attr("value", settings.dottimerbar.x);
             		$("#dotY").attr("value", settings.dottimerbar.y);
                     
@@ -358,6 +366,8 @@
             		$("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
             		$("#buffPadding").attr("value", settings.bufftimerbar.padding);
             		$("#buffScale").attr("value", settings.bufftimerbar.scale);
+            		$("#buffRotationRange").val(settings.bufftimerbar.rotation);
+            		$("#buffRotation").val(settings.bufftimerbar.rotation);
             		$("#buffX").attr("value", settings.bufftimerbar.x);
             		$("#buffY").attr("value", settings.bufftimerbar.y);
 
@@ -405,6 +415,7 @@
             			textenabled: $("#healthTextEnabled").is(":checked"),
             			color: $("#healthColor").val(),
             			scale: $("#healthScale").val(),
+            			rotation: $("#healthRotation").val(),
             			x: $("#healthX").val(),
             			y: $("#healthY").val(),
             			font: $("#healthFont").val()
@@ -415,6 +426,7 @@
             			textenabled: $("#manaTextEnabled").is(":checked"),
             			color: $("#manaColor").val(),
             			scale: $("#manaScale").val(),
+            			rotation: $("#manaRotation").val(),
             			x: $("#manaX").val(),
             			y: $("#manaY").val(),
             			font: $("#manaFont").val()
@@ -424,6 +436,7 @@
             			textenabled: $("#pulltimerTextEnabled").is(":checked"),
             			color: $("#pulltimerColor").val(),
             			scale: $("#pulltimerScale").val(),
+            			rotation: $("#pulltimerRotation").val(),
             			x: $("#pulltimerX").val(),
             			y: $("#pulltimerY").val(),
             			font: $("#pulltimerFont").val()
@@ -438,6 +451,7 @@
             			growdirection: $("#dotGrowDirection").val(),
             			padding: $("#dotPadding").val(),
             			scale: $("#dotScale").val(),
+            			rotation: $("#dotRotation").val(),
             			x: $("#dotX").val(),
             			y: $("#dotY").val(),
             			font: $("#dotFont").val()
@@ -451,6 +465,7 @@
             			growdirection: $("#buffGrowDirection").val(),
             			padding: $("#buffPadding").val(),
             			scale: $("#buffScale").val(),
+            			rotation: $("#buffRotation").val(),
             			x: $("#buffX").val(),
             			y: $("#buffY").val(),
             			font: $("#buffFont").val()
@@ -606,6 +621,22 @@
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="healthScale">
                                 </div>
                             </div>
+                            <div class="form-group row text-right">
+                                <label id="lang_rotation" class="col-sm-4" for="healthRotation">Rotation</label>
+                                <div class="col-sm-8">
+                                    <input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="healthRotation" oninput="$('#healthRotationRange').val(this.value)">
+                                    <input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="healthRotationRange" oninput="$('#healthRotation').val(this.value)">
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(0); $('#healthRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(45); $('#healthRotationRange').val(45)">&nbsp;45&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(90); $('#healthRotationRange').val(90)">&nbsp;90&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(135); $('#healthRotationRange').val(135)">135</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(180); $('#healthRotationRange').val(180)">180</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(225); $('#healthRotationRange').val(225)">225</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(270); $('#healthRotationRange').val(270)">270</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(315); $('#healthRotationRange').val(315)">315</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(360); $('#healthRotationRange').val(360)">360</button>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="healthHideOutOfCombat" checked="">
@@ -673,6 +704,22 @@
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="manaScale">
                                 </div>
                             </div>
+                            <div class="form-group row text-right">
+                                <label id="lang_rotation_1" class="col-sm-4" for="manaRotation">Rotation</label>
+                                <div class="col-sm-8">
+                                    <input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="manaRotation" oninput="$('#manaRotationRange').val(this.value)">
+                                    <input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="manaRotationRange" oninput="$('#manaRotation').val(this.value)">
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(0); $('#manaRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(45); $('#manaRotationRange').val(45)">&nbsp;45&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(90); $('#manaRotationRange').val(90)">&nbsp;90&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(135); $('#manaRotationRange').val(135)">135</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(180); $('#manaRotationRange').val(180)">180</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(225); $('#manaRotationRange').val(225)">225</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(270); $('#manaRotationRange').val(270)">270</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(315); $('#manaRotationRange').val(315)">315</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(360); $('#manaRotationRange').val(360)">360</button>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="manaHideOutOfCombat" checked="">
@@ -692,7 +739,7 @@
                                 </div>                                    
                             </div>
                             <div class="form-group row text-right">
-                                <label id="lang_font" class="control-label col-sm-4" for="manaFont">Font</label>
+                                <label id="lang_font_1" class="control-label col-sm-4" for="manaFont">Font</label>
                                 <div class="col-sm-6">
                                     <select class="form-control form-control-sm" id="manaFont" onchange="loadFont('mana')">
                                     </select>
@@ -740,6 +787,22 @@
                                 <label id="lang_scale_2" class="col-sm-4" for="buffScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="buffScale">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label id="lang_rotation_2" class="col-sm-4" for="buffRotation">Rotation</label>
+                                <div class="col-sm-8">
+                                    <input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="buffRotation" oninput="$('#buffRotationRange').val(this.value)">
+                                    <input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="buffRotationRange" oninput="$('#buffRotation').val(this.value)">
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(0); $('#buffRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(45); $('#buffRotationRange').val(45)">&nbsp;45&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(90); $('#buffRotationRange').val(90)">&nbsp;90&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(135); $('#buffRotationRange').val(135)">135</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(180); $('#buffRotationRange').val(180)">180</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(225); $('#buffRotationRange').val(225)">225</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(270); $('#buffRotationRange').val(270)">270</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(315); $('#buffRotationRange').val(315)">315</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(360); $('#buffRotationRange').val(360)">360</button>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -825,6 +888,22 @@
                                 <label id="lang_scale_3" class="col-sm-4" for="dotScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="dotScale">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label id="lang_rotation_2" class="col-sm-4" for="dotRotation">Rotation</label>
+                                <div class="col-sm-8">
+                                    <input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="dotRotation" oninput="$('#dotRotationRange').val(this.value)">
+                                    <input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="dotRotationRange" oninput="$('#dotRotation').val(this.value)">
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(0); $('#dotRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(45); $('#dotRotationRange').val(45)">&nbsp;45&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(90); $('#dotRotationRange').val(90)">&nbsp;90&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(135); $('#dotRotationRange').val(135)">135</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(180); $('#dotRotationRange').val(180)">180</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(225); $('#dotRotationRange').val(225)">225</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(270); $('#dotRotationRange').val(270)">270</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(315); $('#dotRotationRange').val(315)">315</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(360); $('#dotRotationRange').val(360)">360</button>
                                 </div>
                             </div>
                             <div class="form-group row text-right">
@@ -918,6 +997,22 @@
                                 <label id="lang_scale_4" class="col-sm-4" for="pulltimerScale">Scale</label>
                                 <div class="col-sm-8">
                                     <input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="pulltimerScale">
+                                </div>
+                            </div>
+                            <div class="form-group row text-right">
+                                <label id="lang_rotation_2" class="col-sm-4" for="pulltimerRotation">Rotation</label>
+                                <div class="col-sm-8">
+                                    <input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="pulltimerRotation" oninput="$('#pulltimerRotationRange').val(this.value)">
+                                    <input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="pulltimerRotationRange" oninput="$('#pulltimerRotation').val(this.value)">
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(0); $('#pulltimerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(45); $('#pulltimerRotationRange').val(45)">&nbsp;45&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(90); $('#pulltimerRotationRange').val(90)">&nbsp;90&nbsp;</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(135); $('#pulltimerRotationRange').val(135)">135</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(180); $('#pulltimerRotationRange').val(180)">180</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(225); $('#pulltimerRotationRange').val(225)">225</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(270); $('#pulltimerRotationRange').val(270)">270</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(315); $('#pulltimerRotationRange').val(315)">315</button>
+                                    <button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(360); $('#pulltimerRotationRange').val(360)">360</button>
                                 </div>
                             </div>
                             <div class="form-group">
