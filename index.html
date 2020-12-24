@@ -521,11 +521,14 @@ function generateRaidBuffs(){
 	let playerIndex = 0;
 	for(let partyMember of currentPartyList){
 		for(let ability of abilityList.filter(x => x.type === "RaidBuff" && x.job === partyMember.job.name && x.level <= currentPlayer.level)){
+			if(currentSettings.override.abilities.some(x => x.name === ability.name)){
+				ability = currentSettings.override.abilities.find(x => x.name === ability.name);
+			}
 			let pushAbility = true;
 			if(ability.hasOwnProperty("extra")){
 				if(ability.extra.hasOwnProperty("is_card") || ability.extra.hasOwnProperty("is_song") || ability.extra.hasOwnProperty("is_ss") || ability.extra.hasOwnProperty("is_ts")) pushAbility = false;
 			}
-			if(pushAbility){
+			if(pushAbility && ability.enabled){
 				raidAbilityList.push({
 					player: partyMember,
 					playerIndex: playerIndex,
@@ -544,11 +547,14 @@ function generateMitigation(){
 	let playerIndex = 0;
 	let currentJob = jobList.find(x => x.name === currentPlayer.job);
 	for(let ability of abilityList.filter(x => x.type === "Mitigation" && x.level <= currentPlayer.level)){
+		if(currentSettings.override.abilities.some(x => x.name === ability.name)){
+			ability = currentSettings.override.abilities.find(x => x.name === ability.name);
+		}
 		let pushAbility = false;
 		if(ability.job === currentJob.name || ability.job === currentJob.type){
 			pushAbility = true;
 		}
-		if(pushAbility){
+		if(pushAbility && ability.enabled){
 			mitigationAbilityList.push({
 				player: currentPlayer.name,
 				playerIndex: playerIndex,
