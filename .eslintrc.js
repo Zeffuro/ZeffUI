@@ -3,8 +3,8 @@ module.exports = {
 		"html"
 	],
 	"env": {
+		"node": false,
 		"browser": true,
-		"commonjs": true,
 		"es6": true,
 		"jquery": true
 	},
@@ -14,7 +14,8 @@ module.exports = {
 		"SharedArrayBuffer": "readonly"
 	},
 	"parserOptions": {
-		"ecmaVersion": 2019
+		"ecmaVersion": 2020,
+		"sourceType": "script",
 	},
 	"rules": {
 		"indent": [

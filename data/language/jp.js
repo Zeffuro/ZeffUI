@@ -1,9 +1,12 @@
+/* exported language */
 var language = [
 	{ id: "settingsheader", string: "設定" },
 	{ id: "savesettings", string: "設定を保存" },
 	{ id: "deletesettings", string: "Delete Settings" },
 	{ id: "applytoallelements", string: "Apply default font to all elements" },
 	{ id: "generaloptions", string: "一般設定" },
+	{ id: "exportsettings", string: "Export Settings" },
+	{ id: "importsettings", string: "Import Settings" },
 	// COMPONENTS
 	{ id: "healthbar", string: "HPバー" },
 	{ id: "manabar", string: "MPバー" },
@@ -16,6 +19,7 @@ var language = [
 	{ id: "language", string: "言語" },
 	{ id: "mitigations", string: "軽減バフ" },
 	{ id: "overrideoptions", string: "Override Options" },
+	{ id: "importexport", string: "Import / Export" },
 	// DESCRIPTIONS
 	{ id: "generaldescription", string: "ZeffUIの全般に関する設定をすることが出来ます。" },
 	{ id: "healthbardescription", string: "HPバーの設定をすることが出来ます。" },
@@ -27,6 +31,7 @@ var language = [
 	{ id: "raidbuffdescription", string: "レイドバフについて設定することが出来ます。(シナジーのみ)" },
 	{ id: "mitigationdescription", string: "軽減バフについて設定することが出来ます。" },
 	{ id: "overridedescription", string: "Here you can change specific default settings for all abilities." },
+	{ id: "importexportdescription", string: "Here you can import or export your settings." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "ポジション X" },
 	{ id: "posy", string: "ポジション Y" },

@@ -12,6 +12,9 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
         <script>
+            // ZeffUI globals
+            /* global abilityList, language */
+
             var currentSettings = null;
             var currentFont = {};
 
@@ -162,7 +165,8 @@
             		currentSettings.override.abilities = currentSettings.override.abilities.filter(x => x.id != id);
             	}
             }
-
+            
+            /* exported saveOverride */
             function saveOverride(type){
             	let id = $("#overrideSelect").val();
             	switch(type){
@@ -230,10 +234,12 @@
             	toggleOverride();
             }
 
+            /* exported loadSkin */
             function loadSkin(){
             	$("#skin").attr("href", `skins/${$("#skinSelect").val()}/styles/resources.css`);
             }
-
+            
+            /* exported loadFont */
             function loadFont(type){                
             	currentFont[type] = $(`#${type}Font`).val();
             	switch(type){
@@ -253,6 +259,7 @@
             	createFontSelects();
             }
 
+            /* exported loadLanguage */
             function loadLanguage(){
             	$("#language").attr("src", `data/language/${$("#langSelect").val()}.js`);
             	saveSettings(false);
@@ -266,12 +273,43 @@
             	return colorArray;
             }
 
+            /* exported applyDefaultFont */
             function applyDefaultFont(){
             	for(let type in currentFont) {
             		console.log(type);
             		currentFont[type] = $("#defaultFont").val();
             		$(`#${type}Font`).val(currentFont[type]);
             	}
+            }
+
+            /* exported exportSettings */
+            function exportSettings(){
+            	if(localStorage.getItem("settings") == null){
+            		saveSettings();
+            	}
+            	$("#settingsText").val(btoa(localStorage.getItem("settings")));
+            	$("#settingsText").select();
+            	document.execCommand("copy");
+            	alert("Your current settings have been copied to your clipboard.");
+            }
+
+            /* exported importSettings */
+            function importSettings(){
+            	try{
+            		let settings = JSON.parse(atob($("#settingsText").val()));
+            		if(settings.hasOwnProperty("healthbar")){
+            			if(confirm("Are you sure you want to import these settings? This will completely overwrite your previous settings!")){
+            				localStorage.setItem("settings", JSON.stringify(settings));
+            				loadSettings();
+            				location.reload();
+            				this.close();
+            			}
+            		}else{
+            			alert("Invalid settings string, please doublecheck what you have pasted in.");
+            		}        
+            	}catch{
+            		alert("Invalid settings string, please doublecheck what you have pasted in.");
+            	}            	    			
             }
 
             function loadSettings(){
@@ -301,13 +339,13 @@
             			$("#language").attr("src", `data/language/${settings.language}.js`);
             		}
                     
-            		
-                    
             		processLanguage();
             		createColorSelects();
             		createSkinSelects();
             		createFontSelects();
             		createOverrideSelects();
+                    
+            		$("*").css("font-family", currentFont.default);
 
             		$("#skinSelect").val(settings.skin);
             		$("#langSelect").val(settings.language);
@@ -512,6 +550,7 @@
             		location.reload();
             }
 
+            /* exported deleteSettings */
             function deleteSettings(){
             	if(confirm("Are you sure you want to delete all settings?")){
             		localStorage.clear();
@@ -1299,6 +1338,27 @@
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityCooldown" onchange="saveOverride('cooldown')">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div id="lang_importexport" class="card-header">
+                            Import / Export
+                        </div>
+                        <div class="card-body">
+                            <p id="lang_importexportdescription" class="card-text">Here you can import or export your settings.</p>
+                            <textarea id="settingsText" class="form-control" rows="3"></textarea>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <button id="lang_exportsettings" type="button" class="btn btn-primary btn-m" onclick="exportSettings()">Export Settings</button>
+                                </div>                                
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-4">
+                                    <button id="lang_importsettings" type="button" class="btn btn-primary btn-m" onclick="importSettings()">Import Settings</button>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>

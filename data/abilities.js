@@ -1,3 +1,4 @@
+/* exported abilityList */
 var abilityList = [
 	// ROLE ACTIONS
 	{

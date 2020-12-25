@@ -1,3 +1,4 @@
+/* exported regexList */
 var regexList = 
 {
 	"00": {

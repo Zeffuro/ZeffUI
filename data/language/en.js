@@ -1,9 +1,12 @@
+/* exported language */
 var language = [
 	{ id: "settingsheader", string: "Settings" },
 	{ id: "savesettings", string: "Save Settings" },
 	{ id: "deletesettings", string: "Delete Settings" },
 	{ id: "applytoallelements", string: "Apply default font to all elements" },
 	{ id: "generaloptions", string: "General Options" },
+	{ id: "exportsettings", string: "Export Settings" },
+	{ id: "importsettings", string: "Import Settings" },
 	// COMPONENTS
 	{ id: "healthbar", string: "Healthbar" },
 	{ id: "manabar", string: "Manabar" },
@@ -16,6 +19,7 @@ var language = [
 	{ id: "language", string: "Language" },
 	{ id: "mitigations", string: "Mitigations" },
 	{ id: "overrideoptions", string: "Override Options" },
+	{ id: "importexport", string: "Import / Export" },
 	// DESCRIPTIONS
 	{ id: "generaldescription", string: "Here you can find general options for ZeffUI." },
 	{ id: "healthbardescription", string: "Here you can set your options for your healthbar." },
@@ -27,6 +31,7 @@ var language = [
 	{ id: "raidbuffdescription", string: "Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only)." },
 	{ id: "mitigationdescription", string: "Here you can set your options for your mitigation bar." },
 	{ id: "overridedescription", string: "Here you can change specific default settings for all abilities." },
+	{ id: "importexportdescription", string: "Here you can import or export your settings." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "Position X" },
 	{ id: "posy", string: "Position Y" },
