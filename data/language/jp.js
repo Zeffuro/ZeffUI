@@ -1,6 +1,8 @@
 var language = [
 	{ id: "settingsheader", string: "設定" },
 	{ id: "savesettings", string: "設定を保存" },
+	{ id: "deletesettings", string: "Delete Settings" },
+	{ id: "applytoallelements", string: "Apply default font to all elements" },
 	{ id: "generaloptions", string: "一般設定" },
 	// COMPONENTS
 	{ id: "healthbar", string: "HPバー" },
@@ -13,6 +15,7 @@ var language = [
 	{ id: "skin", string: "スキン" },
 	{ id: "language", string: "言語" },
 	{ id: "mitigations", string: "軽減バフ" },
+	{ id: "overrideoptions", string: "Override Options" },
 	// DESCRIPTIONS
 	{ id: "generaldescription", string: "ZeffUIの全般に関する設定をすることが出来ます。" },
 	{ id: "healthbardescription", string: "HPバーの設定をすることが出来ます。" },
@@ -23,10 +26,12 @@ var language = [
 	{ id: "stacksbardescription", string: "スタックバーについて設定することが出来ます。" },
 	{ id: "raidbuffdescription", string: "レイドバフについて設定することが出来ます。(シナジーのみ)" },
 	{ id: "mitigationdescription", string: "軽減バフについて設定することが出来ます。" },
+	{ id: "overridedescription", string: "Here you can change specific default settings for all abilities." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "ポジション X" },
 	{ id: "posy", string: "ポジション Y" },
 	{ id: "scale", string: "大きさ" },
+	{ id: "rotation", string: "rotation" },
 	{ id: "padding", string: "余白" },
 	{ id: "color", string: "色" },
 	{ id: "image", string: "画像" },
@@ -43,12 +48,18 @@ var language = [
 	{ id: "droppedoff", string: "切れた時に隠す" },
 	{ id: "alwaysshow", string: "全アビリティを表示(クールダウン中ではない物も)" },
 	{ id: "textformat", string: "テキストフォーマット" },
+	{ id: "font", string: "Font" },
 	{ id: "healthtext", string: "HPテキスト" },
 	{ id: "manatext", string: "MPテキスト" },
 	{ id: "pulltimertext", string: "戦闘開始カウントテキスト" },
 	{ id: "bufftext", string: "バフテキスト" },
 	{ id: "dottext", string: "DoTテキスト" },
 	{ id: "multidot", string: "マルチDoT (完全ではない)" },
+	{ id: "ability", string: "Ability" },
+	{ id: "abilityenabled", string: "Ability Enabled" },
+	{ id: "duration", string: "Duration" },
+	{ id: "cooldown", string: "Cooldown" },
+	{ id: "overridedefaults", string: "Override Defaults" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

@@ -1,6 +1,8 @@
 var language = [
 	{ id: "settingsheader", string: "Settings" },
 	{ id: "savesettings", string: "Save Settings" },
+	{ id: "deletesettings", string: "Delete Settings" },
+	{ id: "applytoallelements", string: "Apply default font to all elements" },
 	{ id: "generaloptions", string: "General Options" },
 	// COMPONENTS
 	{ id: "healthbar", string: "Healthbar" },
@@ -13,6 +15,7 @@ var language = [
 	{ id: "skin", string: "Skin" },
 	{ id: "language", string: "Language" },
 	{ id: "mitigations", string: "Mitigations" },
+	{ id: "overrideoptions", string: "Override Options" },
 	// DESCRIPTIONS
 	{ id: "generaldescription", string: "Here you can find general options for ZeffUI." },
 	{ id: "healthbardescription", string: "Here you can set your options for your healthbar." },
@@ -23,10 +26,12 @@ var language = [
 	{ id: "stacksbardescription", string: "Here you can set your options for your personal stacks" },
 	{ id: "raidbuffdescription", string: "Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only)." },
 	{ id: "mitigationdescription", string: "Here you can set your options for your mitigation bar." },
+	{ id: "overridedescription", string: "Here you can change specific default settings for all abilities." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "Position X" },
 	{ id: "posy", string: "Position Y" },
 	{ id: "scale", string: "Scale" },
+	{ id: "rotation", string: "rotation" },
 	{ id: "padding", string: "Padding" },
 	{ id: "color", string: "Color" },
 	{ id: "image", string: "Image" },
@@ -43,12 +48,18 @@ var language = [
 	{ id: "droppedoff", string: "Hide when dropped off" },
 	{ id: "alwaysshow", string: "Always show abilities (when not on cooldown)" },
 	{ id: "textformat", string: "Text Format" },
+	{ id: "font", string: "Font" },
 	{ id: "healthtext", string: "Health Text" },
 	{ id: "manatext", string: "Mana Text" },
 	{ id: "pulltimertext", string: "Pulltimer Text" },
 	{ id: "bufftext", string: "Buff Text" },
 	{ id: "dottext", string: "DoT Text" },
 	{ id: "multidot", string: "MultiDoT (not implemented yet)" },
+	{ id: "ability", string: "Ability" },
+	{ id: "abilityenabled", string: "Ability Enabled" },
+	{ id: "duration", string: "Duration" },
+	{ id: "cooldown", string: "Cooldown" },
+	{ id: "overridedefaults", string: "Override Defaults" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
