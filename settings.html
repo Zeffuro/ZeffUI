@@ -334,16 +334,16 @@
 
             		if($("#language").length == 0){
             			// eslint-disable-next-line no-useless-escape
-            			$("head").append(`<script src="data/language/${settings.language}.js"><\/script>`);
+            			$.getScript(`data/language/${settings.language}.js`, function() {
+            				processLanguage();
+            				createColorSelects();
+            				createSkinSelects();
+            				createFontSelects();
+            				createOverrideSelects();
+            			});
             		}else{
             			$("#language").attr("src", `data/language/${settings.language}.js`);
-            		}
-                    
-            		processLanguage();
-            		createColorSelects();
-            		createSkinSelects();
-            		createFontSelects();
-            		createOverrideSelects();
+            		}                           		
                     
             		$("*").css("font-family", currentFont.default);
 
