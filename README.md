@@ -152,7 +152,7 @@ It will now appear in the list of overlays in the `Plugins` -> `OverlayPlugin.dl
 
 1. Drag and resize the overlay to the location that you want it in.
 
-1. In the `General` tab of the `Raidboss` overlay, click the `Lock Overlay` checkbox.
+1. In the `General` tab of the `ZeffUI` overlay, click the `Lock Overlay` checkbox.
 The blue background will disappear once the overlay has been locked.
 
 1. Rightclick either the Healthbar or Manabar element.
