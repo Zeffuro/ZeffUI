@@ -156,12 +156,16 @@
             		$("#abilityColor").removeAttr("disabled");
             		$("#abilityDuration").removeAttr("disabled");
             		$("#abilityCooldown").removeAttr("disabled");
+            		$("#abilityTTSEnabled").removeAttr("disabled");
+            		$("#abilityTTSType").removeAttr("disabled");
             		if (override == null) currentSettings.override.abilities.push(abilityList.find(x => x.id == id));
             	}else{
             		$("#abilityEnabled").attr("disabled","disabled");
             		$("#abilityColor").attr("disabled","disabled");
             		$("#abilityDuration").attr("disabled","disabled");
             		$("#abilityCooldown").attr("disabled","disabled");
+            		$("#abilityTTSEnabled").attr("disabled","disabled");
+            		$("#abilityTTSType").attr("disabled","disabled");
             		currentSettings.override.abilities = currentSettings.override.abilities.filter(x => x.id != id);
             	}
             }
@@ -182,6 +186,12 @@
             	case "duration":
             		currentSettings.override.abilities.find(x => x.id == id).duration = $("#abilityDuration").val();
             		break;
+            	case "tts":
+            		currentSettings.override.abilities.find(x => x.id == id).tts = $("#abilityTTSEnabled").is(":checked");
+            		break;
+            	case "ttstype":
+            		currentSettings.override.abilities.find(x => x.id == id).ttstype = parseInt($("#abilityTTSType").val());
+            		break;
             	}
             }
 
@@ -198,23 +208,35 @@
             		$("#abilityColor").val(ability.color);
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityTTSEnabled").show();
+            		$("#abilityTTSEnabled").prop("checked", ability.tts);
+            		$("#abilityTTSType").show();
+            		$("#abilityTTSType").val(ability.ttstype);
             		break;
             	case "DoT":
             		$("#abilityColorDiv").show();
             		$("#abilityColor").val(ability.color);
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityTTSEnabled").show();
+            		$("#abilityTTSEnabled").prop("checked", ability.tts);
+            		$("#abilityTTSType").show();
+            		$("#abilityTTSType").val(ability.ttstype);
             		break;
             	case "Stacks":
             		$("#abilityColorDiv").show();
             		$("#abilityColor").val(ability.color);
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityTTSEnabled").hide();
+            		$("#abilityTTSType").hide();
             		break;
             	case "StackSpender":
             		$("#abilityColorDiv").hide();
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityTTSEnabled").hide();
+            		$("#abilityTTSType").hide();
             		break;
             	case "RaidBuff":
             		$("#abilityColorDiv").hide();
@@ -222,6 +244,10 @@
             		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
             		$("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityTTSEnabled").show();
+            		$("#abilityTTSEnabled").prop("checked", ability.tts);
+            		$("#abilityTTSType").show();
+            		$("#abilityTTSType").val(ability.ttstype);
             		break;
             	case "Mitigation":
             		$("#abilityColorDiv").hide();
@@ -229,6 +255,10 @@
             		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
             		$("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityTTSEnabled").show();
+            		$("#abilityTTSEnabled").prop("checked", ability.tts);
+            		$("#abilityTTSType").show();
+            		$("#abilityTTSType").val(ability.ttstype);
             		break;
             	}
             	toggleOverride();
@@ -340,104 +370,111 @@
             				createSkinSelects();
             				createFontSelects();
             				createOverrideSelects();
+                            
+            				$("*").css("font-family", currentFont.default);
+
+            				$("#skinSelect").val(settings.skin);
+            				$("#langSelect").val(settings.language);
+
+            				$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
+            				$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
+            				$("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
+            				$("#healthColor").val(settings.healthbar.color);
+            				setExampleColor($("#healthColor"));
+            				$("#healthScale").attr("value", settings.healthbar.scale);
+            				$("#healthRotationRange").val(settings.healthbar.rotation);
+            				$("#healthRotation").val(settings.healthbar.rotation);
+            				$("#healthX").attr("value", settings.healthbar.x);
+            				$("#healthY").attr("value", settings.healthbar.y);
+                        
+            				$("#manaBarEnabled").prop("checked", settings.manabar.enabled);
+            				$("#manaHideOutOfCombat").prop("checked", settings.manabar.hideoutofcombat);
+            				$("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
+            				$("#manaColor").val(settings.manabar.color);
+            				setExampleColor($("#manaColor"));
+            				$("#manaScale").attr("value", settings.manabar.scale);
+            				$("#manaRotationRange").val(settings.manabar.rotation);
+            				$("#manaRotation").val(settings.manabar.rotation);
+            				$("#manaX").attr("value", settings.manabar.x);
+            				$("#manaY").attr("value", settings.manabar.y);
+
+            				$("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
+            				$("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
+            				$("#pulltimerColor").val(settings.timerbar.color);
+            				setExampleColor($("#pulltimerColor"));
+            				$("#pulltimerScale").attr("value", settings.timerbar.scale);
+            				$("#pulltimerRotationRange").val(settings.timerbar.rotation);
+            				$("#pulltimerRotation").val(settings.timerbar.rotation);
+            				$("#pulltimerX").attr("value", settings.timerbar.x);
+            				$("#pulltimerY").attr("value", settings.timerbar.y);
+
+            				$("#dotBarEnabled").prop("checked", settings.dottimerbar.enabled);
+            				$("#dotHideOutOfCombat").prop("checked", settings.dottimerbar.hideoutofcombat);
+            				$("#dotHideWhenDroppedOff").prop("checked", settings.dottimerbar.hidewhendroppedoff);
+            				$("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
+            				$("#dotTTSEnabled").prop("checked", settings.dottimerbar.ttsenabled);
+            				$("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
+            				$("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
+            				$("#dotGrowDirection").val(settings.dottimerbar.growdirection);
+            				$("#dotPadding").attr("value", settings.dottimerbar.padding);
+            				$("#dotScale").attr("value", settings.dottimerbar.scale);
+            				$("#dotRotationRange").val(settings.dottimerbar.rotation);
+            				$("#dotRotation").val(settings.dottimerbar.rotation);
+            				$("#dotX").attr("value", settings.dottimerbar.x);
+            				$("#dotY").attr("value", settings.dottimerbar.y);
+                        
+            				$("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
+            				$("#buffHideOutOfCombat").prop("checked", settings.bufftimerbar.hideoutofcombat);
+            				$("#buffHideWhenDroppedOff").prop("checked", settings.bufftimerbar.hidewhendroppedoff);
+            				$("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
+            				$("#buffTTSEnabled").prop("checked", settings.bufftimerbar.ttsenabled);
+            				$("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
+            				$("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
+            				$("#buffPadding").attr("value", settings.bufftimerbar.padding);
+            				$("#buffScale").attr("value", settings.bufftimerbar.scale);
+            				$("#buffRotationRange").val(settings.bufftimerbar.rotation);
+            				$("#buffRotation").val(settings.bufftimerbar.rotation);
+            				$("#buffX").attr("value", settings.bufftimerbar.x);
+            				$("#buffY").attr("value", settings.bufftimerbar.y);
+
+            				$("#stacksBarEnabled").prop("checked", settings.stacksbar.enabled);
+            				$("#stacksHideOutOfCombat").prop("checked", settings.stacksbar.hideoutofcombat);
+            				$("#stacksColor").val(settings.stacksbar.color);
+            				setExampleColor($("#stacksColor"));
+            				$("#stacksScale").attr("value", settings.stacksbar.scale);
+            				$("#stacksX").attr("value", settings.stacksbar.x);
+            				$("#stacksY").attr("value", settings.stacksbar.y);
+
+            				$("#raidbuffBarEnabled").prop("checked", settings.raidbuffs.enabled);
+            				$("#raidbuffTTSEnabled").prop("checked", settings.raidbuffs.ttsenabled);
+            				$("#raidbuffHideOutOfCombat").prop("checked", settings.raidbuffs.hideoutofcombat);
+            				$("#raidbuffHideWhenSolo").prop("checked", settings.raidbuffs.hidewhensolo);
+            				$("#raidbuffAlwaysShow").prop("checked", settings.raidbuffs.alwaysshow);
+            				$("#raidbuffGrowLeft").prop("checked", settings.raidbuffs.growleft);
+            				$("#raidbuffColumns").attr("value", settings.raidbuffs.columns);
+            				$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
+            				$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
+            				$("#raidbuffX").attr("value", settings.raidbuffs.x);
+            				$("#raidbuffY").attr("value", settings.raidbuffs.y);
+                        
+            				$("#mitigationBarEnabled").prop("checked", settings.mitigation.enabled);
+            				$("#mitigationTTSEnabled").prop("checked", settings.mitigation.ttsenabled);
+            				$("#mitigationHideOutOfCombat").prop("checked", settings.mitigation.hideoutofcombat);
+            				$("#mitigationHideWhenSolo").prop("checked", settings.mitigation.hidewhensolo);
+            				$("#mitigationAlwaysShow").prop("checked", settings.mitigation.alwaysshow);
+            				$("#mitigationGrowLeft").prop("checked", settings.mitigation.growleft);
+            				$("#mitigationColumns").attr("value", settings.mitigation.columns);
+            				$("#mitigationPadding").attr("value", settings.mitigation.padding);
+            				$("#mitigationScale").attr("value", settings.mitigation.scale);
+            				$("#mitigationX").attr("value", settings.mitigation.x);
+            				$("#mitigationY").attr("value", settings.mitigation.y);
+                    
             			});
             		}else{
             			$("#language").attr("src", `data/language/${settings.language}.js`);
             		}                           		
                     
-            		$("*").css("font-family", currentFont.default);
-
-            		$("#skinSelect").val(settings.skin);
-            		$("#langSelect").val(settings.language);
-
-            		$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
-            		$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
-            		$("#healthTextEnabled").prop("checked", settings.healthbar.textenabled);
-            		$("#healthColor").val(settings.healthbar.color);
-            		setExampleColor($("#healthColor"));
-            		$("#healthScale").attr("value", settings.healthbar.scale);
-            		$("#healthRotationRange").val(settings.healthbar.rotation);
-            		$("#healthRotation").val(settings.healthbar.rotation);
-            		$("#healthX").attr("value", settings.healthbar.x);
-            		$("#healthY").attr("value", settings.healthbar.y);
-                    
-            		$("#manaBarEnabled").prop("checked", settings.manabar.enabled);
-            		$("#manaHideOutOfCombat").prop("checked", settings.manabar.hideoutofcombat);
-            		$("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
-            		$("#manaColor").val(settings.manabar.color);
-            		setExampleColor($("#manaColor"));
-            		$("#manaScale").attr("value", settings.manabar.scale);
-            		$("#manaRotationRange").val(settings.manabar.rotation);
-            		$("#manaRotation").val(settings.manabar.rotation);
-            		$("#manaX").attr("value", settings.manabar.x);
-            		$("#manaY").attr("value", settings.manabar.y);
-
-            		$("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
-            		$("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
-            		$("#pulltimerColor").val(settings.timerbar.color);
-            		setExampleColor($("#pulltimerColor"));
-            		$("#pulltimerScale").attr("value", settings.timerbar.scale);
-            		$("#pulltimerRotationRange").val(settings.timerbar.rotation);
-            		$("#pulltimerRotation").val(settings.timerbar.rotation);
-            		$("#pulltimerX").attr("value", settings.timerbar.x);
-            		$("#pulltimerY").attr("value", settings.timerbar.y);
-
-            		$("#dotBarEnabled").prop("checked", settings.dottimerbar.enabled);
-            		$("#dotHideOutOfCombat").prop("checked", settings.dottimerbar.hideoutofcombat);
-            		$("#dotHideWhenDroppedOff").prop("checked", settings.dottimerbar.hidewhendroppedoff);
-            		$("#dotTextEnabled").prop("checked", settings.dottimerbar.textenabled);
-            		$("#multiDotEnabled").prop("checked", settings.dottimerbar.multidotenabled);
-            		$("#dotImageEnabled").prop("checked", settings.dottimerbar.imageenabled);
-            		$("#dotGrowDirection").val(settings.dottimerbar.growdirection);
-            		$("#dotPadding").attr("value", settings.dottimerbar.padding);
-            		$("#dotScale").attr("value", settings.dottimerbar.scale);
-            		$("#dotRotationRange").val(settings.dottimerbar.rotation);
-            		$("#dotRotation").val(settings.dottimerbar.rotation);
-            		$("#dotX").attr("value", settings.dottimerbar.x);
-            		$("#dotY").attr("value", settings.dottimerbar.y);
-                    
-            		$("#buffBarEnabled").prop("checked", settings.bufftimerbar.enabled);
-            		$("#buffHideOutOfCombat").prop("checked", settings.bufftimerbar.hideoutofcombat);
-            		$("#buffHideWhenDroppedOff").prop("checked", settings.bufftimerbar.hidewhendroppedoff);
-            		$("#buffTextEnabled").prop("checked", settings.bufftimerbar.textenabled);
-            		$("#buffImageEnabled").prop("checked", settings.bufftimerbar.imageenabled);
-            		$("#buffGrowDirection").val(settings.bufftimerbar.growdirection);
-            		$("#buffPadding").attr("value", settings.bufftimerbar.padding);
-            		$("#buffScale").attr("value", settings.bufftimerbar.scale);
-            		$("#buffRotationRange").val(settings.bufftimerbar.rotation);
-            		$("#buffRotation").val(settings.bufftimerbar.rotation);
-            		$("#buffX").attr("value", settings.bufftimerbar.x);
-            		$("#buffY").attr("value", settings.bufftimerbar.y);
-
-            		$("#stacksBarEnabled").prop("checked", settings.stacksbar.enabled);
-            		$("#stacksHideOutOfCombat").prop("checked", settings.stacksbar.hideoutofcombat);
-            		$("#stacksColor").val(settings.stacksbar.color);
-            		setExampleColor($("#stacksColor"));
-            		$("#stacksScale").attr("value", settings.stacksbar.scale);
-            		$("#stacksX").attr("value", settings.stacksbar.x);
-            		$("#stacksY").attr("value", settings.stacksbar.y);
-
-            		$("#raidbuffBarEnabled").prop("checked", settings.raidbuffs.enabled);
-            		$("#raidbuffHideOutOfCombat").prop("checked", settings.raidbuffs.hideoutofcombat);
-            		$("#raidbuffHideWhenSolo").prop("checked", settings.raidbuffs.hidewhensolo);
-            		$("#raidbuffAlwaysShow").prop("checked", settings.raidbuffs.alwaysshow);
-            		$("#raidbuffGrowLeft").prop("checked", settings.raidbuffs.growleft);
-            		$("#raidbuffColumns").attr("value", settings.raidbuffs.columns);
-            		$("#raidbuffPadding").attr("value", settings.raidbuffs.padding);
-            		$("#raidbuffScale").attr("value", settings.raidbuffs.scale);
-            		$("#raidbuffX").attr("value", settings.raidbuffs.x);
-            		$("#raidbuffY").attr("value", settings.raidbuffs.y);
-                    
-            		$("#mitigationBarEnabled").prop("checked", settings.mitigation.enabled);
-            		$("#mitigationHideOutOfCombat").prop("checked", settings.mitigation.hideoutofcombat);
-            		$("#mitigationHideWhenSolo").prop("checked", settings.mitigation.hidewhensolo);
-            		$("#mitigationAlwaysShow").prop("checked", settings.mitigation.alwaysshow);
-            		$("#mitigationGrowLeft").prop("checked", settings.mitigation.growleft);
-            		$("#mitigationColumns").attr("value", settings.mitigation.columns);
-            		$("#mitigationPadding").attr("value", settings.mitigation.padding);
-            		$("#mitigationScale").attr("value", settings.mitigation.scale);
-            		$("#mitigationX").attr("value", settings.mitigation.x);
-            		$("#mitigationY").attr("value", settings.mitigation.y);
+            		
             	}
             }
 
@@ -484,6 +521,7 @@
             			hideoutofcombat: $("#dotHideOutOfCombat").is(":checked"),
             			hidewhendroppedoff: $("#dotHideWhenDroppedOff").is(":checked"),
             			textenabled: $("#dotBarTextEnabled").is(":checked"),
+            			ttsenabled: $("#dotTTSEnabled").is(":checked"),
             			imageenabled: $("#dotImageEnabled").is(":checked"),
             			multidotenabled: $("#multiDotEnabled").is(":checked"),
             			growdirection: $("#dotGrowDirection").val(),
@@ -499,6 +537,7 @@
             			hideoutofcombat: $("#buffHideOutOfCombat").is(":checked"),
             			hidewhendroppedoff: $("#buffHideWhenDroppedOff").is(":checked"),
             			textenabled: $("#buffBarTextEnabled").is(":checked"),
+            			ttsenabled: $("#buffTTSEnabled").is(":checked"),
             			imageenabled: $("#buffImageEnabled").is(":checked"),
             			growdirection: $("#buffGrowDirection").val(),
             			padding: $("#buffPadding").val(),
@@ -518,6 +557,7 @@
             		},
             		raidbuffs: {
             			enabled: $("#raidbuffBarEnabled").is(":checked"),
+            			ttsenabled: $("#raidbuffTTSEnabled").is(":checked"),
             			hideoutofcombat: $("#raidbuffHideOutOfCombat").is(":checked"),
             			hidewhensolo: $("#raidbuffHideWhenSolo").is(":checked"),
             			alwaysshow: $("#raidbuffAlwaysShow").is(":checked"),
@@ -531,6 +571,7 @@
             		},
             		mitigation: {
             			enabled: $("#mitigationBarEnabled").is(":checked"),
+            			ttsenabled: $("#mitigationTTSEnabled").is(":checked"),
             			hideoutofcombat: $("#mitigationHideOutOfCombat").is(":checked"),
             			hidewhensolo: $("#mitigationHideWhenSolo").is(":checked"),
             			alwaysshow: $("#mitigationAlwaysShow").is(":checked"),
@@ -636,7 +677,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="healthBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="healthBarEnabled">
                                 <label id="lang_healthbar" class="custom-control-label" for="healthBarEnabled">Healthbar</label>
                             </div>
                         </div>
@@ -678,13 +719,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="healthHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="healthHideOutOfCombat">
                                     <label id="lang_hideoutofcombat" class="custom-control-label" for="healthHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="healthTextEnabled" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="healthTextEnabled">
                                     <label id="lang_healthtext" class="custom-control-label" for="healthTextEnabled">Health Text</label>
                                 </div>
                             </div>
@@ -719,7 +760,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="manaBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="manaBarEnabled">
                                 <label id="lang_manabar" class="custom-control-label" for="manaBarEnabled">Manabar</label>
                             </div>
                         </div>
@@ -761,13 +802,13 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="manaHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="manaHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_1" class="custom-control-label" for="manaHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="manaTextEnabled" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="manaTextEnabled">
                                     <label id="lang_manatext" class="custom-control-label" for="manaTextEnabled">Mana Text</label>
                                 </div>
                             </div>
@@ -804,7 +845,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="buffBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="buffBarEnabled">
                                 <label id="lang_bufftimers" class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
                             </div>
                         </div>
@@ -869,19 +910,25 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="buffHideWhenDroppedOff" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="buffTTSEnabled">
+                                    <label id="lang_ttsenabled" class="custom-control-label" for="buffTTSEnabled">TTS Enabled</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="buffHideWhenDroppedOff">
                                     <label id="lang_droppedoff" class="custom-control-label" for="buffHideWhenDroppedOff">Hide when dropped off</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="buffHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="buffHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_2" class="custom-control-label" for="buffHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="buffTextEnabled" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="buffTextEnabled">
                                     <label id="lang_bufftext" class="custom-control-label" for="buffTextEnabled">Buff Text</label>
                                 </div>
                             </div>
@@ -905,7 +952,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="dotBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="dotBarEnabled">
                                 <label id="lang_dottimers" class="custom-control-label" for="dotBarEnabled">DoT Timers</label>
                             </div>
                         </div>
@@ -970,25 +1017,31 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="dotTTSEnabled">
+                                    <label id="lang_ttsenabled_1" class="custom-control-label" for="dotTTSEnabled">TTS Enabled</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="multiDotEnabled">
                                     <label id="lang_multidot" class="custom-control-label" for="multiDotEnabled">MultiDoT (not implemented yet)</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="dotHideWhenDroppedOff" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="dotHideWhenDroppedOff">
                                     <label id="lang_droppedoff_1" class="custom-control-label" for="dotHideWhenDroppedOff">Hide when dropped off</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="dotHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="dotHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_3" class="custom-control-label" for="dotHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="dotTextEnabled" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="dotTextEnabled">
                                     <label id="lang_dottext" class="custom-control-label" for="dotTextEnabled">DoT Text</label>
                                 </div>
                             </div>
@@ -1014,7 +1067,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled">
                                 <label id="lang_pulltimers" class="custom-control-label" for="pulltimerBarEnabled">Pulltimers</label>
                             </div>
                         </div>
@@ -1056,7 +1109,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="pulltimerTextEnabled" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="pulltimerTextEnabled">
                                     <label id="lang_pulltimertext" class="custom-control-label" for="pulltimerTextEnabled">Pulltimer Text</label>
                                 </div>
                             </div>
@@ -1091,7 +1144,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="stacksBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="stacksBarEnabled">
                                 <label id="lang_stacksbar" class="custom-control-label" for="stacksBarEnabled">Stacks Bar</label>
                             </div>
                         </div>
@@ -1117,7 +1170,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="stacksHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="stacksHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_4" class="custom-control-label" for="stacksHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
@@ -1147,7 +1200,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="raidbuffBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="raidbuffBarEnabled">
                                 <label id="lang_raidbuffs" class="custom-control-label" for="raidbuffBarEnabled">Raidbuffs</label>
                             </div>
                         </div>
@@ -1192,25 +1245,31 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffTTSEnabled">
+                                    <label id="lang_ttsenabled_2" class="custom-control-label" for="raidbuffTTSEnabled">TTS Enabled</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft">
                                     <label id="lang_growleft" class="custom-control-label" for="raidbuffGrowLeft">Grow icons to the left</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideWhenSolo" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideWhenSolo">
                                     <label id="lang_hidesolo" class="custom-control-label" for="raidbuffHideWhenSolo">Hide when not in Party</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_5" class="custom-control-label" for="raidbuffHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow">
                                     <label id="lang_alwaysshow" class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
                             </div>
@@ -1221,7 +1280,7 @@
                     <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
                         <div class="card-header">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="mitigationBarEnabled" checked="">
+                                <input type="checkbox" class="custom-control-input" id="mitigationBarEnabled">
                                 <label id="lang_mitigations" class="custom-control-label" for="mitigationBarEnabled">Mitigations</label>
                             </div>
                         </div>
@@ -1266,25 +1325,31 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="mitigationGrowLeft" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationTTSEnabled">
+                                    <label id="lang_ttsenabled_3" class="custom-control-label" for="mitigationTTSEnabled">TTS Enabled</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationGrowLeft">
                                     <label id="lang_growleft_1" class="custom-control-label" for="mitigationGrowLeft">Grow abilities to the left</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="mitigationHideWhenSolo" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationHideWhenSolo">
                                     <label id="lang_hidesolo_1" class="custom-control-label" for="mitigationHideWhenSolo">Hide when not in Party</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="mitigationHideOutOfCombat" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationHideOutOfCombat">
                                     <label id="lang_hideoutofcombat_6" class="custom-control-label" for="mitigationHideOutOfCombat">Hide out of Combat</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow" checked="">
+                                    <input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow">
                                     <label id="lang_alwaysshow_1" class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
                             </div>
@@ -1309,14 +1374,30 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="abilityOverrideEnabled" checked="" onchange="toggleOverride()">
+                                    <input type="checkbox" class="custom-control-input" id="abilityOverrideEnabled" onchange="toggleOverride()">
                                     <label id="lang_overridedefaults" class="custom-control-label" for="abilityOverrideEnabled">Override Defaults</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="abilityEnabled" checked="" onchange="saveOverride('enabled')">
+                                    <input type="checkbox" class="custom-control-input" id="abilityEnabled" onchange="saveOverride('enabled')">
                                     <label id="lang_abilityenabled" class="custom-control-label" for="abilityEnabled">Ability Enabled</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="abilityTTSEnabled" onchange="saveOverride('tts')">
+                                    <label id="lang_ttsenabled_4" class="custom-control-label" for="abilityTTSEnabled">TTS Enabled</label>
+                                </div>
+                            </div>
+                            <div id="abilityTTSTypeDiv" class="form-group row text-right">
+                                <label id="lang_ttstype" class="control-label col-sm-4" for="abilityTTSType">TTS Type</label>
+                                <div class="col-sm-6">
+                                    <select class="form-control form-control-sm" id="abilityTTSType" onchange="saveOverride('ttstype')">
+                                        <option id="lang_abilitycooldown" selected="" value="0">Ability Cooldown</option>
+                                        <option id="lang_abilityduration" value="1">Ability Duration</option>
+                                        <option id="lang_oncast" value="2">On Cast</option>
+                                    </select>
                                 </div>
                             </div>
                             <div id="abilityColorDiv" class="form-group row text-right">

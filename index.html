@@ -48,6 +48,9 @@ var activeBuffBars = new Map();
 var activeRaidBuffs = new Map();
 var activeMitigations = new Map();
 var activeCountdowns = new Map();
+var activeTTS = new Map();
+
+var ttsElements = new Map();
 
 $(function() {
 	loadSettings();
@@ -167,6 +170,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.dottimerbar, "hidewhendroppedoff", false);
 	checkAndInitializeSetting(settings.dottimerbar, "textenabled", true);
 	checkAndInitializeSetting(settings.dottimerbar, "imageenabled", true);
+	checkAndInitializeSetting(settings.dottimerbar, "ttsenabled", false);
 	checkAndInitializeSetting(settings.dottimerbar, "multidotenabled", true);
 	checkAndInitializeSetting(settings.dottimerbar, "growdirection", 1);
 	checkAndInitializeSetting(settings.dottimerbar, "padding", 20);
@@ -191,6 +195,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.bufftimerbar, "hidewhendroppedoff", false);
 	checkAndInitializeSetting(settings.bufftimerbar, "textenabled", true);
 	checkAndInitializeSetting(settings.bufftimerbar, "imageenabled", true);
+	checkAndInitializeSetting(settings.bufftimerbar, "ttsenabled", false);
 	checkAndInitializeSetting(settings.bufftimerbar, "growdirection", 1);
 	checkAndInitializeSetting(settings.bufftimerbar, "padding", 20);
 	checkAndInitializeSetting(settings.bufftimerbar, "scale", 1);
@@ -232,6 +237,7 @@ function loadSettings(){
 	// RAIDBUFF SETTINGS
 	checkAndInitializeSetting(settings, "raidbuffs", {});
 	checkAndInitializeSetting(settings.raidbuffs, "enabled", true);
+	checkAndInitializeSetting(settings.raidbuffs, "ttsenabled", false);
 	checkAndInitializeSetting(settings.raidbuffs, "alwaysshow", true);
 	checkAndInitializeSetting(settings.raidbuffs, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.raidbuffs, "hidewhensolo", false);
@@ -253,6 +259,7 @@ function loadSettings(){
 	// MITIGATION SETTINGS
 	checkAndInitializeSetting(settings, "mitigation", {});
 	checkAndInitializeSetting(settings.mitigation, "enabled", true);
+	checkAndInitializeSetting(settings.mitigation, "ttsenabled", false);
 	checkAndInitializeSetting(settings.mitigation, "alwaysshow", true);
 	checkAndInitializeSetting(settings.mitigation, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.mitigation, "hidewhensolo", false);
@@ -313,6 +320,17 @@ function loadContextMenu(){
 			"quit": {name: language.find(x => x.id === "close").string, icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
 		}
 	});
+}
+
+function setGoogleTTS(text){
+	let iframe = document.createElement("iframe");
+	iframe.removeAttribute("sandbox");
+	iframe.style.display = "none";
+	document.body.appendChild(iframe);
+	let encText = encodeURIComponent(text);
+	iframe.contentDocument.body.innerHTML = "<audio src=\"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + currentSettings.language + "&q=" + encText + "\" id=\"TTS\">";
+	this.item = iframe.contentDocument.body.firstElementChild;
+	return this.item;
 }
 
 function saveSettings(){	
@@ -629,6 +647,9 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		stopAbilityTimer(`${selector}-cooldown`, null);
 		stopAbilityTimer(`${selector}-duration`, null);
 	}
+	
+	handleAbilityTTS(ability, selector, onYou);
+	
 	if(onYou){
 		if(!selectedSettings.alwaysshow){
 			generateAbilityIcon(playerIndex, ability, Math.ceil(selectedActive.size / selectedSettings.columns), true);
@@ -661,6 +682,79 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		activeMitigations.set(ability.id, selector);
 		break;
 	}
+	}
+}
+
+function startTTSTimer(duration, selector, text, timeWhen = 2000){
+	if(!ttsElements.has(selector)){
+		ttsElements[selector] = setGoogleTTS(text);
+	}
+
+	let timems = duration * 1000;
+	let timeLeft = timems;
+	let ttsTimer = setInterval(function(){
+		timeLeft -= UPDATE_INTERVAL;
+		if(timeLeft <= timeWhen){
+			ttsElements[selector].play();
+			clearInterval(ttsTimer);
+			setTimeout(function(){
+			}, UPDATE_INTERVAL);	
+		}
+	}, UPDATE_INTERVAL);
+	activeTTS.set(selector, ttsTimer);
+}
+
+function handleAbilityTTS(ability, selector, onYou = true){
+	if(activeTTS.has(selector)) clearInterval(activeTTS.get(selector));
+	switch(ability.type){
+	case "DoT":
+		if(!currentSettings.dottimerbar.ttsenabled) return;
+		break;
+	case "Buff":
+		if(!currentSettings.bufftimerbar.ttsenabled) return;
+		break;
+	case "RaidBuff":
+		if(!currentSettings.raidbuffs.ttsenabled) return;
+		break;
+	case "Mitigation":
+		if(!currentSettings.mitigation.ttsenabled) return;
+		break;
+	default:
+		break;
+	}
+
+	let name = ability.name;
+	switch(currentSettings.language){
+	case "en":
+		name = ability.name_en;
+		break;
+	case "de":
+		name = ability.name_de;
+		break;
+	case "fr":
+		name = ability.name_fr;
+		break;
+	case "jp":
+		name = ability.name_jp;
+		break;
+	default:
+		break;
+	}
+	if(ability.tts){
+		switch(ability.ttstype){
+		case 0:
+			startTTSTimer(ability.cooldown, selector, name);
+			break;
+		case 1: 
+			startTTSTimer(ability.duration, selector, name);
+			break;
+		case 2:
+			if(!onYou && ability.type == "RaidBuff") return;
+			startTTSTimer(0, selector, name, 0);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -961,7 +1055,9 @@ function handleEffect(parameters){
 			let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
 			let selectorBar = `#${ability.id}-${ability.type.toLowerCase()}-timer`;
 			let selectorImage = `#${ability.id}-${ability.type.toLowerCase()}-image`;
-			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id) ){
+			ability.duration = parseInt(parameters.duration);
+			handleAbilityTTS(ability, selectorBar, onYou);
+			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id)){
 				switch(ability.type){
 				case "DoT":{
 					activeDotBars.set(ability.id, selectorBar);
