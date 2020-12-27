@@ -12,7 +12,7 @@ var language = [
 	{ id: "manabar", string: "Barre de mana" },
 	{ id: "pulltimers", string: "Minuteur de Pull" },
 	{ id: "bufftimers", string: "Minuteurs des 'buffs'" },
-	{ id: "dottimers", string: "Minuteurs de 'DoT'" },
+	{ id: "dottimers", string: "Minuteurs des 'DoT'" },
 	{ id: "stacksbar", string: "Barres des stacks" },
 	{ id: "raidbuffs", string: "Buffs de raid" },
 	{ id: "skin", string: "Skin" },
