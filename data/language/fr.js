@@ -65,6 +65,11 @@ var language = [
 	{ id: "duration", string: "Durée" },
 	{ id: "cooldown", string: "Cooldown" },
 	{ id: "overridedefaults", string: "Override Defaults" },
+	{ id: "ttsenabled", string: "TTS Enabled" },
+	{ id: "ttstype", string: "TTS Type" },
+	{ id: "abilitycooldown", string: "Ability Cooldown" },
+	{ id: "abilityduration", string: "Ability Duration" },
+	{ id: "oncast", string: "On Cast" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
