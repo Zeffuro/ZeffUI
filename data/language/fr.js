@@ -47,7 +47,7 @@ var language = [
 	{ id: "up", string: "Haut" },
 	{ id: "left", string: "Gauche" },
 	{ id: "right", string: "Droite" },
-	{ id: "columns", string: "Colonne" },
+	{ id: "columns", string: "Colonne par ligne" },
 	{ id: "hideoutofcombat", string: "Cacher quand vous êtes hors combat" },
 	{ id: "hidesolo", string: "Cacher quand vous n'êtes pas dans un groupe (party)" },
 	{ id: "droppedoff", string: "Cacher quand perdu" },
