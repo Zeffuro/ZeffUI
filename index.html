@@ -929,6 +929,19 @@ function onLogEvent(e){
 	}
 }
 
+/* exported testLog */
+function testLog(logLine){
+	let logEvent = {
+		type: "onLogEvent",
+		detail: {
+			logs: [
+				logLine
+			]
+		}
+	};
+	onLogEvent(logEvent);
+}
+
 function onPartyWipe(){
 	if(currentPlayer.job === "SMN") initializeSmn();
 	resetTimers();
@@ -1010,7 +1023,7 @@ function handleEffect(parameters){
 	let onYou = (parameters.target === currentPlayer.name);
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
-	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`] == parameters.effect)){
+	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`].toLowerCase() == parameters.effect.toLowerCase())){
 		if(ability === undefined) return;
 		if(currentSettings.override.abilities.some(x => x.name === ability.name)){
 			ability = currentSettings.override.abilities.find(x => x.name === ability.name);
