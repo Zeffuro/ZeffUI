@@ -14,7 +14,7 @@ var language = [
 	{ id: "bufftimers", string: "Minuteurs des 'buffs'" },
 	{ id: "dottimers", string: "Minuteurs de 'DoT'" },
 	{ id: "stacksbar", string: "Barres des stacks" },
-	{ id: "raidbuffs", string: "Buffs de groupe" },
+	{ id: "raidbuffs", string: "Buffs de raid" },
 	{ id: "skin", string: "Skin" },
 	{ id: "language", string: "Langue" },
 	{ id: "mitigations", string: "Mitigations" },
