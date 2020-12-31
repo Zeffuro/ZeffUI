@@ -6,7 +6,7 @@ var regexList =
 		matches: [
 			// CHINESE
 			{
-				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\（[a-zA-Z-' ]{2,31}\\）",
+				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\s*（.{1,12}）",
 				"function": "startCountdownTimer"
 			},
 			{

@@ -4,6 +4,7 @@ var abilityList = [
 	{
 		id: 7531,
 		name: "Rampart",
+		name_cn: "铁壁",
 		name_de: "Schutzwall",
 		name_en: "Rampart",
 		name_fr: "Rempart",
@@ -23,6 +24,7 @@ var abilityList = [
 	{
 		id: 7548,
 		name: "Arm's Length",
+		name_cn: "亲疏自行",
 		name_de: "Abtausch",
 		name_en: "Arm's Length",
 		name_fr: "Portée de bras",
@@ -42,6 +44,7 @@ var abilityList = [
 	{
 		id: 7535,
 		name: "Reprisal",
+		name_cn: "雪仇",
 		name_de: "Reflexion",
 		name_en: "Reprisal",
 		name_fr: "Rétorsion",
@@ -63,6 +66,7 @@ var abilityList = [
 	{
 		id: 838,
 		name: "Combust",
+		name_cn: "烧灼",
 		name_de: "Konjunktion",
 		name_en: "Combust",
 		name_fr: "Conjonction supérieure",
@@ -79,6 +83,7 @@ var abilityList = [
 	{
 		id: 843,
 		name: "Combust II",
+		name_cn: "炽灼",
 		name_de: "Konjunktion II",
 		name_en: "Combust II",
 		name_fr: "Conjonction supérieure II",
@@ -95,6 +100,7 @@ var abilityList = [
 	{
 		id: 1881,
 		name: "Combust III",
+		name_cn: "焚灼",
 		name_de: "Konjunktion III",
 		name_en: "Combust III",
 		name_fr: "Conjonction supérieure III",
@@ -112,6 +118,7 @@ var abilityList = [
 	{
 		id: 1878,
 		name: "Divination",
+		name_cn: "占卜",
 		name_de: "Weissagung",
 		name_en: "Divination",
 		name_fr: "Divination",
@@ -128,6 +135,7 @@ var abilityList = [
 	{
 		id: 841,
 		name: "Lightspeed",
+		name_cn: "光速",
 		name_de: "Lichtgeschwindigkeit",
 		name_en: "Lightspeed",
 		name_fr: "Vitesse de la lumière",
@@ -145,6 +153,7 @@ var abilityList = [
 	{
 		id: 16552,
 		name: "Divination",
+		name_cn: "占卜",
 		name_de: "Weissagung",
 		name_en: "Divination",
 		name_fr: "Divination",
@@ -165,6 +174,7 @@ var abilityList = [
 	{
 		id: 17055,
 		name: "Play",
+		name_cn: "出卡",
 		name_de: "Ausspielen",
 		name_en: "Play",
 		name_fr: "Dévoilement",
@@ -184,6 +194,7 @@ var abilityList = [
 	{
 		id: 4401,
 		name: "The Balance",
+		name_cn: "太阳神之衡",
 		name_de: "Waage",
 		name_en: "the Balance",
 		name_fr: "La Balance",
@@ -206,6 +217,7 @@ var abilityList = [
 	{
 		id: 4402,
 		name: "The Arrow",
+		name_cn: "放浪神之箭",
 		name_de: "Pfeil",
 		name_en: "the Arrow",
 		name_fr: "La Flèche",
@@ -228,6 +240,7 @@ var abilityList = [
 	{
 		id: 4403,
 		name: "The Spear",
+		name_cn: "战争神之枪",
 		name_de: "Speer",
 		name_en: "the Spear",
 		name_fr: "L'Épieu",
@@ -250,6 +263,7 @@ var abilityList = [
 	{
 		id: 4404,
 		name: "The Bole",
+		name_cn: "世界树之干",
 		name_de: "Eiche",
 		name_en: "the Bole",
 		name_fr: "Le Tronc",
@@ -272,6 +286,7 @@ var abilityList = [
 	{
 		id: 4405,
 		name: "The Ewer",
+		name_cn: "河流神之瓶",
 		name_de: "Krug",
 		name_en: "the Ewer",
 		name_fr: "L'Aiguière",
@@ -294,6 +309,7 @@ var abilityList = [
 	{
 		id: 4406,
 		name: "The Spire",
+		name_cn: "建筑神之塔",
 		name_de: "Turm",
 		name_en: "the Spire",
 		name_fr: "La Tour",
@@ -316,6 +332,7 @@ var abilityList = [
 	{
 		id: 7444,
 		name: "Lord of Crowns",
+		name_cn: "王冠之领主",
 		name_de: "König der Kronen",
 		name_en: "Lord of Crowns",
 		name_fr: "Roi des couronnes",
@@ -338,6 +355,7 @@ var abilityList = [
 	{
 		id: 7445,
 		name: "Lady of Crowns",
+		name_cn: "王冠之贵妇",
 		name_de: "Königin der Kronen",
 		name_en: "Lady of Crowns",
 		name_fr: "Reine des couronnes",
@@ -362,6 +380,7 @@ var abilityList = [
 	{
 		id: 161,
 		name: "Thunder",
+		name_cn: "闪雷",
 		name_de: "Blitz",
 		name_en: "Thunder",
 		name_fr: "Foudre",
@@ -378,6 +397,7 @@ var abilityList = [
 	{
 		id: 162,
 		name: "Thunder II",
+		name_cn: "震雷",
 		name_de: "Blitzra",
 		name_en: "Thunder II",
 		name_fr: "Extra Foudre",
@@ -394,6 +414,7 @@ var abilityList = [
 	{
 		id: 163,
 		name: "Thunder III",
+		name_cn: "暴雷",
 		name_de: "Blitzga",
 		name_en: "Thunder III",
 		name_fr: "Méga Foudre",
@@ -410,6 +431,7 @@ var abilityList = [
 	{
 		id: 1210,
 		name: "Thunder IV",
+		name_cn: "霹雷",
 		name_de: "Blitzka",
 		name_en: "Thunder IV",
 		name_fr: "Giga Foudre",
@@ -428,6 +450,7 @@ var abilityList = [
 	{
 		id: 124,
 		name: "Venomous Bite",
+		name_cn: "毒咬箭",
 		name_de: "Infizierte Wunde",
 		name_en: "Venomous Bite",
 		name_fr: "Morsure venimeuse",
@@ -444,6 +467,7 @@ var abilityList = [
 	{
 		id: 129,
 		name: "Windbite",
+		name_cn: "风蚀箭",
 		name_de: "Beißender Wind",
 		name_en: "Windbite",
 		name_fr: "Morsure du vent",
@@ -460,6 +484,7 @@ var abilityList = [
 	{
 		id: 1200,
 		name: "Caustic Bite",
+		name_cn: "烈毒咬箭",
 		name_de: "Kaustischer Biss",
 		name_en: "Caustic Bite",
 		name_fr: "Morsure caustique",
@@ -476,6 +501,7 @@ var abilityList = [
 	{
 		id: 1201,
 		name: "Stormbite",
+		name_cn: "狂风蚀箭",
 		name_de: "Sturmbiss",
 		name_en: "Stormbite",
 		name_fr: "Morsure de la tempête",
@@ -493,6 +519,7 @@ var abilityList = [
 	{
 		id: 125,
 		name: "Raging Strikes",
+		name_cn: "猛者强击",
 		name_de: "Wütende Attacke",
 		name_en: "Raging Strikes",
 		name_fr: "Tir furieux",
@@ -510,6 +537,7 @@ var abilityList = [
 	{
 		id: 118,
 		name: "Battle Voice",
+		name_cn: "战斗之声",
 		name_de: "Ode an die Seele",
 		name_en: "Battle Voice",
 		name_fr: "Voix de combat",
@@ -529,6 +557,7 @@ var abilityList = [
 	{
 		id: 17056,
 		name: "Song",
+		name_cn: "歌",
 		name_de: "Lied",
 		name_en: "Song",
 		name_fr: "Chanson",
@@ -548,6 +577,7 @@ var abilityList = [
 	{
 		id: 3559,
 		name: "the Wanderer's Minuet",
+		name_cn: "放浪神的小步舞曲",
 		name_de: "Menuett des Wanderers",
 		name_en: "the Wanderer's Minuet",
 		name_fr: "Menuet du Vagabond",
@@ -570,6 +600,7 @@ var abilityList = [
 	{
 		id: 114,
 		name: "Mage's Ballad",
+		name_cn: "贤者的叙事谣",
 		name_de: "Ballade des Weisen",
 		name_en: "Mage's Ballad",
 		name_fr: "Ballade du mage",
@@ -592,6 +623,7 @@ var abilityList = [
 	{
 		id: 116,
 		name: "Army's Paeon",
+		name_cn: "军神的赞美歌",
 		name_de: "Hymne der Krieger",
 		name_en: "Army's Paeon",
 		name_fr: "Péan martial",
@@ -616,6 +648,7 @@ var abilityList = [
 	{
 		id: 1825,
 		name: "Devilment",
+		name_cn: "进攻之探戈",
 		name_de: "Todestango",
 		name_en: "Devilment",
 		name_fr: "Tango endiablé",
@@ -632,6 +665,7 @@ var abilityList = [
 	{
 		id: 1827,
 		name: "Improvisation",
+		name_cn: "即兴表演",
 		name_de: "Tanzimprovisation",
 		name_en: "Improvisation",
 		name_fr: "Improvisation",
@@ -648,6 +682,7 @@ var abilityList = [
 	{
 		id: 1821,
 		name: "Standard Finish",
+		name_cn: "标准舞步结束",
 		name_de: "Einfaches Finale",
 		name_en: "Standard Finish",
 		name_fr: "Final classique",
@@ -664,6 +699,7 @@ var abilityList = [
 	{
 		id: 1822,
 		name: "Technical Finish",
+		name_cn: "技巧舞步结束",
 		name_de: "Komplexes Finale",
 		name_en: "Technical Finish",
 		name_fr: "Final technique",
@@ -681,6 +717,7 @@ var abilityList = [
 	{
 		id: 16011,
 		name: "Devilment",
+		name_cn: "进攻之探戈",
 		name_de: "Todestango",
 		name_en: "Devilment",
 		name_fr: "Tango endiablé",
@@ -700,6 +737,7 @@ var abilityList = [
 	{
 		id: 15997,
 		name: "Standard Step",
+		name_cn: "标准舞步",
 		name_de: "Einfache Choreographie",
 		name_en: "Standard Step",
 		name_fr: "Pas classique",
@@ -722,6 +760,7 @@ var abilityList = [
 	{
 		id: 16191,
 		name: "Standard Step",
+		name_cn: "标准舞步",
 		name_de: "Einfache Choreographie",
 		name_en: "Standard Step",
 		name_fr: "Pas classique",
@@ -746,6 +785,7 @@ var abilityList = [
 	{
 		id: 16192,
 		name: "Standard Step",
+		name_cn: "标准舞步",
 		name_de: "Einfache Choreographie",
 		name_en: "Standard Step",
 		name_fr: "Pas classique",
@@ -770,6 +810,7 @@ var abilityList = [
 	{
 		id: 16003,
 		name: "Standard Step",
+		name_cn: "标准舞步",
 		name_de: "Einfache Choreographie",
 		name_en: "Standard Step",
 		name_fr: "Pas classique",
@@ -794,6 +835,7 @@ var abilityList = [
 	{
 		id: 16004,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexe Choreographie",
 		name_en: "Technical Step",
 		name_fr: "Pas technique",
@@ -816,6 +858,7 @@ var abilityList = [
 	{
 		id: 16193,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexe Choreographie",
 		name_en: "Technical Step",
 		name_fr: "Pas technique",
@@ -840,6 +883,7 @@ var abilityList = [
 	{
 		id: 16193,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexes Finale",
 		name_en: "Technical Finish",
 		name_fr: "Final technique",
@@ -864,6 +908,7 @@ var abilityList = [
 	{
 		id: 16194,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexe Choreographie",
 		name_en: "Technical Step",
 		name_fr: "Pas technique",
@@ -888,6 +933,7 @@ var abilityList = [
 	{
 		id: 16195,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexe Choreographie",
 		name_en: "Technical Step",
 		name_fr: "Pas technique",
@@ -912,6 +958,7 @@ var abilityList = [
 	{
 		id: 16196,
 		name: "Technical Step",
+		name_cn: "技巧舞步",
 		name_de: "Komplexe Choreographie",
 		name_en: "Technical Step",
 		name_fr: "Pas technique",
@@ -938,6 +985,7 @@ var abilityList = [
 	{
 		id: 118,
 		name: "Chaos Thrust",
+		name_cn: "樱花怒放",
 		name_de: "Chaotischer Tjost",
 		name_en: "Chaos Thrust",
 		name_fr: "Percée chaotique",
@@ -955,6 +1003,7 @@ var abilityList = [
 	{
 		id: 121,
 		name: "Disembowel",
+		name_cn: "开膛枪",
 		name_de: "Drachengriff",
 		name_en: "Disembowel",
 		name_fr: "Éventration",
@@ -971,6 +1020,7 @@ var abilityList = [
 	{
 		id: 1183,
 		name: "Dragon Sight",
+		name_cn: "巨龙视线",
 		name_de: "Drachenblick",
 		name_en: "Dragon Sight",
 		name_fr: "Vue de dragon",
@@ -987,6 +1037,7 @@ var abilityList = [
 	{
 		id: 1864,
 		name: "Lance Charge",
+		name_cn: "猛枪",
 		name_de: "Lanzenschärfung",
 		name_en: "Lance Charge",
 		name_fr: "Lance acérée",
@@ -1004,6 +1055,7 @@ var abilityList = [
 	{
 		id: 3557,
 		name: "Battle Litany",
+		name_cn: "战斗连祷",
 		name_de: "Litanei der Schlacht",
 		name_en: "Battle Litany",
 		name_fr: "Litanie combattante",
@@ -1023,6 +1075,7 @@ var abilityList = [
 	{
 		id: 7398,
 		name: "Dragon Sight",
+		name_cn: "巨龙视线",
 		name_de: "Drachenblick",
 		name_en: "Dragon Sight",
 		name_fr: "Vue de dragon",
@@ -1044,6 +1097,7 @@ var abilityList = [
 	{
 		id: 742,
 		name: "Blood Weapon",
+		name_cn: "嗜血",
 		name_de: "Blutwaffe",
 		name_en: "Blood Weapon",
 		name_fr: "Arme de sang",
@@ -1060,6 +1114,7 @@ var abilityList = [
 	{
 		id: 1972,
 		name: "Delirium",
+		name_cn: "血乱",
 		name_de: "Blutdelirium",
 		name_en: "Delirium",
 		name_fr: "Delirium de sang",
@@ -1077,6 +1132,7 @@ var abilityList = [
 	{
 		id: 3634,
 		name: "Dark Mind",
+		name_cn: "弃明投暗",
 		name_de: "Dunkler Geist",
 		name_en: "Dark Mind",
 		name_fr: "Esprit ténébreux",
@@ -1096,6 +1152,7 @@ var abilityList = [
 	{
 		id: 3636,
 		name: "Shadow Wall",
+		name_cn: "暗影墙",
 		name_de: "Schattenwand",
 		name_en: "Shadow Wall",
 		name_fr: "Mur d'ombre",
@@ -1115,6 +1172,7 @@ var abilityList = [
 	{
 		id: 7393,
 		name: "The Blackest Night",
+		name_cn: "至黑之夜",
 		name_de: "Schwärzeste Nacht",
 		name_en: "The Blackest Night",
 		name_fr: "Nuit noirissime",
@@ -1134,6 +1192,7 @@ var abilityList = [
 	{
 		id: 16471,
 		name: "Dark Missionary",
+		name_cn: "暗黑布道",
 		name_de: "Dunkler Bote",
 		name_en: "Dark Missionary",
 		name_fr: "Missionnaire des Ténèbres",
@@ -1153,6 +1212,7 @@ var abilityList = [
 	{
 		id: 3638,
 		name: "Living Dead",
+		name_cn: "行尸走肉",
 		name_de: "Totenerweckung",
 		name_en: "Living Dead",
 		name_fr: "Mort-vivant",
@@ -1174,6 +1234,7 @@ var abilityList = [
 	{
 		id: 1837,
 		name: "Sonic Break",
+		name_cn: "音速破",
 		name_de: "Schallbrecher",
 		name_en: "Sonic Break",
 		name_fr: "Rupture sonique",
@@ -1190,6 +1251,7 @@ var abilityList = [
 	{
 		id: 1838,
 		name: "Bow Shock",
+		name_cn: "弓形冲波",
 		name_de: "Schockpatrone",
 		name_en: "Bow Shock",
 		name_fr: "Arc de choc",
@@ -1207,6 +1269,7 @@ var abilityList = [
 	{
 		id: 1831,
 		name: "No Mercy",
+		name_cn: "无情",
 		name_de: "Ohne Gnade",
 		name_en: "No Mercy",
 		name_fr: "Sans pitié",
@@ -1224,6 +1287,7 @@ var abilityList = [
 	{
 		id: 16161,
 		name: "Heart of Stone",
+		name_cn: "石之心",
 		name_de: "Steinernes Herz",
 		name_en: "Heart of Stone",
 		name_fr: "Cœur de pierre",
@@ -1243,6 +1307,7 @@ var abilityList = [
 	{
 		id: 16151,
 		name: "Aurora",
+		name_cn: "极光",
 		name_de: "Aurora",
 		name_en: "Aurora",
 		name_fr: "Aurore",
@@ -1262,6 +1327,7 @@ var abilityList = [
 	{
 		id: 16140,
 		name: "Camouflage",
+		name_cn: "伪装",
 		name_de: "Camouflage",
 		name_en: "Camouflage",
 		name_fr: "Camouflage",
@@ -1281,6 +1347,7 @@ var abilityList = [
 	{
 		id: 16148,
 		name: "Nebula",
+		name_cn: "星云",
 		name_de: "Nebula",
 		name_en: "Nebula",
 		name_fr: "Nébuleuse",
@@ -1300,6 +1367,7 @@ var abilityList = [
 	{
 		id: 16160,
 		name: "Heart of Light",
+		name_cn: "光之心",
 		name_de: "Wackeres Herz",
 		name_en: "Heart of Light",
 		name_fr: "Cœur de Lumière",
@@ -1319,6 +1387,7 @@ var abilityList = [
 	{
 		id: 16152,
 		name: "Superbolide",
+		name_cn: "超火流星",
 		name_de: "Meteoritenfall",
 		name_en: "Superbolide",
 		name_fr: "Bolide",
@@ -1340,6 +1409,7 @@ var abilityList = [
 	{
 		id: 1866,
 		name: "Bioblaster",
+		name_cn: "毒菌冲击",
 		name_de: "Bioblaster",
 		name_en: "Bioblaster",
 		name_fr: "Lance-toxine",
@@ -1357,6 +1427,7 @@ var abilityList = [
 	{
 		id: 688,
 		name: "Hypercharge",
+		name_cn: "超荷",
 		name_de: "Hyperladung",
 		name_en: "Hypercharge",
 		name_fr: "Hypercharge",
@@ -1373,6 +1444,7 @@ var abilityList = [
 	{
 		id: 1946,
 		name: "Wildfire",
+		name_cn: "野火",
 		name_de: "Wildfeuer",
 		name_en: "Wildfire",
 		name_fr: "Flambée",
@@ -1391,6 +1463,7 @@ var abilityList = [
 	{
 		id: 246,
 		name: "Demolish",
+		name_cn: "破碎拳",
 		name_de: "Demolieren",
 		name_en: "Demolish",
 		name_fr: "Démolition",
@@ -1408,6 +1481,7 @@ var abilityList = [
 	{
 		id: 592,
 		name: "Ring of Fire",
+		name_cn: "火焰漩涡",
 		name_de: "Flammenwand",
 		name_en: "Ring of Fire",
 		name_fr: "Vortex de feu",
@@ -1424,6 +1498,7 @@ var abilityList = [
 	{
 		id: 101,
 		name: "Twin Snakes",
+		name_cn: "双掌打",
 		name_de: "Doppelviper",
 		name_en: "Twin Snakes",
 		name_fr: "Serpents jumeaux",
@@ -1440,6 +1515,7 @@ var abilityList = [
 	{
 		id: 1181,
 		name: "Riddle Of Fire",
+		name_cn: "红莲极意",
 		name_de: "Flammendes Enigma",
 		name_en: "Riddle of Fire",
 		name_fr: "Énigme du feu",
@@ -1457,6 +1533,7 @@ var abilityList = [
 	{
 		id: 7396,
 		name: "Brotherhood",
+		name_cn: "义结金兰",
 		name_de: "Bruderschaft",
 		name_en: "Brotherhood",
 		name_fr: "Fraternité",
@@ -1478,6 +1555,7 @@ var abilityList = [
 	{
 		id: 508,
 		name: "Shadow Fang",
+		name_cn: "影牙",
 		name_de: "Schattenfang",
 		name_en: "Shadow Fang",
 		name_fr: "Croc d'ombre",
@@ -1495,6 +1573,7 @@ var abilityList = [
 	{
 		id: 500,
 		name: "Huton",
+		name_cn: "风遁之术",
 		name_de: "Huton",
 		name_en: "Huton",
 		name_fr: "Fûton",
@@ -1512,6 +1591,7 @@ var abilityList = [
 	{
 		id: 2258,
 		name: "Trick Attack",
+		name_cn: "攻其不备",
 		name_de: "Trickattacke",
 		name_en: "Trick Attack",
 		name_fr: "Attaque sournoise",
@@ -1533,6 +1613,7 @@ var abilityList = [
 	{
 		id: 248,
 		name: "Circle of Scorn",
+		name_cn: "厄运流转",
 		name_de: "Kreis der Verachtung",
 		name_en: "Circle of Scorn",
 		name_fr: "Cercle du destin",
@@ -1549,6 +1630,7 @@ var abilityList = [
 	{
 		id: 725,
 		name: "Goring Blade",
+		name_cn: "沥血剑",
 		name_de: "Ausweiden",
 		name_en: "Goring Blade",
 		name_fr: "Lame étripante",
@@ -1566,6 +1648,7 @@ var abilityList = [
 	{
 		id: 76,
 		name: "Fight or Flight",
+		name_cn: "战逃反应",
 		name_de: "Verwegenheit",
 		name_en: "Fight or Flight",
 		name_fr: "Combat acharné",
@@ -1582,6 +1665,7 @@ var abilityList = [
 	{
 		id: 1368,
 		name: "Requiescat",
+		name_cn: "安魂祈祷",
 		name_de: "Requiescat",
 		name_en: "Requiescat",
 		name_fr: "Requiescat",
@@ -1599,6 +1683,7 @@ var abilityList = [
 	{
 		id: 17,
 		name: "Sentinel",
+		name_cn: "预警",
 		name_de: "Sentinel",
 		name_en: "Sentinel",
 		name_fr: "Sentinelle",
@@ -1618,6 +1703,7 @@ var abilityList = [
 	{
 		id: 3542,
 		name: "Sheltron",
+		name_cn: "盾阵",
 		name_de: "Schiltron",
 		name_en: "Sheltron",
 		name_fr: "Schiltron",
@@ -1637,6 +1723,7 @@ var abilityList = [
 	{
 		id: 7382,
 		name: "Intervention",
+		name_cn: "干预",
 		name_de: "Intervention",
 		name_en: "Intervention",
 		name_fr: "Intervention",
@@ -1656,6 +1743,7 @@ var abilityList = [
 	{
 		id: 27,
 		name: "Cover",
+		name_cn: "保护",
 		name_de: "Deckung",
 		name_en: "Cover",
 		name_fr: "Couverture",
@@ -1675,6 +1763,7 @@ var abilityList = [
 	{
 		id: 7385,
 		name: "Passage of Arms",
+		name_cn: "武装戍卫",
 		name_de: "Waffengang",
 		name_en: "Passage of Arms",
 		name_fr: "Passe d'armes",
@@ -1694,6 +1783,7 @@ var abilityList = [
 	{
 		id: 3540,
 		name: "Divine Veil",
+		name_cn: "圣光幕帘",
 		name_de: "Heiliger Quell",
 		name_en: "Divine Veil",
 		name_fr: "Voile divin",
@@ -1713,6 +1803,7 @@ var abilityList = [
 	{
 		id: 30,
 		name: "Hallowed Ground",
+		name_cn: "神圣领域",
 		name_de: "Heiliger Boden",
 		name_en: "Hallowed Ground",
 		name_fr: "Invincible",
@@ -1734,6 +1825,7 @@ var abilityList = [
 	{
 		id: 7520,
 		name: "Embolden",
+		name_cn: "鼓励",
 		name_de: "Ermutigen",
 		name_en: "Embolden",
 		name_fr: "Enhardissement",
@@ -1755,6 +1847,7 @@ var abilityList = [
 	{
 		id: 1228,
 		name: "Higanbana",
+		name_cn: "彼岸花",
 		name_de: "Higanbana",
 		name_en: "Higanbana",
 		name_fr: "Higanbana",
@@ -1772,6 +1865,7 @@ var abilityList = [
 	{
 		id: 1298,
 		name: "Jinpu",
+		name_cn: "阵风",
 		name_de: "Jinpu",
 		name_en: "Jinpu",
 		name_fr: "Jinpû",
@@ -1788,6 +1882,7 @@ var abilityList = [
 	{
 		id: 1299,
 		name: "Shifu",
+		name_cn: "士风",
 		name_de: "Shifu",
 		name_en: "Shifu",
 		name_fr: "Shifû",
@@ -1806,6 +1901,7 @@ var abilityList = [
 	{
 		id: 179,
 		name: "Bio",
+		name_cn: "毒菌",
 		name_de: "Bio",
 		name_en: "Bio",
 		name_fr: "Bactérie",
@@ -1822,6 +1918,7 @@ var abilityList = [
 	{
 		id: 189,
 		name: "Bio II",
+		name_cn: "猛毒菌",
 		name_de: "Biora",
 		name_en: "Bio II",
 		name_fr: "Extra Bactérie",
@@ -1838,6 +1935,7 @@ var abilityList = [
 	{
 		id: 1895,
 		name: "Biolysis",
+		name_cn: "蛊毒法",
 		name_de: "Causae et Curae",
 		name_en: "Biolysis",
 		name_fr: "Loi de l'infection",
@@ -1855,6 +1953,7 @@ var abilityList = [
 	{
 		id: 7436,
 		name: "Chain Stratagem",
+		name_cn: "连环计",
 		name_de: "Kritische Strategie",
 		name_en: "Chain Stratagem",
 		name_fr: "Stratagèmes entrelacés",
@@ -1876,6 +1975,7 @@ var abilityList = [
 	{
 		id: 179,
 		name: "Bio",
+		name_cn: "毒菌",
 		name_de: "Bio",
 		name_en: "Bio",
 		name_fr: "Bactérie",
@@ -1892,6 +1992,7 @@ var abilityList = [
 	{
 		id: 189,
 		name: "Bio II",
+		name_cn: "猛毒菌",
 		name_de: "Biora",
 		name_en: "Bio II",
 		name_fr: "Extra Bactérie",
@@ -1908,6 +2009,7 @@ var abilityList = [
 	{
 		id: 1214,
 		name: "Bio III",
+		name_cn: "剧毒菌",
 		name_de: "Bioga",
 		name_en: "Bio III",
 		name_fr: "Méga Bactérie",
@@ -1924,6 +2026,7 @@ var abilityList = [
 	{
 		id: 180,
 		name: "Miasma",
+		name_cn: "瘴气",
 		name_de: "Miasma",
 		name_en: "Miasma",
 		name_fr: "Miasmes",
@@ -1940,6 +2043,7 @@ var abilityList = [
 	{
 		id: 188,
 		name: "Miasma II",
+		name_cn: "瘴疠",
 		name_de: "Miasra",
 		name_en: "Miasma II",
 		name_fr: "Extra Miasmes",
@@ -1956,6 +2060,7 @@ var abilityList = [
 	{
 		id: 1215,
 		name: "Miasma III",
+		name_cn: "瘴暍",
 		name_de: "Miasga",
 		name_en: "Miasma III",
 		name_fr: "Méga Miasmes",
@@ -1973,6 +2078,7 @@ var abilityList = [
 	{
 		id: 1212,
 		name: "Further Ruin",
+		name_cn: "毁坏强化",
 		name_de: "Verbessertes Ruinra",
 		name_en: "Further Ruin",
 		name_fr: "Extra Ruine renforcée",
@@ -1989,6 +2095,7 @@ var abilityList = [
 	{
 		id: 7426,
 		name: "Ruin IV",
+		name_cn: "毁绝",
 		name_de: "Ruinka",
 		name_en: "Ruin IV",
 		name_fr: "Giga Ruine",
@@ -2006,6 +2113,7 @@ var abilityList = [
 	{
 		id: 7423,
 		name: "Aetherpact",
+		name_cn: "以太契约",
 		name_de: "Ätherpakt",
 		name_en: "Aetherpact",
 		name_fr: "Pacte d'éther",
@@ -2027,6 +2135,7 @@ var abilityList = [
 	{
 		id: 86,
 		name: "Berserk",
+		name_cn: "狂暴",
 		name_de: "Tollwut",
 		name_en: "Berserk",
 		name_fr: "Berserk",
@@ -2043,6 +2152,7 @@ var abilityList = [
 	{
 		id: 1177,
 		name: "Inner Release",
+		name_cn: "原初的解放",
 		name_de: "Urbefreiung",
 		name_en: "Inner Release",
 		name_fr: "Relâchement bestial",
@@ -2059,6 +2169,7 @@ var abilityList = [
 	{
 		id: 90,
 		name: "Storm's Eye",
+		name_cn: "暴风碎",
 		name_de: "Sturmbrecher",
 		name_en: "Storm's Eye",
 		name_fr: "Œil de la tempête",
@@ -2076,6 +2187,7 @@ var abilityList = [
 	{
 		id: 3551,
 		name: "Raw Intuition",
+		name_cn: "原初的直觉",
 		name_de: "Ur-Instinkt",
 		name_en: "Raw Intuition",
 		name_fr: "Intuition pure",
@@ -2098,6 +2210,7 @@ var abilityList = [
 	{
 		id: 16464,
 		name: "Nascent Flash",
+		name_cn: "原初的勇猛",
 		name_de: "Urflackern",
 		name_en: "Nascent Flash",
 		name_fr: "Exaltation naissante",
@@ -2120,6 +2233,7 @@ var abilityList = [
 	{
 		id: 40,
 		name: "Thrill of Battle",
+		name_cn: "战栗",
 		name_de: "Kampfrausch",
 		name_en: "Thrill of Battle",
 		name_fr: "Frisson de la bataille",
@@ -2139,6 +2253,7 @@ var abilityList = [
 	{
 		id: 44,
 		name: "Vengeance",
+		name_cn: "复仇",
 		name_de: "Rachsucht",
 		name_en: "Vengeance",
 		name_fr: "Représailles",
@@ -2158,6 +2273,7 @@ var abilityList = [
 	{
 		id: 7388,
 		name: "Shake It Off",
+		name_cn: "摆脱",
 		name_de: "Abschütteln",
 		name_en: "Shake It Off",
 		name_fr: "Débarrassage",
@@ -2177,6 +2293,7 @@ var abilityList = [
 	{
 		id: 43,
 		name: "Holmgang",
+		name_cn: "死斗",
 		name_de: "Holmgang",
 		name_en: "Holmgang",
 		name_fr: "Holmgang",
@@ -2198,6 +2315,7 @@ var abilityList = [
 	{
 		id: 143,
 		name: "Aero",
+		name_cn: "疾风",
 		name_de: "Wind",
 		name_en: "Aero",
 		name_fr: "Vent",
@@ -2214,6 +2332,7 @@ var abilityList = [
 	{
 		id: 144,
 		name: "Aero II",
+		name_cn: "烈风",
 		name_de: "Windra",
 		name_en: "Aero II",
 		name_fr: "Extra Vent",
@@ -2230,6 +2349,7 @@ var abilityList = [
 	{
 		id: 798,
 		name: "Aero III",
+		name_cn: "暴风",
 		name_de: "Windga",
 		name_en: "Aero III",
 		name_fr: "Méga Vent",
@@ -2246,6 +2366,7 @@ var abilityList = [
 	{
 		id: 1871,
 		name: "Dia",
+		name_cn: "天辉",
 		name_de: "Dia",
 		name_en: "Dia",
 		name_fr: "Lumen",
@@ -2263,6 +2384,7 @@ var abilityList = [
 	{
 		id: 157,
 		name: "Presence of Mind",
+		name_cn: "神速咏唱",
 		name_de: "Geistesgegenwart",
 		name_en: "Presence of Mind",
 		name_fr: "Présence d'esprit",
