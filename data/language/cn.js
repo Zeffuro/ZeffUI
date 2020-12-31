@@ -27,7 +27,7 @@ var language = [
 	{ id: "bufftimersdescription", string: "在此处修改你的个人Buff监控的设定。" },
 	{ id: "dottimersdescription", string: "在此处修改你的个人DoT监控的设定。" },
 	{ id: "pulltimersdescription", string: "在此处修改战斗开始倒计时的设定。" },
-	{ id: "stacksbardescription", string: "在此处修改职业量普的设定。" },
+	{ id: "stacksbardescription", string: "在此处修改职业量谱的设定。" },
 	{ id: "raidbuffdescription", string: "在此处修改团辅监控的设定（不含减伤型团辅）。" },
 	{ id: "mitigationdescription", string: "在此处修改减伤监控的设定。" },
 	{ id: "overridedescription", string: "在此处自定义任何能力技监控的特殊设定。" },
