@@ -59,7 +59,7 @@ var language = [
 	{ id: "pulltimertext", string: "倒计时文本" },
 	{ id: "bufftext", string: "Buff文本" },
 	{ id: "dottext", string: "DoT文本" },
-	{ id: "multidot", string: "多目标DoT（尚未实施）" },
+	{ id: "multidot", string: "多目标DoT（尚未实装）" },
 	{ id: "ability", string: "能力技" },
 	{ id: "abilityenabled", string: "启用监控" },
 	{ id: "duration", string: "持续时间" },
@@ -71,7 +71,7 @@ var language = [
 	{ id: "abilityduration", string: "能力技持续时间" },
 	{ id: "oncast", string: "生效时" },
 	// SKINS
-	{ id: "skindefault", string: "默认（由SE设计）" },
+	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
 	{ id: "skinmaterialdiscord", string: "Material Discord（由skotlex设计）" },
 	// COLORS
@@ -93,7 +93,7 @@ var language = [
 	{ id: "colorgrey", string: "浅灰色" },
 	// CONTEXT MENU
 	{ id: "lock", string: "锁定 / 解锁模块" },
-	{ id: "grid", string: "显示网格" },
+	{ id: "grid", string: "切换网格" },
 	{ id: "settings", string: "设置" },
 	{ id: "close", string: "关闭菜单" }
 ];
