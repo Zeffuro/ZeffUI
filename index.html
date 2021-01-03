@@ -328,7 +328,11 @@ function setGoogleTTS(text){
 	iframe.style.display = "none";
 	document.body.appendChild(iframe);
 	let encText = encodeURIComponent(text);
-	iframe.contentDocument.body.innerHTML = "<audio src=\"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + currentSettings.language + "&q=" + encText + "\" id=\"TTS\">";
+
+	let ttsLang = currentSettings.language;
+	if(currentSettings.language == "jp") ttsLang = "ja";
+
+	iframe.contentDocument.body.innerHTML = "<audio src=\"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + ttsLang + "&q=" + encText + "\" id=\"TTS\">";
 	this.item = iframe.contentDocument.body.firstElementChild;
 	return this.item;
 }
