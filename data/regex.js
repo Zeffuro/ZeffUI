@@ -97,7 +97,7 @@ var regexList =
 		regex: "] 1A:",
 		matches: [
 			{
-				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[a-zA-Z-' ]{2,31}) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\\.",
+				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[^)]*) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\\.",
 				"function": "handleEffect"
 			}
 		]
@@ -106,8 +106,7 @@ var regexList =
 		regex: "] 15:",
 		matches: [
 			{
-				//"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):(?<skillname>.*):(?<targetid>[A-F0-9]{8})?:(?<target>[a-zA-Z-' ]{2,31})?:(?<power>\\d)?",
-				"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):(?<skillname>[^:]*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\\d)?",
+				"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[^:]*):(?<skillid>[A-F0-9]{2,4}):(?<skillname>[^:]*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\\d)?",
 				"function": "handleSkill"
 			}
 		]
@@ -116,8 +115,7 @@ var regexList =
 		regex: "] 16:",
 		matches: [
 			{
-				//"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):(?<skillname>.*):(?<targetid>[A-F0-9]{8})?:(?<target>[a-zA-Z-' ]{2,31})?:(?<power>\\d)?",
-				"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[a-zA-Z-' ]{2,31}):(?<skillid>[A-F0-9]{2,4}):(?<skillname>[^:]*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\\d)?",
+				"regex": "(?<playerid>[A-F0-9]{8}):(?<player>[^:]*):(?<skillid>[A-F0-9]{2,4}):(?<skillname>[^:]*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\\d)?",
 				"function": "handleSkill"
 			}
 		]
