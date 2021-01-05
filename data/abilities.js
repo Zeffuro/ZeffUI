@@ -152,7 +152,7 @@ var abilityList = [
 	{
 		id: 16559,
 		name: "Neutral Sect",
-		name_cn: "NeedChineseNameNS",
+		name_cn: "中间学派",
 		name_de: "Neutral",
 		name_en: "Neutral Sect",
 		name_fr: "Adepte de la neutralité",
@@ -162,14 +162,14 @@ var abilityList = [
 		ttstype: 0,
 		job: "AST",
 		type: "Buff",
-		icon: "https://xivapi.com/i/003000/003552.png",
+		icon: "https://xivapi.com/i/013000/013253.png",
 		color: "--filter-light-pink",
 		order: 2
 	},
 	{
 		id: 3612,
 		name: "Synastry",
-		name_cn: "NeedChineseNameSY",
+		name_cn: "星位合图",
 		name_de: "Synastrie",
 		name_en: "Synastry",
 		name_fr: "Synastrie",
@@ -179,7 +179,7 @@ var abilityList = [
 		ttstype: 0,
 		job: "AST",
 		type: "Buff",
-		icon: "https://xivapi.com/i/003000/003139.png",
+		icon: "https://xivapi.com/i/013000/013223.png",
 		color: "--filter-light-blue",
 		order: 3
 	},
