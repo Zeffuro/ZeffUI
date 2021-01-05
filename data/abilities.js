@@ -149,6 +149,40 @@ var abilityList = [
 		color: "--filter-light-gold",
 		order: 1
 	},
+	{
+		id: 16559,
+		name: "Neutral Sect",
+		name_cn: "NeedChineseNameNS",
+		name_de: "Neutral",
+		name_en: "Neutral Sect",
+		name_fr: "Adepte de la neutralité",
+		name_jp: "ニュートラルセクト",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "AST",
+		type: "Buff",
+		icon: "https://xivapi.com/i/003000/003552.png",
+		color: "--filter-light-pink",
+		order: 2
+	},
+	{
+		id: 3612,
+		name: "Synastry",
+		name_cn: "NeedChineseNameSY",
+		name_de: "Synastrie",
+		name_en: "Synastry",
+		name_fr: "Synastrie",
+		name_jp: "シナストリー",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "AST",
+		type: "Buff",
+		icon: "https://xivapi.com/i/003000/003139.png",
+		color: "--filter-light-blue",
+		order: 3
+	},
 	// Raid Buffs
 	{
 		id: 16552,
