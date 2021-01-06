@@ -795,6 +795,8 @@ function toggleLock(){
 		$("#timer-bar").show();
 		$("#dot-timer-bar").show();
 		$("#buff-timer-bar").show();
+		$("#raid-buffs-bar").append("<span id=\"raid-buffs-anchor\" class=\"anchor-text\">Raid Buffs Anchor</span>");
+		$("#mitigation-bar").append("<span id=\"mitigation-anchor\" class=\"anchor-text\">Mitigations Anchor</span>");
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").show();
 		//$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
@@ -807,6 +809,8 @@ function toggleLock(){
 		$("#timer-bar").hide();
 		$("#dot-timer-bar").hide();
 		$("#buff-timer-bar").hide();
+		$("#raid-buffs-anchor").remove();
+		$("#mitigation-anchor").remove();
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").hide();
 		//$("[id$=bar]").draggable("disable");
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);

@@ -171,3 +171,10 @@ progress:after {
 	content: attr(data-label);
 	z-index: 10;
 }
+.anchor-text {
+	position: relative;
+	font-family: Arial, Times, serif;
+	font-weight: bold;
+	color: white;
+	z-index: 10;
+}
