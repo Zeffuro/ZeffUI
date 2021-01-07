@@ -227,10 +227,7 @@ function loadSettings(){
 	$("#stacks-bar").attr("height", settings.stacksbar.scale * 21);
 	$("#stacks-bar").css("left", settings.stacksbar.x);
 	$("#stacks-bar").css("top", settings.stacksbar.y);
-	$("#stacks-1").attr("width", settings.stacksbar.scale * 25);
-	$("#stacks-2").attr("width", settings.stacksbar.scale * 25);
-	$("#stacks-3").attr("width", settings.stacksbar.scale * 25);
-	$("#stacks-4").attr("width", settings.stacksbar.scale * 25);
+	$("#stacks-bar").css("transform", `scale(${settings.stacksbar.scale})`);
 	$("[id^=stacks-background]").css("margin-left", 0 - (settings.stacksbar.scale * 4));
 	$("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
 	
