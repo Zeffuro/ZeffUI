@@ -954,13 +954,20 @@ function testLog(logLine){
 }
 
 function onPartyWipe(){
-	if(currentPlayer.job === "SMN") initializeSmn();
+	if(currentPlayer.job === "SMN") {
+		initializeSmn();
+		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+	}
 	resetTimers();
 	generateRaidBuffs();
 	generateMitigation();
 }
 
 function onChangeZone(){
+	if(currentPlayer.job === "SMN") {
+		initializeSmn();
+		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+	}
 	resetTimers();
 }
 
