@@ -896,6 +896,9 @@ function onPlayerChangedEvent(e){
 		if(e.detail.job === "SMN") {
 			initializeSmn();
 			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+			$("#stacks-bar").show();
+		}else{
+			$("#stacks-bar").hide();
 		}
 		resetTimers();
 		if(currentPartyList.length === 1){
