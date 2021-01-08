@@ -1078,13 +1078,13 @@ function handleEffect(parameters){
 		if(ability.type === "Stacks" && byYou){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
 		}
-		if((ability.type === "DoT"  && byYou) || (ability.type === "Buff" && byYou)){
+		if((ability.type === "DoT"  && byYou) || (ability.type === "Buff" && byYou)){			
+			if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 			let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 			let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
 			let selectorBar = `#${ability.id}-${ability.type.toLowerCase()}-timer`;
 			let selectorImage = `#${ability.id}-${ability.type.toLowerCase()}-image`;
 			ability.duration = parseInt(parameters.duration);
-			handleAbilityTTS(ability, selectorBar, onYou);
 			if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id)){
 				switch(ability.type){
 				case "DoT":{
@@ -1176,6 +1176,7 @@ function handleEffect(parameters){
 				}
 			}
 			if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar));
+			handleAbilityTTS(ability, selectorBar, onYou);
 			startBarTimer(parameters.duration, selectorBar, currentSettings[`${ability.type.toLowerCase()}timerbar`].hidewhendroppedoff);
 		}
 	}
