@@ -119,6 +119,15 @@ var regexList =
 				"function": "handleSkill"
 			}
 		]
+	},
+	"19":{
+		regex: "] 19:",
+		matches: [
+			{
+				"regex": "19:(?<target>.*) was defeated by (?<killer>.*)\\.",
+				"function": "handleDeath"
+			}
+		]
 	}
 }
 ;

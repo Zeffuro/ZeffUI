@@ -1035,6 +1035,18 @@ function handlePlayerStats(parameters){
 	currentStats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - 380) / 3300)) / 1000;
 }
 
+/* exported handleDeath */
+function handleDeath(parameters){
+	let you = (parameters.target === currentPlayer.name);
+	if(you){
+		if(currentPlayer.job === "SMN") {
+			initializeSmn();
+			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		}
+		resetTimers();
+	}
+}
+
 /* exported handleEffect */
 function handleEffect(parameters){
 	let byYou = (parameters.player === currentPlayer.name);
