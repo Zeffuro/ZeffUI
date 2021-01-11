@@ -329,7 +329,13 @@ function setGoogleTTS(text){
 	let ttsLang = currentSettings.language;
 	if(currentSettings.language == "jp") ttsLang = "ja";
 
-	iframe.contentDocument.body.innerHTML = "<audio src=\"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + ttsLang + "&q=" + encText + "\" id=\"TTS\">";
+	if(currentSettings.language == "cn"){
+		// For CN User
+		// https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=
+		iframe.contentDocument.body.innerHTML = "<audio src=\"https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=" + encText + "\" id=\"TTS\">";
+	} else{
+		iframe.contentDocument.body.innerHTML = "<audio src=\"https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=" + ttsLang + "&q=" + encText + "\" id=\"TTS\">";
+	}
 	this.item = iframe.contentDocument.body.firstElementChild;
 	return this.item;
 }
