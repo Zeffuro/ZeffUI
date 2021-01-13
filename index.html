@@ -47,6 +47,7 @@ var activeDotBars = new Map();
 var activeBuffBars = new Map();
 var activeRaidBuffs = new Map();
 var activeMitigations = new Map();
+var activePartyCooldowns = new Map();
 var activeCountdowns = new Map();
 var activeTTS = new Map();
 
@@ -245,6 +246,14 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.raidbuffs, "x", 30);
 	checkAndInitializeSetting(settings.raidbuffs, "y", 240);
 	checkAndInitializeSetting(settings.raidbuffs, "font", "Arial");
+	checkAndInitializeSetting(settings.raidbuffs, "durationoutline", true);
+	checkAndInitializeSetting(settings.raidbuffs, "cooldownoutline", true);
+	checkAndInitializeSetting(settings.raidbuffs, "durationbold", true);
+	checkAndInitializeSetting(settings.raidbuffs, "cooldownbold", true);
+	checkAndInitializeSetting(settings.raidbuffs, "durationcolor", "#FFA500");
+	checkAndInitializeSetting(settings.raidbuffs, "cooldowncolor", "#FFFFFF");
+	checkAndInitializeSetting(settings.raidbuffs, "durationoutlinecolor", "#000000");
+	checkAndInitializeSetting(settings.raidbuffs, "cooldownoutlinecolor", "#000000");
 
 	settings.raidbuffs.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	settings.raidbuffs.hidewhensolo ? $("#raid-buffs-bar").hide() : $("#raid-buffs-bar").show();
@@ -267,6 +276,14 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.mitigation, "x", 30);
 	checkAndInitializeSetting(settings.mitigation, "y", 280);
 	checkAndInitializeSetting(settings.mitigation, "font", "Arial");
+	checkAndInitializeSetting(settings.mitigation, "durationoutline", true);
+	checkAndInitializeSetting(settings.mitigation, "cooldownoutline", true);
+	checkAndInitializeSetting(settings.mitigation, "durationbold", true);
+	checkAndInitializeSetting(settings.mitigation, "cooldownbold", true);
+	checkAndInitializeSetting(settings.mitigation, "durationcolor", "#FFA500");
+	checkAndInitializeSetting(settings.mitigation, "cooldowncolor", "#FFFFFF");
+	checkAndInitializeSetting(settings.mitigation, "durationoutlinecolor", "#000000");
+	checkAndInitializeSetting(settings.mitigation, "cooldownoutlinecolor", "#000000");
 	
 	settings.mitigation.enabled ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
@@ -274,6 +291,35 @@ function loadSettings(){
 	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
 	$("#mitigation-bar").css("top", settings.mitigation.y);
 	$("#mitigation-bar").css("font-family", settings.mitigation.font);
+
+	// PARTY COOLDOWN SETTINGS
+	checkAndInitializeSetting(settings, "party", {});
+	checkAndInitializeSetting(settings.party, "enabled", true);
+	checkAndInitializeSetting(settings.party, "ttsenabled", false);
+	checkAndInitializeSetting(settings.party, "alwaysshow", true);
+	checkAndInitializeSetting(settings.party, "hideoutofcombat", false);
+	checkAndInitializeSetting(settings.party, "hidewhensolo", true);
+	checkAndInitializeSetting(settings.party, "growleft", false);
+	checkAndInitializeSetting(settings.party, "padding", 0);
+	checkAndInitializeSetting(settings.party, "scale", 0.8);
+	checkAndInitializeSetting(settings.party, "x", 30);
+	checkAndInitializeSetting(settings.party, "y", 320);
+	checkAndInitializeSetting(settings.party, "font", "Arial");
+	checkAndInitializeSetting(settings.party, "durationoutline", true);
+	checkAndInitializeSetting(settings.party, "cooldownoutline", true);
+	checkAndInitializeSetting(settings.party, "durationbold", true);
+	checkAndInitializeSetting(settings.party, "cooldownbold", true);
+	checkAndInitializeSetting(settings.party, "durationcolor", "#FFA500");
+	checkAndInitializeSetting(settings.party, "cooldowncolor", "#FFFFFF");
+	checkAndInitializeSetting(settings.party, "durationoutlinecolor", "#000000");
+	checkAndInitializeSetting(settings.party, "cooldownoutlinecolor", "#000000");
+	
+	settings.party.enabled ? $("#party-bar").show() : $("#party-bar").hide();
+	settings.party.hidewhensolo ? $("#party-bar").hide() : $("#party-bar").show();
+
+	$("#party-bar").css(settings.party.growleft ? "right" : "left", settings.party.x);
+	$("#party-bar").css("top", settings.party.y);
+	$("#party-bar").css("font-family", settings.party.font);
 
 	currentSettings = settings;
 	saveSettings();
@@ -303,6 +349,7 @@ function loadContextMenu(){
 						loadSettings();
 						generateRaidBuffs();						
 						generateMitigation();
+						generatePartyCooldowns();
 					}  
 				}, 1000); 
 				break;
@@ -379,6 +426,9 @@ function saveSettings(){
 
 	currentSettings.mitigation.x = parseInt($("#mitigation-bar").css("left").replace("px", ""));
 	currentSettings.mitigation.y = parseInt($("#mitigation-bar").css("top").replace("px", ""));
+
+	currentSettings.party.x = parseInt($("#party-bar").css("left").replace("px", ""));
+	currentSettings.party.y = parseInt($("#party-bar").css("top").replace("px", ""));
 	
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
@@ -554,6 +604,29 @@ function generateMitigation(){
 	if(currentSettings.mitigation.alwaysshow && currentSettings.mitigation.enabled) generateIconBarElements("Mitigation", mitigationAbilityList, currentSettings.mitigation.columns);
 }
 
+function generatePartyCooldowns(){	
+	let partyAbilityList = [];
+	$("#party-bar").empty();
+	let playerIndex = 0;
+	for(let partyMember of currentPartyList){
+		for(let ability of abilityList.filter(x => x.type === "Party" && (x.job === partyMember.job.name || x.job === partyMember.job.type || x.job === partyMember.job.position_type) && x.level <= currentPlayer.level)){
+			if(currentSettings.override.abilities.some(x => x.name === ability.name)){
+				ability = currentSettings.override.abilities.find(x => x.name === ability.name);
+			}
+			let pushAbility = true;
+			if(pushAbility && ability.enabled){
+				partyAbilityList.push({
+					player: partyMember,
+					playerIndex: playerIndex,
+					ability: ability
+				});
+			}			
+		}
+		playerIndex++;
+	}
+	if(currentSettings.party.alwaysshow && currentSettings.party.enabled) generateIconBarElements("Party", partyAbilityList, 20);
+}
+
 function generateIconBarElements(selector, iconAbilityList, columns){
 	let barSelector;
 	let selectedSettings;
@@ -568,17 +641,37 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 		selectedSettings = currentSettings.mitigation;
 		break;
 	}
+	case "Party":{
+		barSelector = "party";
+		selectedSettings = currentSettings.party;
+		break;
+	}
 	}
 	let rows = Math.ceil(iconAbilityList.length / columns);	
 	let abilityIndex = 0;
-	for(let i = 1; i <= rows; i++){
-		$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
-		for (let j = 1; j <= columns; j++){
-			let ability = iconAbilityList[abilityIndex];
-			generateAbilityIcon(ability.playerIndex, ability.ability, i);			
-			if(abilityIndex == iconAbilityList.length - 1) break;
-			abilityIndex++;
+	if(selector !== "Party"){
+		for(let i = 1; i <= rows; i++){
+			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
+			for (let j = 1; j <= columns; j++){
+				let ability = iconAbilityList[abilityIndex];
+				generateAbilityIcon(ability.playerIndex, ability.ability, i);
+				if(abilityIndex == iconAbilityList.length - 1) break;
+				abilityIndex++;
+			}
 		}
+	}else{
+		let currentPlayerIndex = 0;
+		for (let i = 1; i <= 8; i++){
+			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
+			if(iconAbilityList.filter(ability => ability.playerIndex === i - 1).length === 0){
+				$(`#${barSelector}-row-${i}-box`).append(`<div id="${barSelector}-${i}-dummy-container" class="ability-container" style="width: ${selectedSettings.scale * 48}px; height: ${selectedSettings.scale * 48}px; padding-right: ${selectedSettings.padding}px;"></div>`);
+				$(`#${barSelector}-${i}-dummy-container`).append(`<img id="${barSelector}-${i}-dummy-image" class="ability-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="${selectedSettings.scale * 40}px" height="${selectedSettings.scale * 40}px" style="top: ${selectedSettings.scale * 2}px;" />`);
+			}
+		}
+		for (let ability of iconAbilityList){
+			if(currentPlayerIndex != ability.playerIndex) currentPlayerIndex = ability.playerIndex;		
+			generateAbilityIcon(ability.playerIndex, ability.ability, ability.playerIndex + 1);
+		}		
 	}
 }
 
@@ -594,6 +687,11 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 	case "Mitigation":{
 		barSelector = "mitigation";
 		selectedSettings = currentSettings.mitigation;
+		break;
+	}
+	case "Party":{
+		barSelector = "party";
+		selectedSettings = currentSettings.party;
 		break;
 	}
 	}
@@ -619,8 +717,8 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 	$(containerSelector).append(`<img id="${abilitySelector}-image" class="ability-image" src="${ability.icon}" width="${iconWidth}px" height="${iconHeight}px" style="top: ${selectedSettings.scale * 2}px;" />`);
 	$(containerSelector).append(`<img id="${abilitySelector}-active" class="icon-active" src="skins/${currentSettings.skin}/images/combo.gif" width="${activeWidth}px" height="${activeHeight}px" style="top: ${selectedSettings.scale * 1}px; display: none;" />`);
 	$(containerSelector).append(`<img id="${abilitySelector}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${overlayWidth}px" height="${overlayHeight}px" />`);
-	$(containerSelector).append(`<span id="${abilitySelector}-cooldown" class="ability-text text-cooldown" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; --cooldownOutline: black; --cooldownColor: white; --cooldownFontSize: ${selectedSettings.scale * 24}px;"></span>`);
-	$(containerSelector).append(`<span id="${abilitySelector}-duration" class="ability-text text-duration" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; --durationOutline: black; --durationColor: orange; --durationFontSize: ${selectedSettings.scale * 24}px;"></span>`);
+	$(containerSelector).append(`<span id="${abilitySelector}-cooldown" class="ability-text" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; ${selectedSettings.cooldownoutline ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};` : ""} color: ${selectedSettings.cooldowncolor}; font-size: ${selectedSettings.scale * 24}px; font-weight:${selectedSettings.cooldownbold ? "bold" : "normal"}"></span>`);
+	$(containerSelector).append(`<span id="${abilitySelector}-duration" class="ability-text" style="line-height: ${lineHeight}px; padding-left: ${selectedSettings.scale * 2}px; ${selectedSettings.durationoutline ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};` : ""} color: ${selectedSettings.durationcolor}; font-size: ${selectedSettings.scale * 24}px; font-weight:${selectedSettings.durationbold ? "bold" : "normal"};"></span>`);
 }
 
 function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
@@ -640,6 +738,12 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		barSelector = "mitigation";
 		selectedActive = activeMitigations;
 		selectedSettings = currentSettings.mitigation;
+		break;
+	}
+	case "Party":{
+		barSelector = "party";
+		selectedActive = activePartyCooldowns;
+		selectedSettings = currentSettings.party;
 		break;
 	}
 	}
@@ -688,6 +792,10 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 	case "Mitigation":{
 		activeMitigations.set(ability.id, selector);
 		break;
+	}	
+	case "Party":{
+		activePartyCooldowns.set(ability.id, selector);
+		break;
 	}
 	}
 }
@@ -725,6 +833,9 @@ function handleAbilityTTS(ability, selector, onYou = true){
 		break;
 	case "Mitigation":
 		if(!currentSettings.mitigation.ttsenabled) return;
+		break;
+	case "Party":
+		if(!currentSettings.party.ttsenabled) return;
 		break;
 	default:
 		break;
@@ -800,6 +911,7 @@ function toggleLock(){
 		$("#buff-timer-bar").show();
 		$("#raid-buffs-bar").append("<span id=\"raid-buffs-anchor\" class=\"anchor-text\">Raid Buffs Anchor</span>");
 		$("#mitigation-bar").append("<span id=\"mitigation-anchor\" class=\"anchor-text\">Mitigations Anchor</span>");
+		$("#party-bar").append("<span id=\"party-anchor\" class=\"anchor-text\">Party Cooldowns Anchor</span>");
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").show();
 		//$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
@@ -814,6 +926,7 @@ function toggleLock(){
 		$("#buff-timer-bar").hide();
 		$("#raid-buffs-anchor").remove();
 		$("#mitigation-anchor").remove();
+		$("#party-anchor").remove();
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").hide();
 		//$("[id$=bar]").draggable("disable");
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);
@@ -834,6 +947,8 @@ function toggleHideOutOfCombatElements(){
 	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-image]").addClass("hide-in-combat") : $("[id$=buff-image]").removeClass("hide-in-combat");
 	currentSettings.stacksbar.hideoutofcombat && !inCombat ? $("#stacks-bar").addClass("hide-in-combat") : $("#stacks-bar").removeClass("hide-in-combat");
 	currentSettings.raidbuffs.hideoutofcombat && !inCombat ? $("#raid-buffs-bar").addClass("hide-in-combat") : $("#raid-buffs-bar").removeClass("hide-in-combat");
+	currentSettings.mitigation.hideoutofcombat && !inCombat ? $("#mitigation-bar").addClass("hide-in-combat") : $("#mitigation-bar").removeClass("hide-in-combat");
+	currentSettings.party.hideoutofcombat && !inCombat ? $("#party-bar").addClass("hide-in-combat") : $("#party-bar").removeClass("hide-in-combat");
 }
 
 function adjustJobStacks(value, max, noAdd = false){
@@ -967,6 +1082,7 @@ function onPartyWipe(){
 	resetTimers();
 	generateRaidBuffs();
 	generateMitigation();
+	generatePartyCooldowns();
 }
 
 function onChangeZone(){
@@ -978,6 +1094,7 @@ function onChangeZone(){
 }
 
 function onPartyChanged(e){
+	if(currentPlayer === null) return;
 	generatePartyList(e.party);
 }
 
@@ -993,7 +1110,23 @@ function generatePartyList(party){
 			worldId: partyMember.worldId
 		});
 	}
-	if(currentPartyList.length != 0) generateRaidBuffs();
+	let jobOrder = [
+		// Tanks
+		"PLD", "GLD", "WAR", "MRD", "DRK", "GNB", 
+		// Healers
+		"WHM", "CNJ", "SCH", "AST", 
+		// Melee DPS
+		"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", 
+		// Physical Ranged DPS
+		"BRD", "ARC", "MCH", "DNC", 
+		// Caster DPS
+		"BLM", "THM", "SMN", "ACN", "RDM", "BLM"];
+	let currentPlayerElement = currentPartyList.find(x => x.name === currentPlayer.name);
+	currentPartyList.sort((a, b) => a.id - b.id);
+	currentPartyList.sort((a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name));
+	currentPartyList = currentPartyList.filter(player => player !== currentPlayerElement);
+	currentPartyList.unshift(currentPlayerElement);
+	if(currentPartyList.length != 0) generateRaidBuffs(); generatePartyCooldowns();
 }
 
 function setupSoloParty(){
@@ -1004,8 +1137,9 @@ function setupSoloParty(){
 		name: currentPlayer.name,
 		worldId: null
 	});
-	generateRaidBuffs();	
+	generateRaidBuffs();
 	generateMitigation();
+	generatePartyCooldowns();
 }
 
 function onInCombatChangedEvent(e){
@@ -1026,6 +1160,7 @@ function startCountdownTimer(parameters){
 function onInstanceStart(){
 	generateRaidBuffs();
 	generateMitigation();
+	generatePartyCooldowns();
 }
 
 /* exported onInstanceEnd */
@@ -1033,6 +1168,7 @@ function onInstanceEnd(){
 	resetTimers();
 	generateRaidBuffs();
 	generateMitigation();
+	generatePartyCooldowns();
 }
 
 /* exported handlePlayerStats */
@@ -1055,6 +1191,7 @@ function handleDeath(parameters){
 
 /* exported handleEffect */
 function handleEffect(parameters){
+	if(currentPlayer === null) return;
 	let byYou = (parameters.player === currentPlayer.name);
 	let onYou = (parameters.target === currentPlayer.name);
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
@@ -1205,6 +1342,7 @@ function handleEffect(parameters){
 
 /* exported handleSkill */
 function handleSkill(parameters){
+	if(currentPlayer === null) return;
 	let byYou = (parameters.player === currentPlayer.name);
 	let onYou = false;
 	if (parameters.target){
@@ -1280,6 +1418,9 @@ function handleSkill(parameters){
 		if(ability.type === "Mitigation"){
 			if(onYou || byYou) startAbilityIconTimers(playerIndex, ability, true);
 		}
+		if(ability.type === "Party"){
+			if(onYou || byYou) startAbilityIconTimers(playerIndex, ability, true);
+		}
 	}	
 }
 </script>
@@ -1301,6 +1442,7 @@ function handleSkill(parameters){
 	</div>
 	<div id="raid-buffs-bar" style="position: absolute;"></div>
 	<div id="mitigation-bar" style="position: absolute;"></div>
+	<div id="party-bar" style="position: absolute;"></div>
 	<progress width="154" height="15" id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
 	<progress width="154" height="15" id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
 	<progress width="154" height="15" id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>	

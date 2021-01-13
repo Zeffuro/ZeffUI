@@ -51,18 +51,6 @@
 	bottom: 0px;
 	text-align: center;
 }
-.text-duration {
-	color: var(--durationColor);
-	font-size: var(--durationFontSize);
-	font-weight: bold;
-	-webkit-text-stroke: 1.5px var(--durationOutline);
-}
-.text-cooldown {
-	color: var(--cooldownColor);
-	font-size: var(--cooldownFontSize);
-	font-weight: bold;
-	-webkit-text-stroke: 1.5px var(--cooldownOutline);
-}
 #grid {
 	position: absolute; 
 	left: 0px; 
@@ -118,6 +106,12 @@
 #mitigation-bar {
 	left: 0px; 
 	top: 264;
+	display: none;
+	touch-action: none;
+}
+#party-bar {
+	left: 0px; 
+	top: 280;
 	display: none;
 	touch-action: none;
 }

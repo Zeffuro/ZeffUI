@@ -1,6 +1,7 @@
 /* exported abilityList */
 var abilityList = [
 	// ROLE ACTIONS
+	// Tank
 	{
 		id: 7531,
 		name: "Rampart",
@@ -60,6 +61,47 @@ var abilityList = [
 		icon: "https://xivapi.com/i/000000/000806.png",
 		color: "--filter-light-blue",
 		order: 2
+	},
+	{
+		id: 7535,
+		name: "Reprisal",
+		name_cn: "雪仇",
+		name_de: "Reflexion",
+		name_en: "Reprisal",
+		name_fr: "Rétorsion",
+		name_jp: "リプライザル",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "Tank",
+		level: 32,
+		duration: 10,
+		cooldown: 60,
+		type: "Party",
+		icon: "https://xivapi.com/i/000000/000806.png",
+		color: "--filter-light-blue",
+		order: 2
+	},
+	// Caster	
+	{
+		id: 7561,
+		name: "Swiftcast",
+		name_cn: "即刻咏唱",
+		name_de: "Spontaneität",
+		name_en: "Swiftcast",
+		name_fr: "Magie prompte",
+		name_jp: "リプライザル",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "Caster",
+		level: 18,
+		duration: 10,
+		cooldown: 60,
+		type: "Party",
+		icon: "https://xivapi.com/i/000000/000866.png",
+		color: "--filter-light-blue",
+		order: 0
 	},
 	// AST
 	// DoTs
@@ -677,6 +719,27 @@ var abilityList = [
 			is_song: true
 		}
 	},
+	// Party Cooldowns	
+	{
+		id: 7405,
+		name: "Troubadour",
+		name_cn: "行吟",
+		name_de: "Troubadour",
+		name_en: "Troubadour",
+		name_fr: "Troubadour",
+		name_jp: "トルバドゥール",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "BRD",
+		level: 62,
+		duration: 15,
+		cooldown: 120,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002612.png",
+		color: "--filter-dark-red",
+		order: 0
+	},
 	// DNC
 	// Self-Buffs
 	{
@@ -1014,6 +1077,27 @@ var abilityList = [
 			status_text: "Quadruple"
 		}
 	},
+	// Party Cooldowns
+	{
+		id: 16012,
+		name: "Shield Samba",
+		name_cn: "防守之桑巴",
+		name_de: "Schildsamba",
+		name_en: "Shield Samba",
+		name_fr: "Samba protectrice",
+		name_jp: "守りのサンバ",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "DNC",
+		level: 56,
+		duration: 15,
+		cooldown: 120,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003469.png",
+		color: "--filter-light-purple",
+		order: 0
+	},
 	// DRG
 	// DoTs
 	{
@@ -1263,6 +1347,47 @@ var abilityList = [
 		color: "--filter-light-blue",
 		order: 4
 	},
+	// Party Cooldowns	
+	{
+		id: 3638,
+		name: "Living Dead",
+		name_cn: "行尸走肉",
+		name_de: "Totenerweckung",
+		name_en: "Living Dead",
+		name_fr: "Mort-vivant",
+		name_jp: "リビングデッド",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "DRK",
+		level: 50,
+		duration: 10,
+		cooldown: 300,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003077.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 16471,
+		name: "Dark Missionary",
+		name_cn: "暗黑布道",
+		name_de: "Dunkler Bote",
+		name_en: "Dark Missionary",
+		name_fr: "Missionnaire des Ténèbres",
+		name_jp: "ダークミッショナリー",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "DRK",
+		level: 76,
+		duration: 15,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003087.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
 	// GNB
 	// DoTs
 	{
@@ -1438,6 +1563,47 @@ var abilityList = [
 		color: "--filter-light-blue",
 		order: 5
 	},
+	// Party Cooldowns	
+	{
+		id: 16152,
+		name: "Superbolide",
+		name_cn: "超火流星",
+		name_de: "Meteoritenfall",
+		name_en: "Superbolide",
+		name_fr: "Bolide",
+		name_jp: "ボーライド",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "GNB",
+		level: 50,
+		duration: 8,
+		cooldown: 360,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003416.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 16160,
+		name: "Heart of Light",
+		name_cn: "光之心",
+		name_de: "Wackeres Herz",
+		name_en: "Heart of Light",
+		name_fr: "Cœur de Lumière",
+		name_jp: "ハート・オブ・ライト",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "GNB",
+		level: 64,
+		duration: 15,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003424.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
 	// MCH
 	// DoTs
 	{
@@ -1491,6 +1657,27 @@ var abilityList = [
 		icon: "https://xivapi.com/i/013000/013019.png",
 		color: "--filter-orange",
 		order: 1
+	},
+	// Party Cooldowns	
+	{
+		id: 16889,
+		name: "Tactician",
+		name_cn: "野火",
+		name_de: "Taktiker",
+		name_en: "Tactician",
+		name_fr: "Tacticien",
+		name_jp: "タクティシャン",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "MCH",
+		level: 56,
+		duration: 15,
+		cooldown: 120,
+		type: "Party",
+		icon: "https://xivapi.com/i/003000/003040.png",
+		color: "--filter-orange",
+		order: 0
 	},
 	// MNK
 	// DoTs
@@ -1853,6 +2040,47 @@ var abilityList = [
 		icon: "https://xivapi.com/i/002000/002502.png",
 		color: "--filter-light-blue",
 		order: 6
+	},
+	// Party Cooldowns	
+	{
+		id: 30,
+		name: "Hallowed Ground",
+		name_cn: "神圣领域",
+		name_de: "Heiliger Boden",
+		name_en: "Hallowed Ground",
+		name_fr: "Invincible",
+		name_jp: "インビンシブル",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "PLD",
+		level: 50,
+		duration: 10,
+		cooldown: 420,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002502.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 7385,
+		name: "Passage of Arms",
+		name_cn: "武装戍卫",
+		name_de: "Waffengang",
+		name_en: "Passage of Arms",
+		name_fr: "Passe d'armes",
+		name_jp: "パッセージ・オブ・アームズ",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "PLD",
+		level: 70,
+		duration: 18,
+		cooldown: 120,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002515.png",
+		color: "--filter-light-blue",
+		order: 1
 	},
 	// RDM
 	// Raid Buffs
@@ -2344,6 +2572,47 @@ var abilityList = [
 		color: "--filter-light-blue",
 		order: 5
 	},
+	// Party Cooldowns	
+	{
+		id: 43,
+		name: "Holmgang",
+		name_cn: "死斗",
+		name_de: "Holmgang",
+		name_en: "Holmgang",
+		name_fr: "Holmgang",
+		name_jp: "ホルムギャング",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "WAR",
+		level: 68,
+		duration: 8,
+		cooldown: 240,
+		type: "Party",
+		icon: "https://xivapi.com/i/000000/000266.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 7388,
+		name: "Shake It Off",
+		name_cn: "摆脱",
+		name_de: "Abschütteln",
+		name_en: "Shake It Off",
+		name_fr: "Débarrassage",
+		name_jp: "シェイクオフ",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "WAR",
+		level: 68,
+		duration: 15,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002563.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
 	// WHM
 	// DoTs
 	{
@@ -2430,6 +2699,27 @@ var abilityList = [
 		type: "Buff",
 		icon: "https://xivapi.com/i/012000/012627.png",
 		color: "--filter-baby-blue",
+		order: 0
+	},
+	// Party Cooldowns
+	{
+		id: 140,
+		name: "Benediction",
+		name_cn: "天赐祝福",
+		name_de: "Benediktion",
+		name_en: "Benediction",
+		name_fr: "Bénédiction",
+		name_jp: "ベネディクション",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "WHM",
+		level: 50,
+		duration: 0,
+		cooldown: 180,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002627.png",
+		color: "--filter-light-blue",
 		order: 0
 	},
 ];
