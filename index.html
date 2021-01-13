@@ -1153,6 +1153,7 @@ function onInCombatChangedEvent(e){
 
 /* exported startCountdownTimer */
 function startCountdownTimer(parameters){
+	if(!currentSettings.timerbar.enabled) return;
 	startBarTimer(parameters.seconds, "#timer-bar", true);
 }
 
