@@ -80,6 +80,7 @@ var language = [
 	{ id: "cooldownbold", string: "Cooldown Bold Text" },
 	{ id: "durationoutline", string: "Duration Outline" },
 	{ id: "cooldownoutline", string: "Cooldown Outline" },
+	{ id: "includealliance", string: "Include Alliance in Party Members" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

@@ -390,7 +390,9 @@
             				$("*").css("font-family", currentFont.default);
 
             				$("#skinSelect").val(settings.skin);
-            				$("#langSelect").val(settings.language);
+            				$("#langSelect").val(settings.language);                            
+                            
+            				$("#includeAlliance").prop("checked", settings.includealliance);
 
             				$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
             				$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
@@ -536,6 +538,7 @@
             		skin: $("#skinSelect").val(),
             		language: $("#langSelect").val(),
             		font: $("#defaultFont").val(),
+            		includealliance: $("#includeAlliance").is(":checked"),
             		override: currentSettings.override,
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
@@ -754,6 +757,12 @@
                             <div class="form-group row text-right">
                                 <label id="lang_applytoallelements" class="control-label col-sm-4" for="font_applytoallelements"></label>
                                 <div class="col-sm-6"><button id="font_applytoallelements" type="button" class="btn btn-primary btn-sm" onclick="applyDefaultFont()">Apply default font to all elements</button></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="includeAlliance">
+                                    <label id="lang_includealliance" class="custom-control-label" for="includeAlliance">Include Alliance in Party Members</label>
+                                </div>
                             </div>
                         </div>
                     </div>

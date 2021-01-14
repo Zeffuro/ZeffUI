@@ -78,6 +78,7 @@ function loadSettings(){
 	// SKIN SETTINGS
 	checkAndInitializeSetting(settings, "skin", "default");
 
+	// FONT SETTINGS
 	checkAndInitializeSetting(settings, "font", "Arial");
 	$("*").css("--defaultFont", `${settings.font}`);
 
@@ -86,6 +87,9 @@ function loadSettings(){
 	}else{
 		$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
 	}
+
+	// GLOBAL SETTINGS
+	checkAndInitializeSetting(settings, "includealliance", false);
 
 	// LANGUAGE SETTINGS
 	checkAndInitializeSetting(settings, "language", "en");
@@ -661,7 +665,9 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 		}
 	}else{
 		let currentPlayerIndex = 0;
-		for (let i = 1; i <= 8; i++){
+		let players = 8;
+		if(currentSettings.includealliance) players = 24;
+		for (let i = 1; i <= players; i++){
 			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
 			if(iconAbilityList.filter(ability => ability.playerIndex === i - 1).length === 0){
 				$(`#${barSelector}-row-${i}-box`).append(`<div id="${barSelector}-${i}-dummy-container" class="ability-container" style="width: ${selectedSettings.scale * 48}px; height: ${selectedSettings.scale * 48}px; padding-right: ${selectedSettings.padding}px;"></div>`);
@@ -1075,6 +1081,7 @@ function testLog(logLine){
 }
 
 function onPartyWipe(){
+	if(currentPlayer === null) return;
 	if(currentPlayer.job === "SMN") {
 		initializeSmn();
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
@@ -1086,6 +1093,7 @@ function onPartyWipe(){
 }
 
 function onChangeZone(){
+	if(currentPlayer === null) return;
 	if(currentPlayer.job === "SMN") {
 		initializeSmn();
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
@@ -1102,6 +1110,7 @@ function generatePartyList(party){
 	currentPartyList = [];
 	for (let partyMember of party)
 	{
+		if(!partyMember.inParty && !currentSettings.includealliance) return;
 		currentPartyList.push({
 			id: partyMember.id,
 			inParty: partyMember.inParty,
@@ -1124,7 +1133,12 @@ function generatePartyList(party){
 	let currentPlayerElement = currentPartyList.find(x => x.name === currentPlayer.name);
 	currentPartyList.sort((a, b) => a.id - b.id);
 	currentPartyList.sort((a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name));
-	currentPartyList = currentPartyList.filter(player => player !== currentPlayerElement);
+	currentPartyList = currentPartyList.filter(x => x !== currentPlayerElement);
+	if(currentSettings.includealliance){
+		let ownParty = currentPartyList.filter(x => x.inParty);
+		let alliance = currentPartyList.filter(x => !x.inParty);
+		currentPartyList = ownParty.concat(alliance);
+	} 
 	currentPartyList.unshift(currentPlayerElement);
 	if(currentPartyList.length != 0) generateRaidBuffs(); generatePartyCooldowns();
 }

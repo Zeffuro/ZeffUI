@@ -80,6 +80,7 @@ var language = [
 	{ id: "cooldownbold", string: "冷却时加粗文本" },
 	{ id: "durationoutline", string: "持续时描边线" },
 	{ id: "cooldownoutline", string: "冷却时描边线" },
+	{ id: "includealliance", string: "Include Alliance in Party Members" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
