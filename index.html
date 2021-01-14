@@ -89,7 +89,19 @@ function loadSettings(){
 	}
 
 	// GLOBAL SETTINGS
-	checkAndInitializeSetting(settings, "includealliance", false);
+	checkAndInitializeSetting(settings, "partyorder", 
+		[
+		// Tanks
+			"PLD", "GLD", "WAR", "MRD", "DRK", "GNB", 
+			// Healers
+			"WHM", "CNJ", "SCH", "AST", 
+			// Melee DPS
+			"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", 
+			// Physical Ranged DPS
+			"BRD", "ARC", "MCH", "DNC", 
+			// Caster DPS
+			"BLM", "THM", "SMN", "ACN", "RDM", "BLU"]
+	);
 
 	// LANGUAGE SETTINGS
 	checkAndInitializeSetting(settings, "language", "en");
@@ -243,6 +255,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings.raidbuffs, "alwaysshow", true);
 	checkAndInitializeSetting(settings.raidbuffs, "hideoutofcombat", false);
 	checkAndInitializeSetting(settings.raidbuffs, "hidewhensolo", false);
+	checkAndInitializeSetting(settings.raidbuffs, "orderbypartymember", true);
 	checkAndInitializeSetting(settings.raidbuffs, "growleft", false);
 	checkAndInitializeSetting(settings.raidbuffs, "padding", 0);
 	checkAndInitializeSetting(settings.raidbuffs, "scale", 1);
@@ -581,6 +594,7 @@ function generateRaidBuffs(){
 		}
 		playerIndex++;
 	}
+	if(!currentSettings.raidbuffs.orderbypartymember) raidAbilityList.sort((a, b) => a.ability.order - b.ability.order);
 	if(currentSettings.raidbuffs.alwaysshow && currentSettings.raidbuffs.enabled) generateIconBarElements("RaidBuff", raidAbilityList, currentSettings.raidbuffs.columns);
 }
 
@@ -1119,17 +1133,7 @@ function generatePartyList(party){
 			worldId: partyMember.worldId
 		});
 	}
-	let jobOrder = [
-		// Tanks
-		"PLD", "GLD", "WAR", "MRD", "DRK", "GNB", 
-		// Healers
-		"WHM", "CNJ", "SCH", "AST", 
-		// Melee DPS
-		"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", 
-		// Physical Ranged DPS
-		"BRD", "ARC", "MCH", "DNC", 
-		// Caster DPS
-		"BLM", "THM", "SMN", "ACN", "RDM", "BLM"];
+	let jobOrder = currentSettings.partyorder;
 	let currentPlayerElement = currentPartyList.find(x => x.name === currentPlayer.name);
 	currentPartyList.sort((a, b) => a.id - b.id);
 	currentPartyList.sort((a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name));

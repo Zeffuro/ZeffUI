@@ -65,7 +65,14 @@
             	}
             }
 
-            function titleCase(string) {
+            function setPartyOrder(partyOrder){
+            	for(let job of partyOrder){
+            		$("#partyOrder").append(`<tr data-job="${job}"><td style="width:5%"><img src="data/images/jobicons/${job}.png"></td><td style="width:95%">${language.find(x => x.id === job.toLowerCase()).string}</td></tr>`);
+            		$("#partyOrder").sortable();
+            	}
+            }
+
+            function titleCase(string){
             	return string.toLowerCase().split(" ").map(function(word) {
             		return word.replace(word[0], word[0].toUpperCase());
             	}).join(" ");
@@ -160,6 +167,7 @@
             		$("#abilityColor").removeAttr("disabled");
             		$("#abilityDuration").removeAttr("disabled");
             		$("#abilityCooldown").removeAttr("disabled");
+            		$("#abilityOrder").removeAttr("disabled");
             		$("#abilityTTSEnabled").removeAttr("disabled");
             		$("#abilityTTSType").removeAttr("disabled");
             		if (override == null) currentSettings.override.abilities.push(abilityList.find(x => x.id == id));
@@ -168,6 +176,7 @@
             		$("#abilityColor").attr("disabled","disabled");
             		$("#abilityDuration").attr("disabled","disabled");
             		$("#abilityCooldown").attr("disabled","disabled");
+            		$("#abilityOrder").attr("disabled","disabled");
             		$("#abilityTTSEnabled").attr("disabled","disabled");
             		$("#abilityTTSType").attr("disabled","disabled");
             		currentSettings.override.abilities = currentSettings.override.abilities.filter(x => x.id != id);
@@ -186,6 +195,9 @@
             		break;
             	case "cooldown":
             		currentSettings.override.abilities.find(x => x.id == id).cooldown = $("#abilityCooldown").val();
+            		break;
+            	case "order":
+            		currentSettings.override.abilities.find(x => x.id == id).order = $("#abilityOrder").val();
             		break;
             	case "duration":
             		currentSettings.override.abilities.find(x => x.id == id).duration = $("#abilityDuration").val();
@@ -212,6 +224,8 @@
             		$("#abilityColor").val(ability.color);
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityOrderDiv").show();
+            		$("#abilityOrder").val(ability.order);
             		$("#abilityTTSEnabled").show();
             		$("#abilityTTSEnabled").prop("checked", ability.tts);
             		$("#abilityTTSType").show();
@@ -222,6 +236,8 @@
             		$("#abilityColor").val(ability.color);
             		$("#abilityDurationDiv").hide();
             		$("#abilityCooldownDiv").hide();
+            		$("#abilityOrderDiv").show();
+            		$("#abilityOrder").val(ability.order);
             		$("#abilityTTSEnabled").show();
             		$("#abilityTTSEnabled").prop("checked", ability.tts);
             		$("#abilityTTSType").show();
@@ -248,6 +264,8 @@
             		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
             		$("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityOrderDiv").show();
+            		$("#abilityOrder").val(ability.order);
             		$("#abilityTTSEnabled").show();
             		$("#abilityTTSEnabled").prop("checked", ability.tts);
             		$("#abilityTTSType").show();
@@ -259,17 +277,21 @@
             		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
             		$("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityOrderDiv").show();
+            		$("#abilityOrder").val(ability.order);
             		$("#abilityTTSEnabled").show();
             		$("#abilityTTSEnabled").prop("checked", ability.tts);
             		$("#abilityTTSType").show();
             		$("#abilityTTSType").val(ability.ttstype);
             		break;
-            	case "Type":
+            	case "Party":
             		$("#abilityColorDiv").hide();
             		$("#abilityDurationDiv").show();
             		$("#abilityDuration").val(ability.duration);
             		$("#abilityCooldownDiv").show();
             		$("#abilityCooldown").val(ability.cooldown);
+            		$("#abilityOrderDiv").show();
+            		$("#abilityOrder").val(ability.order);
             		$("#abilityTTSEnabled").show();
             		$("#abilityTTSEnabled").prop("checked", ability.tts);
             		$("#abilityTTSType").show();
@@ -393,6 +415,7 @@
             				$("#langSelect").val(settings.language);                            
                             
             				$("#includeAlliance").prop("checked", settings.includealliance);
+            				setPartyOrder(settings.partyorder);
 
             				$("#healthBarEnabled").prop("checked", settings.healthbar.enabled);
             				$("#healthHideOutOfCombat").prop("checked", settings.healthbar.hideoutofcombat);
@@ -467,6 +490,7 @@
             				$("#raidbuffTTSEnabled").prop("checked", settings.raidbuffs.ttsenabled);
             				$("#raidbuffHideOutOfCombat").prop("checked", settings.raidbuffs.hideoutofcombat);
             				$("#raidbuffHideWhenSolo").prop("checked", settings.raidbuffs.hidewhensolo);
+            				$("#raidbuffOrderByPartyMember").prop("checked", settings.raidbuffs.orderbypartymember);
             				$("#raidbuffAlwaysShow").prop("checked", settings.raidbuffs.alwaysshow);
             				$("#raidbuffGrowLeft").prop("checked", settings.raidbuffs.growleft);
             				$("#raidbuffColumns").attr("value", settings.raidbuffs.columns);
@@ -539,6 +563,7 @@
             		language: $("#langSelect").val(),
             		font: $("#defaultFont").val(),
             		includealliance: $("#includeAlliance").is(":checked"),
+            		partyorder: $("#partyOrder").sortable("toArray", {attribute: "data-job"}),
             		override: currentSettings.override,
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
@@ -616,6 +641,7 @@
             			ttsenabled: $("#raidbuffTTSEnabled").is(":checked"),
             			hideoutofcombat: $("#raidbuffHideOutOfCombat").is(":checked"),
             			hidewhensolo: $("#raidbuffHideWhenSolo").is(":checked"),
+            			orderbypartymember: $("#raidbuffOrderByPartyMember").is(":checked"),
             			alwaysshow: $("#raidbuffAlwaysShow").is(":checked"),
             			growleft: $("#raidbuffGrowLeft").is(":checked"),
             			columns: $("#raidbuffColumns").val(),
@@ -762,6 +788,15 @@
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="includeAlliance">
                                     <label id="lang_includealliance" class="custom-control-label" for="includeAlliance">Include Alliance in Party Members</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <label id="lang_partyorder" for="partyOrder">Party Order (drag and drop)</label>
+                                    <table class="table table-sm" style="width:100%">
+                                        <tbody id="partyOrder">
+                                        </tbody>                                        
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1416,6 +1451,12 @@
                             </div>
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="raidbuffOrderByPartyMember">
+                                    <label id="lang_orderbypartymember" class="custom-control-label" for="raidbuffOrderByPartyMember">Order by Party Member</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow">
                                     <label id="lang_alwaysshow" class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
                                 </div>
@@ -1736,6 +1777,12 @@
                                 <label id="lang_cooldown" class="control-label col-sm-4" for="abilityCooldown">Cooldown</label>
                                 <div class="col-sm-8">
                                     <input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityCooldown" onchange="saveOverride('cooldown')">
+                                </div>
+                            </div>
+                            <div id="abilityOrderDiv" class="form-group row text-right">
+                                <label id="lang_order" class="control-label col-sm-4" for="abilityOrder">Order</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityOrder" onchange="saveOverride('order')">
                                 </div>
                             </div>
                         </div>
