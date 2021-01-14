@@ -138,7 +138,8 @@
             function createOverrideSelects(){
             	for (let ability of abilityList){
             		let override = currentSettings.override.abilities.find(x => x.id == ability.id);
-            		$("#overrideSelect").append(`<option value="${ability.id}">${override != null ? "[Override] " : "" }${ability.job}: ${ability.name} (${ability.type})</option>`);
+            		let name = ability[`name_${currentSettings.language}`];
+            		$("#overrideSelect").append(`<option value="${ability.id}">${override != null ? "[Override] " : "" }${ability.job}: ${name} (${ability.type})</option>`);
             	}
             	loadAbility();
             	toggleOverride();
