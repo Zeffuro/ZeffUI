@@ -88,6 +88,10 @@ function loadSettings(){
 		$("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
 	}
 
+	// DEBUG SETTINGS
+	checkAndInitializeSetting(settings, "debug", {});
+	checkAndInitializeSetting(settings.debug, "enabled", false);
+
 	// GLOBAL SETTINGS
 	checkAndInitializeSetting(settings, "partyorder", 
 		[
@@ -451,6 +455,7 @@ function saveSettings(){
 }
 
 function startBarTimer(duration, selector, hideTimer = false){
+	toLog([`[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer}`]);
 	let timems = duration * 1000;
 	$(selector).attr("max", timems);
 	$(selector).attr("value", timems);
@@ -742,6 +747,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 }
 
 function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
+	toLog([`[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou} AbilityHolder: ${abilityHolder}`, ability]);
 	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
 	let usingAbilityHolder = !(abilityHolder === null);
 	let barSelector;
@@ -821,6 +827,7 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 }
 
 function startTTSTimer(duration, selector, text, timeWhen = 2000){
+	toLog([`[StartTTSTimer] Duration: ${duration} Selector: ${selector} Text: ${text} TimeWhen: ${timeWhen}`]);
 	if(!ttsElements.has(selector)){
 		ttsElements[selector] = setGoogleTTS(text);
 	}
@@ -877,6 +884,9 @@ function handleAbilityTTS(ability, selector, onYou = true){
 		break;
 	case "jp":
 		name = ability.name_jp;
+		break;
+	case "kr":
+		name = ability.name_kr;
 		break;
 	default:
 		break;
@@ -1062,6 +1072,7 @@ function onPlayerChangedEvent(e){
 
 function onLogEvent(e){
 	for (let logLine of e.detail.logs){
+		toLog([logLine]);
 		for(let logType of Object.keys(regexList)){
 			let regexObject = regexList[logType];
 			let regex = new RegExp(regexObject.regex);
@@ -1073,12 +1084,22 @@ function onLogEvent(e){
 					let regexMatch = innerRegex.exec(logLine);
 					if(regexMatch !== null){
 						let logFunction = window[matchObject.function];
-						if (typeof logFunction === "function") logFunction(regexMatch.groups);
+						if (typeof logFunction === "function") {							
+							toLog([`Executing function ${matchObject.function}`,regexMatch.groups]);
+							logFunction(regexMatch.groups);
+						}
 					}
 				}
 			}
 		}
 	}
+}
+
+function toLog(parameters){
+	if(!currentSettings.debug.enabled) return;
+	for(let parameter of parameters){
+		console.log(parameter);
+	}	
 }
 
 /* exported testLog */

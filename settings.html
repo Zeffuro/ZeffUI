@@ -413,7 +413,9 @@
             				$("*").css("font-family", currentFont.default);
 
             				$("#skinSelect").val(settings.skin);
-            				$("#langSelect").val(settings.language);                            
+            				$("#langSelect").val(settings.language);
+                            
+            				$("#debugEnabled").prop("checked", settings.debug.enabled);
                             
             				$("#includeAlliance").prop("checked", settings.includealliance);
             				setPartyOrder(settings.partyorder);
@@ -566,6 +568,9 @@
             		includealliance: $("#includeAlliance").is(":checked"),
             		partyorder: $("#partyOrder").sortable("toArray", {attribute: "data-job"}),
             		override: currentSettings.override,
+            		debug: {
+            			enabled: $("#debugEnabled").is(":checked")
+            		},
             		healthbar: {
             			enabled: $("#healthBarEnabled").is(":checked"),
             			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
@@ -800,6 +805,19 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+                        <div class="card-header">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="debugEnabled">
+                                <label id="lang_debug" class="custom-control-label" for="debugEnabled">Debug</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p id="lang_debugdescription" class="card-text">Here you can find debug options for ZeffUI.</p>
                         </div>
                     </div>
                 </div>
