@@ -86,7 +86,7 @@ var abilityList = [
 		color: "--filter-light-blue",
 		order: 2
 	},
-	// Caster	
+	// Caster
 	{
 		id: 7561,
 		name: "Swiftcast",
@@ -105,6 +105,49 @@ var abilityList = [
 		cooldown: 60,
 		type: "Party",
 		icon: "https://xivapi.com/i/000000/000866.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
+	{
+		id: 7560,
+		name: "Addle",
+		name_cn: "昏乱",
+		name_de: "Stumpfsinn",
+		name_en: "Addle",
+		name_fr: "Embrouillement",
+		name_jp: "リプライザル",
+		name_kr: "정신 교란",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "Caster",
+		level: 8,
+		duration: 10,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/000000/000861.png",
+		color: "--filter-light-blue",
+		order: 1
+	},
+	// Melee DPS
+	{
+		id: 7549,
+		name: "Feint",
+		name_cn: "牵制",
+		name_de: "Zermürben",
+		name_en: "Feint",
+		name_fr: "Restreinte",
+		name_jp: "牽制",
+		name_kr: "견제",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "MeleeDPS",
+		level: 22,
+		duration: 10,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/000000/000828.png",
 		color: "--filter-light-blue",
 		order: 0
 	},

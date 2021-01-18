@@ -145,7 +145,7 @@ var jobList = [
 		name: "MNK",
 		fullname: "Monk",
 		type: "DPS",
-		position_type: "Melee"
+		position_type: "MeleeDPS"
 	},
 	{
 		id: 21,
@@ -159,7 +159,7 @@ var jobList = [
 		name: "DRG",
 		fullname: "Dragoon",
 		type: "DPS",
-		position_type: "Melee"
+		position_type: "MeleeDPS"
 	},
 	{
 		id: 23,
@@ -208,14 +208,14 @@ var jobList = [
 		name: "ROG",
 		fullname: "Rogue",
 		type: "DPS",
-		position_type: "Melee"
+		position_type: "MeleeDPS"
 	},
 	{
 		id: 30,
 		name: "NIN",
 		fullname: "Ninja",
 		type: "DPS",
-		position_type: "Melee"
+		position_type: "MeleeDPS"
 	},
 	{
 		id: 31,
@@ -243,7 +243,7 @@ var jobList = [
 		name: "SAM",
 		fullname: "Samurai",
 		type: "DPS",
-		position_type: "Melee"
+		position_type: "MeleeDPS"
 	},
 	{
 		id: 35,
