@@ -120,7 +120,7 @@ var abilityList = [
 		enabled: true,
 		tts: true,
 		ttstype: 0,
-		job: "Caster",
+		job: "CasterDPS",
 		level: 8,
 		duration: 10,
 		cooldown: 90,

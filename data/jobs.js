@@ -144,8 +144,8 @@ var jobList = [
 		id: 20,
 		name: "MNK",
 		fullname: "Monk",
-		type: "DPS",
-		position_type: "MeleeDPS"
+		type: "MeleeDPS",
+		position_type: "Melee"
 	},
 	{
 		id: 21,
@@ -158,14 +158,14 @@ var jobList = [
 		id: 22,
 		name: "DRG",
 		fullname: "Dragoon",
-		type: "DPS",
-		position_type: "MeleeDPS"
+		type: "MeleeDPS",
+		position_type: "Melee"
 	},
 	{
 		id: 23,
 		name: "BRD",
 		fullname: "Bard",
-		type: "DPS",
+		type: "RangedDPS",
 		position_type: "Ranged"
 	},
 	{
@@ -179,21 +179,21 @@ var jobList = [
 		id: 25,
 		name: "BLM",
 		fullname: "Black Mage",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
 		id: 26,
 		name: "ACN",
 		fullname: "Arcanist",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
 		id: 27,
 		name: "SMN",
 		fullname: "Summoner",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
@@ -207,21 +207,21 @@ var jobList = [
 		id: 29,
 		name: "ROG",
 		fullname: "Rogue",
-		type: "DPS",
-		position_type: "MeleeDPS"
+		type: "MeleeDPS",
+		position_type: "Melee"
 	},
 	{
 		id: 30,
 		name: "NIN",
 		fullname: "Ninja",
-		type: "DPS",
-		position_type: "MeleeDPS"
+		type: "MeleeDPS",
+		position_type: "Melee"
 	},
 	{
 		id: 31,
 		name: "MCH",
 		fullname: "Machinist",
-		type: "DPS",
+		type: "RangedDPS",
 		position_type: "Ranged"
 	},
 	{
@@ -242,21 +242,21 @@ var jobList = [
 		id: 34,
 		name: "SAM",
 		fullname: "Samurai",
-		type: "DPS",
-		position_type: "MeleeDPS"
+		type: "MeleeDPS",
+		position_type: "Melee"
 	},
 	{
 		id: 35,
 		name: "RDM",
 		fullname: "Red Mage",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
 		id: 36,
 		name: "BLU",
 		fullname: "Blue Mage",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
@@ -270,7 +270,7 @@ var jobList = [
 		id: 38,
 		name: "DNC",
 		fullname: "Dancer",
-		type: "DPS",
+		type: "RangedDPS",
 		position_type: "Ranged"
 	}
 ];
