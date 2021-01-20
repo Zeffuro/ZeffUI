@@ -2387,6 +2387,28 @@ var abilityList = [
 		color: "--filter-dark-red",
 		order: 0
 	},
+	// Party Cooldowns	
+	{
+		id: 188,
+		name: "Sacred Soil",
+		name_cn: "野战治疗阵",
+		name_de: "Geweihte Erde",
+		name_en: "Sacred Soil",
+		name_fr: "Dogme de survie",
+		name_jp: "野戦治療の陣",
+		name_kr: "야전치유진",
+		enabled: true,
+		tts: true,
+		ttstype: 0,
+		job: "SCH",
+		level: 50,
+		duration: 15,
+		cooldown: 90,
+		type: "Party",
+		icon: "https://xivapi.com/i/002000/002804.png",
+		color: "--filter-light-blue",
+		order: 0
+	},
 	// SMN
 	// DoTs
 	{
