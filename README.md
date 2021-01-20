@@ -42,6 +42,10 @@ ZeffUI currently has these modules built in:
 
 ![mitigation screenshot](screenshots/mitigation.png)
 
+* Party Cooldowns
+
+![partycooldowns screenshot](screenshots/partycooldowns.png)
+
 * Stacks for certain classes (like Ruin IV stacks for SMN)
 
 ![stacks screenshot](screenshots/stacks.png)
