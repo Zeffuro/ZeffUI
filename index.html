@@ -774,7 +774,7 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 	}
 	}
 	let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
-	if(selectedActive.has(ability.id)){	
+	if(selectedActive.has(`${playerIndex}-${ability.id}`)){	
 		if(activeCountdowns.has(`${selector}-duration`)){
 			clearInterval(activeCountdowns.get(`${selector}-duration`));
 		}
@@ -812,15 +812,15 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 	if(selectedSettings.alwaysshow) startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
 	switch(ability.type){
 	case "RaidBuff":{
-		activeRaidBuffs.set(ability.id, selector);
+		activeRaidBuffs.set(`${playerIndex}-${ability.id}`, selector);
 		break;
 	}
 	case "Mitigation":{
-		activeMitigations.set(ability.id, selector);
+		activeMitigations.set(`${playerIndex}-${ability.id}`, selector);
 		break;
 	}	
 	case "Party":{
-		activePartyCooldowns.set(ability.id, selector);
+		activePartyCooldowns.set(`${playerIndex}-${ability.id}`, selector);
 		break;
 	}
 	}
@@ -1248,8 +1248,6 @@ function handleEffect(parameters){
 				if(ability.extra.is_song){
 					let abilityHolder = abilityList.find(x => x.name === "Song");
 					if(byYou){
-						ability.duration = 30;
-						startAbilityIconTimers(playerIndex, ability, true, currentSettings.raidbuffs.alwaysshow ? abilityHolder : ability);
 						return;
 					}
 					if(onYou){
