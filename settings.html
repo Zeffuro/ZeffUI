@@ -218,6 +218,7 @@
             	let override = currentSettings.override.abilities.find(x => x.id == id);
             	if (override != null) ability = override;
             	$("#abilityEnabled").prop("checked", ability.enabled);
+            	$("#abilityIconPreview").prop("src", ability.icon);
             	$("#abilityOverrideEnabled").prop("checked", override != null);
             	switch(ability.type){
             	case "Buff":
@@ -1744,6 +1745,12 @@
                         </div>
                         <div class="card-body">
                             <p id="lang_overridedescription" class="card-text">Here you can change specific default settings for all abilities.</p>
+                            <div class="form-group row text-right">
+                                <label class="control-label col-sm-4" for="abilityIconPreview"></label>
+                                <div class="col-sm-6" style="text-align: left;">
+                                    <img id="abilityIconPreview" src="#">
+                                </div>
+                            </div>
                             <div class="form-group row text-right">
                                 <label id="lang_ability" class="control-label col-sm-4" for="overrideSelect">Ability</label>
                                 <div class="col-sm-6">
