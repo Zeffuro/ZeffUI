@@ -48,6 +48,7 @@ var activeBuffBars = new Map();
 var activeRaidBuffs = new Map();
 var activeMitigations = new Map();
 var activePartyCooldowns = new Map();
+var activeCustomCooldowns = new Map();
 var activeCountdowns = new Map();
 var activeTTS = new Map();
 
@@ -96,7 +97,7 @@ function loadSettings(){
 	checkAndInitializeSetting(settings, "partyorder", 
 		[
 		// Tanks
-			"PLD", "GLD", "WAR", "MRD", "DRK", "GNB", 
+			"PLD", "GLA", "WAR", "MRD", "DRK", "GNB", 
 			// Healers
 			"WHM", "CNJ", "SCH", "AST", 
 			// Melee DPS
@@ -342,6 +343,37 @@ function loadSettings(){
 	$("#party-bar").css("top", settings.party.y);
 	$("#party-bar").css("font-family", settings.party.font);
 
+	// CUSTOM COOLDOWN SETTINGS
+	checkAndInitializeSetting(settings, "customcd", {});
+	checkAndInitializeSetting(settings.customcd, "abilities", []);
+	checkAndInitializeSetting(settings.customcd, "enabled", true);
+	checkAndInitializeSetting(settings.customcd, "ttsenabled", false);
+	checkAndInitializeSetting(settings.customcd, "alwaysshow", true);
+	checkAndInitializeSetting(settings.customcd, "hideoutofcombat", false);
+	checkAndInitializeSetting(settings.customcd, "hidewhensolo", false);
+	checkAndInitializeSetting(settings.customcd, "growleft", false);
+	checkAndInitializeSetting(settings.customcd, "padding", 0);
+	checkAndInitializeSetting(settings.customcd, "scale", 1);
+	checkAndInitializeSetting(settings.customcd, "columns", 8);
+	checkAndInitializeSetting(settings.customcd, "x", 30);
+	checkAndInitializeSetting(settings.customcd, "y", 320);
+	checkAndInitializeSetting(settings.customcd, "font", "Arial");
+	checkAndInitializeSetting(settings.customcd, "durationoutline", true);
+	checkAndInitializeSetting(settings.customcd, "cooldownoutline", true);
+	checkAndInitializeSetting(settings.customcd, "durationbold", true);
+	checkAndInitializeSetting(settings.customcd, "cooldownbold", true);
+	checkAndInitializeSetting(settings.customcd, "durationcolor", "#FFA500");
+	checkAndInitializeSetting(settings.customcd, "cooldowncolor", "#FFFFFF");
+	checkAndInitializeSetting(settings.customcd, "durationoutlinecolor", "#000000");
+	checkAndInitializeSetting(settings.customcd, "cooldownoutlinecolor", "#000000");
+	
+	settings.customcd.enabled ? $("#customcd-bar").show() : $("#customcd-bar").hide();
+	settings.customcd.hidewhensolo ? $("#customcd-bar").hide() : $("#customcd-bar").show();
+
+	$("#customcd-bar").css(settings.customcd.growleft ? "right" : "left", settings.customcd.x);
+	$("#customcd-bar").css("top", settings.customcd.y);
+	$("#customcd-bar").css("font-family", settings.customcd.font);
+
 	currentSettings = settings;
 	saveSettings();
 	
@@ -370,6 +402,7 @@ function loadContextMenu(){
 						loadSettings();
 						generateRaidBuffs();						
 						generateMitigation();
+						generateCustomCooldowns();
 						generatePartyCooldowns();
 					}  
 				}, 1000); 
@@ -447,6 +480,9 @@ function saveSettings(){
 
 	currentSettings.mitigation.x = parseInt($("#mitigation-bar").css("left").replace("px", ""));
 	currentSettings.mitigation.y = parseInt($("#mitigation-bar").css("top").replace("px", ""));
+
+	currentSettings.customcd.x = parseInt($("#customcd-bar").css("left").replace("px", ""));
+	currentSettings.customcd.y = parseInt($("#customcd-bar").css("top").replace("px", ""));
 
 	currentSettings.party.x = parseInt($("#party-bar").css("left").replace("px", ""));
 	currentSettings.party.y = parseInt($("#party-bar").css("top").replace("px", ""));
@@ -627,6 +663,28 @@ function generateMitigation(){
 	if(currentSettings.mitigation.alwaysshow && currentSettings.mitigation.enabled) generateIconBarElements("Mitigation", mitigationAbilityList, currentSettings.mitigation.columns);
 }
 
+function generateCustomCooldowns(){
+	let customAbilityList = [];
+	$("#customcd-bar").empty();
+	let playerIndex = 0;
+	let currentJob = jobList.find(x => x.name === currentPlayer.job);
+	if(currentSettings.customcd.abilities.length === 0) return;
+	for(let ability of currentSettings.customcd.abilities.filter(x => x.type === "CustomCooldown" && x.level <= currentPlayer.level)){
+		let pushAbility = false;
+		if(ability.job === currentJob.name || ability.job === currentJob.type){
+			pushAbility = true;
+		}
+		if(pushAbility && ability.enabled){
+			customAbilityList.push({
+				player: currentPlayer.name,
+				playerIndex: playerIndex,
+				ability: ability
+			});
+		}			
+	}
+	if(currentSettings.customcd.alwaysshow && currentSettings.customcd.enabled) generateIconBarElements("CustomCooldown", customAbilityList, currentSettings.customcd.columns);
+}
+
 function generatePartyCooldowns(){	
 	let partyAbilityList = [];
 	$("#party-bar").empty();
@@ -667,6 +725,11 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 	case "Party":{
 		barSelector = "party";
 		selectedSettings = currentSettings.party;
+		break;
+	}
+	case "CustomCooldown":{
+		barSelector = "customcd";
+		selectedSettings = currentSettings.customcd;
 		break;
 	}
 	}
@@ -717,6 +780,11 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 	case "Party":{
 		barSelector = "party";
 		selectedSettings = currentSettings.party;
+		break;
+	}	
+	case "CustomCooldown":{
+		barSelector = "customcd";
+		selectedSettings = currentSettings.customcd;
 		break;
 	}
 	}
@@ -772,6 +840,12 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		selectedSettings = currentSettings.party;
 		break;
 	}
+	case "CustomCooldown":{
+		barSelector = "customcd";
+		selectedActive = activeCustomCooldowns;
+		selectedSettings = currentSettings.customcd;
+		break;
+	}
 	}
 	let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
 	if(selectedActive.has(`${playerIndex}-${ability.id}`)){	
@@ -823,6 +897,10 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 		activePartyCooldowns.set(`${playerIndex}-${ability.id}`, selector);
 		break;
 	}
+	case "CustomCooldown":{
+		activeCustomCooldowns.set(`${playerIndex}-${ability.id}`, selector);
+		break;
+	}
 	}
 }
 
@@ -863,6 +941,9 @@ function handleAbilityTTS(ability, selector, onYou = true){
 		break;
 	case "Party":
 		if(!currentSettings.party.ttsenabled) return;
+		break;
+	case "CustomCooldown":
+		if(!currentSettings.customcd.ttsenabled) return;
 		break;
 	default:
 		break;
@@ -941,6 +1022,7 @@ function toggleLock(){
 		$("#buff-timer-bar").show();
 		$("#raid-buffs-bar").append("<span id=\"raid-buffs-anchor\" class=\"anchor-text\">Raid Buffs Anchor</span>");
 		$("#mitigation-bar").append("<span id=\"mitigation-anchor\" class=\"anchor-text\">Mitigations Anchor</span>");
+		$("#customcd-bar").append("<span id=\"customcd-anchor\" class=\"anchor-text\">Custom Cooldown Anchor</span>");
 		$("#party-bar").append("<span id=\"party-anchor\" class=\"anchor-text\">Party Cooldowns Anchor</span>");
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").show();
 		//$("[id$=bar]").draggable("enable");
@@ -956,6 +1038,7 @@ function toggleLock(){
 		$("#buff-timer-bar").hide();
 		$("#raid-buffs-anchor").remove();
 		$("#mitigation-anchor").remove();
+		$("#customcd-anchor").remove();
 		$("#party-anchor").remove();
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").hide();
 		//$("[id$=bar]").draggable("disable");
@@ -978,6 +1061,7 @@ function toggleHideOutOfCombatElements(){
 	currentSettings.stacksbar.hideoutofcombat && !inCombat ? $("#stacks-bar").addClass("hide-in-combat") : $("#stacks-bar").removeClass("hide-in-combat");
 	currentSettings.raidbuffs.hideoutofcombat && !inCombat ? $("#raid-buffs-bar").addClass("hide-in-combat") : $("#raid-buffs-bar").removeClass("hide-in-combat");
 	currentSettings.mitigation.hideoutofcombat && !inCombat ? $("#mitigation-bar").addClass("hide-in-combat") : $("#mitigation-bar").removeClass("hide-in-combat");
+	currentSettings.customcd.hideoutofcombat && !inCombat ? $("#customcd-bar").addClass("hide-in-combat") : $("#customcd-bar").removeClass("hide-in-combat");
 	currentSettings.party.hideoutofcombat && !inCombat ? $("#party-bar").addClass("hide-in-combat") : $("#party-bar").removeClass("hide-in-combat");
 }
 
@@ -1124,6 +1208,7 @@ function onPartyWipe(){
 	resetTimers();
 	generateRaidBuffs();
 	generateMitigation();
+	generateCustomCooldowns();
 	generatePartyCooldowns();
 }
 
@@ -1177,7 +1262,8 @@ function setupSoloParty(){
 		worldId: null
 	});
 	generateRaidBuffs();
-	generateMitigation();
+	generateMitigation();	
+	generateCustomCooldowns();
 	generatePartyCooldowns();
 }
 
@@ -1200,6 +1286,7 @@ function startCountdownTimer(parameters){
 function onInstanceStart(){
 	generateRaidBuffs();
 	generateMitigation();
+	generateCustomCooldowns();
 	generatePartyCooldowns();
 }
 
@@ -1208,6 +1295,7 @@ function onInstanceEnd(){
 	resetTimers();
 	generateRaidBuffs();
 	generateMitigation();
+	generateCustomCooldowns();
 	generatePartyCooldowns();
 }
 
@@ -1459,7 +1547,13 @@ function handleSkill(parameters){
 		if(ability.type === "Party"){
 			startAbilityIconTimers(playerIndex, ability, true);
 		}
-	}	
+	}
+	if(currentSettings.customcd.abilities.length > 0){
+		for (ability of currentSettings.customcd.abilities.filter(x => x.id == parseInt(parameters.skillid, 16))){
+			if(byYou) startAbilityIconTimers(playerIndex, ability, true);
+		}
+	}
+	
 }
 </script>
 <body>
@@ -1481,6 +1575,7 @@ function handleSkill(parameters){
 	<div id="raid-buffs-bar" style="position: absolute;"></div>
 	<div id="mitigation-bar" style="position: absolute;"></div>
 	<div id="party-bar" style="position: absolute;"></div>
+	<div id="customcd-bar" style="position: absolute;"></div>
 	<progress width="154" height="15" id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
 	<progress width="154" height="15" id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
 	<progress width="154" height="15" id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>	

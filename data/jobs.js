@@ -18,7 +18,7 @@ var jobList = [
 		id: 2,
 		name: "PGL",
 		fullname: "Pugilist",
-		type: "DPS",
+		type: "MeleeDPS",
 		position_type: "Melee"
 	},
 	{
@@ -32,14 +32,14 @@ var jobList = [
 		id: 4,
 		name: "LNC",
 		fullname: "Lancer",
-		type: "DPS",
+		type: "MeleeDPS",
 		position_type: "Melee"
 	},
 	{
 		id: 5,
 		name: "ARC",
 		fullname: "Archer",
-		type: "DPS",
+		type: "RangedDPS",
 		position_type: "Ranged"
 	},
 	{
@@ -53,7 +53,7 @@ var jobList = [
 		id: 7,
 		name: "THM",
 		fullname: "Thaumaturge",
-		type: "DPS",
+		type: "CasterDPS",
 		position_type: "Caster"
 	},
 	{
