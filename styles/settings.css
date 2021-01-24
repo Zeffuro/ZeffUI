@@ -1,0 +1,9 @@
+#healthExample::-webkit-progress-value {
+    filter: var(--healthColor);
+}
+#manaExample::-webkit-progress-value {
+    filter: var(--manaColor);
+}
+#pulltimerExample::-webkit-progress-value {
+    filter: var(--pulltimerColor);
+}

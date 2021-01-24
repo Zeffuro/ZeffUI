@@ -7,7 +7,7 @@ var regexList =
 			// CHINESE
 			{
 				"regex": "距离战斗开始还有(?<seconds>[0-9]{1,2})秒！\\s*（.{1,12}）",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": "“.*”任务开始。",
@@ -20,7 +20,7 @@ var regexList =
 			// ENGLISH
 			{
 				"regex": "Battle commencing in (?<seconds>[0-9]{1,2}) seconds! \\([a-zA-Z-' ]{2,31}\\)",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": "[\\w-'èéêîïôàæûç,:\\-() ]{1,99} has begun\\.",
@@ -33,7 +33,7 @@ var regexList =
 			// FRENCH La mission “La Crique aux tributs” commence.
 			{
 				"regex": "Début du combat dans (?<seconds>[0-9]{1,2}) secondes! \\([a-zA-Z-' ]{2,31}\\)",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": "La mission “.*” commence\\.",
@@ -46,7 +46,7 @@ var regexList =
 			// GERMAN
 			{
 				"regex": "Noch (?<seconds>[0-9]{1,2}) Sekunden bis Kampfbeginn! \\([a-zA-Z-' ]{2,31}\\)",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": "„.*“ hat begonnen\\.",
@@ -59,7 +59,7 @@ var regexList =
 			// JAPANESE
 			{
 				"regex": "戦闘開始まで(?<seconds>[0-9]{1,2})秒！ \\（[a-zA-Z-' ]{2,31}\\）",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": "「.*」の攻略を開始した。",
@@ -72,7 +72,7 @@ var regexList =
 			// KOREAN
 			{
 				"regex": "/전투 시작 (?<seconds>[0-9]{1,2})초 전! \\（[a-zA-Z-' ]{2,31}\\）",
-				"function": "startCountdownTimer"
+				"function": "handleCountdownTimer"
 			},
 			{
 				"regex": ".* 공략을 시작합니다.",
@@ -98,7 +98,16 @@ var regexList =
 		matches: [
 			{
 				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[^)]*) for (?<duration>\\d{1,4}\\.?(\\d{1,2})?) Seconds\\.",
-				"function": "handleEffect"
+				"function": "handleGainEffect"
+			}
+		]
+	},
+	"1E":{
+		regex: "] 1E:",
+		matches: [
+			{
+				"regex": "(?<targetid>[A-F0-9]{8}):(?<target>.*) loses the effect of (?<effect>.*) from (?<player>[^)]*)\\.",
+				"function": "handleLoseEffect"
 			}
 		]
 	},

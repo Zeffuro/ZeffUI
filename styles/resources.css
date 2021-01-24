@@ -2,6 +2,10 @@
 	font-family: var(--defaultFont);
 }
 
+body{
+	overflow: hidden;
+}
+
 .bar {
 	position: absolute;
 	width: 154px;

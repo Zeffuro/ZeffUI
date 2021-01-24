@@ -99,6 +99,7 @@ var language = [
 	{ id: "search", string: "Search" },
 	{ id: "id", string: "ID" },
 	{ id: "jobrole", string: "Job / Role" },
+	{ id: "pvp", string: "PvP" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
