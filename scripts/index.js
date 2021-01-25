@@ -443,7 +443,8 @@ function loadContextMenu(){
 				var settingsTimer = setInterval(function() {
 					if(openSettings.closed) {
 						clearInterval(settingsTimer);
-						loadSettings();
+						loadSettings();						
+						if(currentPlayer === null) return;
 						generateRaidBuffs();
 						generateMitigation();
 						generateCustomCooldowns();
