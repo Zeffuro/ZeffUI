@@ -157,6 +157,14 @@ var language = [
 	{ id: "melee", string: "Melee" },
 	{ id: "ranged", string: "Ranged" },
 	{ id: "caster", string: "Caster" },
+	// UI TEXT
+	{ id: "dot-anchor", string: "DoT Anchor" },
+	{ id: "buff-anchor", string: "Buff Anchor" },
+	{ id: "raidbuffs-anchor", string: "Raidbuffs Anchor" },
+	{ id: "mitigation-anchor", string: "Mitigations Anchor" },
+	{ id: "party-anchor", string: "Party Anchor" },
+	{ id: "customcd-anchor", string: "CustomCD Anchor" },
+	{ id: "pulltimer", string: "Pulltimer" },
 	// CONTEXT MENU
 	{ id: "lock", string: "锁定 / 解锁模块" },
 	{ id: "grid", string: "切换网格" },

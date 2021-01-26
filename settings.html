@@ -5,6 +5,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
 		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 		<script src="scripts/settings.js"></script>
@@ -731,7 +732,7 @@
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft">
+									<input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft" onchange="changeXY('raidbuff')">
 									<label id="lang_growleft" class="custom-control-label" for="raidbuffGrowLeft">Grow icons to the left</label>
 								</div>
 							</div>
@@ -865,7 +866,7 @@
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationGrowLeft">
+									<input type="checkbox" class="custom-control-input" id="mitigationGrowLeft" onchange="changeXY('mitigation')">
 									<label id="lang_growleft_1" class="custom-control-label" for="mitigationGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>
@@ -989,7 +990,7 @@
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyGrowLeft">
+									<input type="checkbox" class="custom-control-input" id="partyGrowLeft" onchange="changeXY('party')">
 									<label id="lang_growleft_2" class="custom-control-label" for="partyGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>
@@ -1117,7 +1118,7 @@
 							</div>
 							<div class="form-group">
 								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdGrowLeft">
+									<input type="checkbox" class="custom-control-input" id="customcdGrowLeft" onchange="changeXY('customcd')">
 									<label id="lang_growleft_3" class="custom-control-label" for="customcdGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>

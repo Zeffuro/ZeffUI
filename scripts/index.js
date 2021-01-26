@@ -133,11 +133,15 @@ function loadSettings(){
 	$("#health-bar").css("--healthBarColor", `var(${settings.healthbar.color})`);
 	$("#health-bar").css("width", settings.healthbar.scale * 154);
 	$("#health-bar").css("height", settings.healthbar.scale * 15);
-	$("#health-bar").css("left", settings.healthbar.x);
-	$("#health-bar").css("top", settings.healthbar.y);
 	$("#health-bar").css("--healthFont", settings.healthbar.font);
 	$("#health-bar").css("-webkit-transform", `rotate(${settings.healthbar.rotation}deg)`);
 	$("#health-bar").css("transform-origin", "top left");
+	dragPosition["health-bar"] = {
+		x: settings.healthbar.x,
+		y: settings.healthbar.y
+	};
+	$("#health-bar").addClass("ltr");
+	$("#health-bar").css("transform", `translate(${settings.healthbar.x}px, ${settings.healthbar.y}px)`);
 
 	// MANABAR SETTINGS
 	checkAndInitializeSetting(settings, "manabar", {});
@@ -156,11 +160,15 @@ function loadSettings(){
 	$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
 	$("#mana-bar").css("width", settings.manabar.scale * 154);
 	$("#mana-bar").css("height", settings.manabar.scale * 15);
-	$("#mana-bar").css("left", settings.manabar.x);
-	$("#mana-bar").css("top", settings.manabar.y);
 	$("#mana-bar").css("--manaFont", settings.manabar.font);
 	$("#mana-bar").css("-webkit-transform", `rotate(${settings.manabar.rotation}deg)`);
 	$("#mana-bar").css("transform-origin", "top left");
+	dragPosition["mana-bar"] = {
+		x: settings.manabar.x,
+		y: settings.manabar.y
+	};
+	$("#mana-bar").addClass("ltr");
+	$("#mana-bar").css("transform", `translate(${settings.manabar.x}px, ${settings.manabar.y}px)`);
 
 	// PULLTIMER SETTINGS
 	checkAndInitializeSetting(settings, "timerbar", {});
@@ -176,11 +184,15 @@ function loadSettings(){
 	$("#timer-bar").css("--pulltimerBarColor", `var(${settings.timerbar.color})`);
 	$("#timer-bar").css("width", settings.timerbar.scale * 154);
 	$("#timer-bar").css("height", settings.timerbar.scale * 15);
-	$("#timer-bar").css("left", settings.timerbar.x);
-	$("#timer-bar").css("top", settings.timerbar.y);
 	$("#timer-bar").css("--timerFont", settings.timerbar.font);
 	$("#timer-bar").css("-webkit-transform", `rotate(${settings.timerbar.rotation}deg)`);
 	$("#timer-bar").css("transform-origin", "top left");
+	dragPosition["timer-bar"] = {
+		x: settings.timerbar.x,
+		y: settings.timerbar.y
+	};
+	$("#timer-bar").addClass("ltr");
+	$("#timer-bar").css("transform", `translate(${settings.timerbar.x}px, ${settings.timerbar.y}px)`);
 
 	// DOT TIMER SETTINGS
 	checkAndInitializeSetting(settings, "dottimerbar", {});
@@ -201,11 +213,15 @@ function loadSettings(){
 
 	$("#dot-timer-bar").css("width", settings.dottimerbar.scale * 154);
 	$("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
-	$("#dot-timer-bar").css("left", settings.dottimerbar.x);
-	$("#dot-timer-bar").css("top", settings.dottimerbar.y);
 	$("#dot-timer-bar").css("--dotFont", settings.dottimerbar.font);
 	$("#dot-bar").css("-webkit-transform", `rotate(${settings.dottimerbar.rotation}deg)`);
 	$("#dot-bar").css("transform-origin", "center");
+	dragPosition["dot-timer-bar"] = {
+		x: settings.dottimerbar.x,
+		y: settings.dottimerbar.y
+	};
+	$("#dot-timer-bar").addClass("ltr");
+	$("#dot-timer-bar").css("transform", `translate(${settings.dottimerbar.x}px, ${settings.dottimerbar.y}px)`);
 
 	// BUFF TIMER SETTINGS
 	checkAndInitializeSetting(settings, "bufftimerbar", {});
@@ -225,11 +241,15 @@ function loadSettings(){
 
 	$("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 154);
 	$("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
-	$("#buff-timer-bar").css("left", settings.bufftimerbar.x);
-	$("#buff-timer-bar").css("top", settings.bufftimerbar.y);
 	$("#buff-timer-bar").css("--buffFont", settings.bufftimerbar.font);
 	$("#buff-bar").css("-webkit-transform", `rotate(${settings.bufftimerbar.rotation}deg)`);
 	$("#buff-bar").css("transform-origin", "center");
+	dragPosition["buff-timer-bar"] = {
+		x: settings.bufftimerbar.x,
+		y: settings.bufftimerbar.y
+	};
+	$("#buff-timer-bar").addClass("ltr");
+	$("#buff-timer-bar").css("transform", `translate(${settings.bufftimerbar.x}px, ${settings.bufftimerbar.y}px)`);
 
 	// STACKBAR SETTINGS
 	checkAndInitializeSetting(settings, "stacksbar", {});
@@ -244,11 +264,15 @@ function loadSettings(){
 
 	$("#stacks-bar").attr("width", settings.stacksbar.scale * (4 * 25));
 	$("#stacks-bar").attr("height", settings.stacksbar.scale * 21);
-	$("#stacks-bar").css("left", settings.stacksbar.x);
-	$("#stacks-bar").css("top", settings.stacksbar.y);
 	$("#stacks-bar").css("transform", `scale(${settings.stacksbar.scale})`);
 	$("[id^=stacks-background]").css("margin-left", 0 - (settings.stacksbar.scale * 4));
 	$("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
+	dragPosition["stacks-bar"] = {
+		x: settings.stacksbar.x,
+		y: settings.stacksbar.y
+	};
+	$("#stacks-bar").addClass("ltr");
+	$("#stacks-bar").css("transform", `translate(${settings.stacksbar.x}px, ${settings.stacksbar.y}px)`);
 
 	// RAIDBUFF SETTINGS
 	checkAndInitializeSetting(settings, "raidbuffs", {});
@@ -277,9 +301,13 @@ function loadSettings(){
 	settings.raidbuffs.enabled ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	settings.raidbuffs.hidewhensolo ? $("#raid-buffs-bar").hide() : $("#raid-buffs-bar").show();
 
-	$("#raid-buffs-bar").css(settings.raidbuffs.growleft ? "right" : "left", settings.raidbuffs.x);
-	$("#raid-buffs-bar").css("top", settings.raidbuffs.y);
 	$("#raid-buffs-bar").css("font-family", settings.raidbuffs.font);
+	dragPosition["raid-buffs-bar"] = {
+		x: settings.raidbuffs.x,
+		y: settings.raidbuffs.y
+	};
+	$("#raid-buffs-bar").addClass(`${settings.raidbuffs.growleft ? "rtl" : "ltr"}`);
+	$("#raid-buffs-bar").css("transform", `translate(${settings.raidbuffs.x}px, ${settings.raidbuffs.y}px)`);
 
 	// MITIGATION SETTINGS
 	checkAndInitializeSetting(settings, "mitigation", {});
@@ -307,9 +335,13 @@ function loadSettings(){
 	settings.mitigation.enabled ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
-	$("#mitigation-bar").css(settings.mitigation.growleft ? "right" : "left", settings.mitigation.x);
-	$("#mitigation-bar").css("top", settings.mitigation.y);
 	$("#mitigation-bar").css("font-family", settings.mitigation.font);
+	dragPosition["mitigation-bar"] = {
+		x: settings.mitigation.x,
+		y: settings.mitigation.y
+	};
+	$("#mitigation-bar").addClass(`${settings.mitigation.growleft ? "rtl" : "ltr"}`);
+	$("#mitigation-bar").css("transform", `translate(${settings.mitigation.x}px, ${settings.mitigation.y}px)`);
 
 	// PARTY COOLDOWN SETTINGS
 	checkAndInitializeSetting(settings, "party", {});
@@ -336,9 +368,13 @@ function loadSettings(){
 	settings.party.enabled ? $("#party-bar").show() : $("#party-bar").hide();
 	settings.party.hidewhensolo ? $("#party-bar").hide() : $("#party-bar").show();
 
-	$("#party-bar").css(settings.party.growleft ? "right" : "left", settings.party.x);
-	$("#party-bar").css("top", settings.party.y);
 	$("#party-bar").css("font-family", settings.party.font);
+	dragPosition["party-bar"] = {
+		x: settings.party.x,
+		y: settings.party.y
+	};
+	$("#party-bar").addClass(`${settings.party.growleft ? "rtl" : "ltr"}`);
+	$("#party-bar").css("transform", `translate(${settings.party.x}px, ${settings.party.y}px)`);
 
 	// CUSTOM COOLDOWN SETTINGS
 	checkAndInitializeSetting(settings, "customcd", {});
@@ -367,59 +403,63 @@ function loadSettings(){
 	settings.customcd.enabled ? $("#customcd-bar").show() : $("#customcd-bar").hide();
 	settings.customcd.hidewhensolo ? $("#customcd-bar").hide() : $("#customcd-bar").show();
 
-	$("#customcd-bar").css(settings.customcd.growleft ? "right" : "left", settings.customcd.x);
-	$("#customcd-bar").css("top", settings.customcd.y);
 	$("#customcd-bar").css("font-family", settings.customcd.font);
+	dragPosition["customcd-bar"] = {
+		x: settings.customcd.x,
+		y: settings.customcd.y
+	};
+	$("#customcd-bar").addClass(`${settings.customcd.growleft ? "rtl" : "ltr"}`);
+	$("#customcd-bar").css("transform", `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`);
 
 	currentSettings = settings;
 	saveSettings();
 }
 
 function saveSettings(){
-	currentSettings.healthbar.x = parseInt($("#health-bar").css("left").replace("px", ""));
-	currentSettings.healthbar.y = parseInt($("#health-bar").css("top").replace("px", ""));
+	currentSettings.healthbar.x = parseInt(dragPosition["health-bar"].x);
+	currentSettings.healthbar.y = parseInt(dragPosition["health-bar"].y);
 	$("#health-bar").css("--healthFontSize", currentSettings.healthbar.scale * 10);
 	$("#health-bar").css("--healthFontX", currentSettings.healthbar.scale * 5);
 	$("#health-bar").css("--healthFontY", currentSettings.healthbar.scale * -14);
 
-	currentSettings.manabar.x = parseInt($("#mana-bar").css("left").replace("px", ""));
-	currentSettings.manabar.y = parseInt($("#mana-bar").css("top").replace("px", ""));
+	currentSettings.manabar.x = parseInt(dragPosition["mana-bar"].x);
+	currentSettings.manabar.y = parseInt(dragPosition["mana-bar"].y);
 	$("#mana-bar").css("--manaFontSize", currentSettings.manabar.scale * 10);
 	$("#mana-bar").css("--manaFontX", currentSettings.manabar.scale * 5);
 	$("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
 
-	currentSettings.timerbar.x = parseInt($("#timer-bar").css("left").replace("px", ""));
-	currentSettings.timerbar.y = parseInt($("#timer-bar").css("top").replace("px", ""));
+	currentSettings.timerbar.x = parseInt(dragPosition["timer-bar"].x);
+	currentSettings.timerbar.y = parseInt(dragPosition["timer-bar"].y);
 	$("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
 	$("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 5);
 	$("#timer-bar").css("--timerFontY", currentSettings.timerbar.scale * -14);
 
-	currentSettings.dottimerbar.x = parseInt($("#dot-timer-bar").css("left").replace("px", ""));
-	currentSettings.dottimerbar.y = parseInt($("#dot-timer-bar").css("top").replace("px", ""));
+	currentSettings.dottimerbar.x = parseInt(dragPosition["dot-timer-bar"].x);
+	currentSettings.dottimerbar.y = parseInt(dragPosition["dot-timer-bar"].y);
 	$("#dot-timer-bar").css("--dotFontSize", currentSettings.dottimerbar.scale * 10);
 	$("#dot-timer-bar").css("--dotFontX", currentSettings.dottimerbar.scale * 5);
 	$("#dot-timer-bar").css("--dotFontY", currentSettings.dottimerbar.scale * -14);
 
-	currentSettings.bufftimerbar.x = parseInt($("#buff-timer-bar").css("left").replace("px", ""));
-	currentSettings.bufftimerbar.y = parseInt($("#buff-timer-bar").css("top").replace("px", ""));
+	currentSettings.bufftimerbar.x = parseInt(dragPosition["buff-timer-bar"].x);
+	currentSettings.bufftimerbar.y = parseInt(dragPosition["buff-timer-bar"].y);
 	$("#buff-timer-bar").css("--buffFontSize", currentSettings.bufftimerbar.scale * 10);
 	$("#buff-timer-bar").css("--buffFontX", currentSettings.bufftimerbar.scale * 5);
 	$("#buff-timer-bar").css("--buffFontY", currentSettings.bufftimerbar.scale * -14);
 
-	currentSettings.stacksbar.x = parseInt($("#stacks-bar").css("left").replace("px", ""));
-	currentSettings.stacksbar.y = parseInt($("#stacks-bar").css("top").replace("px", ""));
+	currentSettings.stacksbar.x = parseInt(dragPosition["stacks-bar"].x);
+	currentSettings.stacksbar.y = parseInt(dragPosition["stacks-bar"].y);
 
-	currentSettings.raidbuffs.x = parseInt($("#raid-buffs-bar").css("left").replace("px", ""));
-	currentSettings.raidbuffs.y = parseInt($("#raid-buffs-bar").css("top").replace("px", ""));
+	currentSettings.raidbuffs.x = parseInt(dragPosition["raid-buffs-bar"].x);
+	currentSettings.raidbuffs.y = parseInt(dragPosition["raid-buffs-bar"].y);
 
-	currentSettings.mitigation.x = parseInt($("#mitigation-bar").css("left").replace("px", ""));
-	currentSettings.mitigation.y = parseInt($("#mitigation-bar").css("top").replace("px", ""));
+	currentSettings.mitigation.x = parseInt(dragPosition["mitigation-bar"].x);
+	currentSettings.mitigation.y = parseInt(dragPosition["mitigation-bar"].y);
 
-	currentSettings.customcd.x = parseInt($("#customcd-bar").css("left").replace("px", ""));
-	currentSettings.customcd.y = parseInt($("#customcd-bar").css("top").replace("px", ""));
+	currentSettings.customcd.x = parseInt(dragPosition["customcd-bar"].x);
+	currentSettings.customcd.y = parseInt(dragPosition["customcd-bar"].y);
 
-	currentSettings.party.x = parseInt($("#party-bar").css("left").replace("px", ""));
-	currentSettings.party.y = parseInt($("#party-bar").css("top").replace("px", ""));
+	currentSettings.party.x = parseInt(dragPosition["party-bar"].x);
+	currentSettings.party.y = parseInt(dragPosition["party-bar"].y);
 
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
@@ -445,6 +485,7 @@ function loadContextMenu(){
 						clearInterval(settingsTimer);
 						loadSettings();						
 						if(currentPlayer === null) return;
+						location.reload();
 						generateRaidBuffs();
 						generateMitigation();
 						generateCustomCooldowns();
@@ -507,16 +548,11 @@ function toggleLock(){
 	interact("[id$=bar]").draggable({
 		enabled: locked,
 		listeners: {
-			start (event) {
-				if(!dragPosition[event.target.id]) dragPosition[event.target.id] = {};
-				dragPosition[event.target.id].x = parseInt(event.target.style.left.replace("px", ""));
-				dragPosition[event.target.id].y = parseInt(event.target.style.top.replace("px", ""));
-			},
 			move (event) {
 				dragPosition[event.target.id].x += event.dx;
 				dragPosition[event.target.id].y += event.dy;
-				event.target.style.left = `${dragPosition[event.target.id].x}px`;
-				event.target.style.top = `${dragPosition[event.target.id].y}px`;
+
+				event.target.style.transform = `translate(${parseInt(dragPosition[event.target.id].x)}px, ${parseInt(dragPosition[event.target.id].y)}px)`;
 			},
 			end () {
 				saveSettings();
@@ -525,12 +561,19 @@ function toggleLock(){
 	});
 	if(locked){
 		$("#timer-bar").show();
+		$("#timer-bar").prop("data-label", language.find(x => x.id === "pulltimer").string);
 		$("#dot-timer-bar").show();
+		$("#dot-timer-bar").prop("data-label", language.find(x => x.id === "dot-anchor").string);
 		$("#buff-timer-bar").show();
-		$("#raid-buffs-bar").append("<span id=\"raid-buffs-anchor\" class=\"anchor-text\">Raid Buffs Anchor</span>");
-		$("#mitigation-bar").append("<span id=\"mitigation-anchor\" class=\"anchor-text\">Mitigations Anchor</span>");
-		$("#customcd-bar").append("<span id=\"customcd-anchor\" class=\"anchor-text\">Custom Cooldown Anchor</span>");
-		$("#party-bar").append("<span id=\"party-anchor\" class=\"anchor-text\">Party Cooldowns Anchor</span>");
+		$("#buff-timer-bar").prop("data-label", language.find(x => x.id === "buff-anchor").string);
+		$("#raid-buffs-bar").append(`<span id="raid-buffs-anchor" class="anchor-text">${language.find(x => x.id === "raidbuffs-anchor").string}</span>`);
+		$("#mitigation-bar").append(`<span id="mitigation-anchor" class="anchor-text">${language.find(x => x.id === "mitigation-anchor").string}</span>`);
+		$("#customcd-bar").append(`<span id="customcd-anchor" class="anchor-text">${language.find(x => x.id === "customcd-anchor").string}</span>`);
+		if($("#party-bar>div").length === 0){
+			$("#party-bar").append(`<span id="party-anchor" class="anchor-text">${language.find(x => x.id === "party-anchor").string}</span>`);
+		}else{
+			$("#party-bar>div:eq(0)").append(`<span id="party-anchor" class="anchor-text">${language.find(x => x.id === "party-anchor").string}</span>`);
+		}
 		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").show();
 		//$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
@@ -730,7 +773,7 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 	let abilityIndex = 0;
 	if(selector !== "Party"){
 		for(let i = 1; i <= rows; i++){
-			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
+			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box"></div></div>`);
 			for (let j = 1; j <= columns; j++){
 				let ability = iconAbilityList[abilityIndex];
 				generateAbilityIcon(ability.playerIndex, ability.ability, i);
@@ -743,7 +786,7 @@ function generateIconBarElements(selector, iconAbilityList, columns){
 		let players = 8;
 		if(currentSettings.includealliance) players = 24;
 		for (let i = 1; i <= players; i++){
-			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
+			$(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${i}-box" class="ability-box"></div></div>`);
 			if(iconAbilityList.filter(ability => ability.playerIndex === i - 1).length === 0){
 				$(`#${barSelector}-row-${i}-box`).append(`<div id="${barSelector}-${i}-dummy-container" class="ability-container" style="width: ${selectedSettings.scale * 48}px; height: ${selectedSettings.scale * 48}px; padding-right: ${selectedSettings.padding}px;"></div>`);
 				$(`#${barSelector}-${i}-dummy-container`).append(`<img id="${barSelector}-${i}-dummy-image" class="ability-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="${selectedSettings.scale * 40}px" height="${selectedSettings.scale * 40}px" style="top: ${selectedSettings.scale * 2}px;" />`);
@@ -762,7 +805,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 	let selectedSettings = selectorProperties.settings;
 	if(generateRow){
 		if(row === 0) row = 1;
-		if($(`#${barSelector}-row-${row}`).length === 0) $(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${row}-box" class="ability-box${selectedSettings.growleft ? " rtl" : ""}"></div></div>`);
+		if($(`#${barSelector}-row-${row}`).length === 0) $(`#${barSelector}-bar`).append(`<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;"><div id="${barSelector}-row-${row}-box" class="ability-box"></div></div>`);
 	}
 
 	let iconWidth = selectedSettings.scale * 40;
@@ -884,6 +927,7 @@ function startAbilityBarTimer(ability, duration, onYou){
 	if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 	let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 	let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
+	let targetPosition = dragPosition[`${ability.type.toLowerCase()}-timer-bar`];
 	let selectorBar = `#${ability.id}-${ability.type.toLowerCase()}-timer`;
 	let selectorImage = `#${ability.id}-${ability.type.toLowerCase()}-image`;
 	ability.duration = parseInt(duration);
@@ -913,26 +957,22 @@ function startAbilityBarTimer(ability, duration, onYou){
 		switch(parseInt(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection)){
 		case 1:{
 			// Down
-			$(selectorBar).css("left", $(targetBarSelector).css("left"));
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+			$(selectorBar).css("transform", `translate(${targetPosition.x}px, ${targetPosition.y + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order)}px)`);
 			break;
 		}
 		case 2:{
 			// Up
-			$(selectorBar).css("left", $(targetBarSelector).css("left"));
-			$(selectorBar).css("top", parseInt($(targetBarSelector).css("top").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+			$(selectorBar).css("transform", `translate(${targetPosition.x}px, ${targetPosition.y - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order)}px)`);
 			break;
 		}
 		case 3:{
 			// Left
-			$(selectorBar).css("top", $(targetBarSelector).css("top"));
-			$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+			$(selectorBar).css("transform", `translate(${targetPosition.x - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order)}px, ${targetPosition.y}px)`);
 			break;
 		}
 		case 4:{
 			// Right
-			$(selectorBar).css("top", $(targetBarSelector).css("top"));
-			$(selectorBar).css("left", parseInt($(targetBarSelector).css("left").replace("px", "")) + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order));
+			$(selectorBar).css("transform", `translate(${targetPosition.x + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order)}px, ${targetPosition.y}px)`);
 			break;
 		}
 		}
@@ -943,8 +983,8 @@ function startAbilityBarTimer(ability, duration, onYou){
 			$(selectorImage).css("image-rendering", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale > 1 ? "pixelated" : "-webkit-optimize-contrast" );
 			$(selectorImage).css("height", currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 22);
 
-			let left = parseInt($(targetBarSelector).css("left").replace("px", ""));
-			let top = parseInt($(targetBarSelector).css("top").replace("px", ""));
+			let left = targetPosition.x;
+			let top = targetPosition.y;
 
 			switch(parseInt(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection)){
 			case 1:{
@@ -973,8 +1013,7 @@ function startAbilityBarTimer(ability, duration, onYou){
 			}
 			}
 
-			$(selectorImage).css("left", left);
-			$(selectorImage).css("top", top);
+			$(selectorImage).css("transform", `translate(${left}px, ${top}px)`);
 		}
 	}
 	if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar));

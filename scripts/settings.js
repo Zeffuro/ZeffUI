@@ -1,5 +1,5 @@
 // ZeffUI globals
-/* global abilityList, language */
+/* global abilityList, language, Base64 */
 
 var currentSettings = null;
 var currentFont = {};
@@ -182,6 +182,12 @@ function toggleOverride(){
 		$("#abilityTTSType").attr("disabled","disabled");
 		currentSettings.override.abilities = currentSettings.override.abilities.filter(x => x.id != id);
 	}
+}
+
+/* exported changeXY */
+function changeXY(type){
+	$(`#${type}X`).val($(`#${type}X`).val() * -1);
+	$(`#${type}Y`).val($(`#${type}Y`).val() * -1);
 }
 
 /* exported saveOverride */
@@ -553,7 +559,7 @@ function exportSettings(){
 	if(localStorage.getItem("settings") == null){
 		saveSettings();
 	}
-	$("#settingsText").val(btoa(localStorage.getItem("settings")));
+	$("#settingsText").val(Base64.encodeURI(localStorage.getItem("settings")));
 	$("#settingsText").select();
 	document.execCommand("copy");
 	alert("Your current settings have been copied to your clipboard.");
@@ -562,10 +568,14 @@ function exportSettings(){
 /* exported importSettings */
 function importSettings(){
 	try{
-		let settings = JSON.parse(atob($("#settingsText").val()));
+		let decoded = Base64.decode($("#settingsText").val());
+		console.log(decoded);
+		let settings = JSON.parse(decoded);
+		console.log(settings.hasOwnProperty("healthbar"));
 		if(settings.hasOwnProperty("healthbar")){
 			if(confirm("Are you sure you want to import these settings? This will completely overwrite your previous settings!")){
-				localStorage.setItem("settings", JSON.stringify(settings));
+				let saveSettings = {...currentSettings, ...settings};
+				localStorage.setItem("settings", JSON.stringify(saveSettings));
 				loadSettings();
 				location.reload();
 				this.close();

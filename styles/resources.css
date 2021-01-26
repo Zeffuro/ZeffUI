@@ -8,7 +8,12 @@
 	height: 15px;
 }
 .rtl {
-	direction: rtl;
+	right: 0px;
+	bottom: 0px;
+}
+.ltr {
+	left: 0px;
+	top: 0px;
 }
 .hide-in-combat {
 	visibility: hidden;
@@ -64,54 +69,42 @@
 	display: none;
 }
 #dot-timer-bar {
-	left: 0px; 
-	top: 100px;
 	display: none;
 	touch-action: none;
 }
 #buff-timer-bar {
-	left: 0px;
-	top: 116px;
 	display: none;
 	touch-action: none;
 }
 #stacks-bar {
 	position: absolute;
 	left: 0px; 
-	top: 170px;
+	top: 0px;
 	touch-action: none;
 }
 #timer-bar {
-	left: 0px; 
-	top: 200px;
 	display: none;
 	touch-action: none;
 }
 #health-bar {
-	left: 0px;
-	top: 216px;
 	touch-action: none;
 }
 #mana-bar {
-	left: 0px; 
-	top: 232px;
 	touch-action: none;
 }
 #raid-buffs-bar {
-	left: 0px; 
-	top: 248;
 	display: none;
 	touch-action: none;
 }
 #mitigation-bar {
-	left: 0px; 
-	top: 264;
 	display: none;
 	touch-action: none;
 }
 #party-bar {
-	left: 0px; 
-	top: 280;
+	display: none;
+	touch-action: none;
+}
+#customcd-bar {
 	display: none;
 	touch-action: none;
 }
@@ -166,7 +159,8 @@ progress:after {
 	z-index: 10;
 }
 .anchor-text {
-	position: relative;
+	position: absolute;
+	width: 200px;
 	font-family: Arial, Times, serif;
 	font-weight: bold;
 	color: white;
