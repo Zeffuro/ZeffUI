@@ -625,6 +625,8 @@ function loadSettings(){
 				$("#langSelect").val(settings.language);
 				
 				$("#debugEnabled").prop("checked", settings.debug.enabled);
+
+				$("#useWebTTS").prop("checked", settings.general.usewebtts);
 				
 				$("#includeAlliance").prop("checked", settings.includealliance);
 				setPartyOrder(settings.partyorder);

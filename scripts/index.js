@@ -53,7 +53,6 @@ async function startZeffUI(){
 	generateJobStacks();
 	toggleHideOutOfCombatElements();
 	console.log("ZeffUI fully loaded.");
-	callOverlayHandler({call: "cactbotSay", text: "Ready steady go!"});
 }
 
 // Settings
