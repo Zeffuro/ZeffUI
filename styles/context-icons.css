@@ -1,0 +1,24 @@
+.context-menu-icon { 
+    min-height: 18px;
+    background-repeat: no-repeat; 
+    background-position: 4px 2px; 
+    background-size: 25px auto;
+}
+.context-menu-icon-en {
+    background-image: url("../data/images/flags/gb.svg");
+}
+.context-menu-icon-de {
+    background-image: url("../data/images/flags/de.svg");
+}
+.context-menu-icon-fr {
+    background-image: url("../data/images/flags/fr.svg");
+}
+.context-menu-icon-jp {
+    background-image: url("../data/images/flags/jp.svg");
+}
+.context-menu-icon-kr {
+    background-image: url("../data/images/flags/kr.svg");
+}
+.context-menu-icon-cn {
+    background-image: url("../data/images/flags/cn.svg");
+}

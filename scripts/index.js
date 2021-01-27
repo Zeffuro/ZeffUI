@@ -494,12 +494,59 @@ function loadContextMenu(){
 				}, 1000);
 				break;
 			}
+			case "en":{
+				currentSettings.language = "en";
+				saveSettings();
+				location.reload();
+				break;
+			}
+			case "de":{
+				currentSettings.language = "de";
+				saveSettings();
+				location.reload();
+				break;
+			}
+			case "fr":{
+				currentSettings.language = "fr";
+				saveSettings();
+				location.reload();
+				break;
+			}
+			case "jp":{
+				currentSettings.language = "jp";
+				saveSettings();
+				location.reload();
+				break;
+			}
+			case "cn":{
+				currentSettings.language = "cn";
+				saveSettings();
+				location.reload();
+				break;
+			}
+			case "kr":{
+				currentSettings.language = "kr";
+				saveSettings();
+				location.reload();
+				break;
+			}
 			}
 		},
 		items: {
 			"lock": {name: language.find(x => x.id === "lock").string, icon: "fas fa-lock-open"},
 			"grid": {name: language.find(x => x.id === "grid").string, icon: "fas fa-border-all"},
 			"settings": {name: language.find(x => x.id === "settings").string, icon: "fas fa-cog"},
+			"fold1": {
+				name: language.find(x => x.id === "language").string, icon: "fas fa-globe-americas",
+				items: {
+					"en": {name: "English (default)", icon: "en"},
+					"de": {name: "Deutsch", icon: "de"},
+					"fr": {name: "Français", icon: "fr"},
+					"jp": {name: "日本語", icon: "jp"},
+					"cn": {name: "中文", icon: "cn"},
+					"kr": {name: "한국어", icon: "kr"}
+				}
+			},
 			"sep1": "---------",
 			"quit": {name: language.find(x => x.id === "close").string, icon: function(){ return "context-menu-icon context-menu-icon-quit"; }}
 		}
