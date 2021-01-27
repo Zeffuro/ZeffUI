@@ -801,6 +801,9 @@ function saveSettings(closeWindow = true){
 		debug: {
 			enabled: $("#debugEnabled").is(":checked")
 		},
+		general: {
+			usewebtts: $("#useWebTTS").is(":checked")
+		},
 		healthbar: {
 			enabled: $("#healthBarEnabled").is(":checked"),
 			hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),

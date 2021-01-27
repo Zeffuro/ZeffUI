@@ -74,6 +74,11 @@ async function loadSettings(){
 	checkAndInitializeSetting(settings.override, "enabled", false);
 	checkAndInitializeSetting(settings.override, "abilities", []);
 
+
+	// GENERAL SETTINGS
+	checkAndInitializeSetting(settings, "general", {});
+	checkAndInitializeSetting(settings.general, "usewebtts", false);
+
 	// SKIN SETTINGS
 	checkAndInitializeSetting(settings, "skin", "default");
 
@@ -1212,7 +1217,7 @@ function resetTimers(){
 function startTTSTimer(duration, selector, text, timeWhen = 2000){
 	toLog([`[StartTTSTimer] Duration: ${duration} Selector: ${selector} Text: ${text} TimeWhen: ${timeWhen}`]);
 	if(!ttsElements.has(selector)){
-		ttsElements[selector] = setGoogleTTS(text);
+		if(currentSettings.general.usewebtts) ttsElements[selector] = setGoogleTTS(text);
 	}
 
 	let timems = duration * 1000;
@@ -1220,7 +1225,7 @@ function startTTSTimer(duration, selector, text, timeWhen = 2000){
 	let ttsTimer = setInterval(function(){
 		timeLeft -= UPDATE_INTERVAL;
 		if(timeLeft <= timeWhen){
-			ttsElements[selector].play();
+			currentSettings.general.usewebtts ? ttsElements[selector].play() : callOverlayHandler({"call": "cactbotSay", "text": text});
 			clearInterval(ttsTimer);
 			setTimeout(function(){
 			}, UPDATE_INTERVAL);

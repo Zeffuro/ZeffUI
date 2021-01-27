@@ -100,6 +100,7 @@ var language = [
 	{ id: "id", string: "ID" },
 	{ id: "jobrole", string: "Job / Role" },
 	{ id: "pvp", string: "PvP" },
+	{ id: "usewebtts", string: "Use Google/Baidu TTS" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },

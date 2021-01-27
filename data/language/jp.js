@@ -100,6 +100,7 @@ var language = [
 	{ id: "id", string: "ID" },
 	{ id: "jobrole", string: "Job / Role" },
 	{ id: "pvp", string: "PvP" },
+	{ id: "usewebtts", string: "Use Google/Baidu TTS" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
