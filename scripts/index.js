@@ -2,7 +2,7 @@
 /* global abilityList, jobList, regexList, language */
 
 // External Globals
-/* global addOverlayListener, startOverlayEvents, interact */
+/* global addOverlayListener, startOverlayEvents, interact, callOverlayHandler */
 
 // UI related global variables
 var locked = true;
@@ -45,14 +45,15 @@ addOverlayListener("PartyChanged", (e) => onPartyChanged(e));
 
 $(function() {
 	startZeffUI();
-	toggleHideOutOfCombatElements();
 });
 
-function startZeffUI(){
-	loadSettings();
-	generateJobStacks();
+async function startZeffUI(){
 	startOverlayEvents();
+	await loadSettings();
+	generateJobStacks();
+	toggleHideOutOfCombatElements();
 	console.log("ZeffUI fully loaded.");
+	callOverlayHandler({call: "cactbotSay", text: "Ready steady go!"});
 }
 
 // Settings
@@ -61,7 +62,7 @@ function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
 	if(settingsObject[setting] === undefined) settingsObject[setting] = defaultValue;
 }
 
-function loadSettings(){
+async function loadSettings(){
 	let settings = {};
 
 	if(localStorage.getItem("settings") !== null){
@@ -106,7 +107,8 @@ function loadSettings(){
 	);
 
 	// LANGUAGE SETTINGS
-	checkAndInitializeSetting(settings, "language", "en");
+	let actLang = await getACTLocale();
+	checkAndInitializeSetting(settings, "language", actLang);
 
 	if($("#language").length == 0){
 		$.getScript(`data/language/${settings.language}.js`, function() {
@@ -483,13 +485,14 @@ function loadContextMenu(){
 				var settingsTimer = setInterval(function() {
 					if(openSettings.closed) {
 						clearInterval(settingsTimer);
-						loadSettings();						
-						if(currentPlayer === null) return;
-						location.reload();
-						generateRaidBuffs();
-						generateMitigation();
-						generateCustomCooldowns();
-						generatePartyCooldowns();
+						loadSettings().then(() => {
+							if(currentPlayer === null) return;
+							location.reload();
+							generateRaidBuffs();
+							generateMitigation();
+							generateCustomCooldowns();
+							generatePartyCooldowns();
+						});
 					}
 				}, 1000);
 				break;
@@ -690,6 +693,26 @@ function getSelectorProperties(selector){
 	}
 	}
 	return object;
+}
+
+async function getACTLocale(){
+	let lang = await callOverlayHandler({call: "getLanguage"});
+	switch(lang.language){
+	case "English":
+		return "en";
+	case "German":
+		return "de";
+	case "French":
+		return "fr";
+	case "Japanese":
+		return "jp";
+	case "Chinese":
+		return "cn";
+	case "Korean":
+		return "kr";
+	case "default":
+		return "en";
+	}
 }
 
 function toggleHideOutOfCombatElements(){
