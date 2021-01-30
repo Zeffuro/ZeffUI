@@ -485,20 +485,15 @@ function loadContextMenu(){
 				break;
 			}
 			case "settings":{
-				let openSettings = window.open("settings.html");
-				var settingsTimer = setInterval(function() {
-					if(openSettings.closed) {
-						clearInterval(settingsTimer);
+				let openSettings = window.open("settings.html", "settings");
+				openSettings.onload = function(){
+					this.onbeforeunload = function(){
 						loadSettings().then(() => {
 							if(currentPlayer === null) return;
 							location.reload();
-							generateRaidBuffs();
-							generateMitigation();
-							generateCustomCooldowns();
-							generatePartyCooldowns();
 						});
-					}
-				}, 1000);
+					};
+				};
 				break;
 			}
 			case "en":{
