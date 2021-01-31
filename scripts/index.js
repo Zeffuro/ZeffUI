@@ -623,7 +623,8 @@ function toggleLock(){
 		}else{
 			$("#party-bar>div:eq(0)").append(`<span id="party-anchor" class="anchor-text">${language.find(x => x.id === "party-anchor").string}</span>`);
 		}
-		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").show();
+		toggleHideWhenSoloCombatElements(true);
+
 		//$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
 		if(!inCombat){
@@ -639,8 +640,7 @@ function toggleLock(){
 		$("#mitigation-anchor").remove();
 		$("#customcd-anchor").remove();
 		$("#party-anchor").remove();
-		if(currentSettings.raidbuffs.hidewhensolo && currentPartyList.length == 1) $("#raid-buffs-bar").hide();
-		//$("[id$=bar]").draggable("disable");
+		toggleHideWhenSoloCombatElements();
 		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);
 		if(!inCombat){
 			toggleHideOutOfCombatElements();
@@ -726,6 +726,15 @@ function toggleHideOutOfCombatElements(){
 	currentSettings.mitigation.hideoutofcombat && !inCombat ? $("#mitigation-bar").addClass("hide-in-combat") : $("#mitigation-bar").removeClass("hide-in-combat");
 	currentSettings.customcd.hideoutofcombat && !inCombat ? $("#customcd-bar").addClass("hide-in-combat") : $("#customcd-bar").removeClass("hide-in-combat");
 	currentSettings.party.hideoutofcombat && !inCombat ? $("#party-bar").addClass("hide-in-combat") : $("#party-bar").removeClass("hide-in-combat");
+}
+
+function toggleHideWhenSoloCombatElements(toggleLock = false){
+	let show = currentPartyList.length !== 1;
+	if(toggleLock) show = true;
+	if(currentSettings.raidbuffs.hidewhensolo) show ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
+	if(currentSettings.mitigation.hidewhensolo) show ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
+	if(currentSettings.customcd.hidewhensolo) show ? $("#customcd-bar").show() : $("#customcd-bar").hide();
+	if(currentSettings.party.hidewhensolo) show ? $("#party-bar").show() : $("#party-bar").hide();
 }
 
 // UI Generation for Job Stacks
@@ -1401,6 +1410,7 @@ document.addEventListener("onOverlayStateUpdate", function(e) {
 function onPartyChanged(e){
 	if(currentPlayer === null) return;
 	generatePartyList(e.party);
+	toggleHideWhenSoloCombatElements();
 }
 
 function onPartyWipe(){
