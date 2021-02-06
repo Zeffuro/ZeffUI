@@ -64,13 +64,19 @@ function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
 async function loadSettings(){
 	let settings = {};
 	settings = await callOverlayHandler({ call: "loadData", key: "zeffUI" });
-	if (settings.data === undefined) {
+	if(settings === null){
 		// Check for localStorage settings
 		if(localStorage.getItem("settings") !== null){
 			settings = JSON.parse(localStorage.getItem("settings"));
 		}else{
 			settings = {};
-		}		
+		}
+	}else if (settings.data === undefined){
+		if(localStorage.getItem("settings") !== null){
+			settings = JSON.parse(localStorage.getItem("settings"));
+		}else{
+			settings = {};
+		}
 	}else{
 		settings = settings.data;
 	}
