@@ -63,9 +63,16 @@ function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
 
 async function loadSettings(){
 	let settings = {};
-
-	if(localStorage.getItem("settings") !== null){
-		settings = JSON.parse(localStorage.getItem("settings"));
+	settings = await callOverlayHandler({ call: "loadData", key: "zeffUI" });
+	if (settings.data === undefined) {
+		// Check for localStorage settings
+		if(localStorage.getItem("settings") !== null){
+			settings = JSON.parse(localStorage.getItem("settings"));
+		}else{
+			settings = {};
+		}		
+	}else{
+		settings = settings.data;
 	}
 
 	// OVERRIDE SETTINGS
@@ -421,7 +428,7 @@ async function loadSettings(){
 	saveSettings();
 }
 
-function saveSettings(){
+async function saveSettings(){
 	currentSettings.healthbar.x = parseInt(dragPosition["health-bar"].x);
 	currentSettings.healthbar.y = parseInt(dragPosition["health-bar"].y);
 	$("#health-bar").css("--healthFontSize", currentSettings.healthbar.scale * 10);
@@ -467,6 +474,7 @@ function saveSettings(){
 	currentSettings.party.x = parseInt(dragPosition["party-bar"].x);
 	currentSettings.party.y = parseInt(dragPosition["party-bar"].y);
 
+	await callOverlayHandler({ call: "saveData", key: "zeffUI", data: currentSettings });
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
 
@@ -485,7 +493,9 @@ function loadContextMenu(){
 				break;
 			}
 			case "settings":{
-				let openSettings = window.open("settings.html", "settings");
+				let parameters = new URLSearchParams(window.location.search);
+				let settingsUrl = parameters.has("OVERLAY_WS") ? `settings.html?OVERLAY_WS=${parameters.get("OVERLAY_WS")}` : "settings.html";
+				let openSettings = window.open(settingsUrl, "settings");
 				openSettings.onload = function(){
 					this.onbeforeunload = function(){
 						loadSettings().then(() => {

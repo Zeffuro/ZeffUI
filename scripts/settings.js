@@ -1,12 +1,33 @@
 // ZeffUI globals
 /* global abilityList, language, Base64 */
 
+// External Globals
+/* global startOverlayEvents, callOverlayHandler */
+
 var currentSettings = null;
 var currentFont = {};
 var foundAbilities = [];
 var removedAbility = {};
+var callCurrentOverlayHandler = null;
 
 $(function() {
+	loadZeffUISettings();
+});
+
+function initializeOverlayPluginHandlers(){
+	if(window.opener){
+		if(window.opener.callOverlayHandler){
+			callCurrentOverlayHandler = window.opener.callOverlayHandler;
+			return;
+		}
+	}
+	startOverlayEvents();
+	callCurrentOverlayHandler = callOverlayHandler;
+}
+
+async function loadZeffUISettings(){
+	initializeOverlayPluginHandlers();
+
 	$("[id$=Color]").each(function () {
 		setExampleColor(this);
 	});
@@ -33,10 +54,8 @@ $(function() {
 		}
 	});
 
-	loadSettings();
-});
-
-
+	await loadSettings();
+}
 
 function setPadding(element){
 	let selector = $(element).attr("id").replace("GrowDirection", "");
@@ -533,9 +552,9 @@ function loadFont(type){
 }
 
 /* exported loadLanguage */
-function loadLanguage(){
+async function loadLanguage(){
 	$("#language").attr("src", `data/language/${$("#langSelect").val()}.js`);
-	saveSettings(false);
+	await saveSettings(false);
 }
 
 function getBarColors(){
@@ -555,26 +574,25 @@ function applyDefaultFont(){
 }
 
 /* exported exportSettings */
-function exportSettings(){
-	if(localStorage.getItem("settings") == null){
-		saveSettings();
+async function exportSettings(){
+	if(currentSettings == null){
+		await saveSettings();
 	}
-	$("#settingsText").val(Base64.encodeURI(localStorage.getItem("settings")));
+	$("#settingsText").val(Base64.encodeURI(JSON.stringify(currentSettings)));
 	$("#settingsText").select();
 	document.execCommand("copy");
 	alert("Your current settings have been copied to your clipboard.");
 }
 
 /* exported importSettings */
-function importSettings(){
+async function importSettings(){
 	try{
 		let decoded = Base64.decode($("#settingsText").val());
-		console.log(decoded);
 		let settings = JSON.parse(decoded);
-		console.log(settings.hasOwnProperty("healthbar"));
 		if(settings.hasOwnProperty("healthbar")){
 			if(confirm("Are you sure you want to import these settings? This will completely overwrite your previous settings!")){
 				let saveSettings = {...currentSettings, ...settings};
+				await callCurrentOverlayHandler({ call: "saveData", key: "zeffUI", data: saveSettings }); 
 				localStorage.setItem("settings", JSON.stringify(saveSettings));
 				loadSettings();
 				location.reload();
@@ -588,9 +606,10 @@ function importSettings(){
 	}            	    			
 }
 
-function loadSettings(){
-	if(localStorage.getItem("settings") !== null){
-		let settings = JSON.parse(localStorage.getItem("settings"));
+async function loadSettings(){
+	let settings = await callCurrentOverlayHandler({ call: "loadData", key: "zeffUI" });
+	if(settings.data !== undefined){
+		settings = settings.data;
 		currentSettings = settings;
 		
 		currentFont.default = settings.font;
@@ -792,7 +811,7 @@ function loadSettings(){
 	}
 }
 
-function saveSettings(closeWindow = true){
+async function saveSettings(closeWindow = true){
 	let settings = {
 		skin: $("#skinSelect").val(),
 		language: $("#langSelect").val(),
@@ -967,6 +986,8 @@ function saveSettings(closeWindow = true){
 			cooldownoutlinecolor: $("#customcdCooldownOutlineColorPicker").val() 
 		},
 	};
+	
+	await callCurrentOverlayHandler({ call: "saveData", key: "zeffUI", data: {} });
 	localStorage.setItem("settings", JSON.stringify(settings));
 	if(closeWindow)	
 		window.close();
