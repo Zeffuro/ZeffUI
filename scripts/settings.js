@@ -987,7 +987,7 @@ async function saveSettings(closeWindow = true){
 		},
 	};
 	
-	await callCurrentOverlayHandler({ call: "saveData", key: "zeffUI", data: {} });
+	await callCurrentOverlayHandler({ call: "saveData", key: "zeffUI", settings });
 	localStorage.setItem("settings", JSON.stringify(settings));
 	if(closeWindow)	
 		window.close();
@@ -996,9 +996,10 @@ async function saveSettings(closeWindow = true){
 }
 
 /* exported deleteSettings */
-function deleteSettings(){
+async function deleteSettings(){
 	if(confirm("Are you sure you want to delete all settings?")){
 		localStorage.clear();
+		await callCurrentOverlayHandler({ call: "saveData", key: "zeffUI", data: {} });
 		alert("Please reload overlay to finish clearing the settings and to receive the default settings.");
 		window.close();
 	}

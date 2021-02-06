@@ -61,22 +61,23 @@ function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
 	if(settingsObject[setting] === undefined) settingsObject[setting] = defaultValue;
 }
 
+function initializeSettings(){
+	if(localStorage.getItem("settings") !== null){
+		return JSON.parse(localStorage.getItem("settings"));
+	}else{
+		return {};
+	}
+}
+
 async function loadSettings(){
 	let settings = {};
 	settings = await callOverlayHandler({ call: "loadData", key: "zeffUI" });
-	if(settings === null){
-		// Check for localStorage settings
-		if(localStorage.getItem("settings") !== null){
-			settings = JSON.parse(localStorage.getItem("settings"));
-		}else{
-			settings = {};
-		}
+	if(settings == null){
+		settings = initializeSettings();
 	}else if (settings.data === undefined){
-		if(localStorage.getItem("settings") !== null){
-			settings = JSON.parse(localStorage.getItem("settings"));
-		}else{
-			settings = {};
-		}
+		settings = initializeSettings();
+	}else if (settings.data === null){
+		settings = initializeSettings();
 	}else{
 		settings = settings.data;
 	}
@@ -1017,7 +1018,7 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 	selectedActive.set(`${playerIndex}-${ability.id}`, selector);
 }
 
-function startAbilityBarTimer(ability, duration, onYou){
+function startAbilityBarTimer(ability, duration, onYou, extends_duration = false, max_duration = 0){
 	if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 	let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 	let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
@@ -1110,6 +1111,11 @@ function startAbilityBarTimer(ability, duration, onYou){
 			$(selectorImage).css("transform", `translate(${left}px, ${top}px)`);
 		}
 	}
+	if(activeCountdowns.has(selectorBar) && extends_duration){
+		
+		duration = (parseInt($(selectorBar).val()) / 1000) + parseInt(duration);
+		if(duration > max_duration) duration = max_duration;
+	}
 	if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar));
 	handleAbilityTTS(ability, selectorBar, onYou);
 	startBarTimer(duration, selectorBar, currentSettings[`${ability.type.toLowerCase()}timerbar`].hidewhendroppedoff);
@@ -1201,9 +1207,7 @@ function stopPlayerDurationTimers(playerindex){
 		activeCountdowns.forEach((value, key) =>{
 			let split = key.split("-");
 			let last = split[split.length - 1];
-			console.log(last);
 			if(last == "duration"){
-				console.log(value);
 				clearInterval(activeCountdowns.get(key));
 				stopAbilityTimer(key, null);
 			}
@@ -1599,7 +1603,7 @@ function handleGainEffect(parameters){
 		if(!ability.enabled) return;
 		if(ability.type === "RaidBuff"){
 			if(ability.name === "Standard Step" || ability.name === "Technical Step" || ability.name === "Embolden") return;
-			if(ability.hasOwnProperty("extra")){
+			if(ability.hasOwnProperty("extra")){				
 				if(ability.extra.is_song){
 					let abilityHolder = abilityList.find(x => x.name === "Song");
 					if(byYou){
@@ -1616,7 +1620,7 @@ function handleGainEffect(parameters){
 		if(ability.type === "Mitigation"){
 			if(onYou || byYou) {
 				if(ability.hasOwnProperty("extra")){
-					if(ability.hasOwnProperty("shares_cooldown")){
+					if(ability.extra.shares_cooldown){
 						startAbilityIconTimers(playerIndex, ability, true);
 						startAbilityIconTimers(playerIndex, abilityList.find(x => x.id === ability.extra.shares_cooldown), false);
 					}
@@ -1630,6 +1634,12 @@ function handleGainEffect(parameters){
 			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
 		}
 		if((ability.type === "DoT"  && byYou) || (ability.type === "Buff" && byYou)){
+			if(ability.hasOwnProperty("extra")){
+				if(ability.extra.extends_duration){
+					startAbilityBarTimer(ability, parameters.duration, onYou, true, ability.extra.max_duration);
+					return;
+				}
+			}
 			startAbilityBarTimer(ability, parameters.duration, onYou);
 		}
 	}
