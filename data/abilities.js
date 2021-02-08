@@ -2632,11 +2632,7 @@ var abilityList = [
 		type: "Buff",
 		icon: "https://xivapi.com/i/010000/010263.png",
 		color: "--filter-light-purple",
-		order: 2,
-		extra: {
-			extends_duration: true,
-			max_duration: 60
-		}
+		order: 2
 	},
 	// Mitigation
 	{
