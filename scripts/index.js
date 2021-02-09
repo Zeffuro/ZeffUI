@@ -35,6 +35,19 @@ var ttsElements = new Map();
 
 const UPDATE_INTERVAL = 10;
 
+const SPEED_LOOKUP = new Map(
+	[
+		[1, 56], [2, 57],  [3, 60], [4, 62], [5, 65], [6, 68], [7, 70], [8, 73], [9, 76], [10, 78], 
+		[11, 82], [12, 85], [13, 89], [14, 93], [15, 96], [16, 100], [17, 104], [18, 109], [19, 113], [20, 116], 
+		[21, 122], [22, 127], [23, 133], [24, 138], [25, 144], [26, 150], [27, 155], [28, 162], [29, 168], [30, 173], 
+		[31, 181], [32, 188], [33, 194], [34, 202], [35, 209], [36, 215], [37, 223], [38, 229], [39, 236], [40, 244], 
+		[41, 253], [42, 263], [43, 272], [44, 283], [45, 292], [46, 302], [47, 311], [48, 322], [49, 331], [50, 341], 
+		[51, 342], [52, 344], [53, 345], [54, 346], [55, 347], [56, 349], [57, 350], [58, 351], [59, 352], [60, 354], 
+		[61, 355], [62, 356], [63, 357], [64, 358], [65, 359], [66, 360], [67, 361], [68, 362], [69, 363], [70, 364], 
+		[71, 365], [72, 366], [73, 367], [74, 368], [75, 370], [76, 372], [77, 374], [78, 376], [79, 378], [80, 380]
+	]
+);
+
 // Add OverlayListeners
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
@@ -1680,8 +1693,8 @@ function handleDeath(parameters){
 
 /* exported handlePlayerStats */
 function handlePlayerStats(parameters){
-	currentStats.skillSpeed = (1000 + Math.floor(130 * (parameters.sks - 380) / 3300)) / 1000;
-	currentStats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - 380) / 3300)) / 1000;
+	currentStats.skillSpeed = (1000 + Math.floor(130 * (parameters.sks - SPEED_LOOKUP.get(currentPlayer.level)) / 3300)) / 1000;
+	currentStats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - SPEED_LOOKUP.get(currentPlayer.level)) / 3300)) / 1000;
 }
 
 // Functions for debugging
