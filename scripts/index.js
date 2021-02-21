@@ -967,6 +967,7 @@ function generatePartyList(party){
 }
 
 function setupSoloParty(){
+	currentPartyList = [];
 	currentPartyList.push({
 		id: currentPlayer.id,
 		inParty: false,
