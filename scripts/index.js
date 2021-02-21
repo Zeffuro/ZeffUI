@@ -939,6 +939,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 
 // Handlers for creating/maintaining party list
 function generatePartyList(party){
+	toLog(["[GeneratePartyList]", party]);
 	currentPartyList = [];
 	for (let partyMember of party)
 	{
@@ -1441,8 +1442,13 @@ document.addEventListener("onOverlayStateUpdate", function(e) {
 });
 
 function onPartyChanged(e){
+	toLog(["[onPartyChanged]", e]);
 	if(currentPlayer === null) return;
-	generatePartyList(e.party);
+	if(e.party.length > 0){
+		generatePartyList(e.party);
+	}else{
+		setupSoloParty();
+	}	
 	toggleHideWhenSoloCombatElements();
 }
 
