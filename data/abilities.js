@@ -534,7 +534,10 @@ var abilityList = [
 		type: "DoT",
 		icon: "https://xivapi.com/i/010000/010457.png",
 		color: "--filter-light-blue",
-		order: 0
+		order: 0,
+		extra: {
+			shares_cooldown: 163
+		}
 	},
 	{
 		id: 162,
@@ -552,7 +555,10 @@ var abilityList = [
 		type: "DoT",
 		icon: "https://xivapi.com/i/010000/010458.png",
 		color: "--filter-light-blue",
-		order: 0
+		order: 0,
+		extra: {
+			shares_cooldown: 163
+		}
 	},
 	{
 		id: 163,
@@ -588,7 +594,10 @@ var abilityList = [
 		type: "DoT",
 		icon: "https://xivapi.com/i/012000/012657.png",
 		color: "--filter-light-blue",
-		order: 0
+		order: 0,
+		extra: {
+			shares_cooldown: 163
+		}
 	},
 	// BLU
 	// Dots
