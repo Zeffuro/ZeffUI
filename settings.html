@@ -1,9 +1,9 @@
 <!DOCTYPE html lang="en">
 <html>
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.0/jquery.contextMenu.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.10.0/html5sortable.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
 		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
@@ -16,7 +16,7 @@
 		<link href="styles/resources.css" rel="stylesheet" />
 		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" rel="stylesheet">
 		<title>ZeffUI Settings</title>
 	</head>
 	<body>
@@ -92,7 +92,7 @@
 							<div class="form-group">
 								<div class="custom-control custom-switch">
 									<label id="lang_partyorder" for="partyOrder">Party Order (drag and drop)</label>
-									<table class="table table-sm" style="width:100%">
+									<table id="partyOrderTable" class="table table-sm" style="width:100%">
 										<tbody id="partyOrder">
 										</tbody>                                        
 									</table>

@@ -2,7 +2,7 @@
 /* global abilityList, language, Base64 */
 
 // External Globals
-/* global startOverlayEvents, callOverlayHandler */
+/* global startOverlayEvents, callOverlayHandler, sortable */
 
 var currentSettings = null;
 var currentFont = {};
@@ -97,7 +97,11 @@ function setPartyOrder(partyOrder){
 		// Initially used the wrong job shorthand, need this to not break people's party orders.
 		if(job == "GLD") job = "GLA";
 		$("#partyOrder").append(`<tr data-job="${job}"><td style="width:5%"><img src="data/images/jobicons/${job}.png"></td><td style="width:95%">${language.find(x => x.id === job.toLowerCase()).string}</td></tr>`);
-		$("#partyOrder").sortable();
+		sortable("#partyOrder", {
+			itemSerializer: (item) => {
+				return $(item.html).data("job");
+			}
+		});
 	}
 }
 
@@ -870,7 +874,7 @@ async function saveSettings(closeWindow = true){
 		language: $("#langSelect").val(),
 		font: $("#defaultFont").val(),
 		includealliance: $("#includeAlliance").is(":checked"),
-		partyorder: $("#partyOrder").sortable("toArray", {attribute: "data-job"}),
+		partyorder: await sortable("#partyOrder", "serialize")[0].items,
 		override: currentSettings.override,
 		debug: {
 			enabled: $("#debugEnabled").is(":checked")
