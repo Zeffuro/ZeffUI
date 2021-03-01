@@ -1010,13 +1010,31 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 }
 
 // Handlers for creating/maintaining party list
+function generateRawPartyListFromCombatants(combatants){
+	let partyList = combatants.filter(x => x.PartyType !== 0);
+	let rawList = [];
+	for (let partyMember of partyList){
+		rawList.push(
+			{
+				id: parseInt(partyMember.ID).toString(16).toUpperCase(),
+				inParty: partyMember.PartyType === 1,
+				job: partyMember.Job,
+				level: partyMember.Level,
+				name: partyMember.Name,
+				worldId: partyMember.WorldID
+			}
+		);
+	}
+	return rawList;
+}
+
 function generatePartyList(party){
 	toLog(["[GeneratePartyList]", party]);
 	currentRawPartyList = party;
 	currentPartyList = [];
 	for (let partyMember of party)
 	{
-		if(!partyMember.inParty && !currentSettings.includealliance) return;
+		if(!partyMember.inParty && !currentSettings.includealliance) break;
 		currentPartyList.push({
 			id: partyMember.id,
 			inParty: partyMember.inParty,
@@ -1039,10 +1057,21 @@ function generatePartyList(party){
 	if(currentPartyList.length != 0) generateRaidBuffs(); generatePartyCooldowns();
 }
 
+function checkForParty(e){
+	let combatants = e.combatants;
+	let player = combatants.find(x => x.ID === currentPlayer.id);
+	if(player.PartyType === 0){
+		setupSoloParty();
+	}else{
+		let partyList = generateRawPartyListFromCombatants(combatants);
+		generatePartyList(partyList);
+	}
+}
+
 function setupSoloParty(){
 	currentPartyList = [];
 	currentPartyList.push({
-		id: currentPlayer.id,
+		id: currentPlayer.id.toString(16).toUpperCase(),
 		inParty: false,
 		job: jobList.find(x => x.name === currentPlayer.job),
 		name: currentPlayer.name,
@@ -1586,7 +1615,7 @@ function onPlayerChangedEvent(e){
 	}
 	currentPlayer = e.detail;
 	if(currentPartyList.length === 0){
-		setupSoloParty();
+		window.callOverlayHandler({call: "getCombatants", }).then((e) => checkForParty(e));
 	}
 
 	$("#health-bar").attr("max", currentPlayer.maxHP);
