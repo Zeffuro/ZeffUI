@@ -590,6 +590,66 @@ var abilityList = [
 		color: "--filter-light-blue",
 		order: 0
 	},
+	// BLU
+	// Dots
+	{
+		id: 1714,
+		name: "Bleeding", // Song of Torment & Nightbloom
+		name_cn: "出血",
+		name_de: "Blutung",
+		name_en: "Bleeding",
+		name_fr: "Saignement",
+		name_jp: "ペイン",
+		name_kr: "고통",
+		enabled: true,
+		tts: true,
+		ttstype: 1,
+		job: "BLU",
+		type: "DoT",
+		icon: "https://xivapi.com/i/013000/013501.png",
+		color: "--filter-dark-red",
+		order: 0
+	},
+	// Self-Buffs
+	{
+		id: 1718,
+		name: "Waxing Nocturne", // Moonflute Buff
+		name_cn: "狂战士化",
+		name_de: "Ekstatischer Kampf",
+		name_en: "Waxing Nocturne",
+		name_fr: "Forcené",
+		name_jp: "狂戦士化",
+		name_kr: "광전사화",
+		enabled: true,
+		tts: true,
+		ttstype: 1,
+		job: "BLU",
+		type: "Buff",
+		icon: "https://xivapi.com/i/013000/013505.png",
+		color: "--filter-light-gold",
+		order: 0
+	},
+	{
+		id: 1727,
+		name: "Waning Nocturne", // Moonflute Debuff
+		name_cn: "狂战士化的副作用",
+		name_de: "Ermüdung des ekstatischen Kampfes",
+		name_en: "Waning Nocturne",
+		name_fr: "Contrecoup du forcené",
+		name_jp: "狂戦士化の反動",
+		name_kr: "광전사화 반동",
+		enabled: true,
+		tts: true,
+		ttstype: 1,
+		job: "BLU",
+		type: "Buff",
+		icon: "https://xivapi.com/i/013000/013512.png",
+		color: "--filter-dark-blue",
+		order: 0,
+		extra: {
+			shares_cooldown: 1718
+		}
+	},
 	// BRD
 	// DoTs
 	{
@@ -676,7 +736,7 @@ var abilityList = [
 		name_kr: "용맹한 사격",
 		enabled: true,
 		tts: true,
-		ttstype: 1,
+		ttstype: 0,
 		job: "BRD",
 		type: "Buff",
 		icon: "https://xivapi.com/i/010000/010354.png",

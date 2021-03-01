@@ -10,6 +10,7 @@ var language = [
 	// COMPONENTS
 	{ id: "healthbar", string: "体力条" },
 	{ id: "manabar", string: "魔力条" },
+	{ id: "mpticker", string: "MP Ticker" },
 	{ id: "pulltimers", string: "战斗开始倒计时" },
 	{ id: "bufftimers", string: "Buff监控" },
 	{ id: "dottimers", string: "DoT监控" },
@@ -28,6 +29,7 @@ var language = [
 	{ id: "generaldescription", string: "在此处修改ZeffUI的通用设定。" },
 	{ id: "healthbardescription", string: "在此处修改体力条的设定。" },
 	{ id: "manabardescription", string: "在此处修改魔力条的设定。" },
+	{ id: "mptickerdescription", string: "Here you can set your options for your MP Ticker" },
 	{ id: "bufftimersdescription", string: "在此处修改你的个人Buff监控的设定。" },
 	{ id: "dottimersdescription", string: "在此处修改你的个人DoT监控的设定。" },
 	{ id: "pulltimersdescription", string: "在此处修改战斗开始倒计时的设定。" },
@@ -101,6 +103,11 @@ var language = [
 	{ id: "jobrole", string: "Job / Role" },
 	{ id: "pvp", string: "PvP" },
 	{ id: "usewebtts", string: "Use Google/Baidu TTS" },
+	{ id: "jobthresholds", string: "Job Thresholds" },
+	{ id: "lowcolor", string: "Low Color" },
+	{ id: "medcolor", string: "Medium Color" },
+	{ id: "specificjobsonly", string: "Specific Jobs Only" },
+	{ id: "ttsearly", string: "TTS Seconds Early" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },

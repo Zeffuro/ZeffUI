@@ -4,6 +4,12 @@
 #manaExample::-webkit-progress-value {
     filter: var(--manaColor);
 }
+#mptickerExample::-webkit-progress-value {
+    filter: var(--mptickerColor);
+}
 #pulltimerExample::-webkit-progress-value {
     filter: var(--pulltimerColor);
+}
+.job-disabled {
+    opacity: 0.3;
 }

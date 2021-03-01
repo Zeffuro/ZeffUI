@@ -21,6 +21,7 @@ var currentStats = {
 	stacks: 0,
 	maxStacks: 0
 };
+var previous_MP = 0;
 
 // Global variables for maintaining active timers and elements that get reused
 var activeDotBars = new Map();
@@ -47,6 +48,15 @@ const SPEED_LOOKUP = new Map(
 		[71, 365], [72, 366], [73, 367], [74, 368], [75, 370], [76, 372], [77, 374], [78, 376], [79, 378], [80, 380]
 	]
 );
+
+const MP_DATA = {
+	normal: 0.06,
+	combat: 0.02,
+	umbral_1: 0.30,
+	umbral_2: 0.45,
+	umbral_3: 0.60,
+	tick: 3.0
+};
 
 // Add OverlayListeners
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
@@ -104,6 +114,7 @@ async function loadSettings(){
 	// GENERAL SETTINGS
 	checkAndInitializeSetting(settings, "general", {});
 	checkAndInitializeSetting(settings.general, "usewebtts", false);
+	checkAndInitializeSetting(settings.general, "ttsearly", 5);
 
 	// SKIN SETTINGS
 	checkAndInitializeSetting(settings, "skin", "default");
@@ -188,6 +199,22 @@ async function loadSettings(){
 	checkAndInitializeSetting(settings.manabar, "y", 232);
 	checkAndInitializeSetting(settings.manabar, "font", "Arial");
 
+	checkAndInitializeSetting(settings.manabar, "jobthresholdsenabled", true);
+	checkAndInitializeSetting(settings.manabar, "lowcolor", "--filter-dark-red");
+	checkAndInitializeSetting(settings.manabar, "medcolor", "--filter-light-blue");
+
+	checkAndInitializeSetting(settings.manabar, "BLM", {});
+	checkAndInitializeSetting(settings.manabar.BLM, "low", 2399);
+	checkAndInitializeSetting(settings.manabar.BLM, "med", 3999);
+
+	checkAndInitializeSetting(settings.manabar, "PLD", {});
+	checkAndInitializeSetting(settings.manabar.PLD, "low", 3600);
+	checkAndInitializeSetting(settings.manabar.PLD, "med", 9400);
+
+	checkAndInitializeSetting(settings.manabar, "DRK", {});
+	checkAndInitializeSetting(settings.manabar.DRK, "low", 2999);
+	checkAndInitializeSetting(settings.manabar.DRK, "med", 5999);
+
 	settings.manabar.enabled ? $("#mana-bar").show() : $("#mana-bar").hide();
 
 	$("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
@@ -202,6 +229,32 @@ async function loadSettings(){
 	};
 	$("#mana-bar").addClass("ltr");
 	$("#mana-bar").css("transform", `translate(${settings.manabar.x}px, ${settings.manabar.y}px)`);
+
+	// MP TICKER SETTINGS
+	checkAndInitializeSetting(settings, "mpticker", {});
+	checkAndInitializeSetting(settings.mpticker, "enabled", false);
+	checkAndInitializeSetting(settings.mpticker, "hideoutofcombat", false);
+	checkAndInitializeSetting(settings.mpticker, "color", "--filter-grey");
+	checkAndInitializeSetting(settings.mpticker, "scale", 1);
+	checkAndInitializeSetting(settings.mpticker, "rotation", 0);
+	checkAndInitializeSetting(settings.mpticker, "x", 30);
+	checkAndInitializeSetting(settings.mpticker, "y", 248);
+	checkAndInitializeSetting(settings.mpticker, "specificjobsenabled", true);
+	checkAndInitializeSetting(settings.mpticker, "specificjobs", ["BLM"]);
+
+	settings.mpticker.enabled ? $("#mp-ticker-bar").show() : $("#mp-ticker-bar").hide();
+
+	$("#mp-ticker-bar").css("--mptickerColor", `var(${settings.mpticker.color})`);
+	$("#mp-ticker-bar").css("width", settings.mpticker.scale * 154);
+	$("#mp-ticker-bar").css("height", settings.mpticker.scale * 15);
+	$("#mp-ticker-bar").css("-webkit-transform", `rotate(${settings.mpticker.rotation}deg)`);
+	$("#mp-ticker-bar").css("transform-origin", "top left");
+	dragPosition["mp-ticker-bar"] = {
+		x: settings.mpticker.x,
+		y: settings.mpticker.y
+	};
+	$("#mp-ticker-bar").addClass("ltr");
+	$("#mp-ticker-bar").css("transform", `translate(${settings.mpticker.x}px, ${settings.mpticker.y}px)`);
 
 	// PULLTIMER SETTINGS
 	checkAndInitializeSetting(settings, "timerbar", {});
@@ -461,6 +514,9 @@ async function saveSettings(){
 	$("#mana-bar").css("--manaFontX", currentSettings.manabar.scale * 5);
 	$("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
 
+	currentSettings.mpticker.x = parseInt(dragPosition["mp-ticker-bar"].x);
+	currentSettings.mpticker.y = parseInt(dragPosition["mp-ticker-bar"].y);
+
 	currentSettings.timerbar.x = parseInt(dragPosition["timer-bar"].x);
 	currentSettings.timerbar.y = parseInt(dragPosition["timer-bar"].y);
 	$("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
@@ -639,6 +695,13 @@ function toggleLock(){
 		}
 	});
 	if(locked){
+		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").show();
+		if(currentSettings.mpticker.specificjobsenabled){
+			if(currentPlayer){
+				if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) $("#mp-ticker-bar").show();
+			}
+		}
+		$("#mp-ticker-bar").attr("data-label", language.find(x => x.id === "mpticker").string);
 		$("#timer-bar").show();
 		$("#timer-bar").prop("data-label", language.find(x => x.id === "pulltimer").string);
 		$("#dot-timer-bar").show();
@@ -662,7 +725,14 @@ function toggleLock(){
 		}
 		locked = false;
 		$("html").css("border", "solid");
-	}else{
+	}else{		
+		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").hide();
+		if(currentSettings.mpticker.specificjobsenabled){
+			if(currentPlayer){
+				if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) $("#mp-ticker-bar").hide();
+			}
+		}
+		$("#mp-ticker-bar").attr("data-label", "");
 		$("#timer-bar").hide();
 		$("#dot-timer-bar").hide();
 		$("#buff-timer-bar").hide();
@@ -747,6 +817,7 @@ async function getACTLocale(){
 function toggleHideOutOfCombatElements(){
 	currentSettings.healthbar.hideoutofcombat && !inCombat ? $("#health-bar").addClass("hide-in-combat") : $("#health-bar").removeClass("hide-in-combat");
 	currentSettings.manabar.hideoutofcombat && !inCombat  ? $("#mana-bar").addClass("hide-in-combat") : $("#mana-bar").removeClass("hide-in-combat");
+	currentSettings.mpticker.hideoutofcombat && !inCombat  ? $("#mp-ticker-bar").addClass("hide-in-combat") : $("#mp-ticker-bar").removeClass("hide-in-combat");
 	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-timer]").addClass("hide-in-combat") : $("[id$=dot-timer]").removeClass("hide-in-combat");
 	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-image]").addClass("hide-in-combat") : $("[id$=dot-image]").removeClass("hide-in-combat");
 	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-timer]").addClass("hide-in-combat") : $("[id$=buff-timer]").removeClass("hide-in-combat");
@@ -983,7 +1054,7 @@ function setupSoloParty(){
 
 // Timer and TTS handlers
 function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
-	toLog([`[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou} AbilityHolder: ${abilityHolder}`, ability]);
+	toLog([`[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou}`, ability, abilityHolder]);
 	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
 	let usingAbilityHolder = !(abilityHolder === null);
 
@@ -1033,22 +1104,26 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 	selectedActive.set(`${playerIndex}-${ability.id}`, selector);
 }
 
-function startAbilityBarTimer(ability, duration, onYou, extends_duration = false, max_duration = 0){
+function startAbilityBarTimer(ability, duration, onYou, extends_duration = false, max_duration = 0, abilityHolder = null){
+	toLog([`[StartAbilityBarTimer] Duration: ${duration} On You: ${onYou}`, ability, abilityHolder]);
+	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
+	let usingAbilityHolder = !(abilityHolder === null);
+
 	if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 	let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 	let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
 	let targetPosition = dragPosition[`${ability.type.toLowerCase()}-timer-bar`];
-	let selectorBar = `#${ability.id}-${ability.type.toLowerCase()}-timer`;
-	let selectorImage = `#${ability.id}-${ability.type.toLowerCase()}-image`;
+	let selectorBar = `#${abilityUsed.id}-${ability.type.toLowerCase()}-timer`;
+	let selectorImage = `#${abilityUsed.id}-${ability.type.toLowerCase()}-image`;
 	ability.duration = parseInt(duration);
-	if(!activeDotBars.has(ability.id) && !activeBuffBars.has(ability.id)){
-		switch(ability.type){
+	if(!activeDotBars.has(abilityUsed.id) && !activeBuffBars.has(abilityUsed.id)){
+		switch(abilityUsed.type){
 		case "DoT":{
-			activeDotBars.set(ability.id, selectorBar);
+			activeDotBars.set(abilityUsed.id, selectorBar);
 			break;
 		}
 		case "Buff":{
-			activeBuffBars.set(ability.id, selectorBar);
+			activeBuffBars.set(abilityUsed.id, selectorBar);
 			break;
 		}
 		}
@@ -1126,6 +1201,8 @@ function startAbilityBarTimer(ability, duration, onYou, extends_duration = false
 			$(selectorImage).css("transform", `translate(${left}px, ${top}px)`);
 		}
 	}
+	if(usingAbilityHolder && currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled) $(selectorImage).attr("src", `${ability.icon}`);
+	if(usingAbilityHolder) applyFilterColorToElement(`bar-${abilityUsed.id}`, ability.color);
 	if(activeCountdowns.has(selectorBar) && extends_duration){
 		
 		duration = (parseInt($(selectorBar).val()) / 1000) + parseInt(duration);
@@ -1156,20 +1233,28 @@ function startAbilityTimer(duration, selector, previousIcon = null){
 	activeCountdowns.set(selector, countdownTimer);
 }
 
-function startBarTimer(duration, selector, hideTimer = false){
-	toLog([`[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer}`]);
+function startBarTimer(duration, selector, hideTimer = false, reverseBar = false){
+	toLog([`[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer} Reverse: ${reverseBar}`]);
 	let timems = duration * 1000;
 	$(selector).attr("max", timems);
-	$(selector).attr("value", timems);
-	$(selector).attr("data-label", timems);
+	$(selector).attr("value", reverseBar ? 0 : timems);
+	if(selector != "#mp-ticker-bar") $(selector).attr("data-label", timems);
 
 	if(hideTimer) $(selector).show();
 
 	let timeLeft = timems;
+	let maxTime = timems;
 	let countdownTimer = setInterval(function(){
 		timeLeft -= UPDATE_INTERVAL;
-		$(selector).attr("value", timeLeft);
-		$(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
+		let visualTime = 0;
+		if(reverseBar){
+			visualTime = maxTime - timeLeft;
+		}else{
+			visualTime = timeLeft - UPDATE_INTERVAL;
+		}
+		
+		$(selector).attr("value", visualTime);
+		if(selector != "#mp-ticker-bar") $(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
 		if(timeLeft <= 0){
 			clearInterval(countdownTimer);
 			setTimeout(function(){
@@ -1252,7 +1337,7 @@ function resetTimers(){
 	activeCountdowns.clear();
 }
 
-function startTTSTimer(duration, selector, text, timeWhen = 2000){
+function startTTSTimer(duration, selector, text, timeWhen = currentSettings.general.ttsearly * 1000){
 	toLog([`[StartTTSTimer] Duration: ${duration} Selector: ${selector} Text: ${text} TimeWhen: ${timeWhen}`]);
 	if(!ttsElements.has(selector)){
 		if(currentSettings.general.usewebtts) ttsElements[selector] = setGoogleTTS(text);
@@ -1442,6 +1527,33 @@ document.addEventListener("onOverlayStateUpdate", function(e) {
 	}
 });
 
+function onJobChange(job){
+	if(currentSettings.mpticker.enabled){
+		if(currentSettings.mpticker.specificjobsenabled){
+			if(currentSettings.mpticker.specificjobs.includes(job)){
+				$("#mp-ticker-bar").show();
+			}else{
+				$("#mp-ticker-bar").hide();
+			}
+		}else{
+			$("#mp-ticker-bar").hide();
+		}		
+	}else{
+		$("#mp-ticker-bar").hide();
+	}
+	if(job === "SMN") {
+		initializeSmn();
+		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		$("#stacks-bar").show();
+	}else{
+		$("#stacks-bar").hide();
+	}
+	resetTimers();
+	if(currentPartyList.length === 1){
+		currentPartyList = [];
+	}
+}
+
 function onPartyChanged(e){
 	toLog(["[onPartyChanged]", e]);
 	if(currentPlayer === null) return;
@@ -1468,17 +1580,7 @@ function onPartyWipe(){
 
 function onPlayerChangedEvent(e){
 	if(currentPlayer !== null && currentPlayer.job !== e.detail.job){
-		if(e.detail.job === "SMN") {
-			initializeSmn();
-			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
-			$("#stacks-bar").show();
-		}else{
-			$("#stacks-bar").hide();
-		}
-		resetTimers();
-		if(currentPartyList.length === 1){
-			currentPartyList = [];
-		}
+		onJobChange(e.detail.job);
 	}
 	currentPlayer = e.detail;
 	if(currentPartyList.length === 0){
@@ -1489,9 +1591,7 @@ function onPlayerChangedEvent(e){
 	$("#health-bar").attr("value", currentPlayer.currentHP);
 	$("#health-bar").attr("data-label", currentSettings.healthbar.textenabled ? `${currentPlayer.currentHP} / ${currentPlayer.maxHP}` : "");
 
-	$("#mana-bar").attr("max", currentPlayer.maxMP);
-	$("#mana-bar").attr("value", currentPlayer.currentMP);
-	$("#mana-bar").attr("data-label", currentSettings.manabar.textenabled ? `${currentPlayer.currentMP} / ${currentPlayer.maxMP}` : "");
+	handleManaUpdate(currentPlayer.currentMP, currentPlayer.maxMP);
 }
 
 // Regex Event Handlers from ../data/regex.js
@@ -1516,6 +1616,62 @@ function onInstanceEnd(){
 function handleCountdownTimer(parameters){
 	if(!currentSettings.timerbar.enabled) return;
 	startBarTimer(parameters.seconds, "#timer-bar", true);
+}
+
+function handleManaTick(current, max){
+	if(!currentSettings.mpticker.enabled) return;
+	if(currentSettings.mpticker.specificjobsenabled){
+		if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) return;
+	}
+	let delta = current - previous_MP;
+	previous_MP = current;
+
+	let tick = inCombat ? MP_DATA.combat : MP_DATA.normal;
+
+	let umbralTick = 0;
+	if(currentPlayer.job === "BLM"){
+		switch(currentPlayer.jobDetail.umbralStacks){
+		case -1: {
+			umbralTick = MP_DATA.umbral_1;
+			break;
+		}
+		case -2: {
+			umbralTick = MP_DATA.umbral_2;
+			break;
+		}
+		case -3: {
+			umbralTick = MP_DATA.umbral_3;
+			break;
+		}
+		}
+	}
+
+	let manaTick = Math.floor(max * tick) +  Math.floor(max * umbralTick);
+	let duration = 0;
+
+	if (delta === manaTick){
+		duration = MP_DATA.tick;
+		if(currentPlayer.job === "BLM" && currentPlayer.jobDetail.umbralStacks > 0) duration = 0;
+	}
+	if (duration > 0) startBarTimer(duration, "#mp-ticker-bar", false, true);
+}
+
+function handleManaUpdate(current, max){
+	handleManaTick(current, max);
+	$("#mana-bar").attr("max", max);
+	$("#mana-bar").attr("value", current);
+	$("#mana-bar").attr("data-label", currentSettings.manabar.textenabled ? `${current} / ${max}` : "");
+
+	if(!currentSettings.manabar.jobthresholdsenabled) return;
+	if(currentPlayer.job === "BLM" || currentPlayer.job === "DRK" || currentPlayer.job === "PLD") {
+		if(current <= currentSettings.manabar[currentPlayer.job].low){
+			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.lowcolor})`);
+		} else if(current <= currentSettings.manabar[currentPlayer.job].med){
+			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.medcolor})`);
+		} else{
+			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.color})`);
+		}
+	}
 }
 
 /* exported handleSkill */
@@ -1655,6 +1811,10 @@ function handleGainEffect(parameters){
 		}
 		if((ability.type === "DoT"  && byYou) || (ability.type === "Buff" && byYou)){
 			if(ability.hasOwnProperty("extra")){
+				if(ability.extra.shares_cooldown){
+					startAbilityBarTimer(ability, parameters.duration, onYou, false, 0, abilityList.find(x => x.id === ability.extra.shares_cooldown));
+					return;
+				}
 				if(ability.extra.extends_duration){
 					startAbilityBarTimer(ability, parameters.duration, onYou, true, ability.extra.max_duration);
 					return;
@@ -1706,9 +1866,11 @@ function handlePlayerStats(parameters){
 
 // Functions for debugging
 function toLog(parameters){
-	if(!currentSettings.debug.enabled) return;
-	for(let parameter of parameters){
-		console.log(parameter);
+	if(currentSettings){
+		if(!currentSettings.debug.enabled) return;
+		for(let parameter of parameters){
+			console.log(parameter);
+		}
 	}
 }
 

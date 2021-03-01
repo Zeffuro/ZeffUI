@@ -10,6 +10,7 @@ var language = [
 	// COMPONENTS
 	{ id: "healthbar", string: "HP 바" },
 	{ id: "manabar", string: "MP 바" },
+	{ id: "mpticker", string: "MP Ticker" },
 	{ id: "pulltimers", string: "초읽기 타이머" },
 	{ id: "bufftimers", string: "버프 타이머" },
 	{ id: "dottimers", string: "도트 타이머" },
@@ -28,6 +29,7 @@ var language = [
 	{ id: "generaldescription", string: "ZeffUI의 기본설정을 바꿀 수 있습니다." },
 	{ id: "healthbardescription", string: "HP 바에 대한 설정을 바꿀 수 있습니다.." },
 	{ id: "manabardescription", string: "MP 바에 대한 설정을 바꿀 수 있습니다." },
+	{ id: "mptickerdescription", string: "Here you can set your options for your MP Ticker" },
 	{ id: "bufftimersdescription", string: "버프 타이머에 대한 설정을 바꿀 수 있습니다." },
 	{ id: "dottimersdescription", string: "도트 타이머에 대한 설정을 바꿀 수 있습니다." },
 	{ id: "pulltimersdescription", string: "초읽기 타이머에 대한 설정을 바꿀 수 있습니다." },
@@ -101,6 +103,11 @@ var language = [
 	{ id: "jobrole", string: "Job / Role" },
 	{ id: "pvp", string: "PvP" },
 	{ id: "usewebtts", string: "Use Google/Baidu TTS" },
+	{ id: "jobthresholds", string: "Job Thresholds" },
+	{ id: "lowcolor", string: "Low Color" },
+	{ id: "medcolor", string: "Medium Color" },
+	{ id: "specificjobsonly", string: "Specific Jobs Only" },
+	{ id: "ttsearly", string: "TTS Seconds Early" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

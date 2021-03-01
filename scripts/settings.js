@@ -10,6 +10,19 @@ var foundAbilities = [];
 var removedAbility = {};
 var callCurrentOverlayHandler = null;
 
+var defaultJobOrder = [
+	// Tanks
+	"PLD", "GLA", "WAR", "MRD", "DRK", "GNB",
+	// Healers
+	"WHM", "CNJ", "SCH", "AST",
+	// Melee DPS
+	"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM",
+	// Physical Ranged DPS
+	"BRD", "ARC", "MCH", "DNC",
+	// Caster DPS
+	"BLM", "THM", "SMN", "ACN", "RDM", "BLU"
+];
+
 $(function() {
 	loadZeffUISettings();
 });
@@ -70,6 +83,7 @@ function setExampleColor(element){
 	let selector = $(element).attr("id").replace("Color", "");
 	if(!selector.startsWith("stacks")){
 		$(`#${selector}Example`).css(`--${selector}Color`, `var(${$(element).val()})`);
+		$(`#${selector}Example`).css("width", "154px");
 	}else{
 		$(`#${selector}-1`).css(`--${selector}Color`, `var(${$(element).val()})`);
 		$(`#${selector}-2`).css(`--${selector}Color`, `var(${$(element).val()})`);
@@ -154,6 +168,13 @@ function createFontSelects(){
 	})();
 }
 
+function createSpecificJobs(selector, enabledJobs){
+	for (let job of defaultJobOrder){
+		let enabled = enabledJobs.includes(job);
+		$(selector).append(`<a data-job="${job}" href="#" onclick="toggleJob(this);return false;"><img src="data/images/jobicons/${job}.png" class="${enabled ? "" : "job-disabled"}" width="29" height="29"></a>`);
+	}
+}
+
 function createOverrideSelects(){
 	for (let ability of abilityList){
 		let override = currentSettings.override.abilities.find(x => x.id == ability.id);
@@ -175,6 +196,22 @@ function processLanguage(){
 			console.log(`Missing translation for ${id}`);
 		}
 	});
+}
+
+/* exported toggleJob */
+function toggleJob(element){
+	let job = $(element).data("job");
+	let type = $(element).parent()[0].id.replace("SpecificJobs", "");
+
+	let enabled = !$(element).find("img").hasClass("job-disabled");
+
+	if(enabled) {
+		$(element).find("img").addClass("job-disabled");
+		currentSettings[type].specificjobs.splice(currentSettings[type].specificjobs.indexOf(job), 1);
+	}else{
+		$(element).find("img").removeClass("job-disabled");
+		currentSettings[type].specificjobs.push(job);
+	}
 }
 
 function toggleOverride(){
@@ -646,6 +683,7 @@ async function loadSettings(){
 				$("#debugEnabled").prop("checked", settings.debug.enabled);
 
 				$("#useWebTTS").prop("checked", settings.general.usewebtts);
+				$("#ttsEarly").val(settings.general.ttsearly);
 				
 				$("#includeAlliance").prop("checked", settings.includealliance);
 				setPartyOrder(settings.partyorder);
@@ -664,13 +702,28 @@ async function loadSettings(){
 				$("#manaBarEnabled").prop("checked", settings.manabar.enabled);
 				$("#manaHideOutOfCombat").prop("checked", settings.manabar.hideoutofcombat);
 				$("#manaTextEnabled").prop("checked", settings.manabar.textenabled);
+				$("#manaJobThresholdsEnabled").prop("checked", settings.manabar.jobthresholdsenabled);
 				$("#manaColor").val(settings.manabar.color);
+				$("#manaLowColor").val(settings.manabar.lowcolor);
+				$("#manaMedColor").val(settings.manabar.medcolor);
 				setExampleColor($("#manaColor"));
 				$("#manaScale").attr("value", settings.manabar.scale);
 				$("#manaRotationRange").val(settings.manabar.rotation);
 				$("#manaRotation").val(settings.manabar.rotation);
 				$("#manaX").attr("value", settings.manabar.x);
 				$("#manaY").attr("value", settings.manabar.y);
+
+				$("#mptickerEnabled").prop("checked", settings.mpticker.enabled);
+				$("#mptickerHideOutOfCombat").prop("checked", settings.mpticker.hideoutofcombat);
+				$("#mptickerColor").val(settings.mpticker.color);
+				setExampleColor($("#mptickerColor"));
+				$("#mptickerScale").attr("value", settings.mpticker.scale);
+				$("#mptickerRotationRange").val(settings.mpticker.rotation);
+				$("#mptickerRotation").val(settings.mpticker.rotation);
+				$("#mptickerX").attr("value", settings.mpticker.x);
+				$("#mptickerY").attr("value", settings.mpticker.y);				
+				$("#mptickerSpecificJobsEnabled").prop("checked", settings.mpticker.specificjobsenabled);
+				createSpecificJobs("#mptickerSpecificJobs", settings.mpticker.specificjobs);
 
 				$("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
 				$("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
@@ -823,7 +876,8 @@ async function saveSettings(closeWindow = true){
 			enabled: $("#debugEnabled").is(":checked")
 		},
 		general: {
-			usewebtts: $("#useWebTTS").is(":checked")
+			usewebtts: $("#useWebTTS").is(":checked"),
+			ttsearly: $("#ttsEarly").val()
 		},
 		healthbar: {
 			enabled: $("#healthBarEnabled").is(":checked"),
@@ -840,12 +894,26 @@ async function saveSettings(closeWindow = true){
 			enabled: $("#manaBarEnabled").is(":checked"),
 			hideoutofcombat: $("#manaHideOutOfCombat").is(":checked"),
 			textenabled: $("#manaTextEnabled").is(":checked"),
+			jobthresholdsenabled: $("#manaJobThresholdsEnabled").is(":checked"),
 			color: $("#manaColor").val(),
+			lowcolor: $("#manaLowColor").val(),
+			medcolor: $("#manaMedColor").val(),
 			scale: $("#manaScale").val(),
 			rotation: $("#manaRotation").val(),
 			x: $("#manaX").val(),
 			y: $("#manaY").val(),
 			font: $("#manaFont").val()
+		},
+		mpticker: {
+			enabled: $("#mptickerEnabled").is(":checked"),
+			hideoutofcombat: $("#mptickerHideOutOfCombat").is(":checked"),
+			color: $("#mptickerColor").val(),
+			scale: $("#mptickerScale").val(),
+			rotation: $("#mptickerRotation").val(),
+			x: $("#mptickerX").val(),
+			y: $("#mptickerY").val(),
+			specificjobsenabled: $("#mptickerSpecificJobsEnabled").is(":checked"),
+			specificjobs: currentSettings.mpticker.specificjobs
 		},
 		timerbar: {
 			enabled: $("#pulltimerBarEnabled").is(":checked"),

@@ -10,6 +10,7 @@ var language = [
 	// COMPONENTS
 	{ id: "healthbar", string: "Healthbar" },
 	{ id: "manabar", string: "Manabar" },
+	{ id: "mpticker", string: "MP Ticker" },
 	{ id: "pulltimers", string: "Pulltimers" },
 	{ id: "bufftimers", string: "Buff Timers" },
 	{ id: "dottimers", string: "DoT Timers" },
@@ -28,6 +29,7 @@ var language = [
 	{ id: "generaldescription", string: "Here you can find general options for ZeffUI." },
 	{ id: "healthbardescription", string: "Here you can set your options for your healthbar." },
 	{ id: "manabardescription", string: "Here you can set your options for your manabar." },
+	{ id: "mptickerdescription", string: "Here you can set your options for your MP Ticker" },
 	{ id: "bufftimersdescription", string: "Here you can set your options for your personal buffs." },
 	{ id: "dottimersdescription", string: "Here you can set your options for your personal debuffs." },
 	{ id: "pulltimersdescription", string: "Here you can set your options for the pulltimer." },
@@ -101,6 +103,11 @@ var language = [
 	{ id: "jobrole", string: "Job / Role" },
 	{ id: "pvp", string: "PvP" },
 	{ id: "usewebtts", string: "Use Google/Baidu TTS" },
+	{ id: "jobthresholds", string: "Job Thresholds" },
+	{ id: "lowcolor", string: "Low Color" },
+	{ id: "medcolor", string: "Medium Color" },
+	{ id: "specificjobsonly", string: "Specific Jobs Only" },
+	{ id: "ttsearly", string: "TTS Seconds Early" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
