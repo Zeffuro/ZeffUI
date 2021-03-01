@@ -15,6 +15,7 @@ var blockRuinGained = false;
 var currentSettings = null;
 var currentPlayer = null;
 var currentPartyList = [];
+var currentRawPartyList = [];
 var currentStats = {
 	skillSpeed: 0,
 	spellSpeed: 0,
@@ -1011,6 +1012,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 // Handlers for creating/maintaining party list
 function generatePartyList(party){
 	toLog(["[GeneratePartyList]", party]);
+	currentRawPartyList = party;
 	currentPartyList = [];
 	for (let partyMember of party)
 	{
@@ -1597,6 +1599,7 @@ function onPlayerChangedEvent(e){
 // Regex Event Handlers from ../data/regex.js
 /* exported onInstanceStart */
 function onInstanceStart(){
+	generatePartyList(currentRawPartyList);
 	generateRaidBuffs();
 	generateMitigation();
 	generateCustomCooldowns();
