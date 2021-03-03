@@ -1619,6 +1619,7 @@ function onPartyChanged(e){
 		partyList = generateRawPartyList(false);
 	}	
 	generatePartyList(partyList);
+	reloadCooldownModules();
 	toggleHideWhenSoloCombatElements();
 }
 
