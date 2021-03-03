@@ -66,7 +66,7 @@ const MP_DATA = {
 // Add OverlayListeners
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
-addOverlayListener("onPartyWipe", (e) => onPartyWipe(e));
+addOverlayListener("onPartyWipe", () => onPartyWipe());
 addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
 addOverlayListener("ChangeZone", (e) => onChangeZone(e));
 addOverlayListener("PartyChanged", (e) => onPartyChanged(e));
@@ -1102,7 +1102,7 @@ function checkForParty(e){
 function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolder = null){
 	toLog([`[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou}`, ability, abilityHolder]);
 	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
-	let usingAbilityHolder = !(abilityHolder === null);
+	let usingAbilityHolder = abilityHolder !== null;
 
 	let selectorProperties = getSelectorProperties(ability.type);
 	let barSelector = selectorProperties.id;
@@ -1153,7 +1153,7 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 function startAbilityBarTimer(ability, duration, onYou, extends_duration = false, max_duration = 0, abilityHolder = null){
 	toLog([`[StartAbilityBarTimer] Duration: ${duration} On You: ${onYou}`, ability, abilityHolder]);
 	let abilityUsed = abilityHolder === null ? ability : abilityHolder;
-	let usingAbilityHolder = !(abilityHolder === null);
+	let usingAbilityHolder = abilityHolder !== null;
 
 	if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 	let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
@@ -1494,7 +1494,7 @@ function setGoogleTTS(text){
 function adjustJobStacks(value, max, noAdd = false){
 	if(!noAdd){
 		currentStats.stacks = value;
-		if(currentPlayer.job === "SMN" && currentStats.maxStacks === 0 && !noAdd){
+		if(currentPlayer.job === "SMN" && currentStats.maxStacks === 0){
 			initializeSmn(true);
 			max = 4;
 		}
@@ -1874,8 +1874,8 @@ function handleGainEffect(parameters){
 /* exported handleLoseEffect */
 function handleLoseEffect(parameters){
 	if(currentPlayer === null) return;
-	let byYou = (parameters.player === currentPlayer.name);
-	let onYou = (parameters.target === currentPlayer.name);
+	//let byYou = (parameters.player === currentPlayer.name);
+	//let onYou = (parameters.target === currentPlayer.name);
 	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
 	let mergedAbilityList = abilityList.concat(currentSettings.customcd.abilities);
