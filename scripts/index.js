@@ -14,6 +14,7 @@ var inCombat = false;
 var blockRuinGained = false;
 var currentSettings = null;
 var currentPlayer = null;
+var currentZone = {};
 var currentPartyList = [];
 var currentRawPartyList = [];
 var currentStats = {
@@ -34,6 +35,9 @@ var activeCustomCooldowns = new Map();
 var activeCountdowns = new Map();
 var activeTTS = new Map();
 var ttsElements = new Map();
+
+var zoneInfo = [];
+var contentType = [];
 
 const UPDATE_INTERVAL = 10;
 
@@ -64,7 +68,7 @@ addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
 addOverlayListener("onPartyWipe", (e) => onPartyWipe(e));
 addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
-addOverlayListener("onZoneChangedEvent", (e) => onChangeZone(e));
+addOverlayListener("ChangeZone", (e) => onChangeZone(e));
 addOverlayListener("PartyChanged", (e) => onPartyChanged(e));
 
 $(function() {
@@ -72,6 +76,8 @@ $(function() {
 });
 
 async function startZeffUI(){
+	import("https://quisquous.github.io/cactbot/resources/content_type.js").then((data) => { contentType = data.default; });
+	import("https://quisquous.github.io/cactbot/resources/zone_info.js").then((data) => { zoneInfo = data.default; });
 	startOverlayEvents();
 	await loadSettings();
 	generateJobStacks();
@@ -847,8 +853,22 @@ function generateJobStacks(){
 	}
 }
 
+function reloadCooldownModules(){
+	toLog(["[reloadCooldownModules] CurrentPartyList:", currentPartyList]);
+	if(currentPlayer.job === "SMN") {
+		initializeSmn();
+		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+	}
+	generateCustomCooldowns();
+	if(currentZone.type == "Pvp") return;
+	generateRaidBuffs();
+	generateMitigation();
+	generatePartyCooldowns();
+}
+
 // UI Generation / Handling for all modules that use normal ability icons
 function generateCustomCooldowns(){
+	toLog(["[generateCustomCooldowns]"]);
 	let customAbilityList = [];
 	$("#customcd-bar").empty();
 	let playerIndex = 0;
@@ -871,6 +891,7 @@ function generateCustomCooldowns(){
 }
 
 function generateMitigation(){
+	toLog(["[generateMitigation]"]);
 	let mitigationAbilityList = [];
 	$("#mitigation-bar").empty();
 	let playerIndex = 0;
@@ -895,6 +916,7 @@ function generateMitigation(){
 }
 
 function generatePartyCooldowns(){
+	toLog(["[generatePartyCooldowns]"]);
 	let partyAbilityList = [];
 	$("#party-bar").empty();
 	let playerIndex = 0;
@@ -918,6 +940,7 @@ function generatePartyCooldowns(){
 }
 
 function generateRaidBuffs(){
+	toLog(["[generateRaidBuffs]"]);
 	let raidAbilityList = [];
 	$("#raid-buffs-bar").empty();
 	let playerIndex = 0;
@@ -1010,31 +1033,41 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false){
 }
 
 // Handlers for creating/maintaining party list
-function generateRawPartyListFromCombatants(combatants){
-	let partyList = combatants.filter(x => x.PartyType !== 0);
-	let rawList = [];
-	for (let partyMember of partyList){
-		rawList.push(
-			{
-				id: parseInt(partyMember.ID).toString(16).toUpperCase(),
-				inParty: partyMember.PartyType === 1,
-				job: partyMember.Job,
-				level: partyMember.Level,
-				name: partyMember.Name,
-				worldId: partyMember.WorldID
-			}
-		);
+function generateRawPartyList(fromCombatants, combatants = null){
+	if(fromCombatants){
+		let partyList = combatants.filter(x => x.PartyType !== 0);
+		let rawList = [];
+		for (let partyMember of partyList){
+			rawList.push(
+				{
+					id: parseInt(partyMember.ID).toString(16).toUpperCase(),
+					inParty: partyMember.PartyType === 1,
+					job: partyMember.Job,
+					level: partyMember.Level,
+					name: partyMember.Name,
+					worldId: partyMember.WorldID
+				}
+			);
+		}
+		return rawList;
 	}
-	return rawList;
+	return [{
+		id: parseInt(currentPlayer.id).toString(16).toUpperCase(),
+		inParty: false,
+		job: jobList.find(x => x.name === currentPlayer.job).id,
+		level: currentPlayer.level,
+		name: currentPlayer.name,
+		worldId: null
+	}];
 }
 
 function generatePartyList(party){
-	toLog(["[GeneratePartyList]", party]);
+	toLog(["[GeneratePartyList] RawPartyList:", party]);
 	currentRawPartyList = party;
 	currentPartyList = [];
 	for (let partyMember of party)
 	{
-		if(!partyMember.inParty && !currentSettings.includealliance) break;
+		if(!partyMember.inParty && !currentSettings.includealliance && partyMember.name !== currentPlayer.name) break;
 		currentPartyList.push({
 			id: partyMember.id,
 			inParty: partyMember.inParty,
@@ -1054,33 +1087,15 @@ function generatePartyList(party){
 		currentPartyList = ownParty.concat(alliance);
 	}
 	currentPartyList.unshift(currentPlayerElement);
-	if(currentPartyList.length != 0) generateRaidBuffs(); generatePartyCooldowns();
 }
 
 function checkForParty(e){
 	let combatants = e.combatants;
+	if(combatants === undefined|| currentPlayer === undefined) return;
 	let player = combatants.find(x => x.ID === currentPlayer.id);
-	if(player.PartyType === 0){
-		setupSoloParty();
-	}else{
-		let partyList = generateRawPartyListFromCombatants(combatants);
-		generatePartyList(partyList);
-	}
-}
-
-function setupSoloParty(){
-	currentPartyList = [];
-	currentPartyList.push({
-		id: currentPlayer.id.toString(16).toUpperCase(),
-		inParty: false,
-		job: jobList.find(x => x.name === currentPlayer.job),
-		name: currentPlayer.name,
-		worldId: null
-	});
-	generateRaidBuffs();
-	generateMitigation();
-	generateCustomCooldowns();
-	generatePartyCooldowns();
+	let partyList = generateRawPartyList(player.PartyType !== 0, combatants);
+	generatePartyList(partyList);
+	reloadCooldownModules();	
 }
 
 // Timer and TTS handlers
@@ -1507,7 +1522,18 @@ function initializeSmn(addStack = false){
 }
 
 // OverlayPlugin and Cactbot Event Handlers
-function onChangeZone(){
+function onChangeZone(e){
+	currentZone = {
+		id: e.zoneID, 
+		name: e.zoneName,
+		info: {},
+		type: "Unspecified"
+	};
+	if(zoneInfo[e.zoneID] !== undefined){
+		currentZone.info = zoneInfo[e.zoneID];
+		if(currentZone.info.contentType !== undefined) currentZone.type = Object.keys(contentType).find(x => contentType[x] === currentZone.info.contentType);
+	} 
+	
 	if(currentPlayer === null) return;
 	if(currentPlayer.job === "SMN") {
 		initializeSmn();
@@ -1588,25 +1614,18 @@ function onJobChange(job){
 function onPartyChanged(e){
 	toLog(["[onPartyChanged]", e]);
 	if(currentPlayer === null) return;
-	if(e.party.length > 0){
-		generatePartyList(e.party);
-	}else{
-		setupSoloParty();
+	let partyList = e.party;
+	if(partyList.length === 0){
+		partyList = generateRawPartyList(false);
 	}	
+	generatePartyList(partyList);
 	toggleHideWhenSoloCombatElements();
 }
 
 function onPartyWipe(){
 	if(currentPlayer === null) return;
-	if(currentPlayer.job === "SMN") {
-		initializeSmn();
-		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
-	}
 	resetTimers();
-	generateRaidBuffs();
-	generateMitigation();
-	generateCustomCooldowns();
-	generatePartyCooldowns();
+	reloadCooldownModules();
 }
 
 function onPlayerChangedEvent(e){
@@ -1629,19 +1648,13 @@ function onPlayerChangedEvent(e){
 /* exported onInstanceStart */
 function onInstanceStart(){
 	generatePartyList(currentRawPartyList);
-	generateRaidBuffs();
-	generateMitigation();
-	generateCustomCooldowns();
-	generatePartyCooldowns();
+	reloadCooldownModules();
 }
 
 /* exported onInstanceEnd */
 function onInstanceEnd(){
 	resetTimers();
-	generateRaidBuffs();
-	generateMitigation();
-	generateCustomCooldowns();
-	generatePartyCooldowns();
+	reloadCooldownModules();
 }
 
 /* exported handleCountdownTimer */
