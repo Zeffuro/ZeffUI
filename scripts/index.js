@@ -5,63 +5,69 @@
 /* global addOverlayListener, startOverlayEvents, interact, callOverlayHandler */
 
 // UI related global variables
-var locked = true;
-var gridshown = false;
-var dragPosition = {};
+var ui = {
+	locked: true,
+	gridshown: false,
+	dragPosition: {}
+};
 
 // Global variables for maintaining gamestate and settings
-var inCombat = false;
-var blockRuinGained = false;
 var currentSettings = null;
-var currentPlayer = null;
-var currentZone = {};
-var currentPartyList = [];
-var currentRawPartyList = [];
-var currentStats = {
-	skillSpeed: 0,
-	spellSpeed: 0,
-	stacks: 0,
-	maxStacks: 0
+
+var gameState = {
+	inCombat: false,
+	blockRuinGained: false,
+	player: null,
+	zone: {},
+	partyList: [],
+	rawPartyList: [],
+	stats: {
+		skillSpeed: 0,
+		spellSpeed: 0,
+		stacks: 0,
+		maxStacks: 0
+	},
+	previous_MP: 0
 };
-var previous_MP = 0;
 
 // Global variables for maintaining active timers and elements that get reused
-var activeDotBars = new Map();
-var activeBuffBars = new Map();
-var activeRaidBuffs = new Map();
-var activeMitigations = new Map();
-var activePartyCooldowns = new Map();
-var activeCustomCooldowns = new Map();
-var activeCountdowns = new Map();
-var activeTTS = new Map();
-var ttsElements = new Map();
+var activeElements = {
+	dotBars: new Map(),
+	buffBars: new Map(),
+	raidBuffs: new Map(),
+	mitigations: new Map(),
+	partyCooldowns: new Map(),
+	customCooldowns: new Map(),
+	countdowns: new Map(),
+	tts: new Map(),
+	ttsElements: new Map()
+};
 
-var zoneInfo = [];
-var contentType = [];
+const GAME_DATA = {
+	CONTENT_TYPE: [],
+	MP_DATA: {
+		normal: 0.06,
+		combat: 0.02,
+		umbral_1: 0.30,
+		umbral_2: 0.45,
+		umbral_3: 0.60,
+		tick: 3.0
+	},
+	SPEED_LOOKUP: new Map(
+		[
+			[1, 56], [2, 57],  [3, 60], [4, 62], [5, 65], [6, 68], [7, 70], [8, 73], [9, 76], [10, 78], 
+			[11, 82], [12, 85], [13, 89], [14, 93], [15, 96], [16, 100], [17, 104], [18, 109], [19, 113], [20, 116], 
+			[21, 122], [22, 127], [23, 133], [24, 138], [25, 144], [26, 150], [27, 155], [28, 162], [29, 168], [30, 173], 
+			[31, 181], [32, 188], [33, 194], [34, 202], [35, 209], [36, 215], [37, 223], [38, 229], [39, 236], [40, 244], 
+			[41, 253], [42, 263], [43, 272], [44, 283], [45, 292], [46, 302], [47, 311], [48, 322], [49, 331], [50, 341], 
+			[51, 342], [52, 344], [53, 345], [54, 346], [55, 347], [56, 349], [57, 350], [58, 351], [59, 352], [60, 354], 
+			[61, 355], [62, 356], [63, 357], [64, 358], [65, 359], [66, 360], [67, 361], [68, 362], [69, 363], [70, 364], 
+			[71, 365], [72, 366], [73, 367], [74, 368], [75, 370], [76, 372], [77, 374], [78, 376], [79, 378], [80, 380]
+		]),
+	ZONE_INFO: []
+};
 
 const UPDATE_INTERVAL = 10;
-
-const SPEED_LOOKUP = new Map(
-	[
-		[1, 56], [2, 57],  [3, 60], [4, 62], [5, 65], [6, 68], [7, 70], [8, 73], [9, 76], [10, 78], 
-		[11, 82], [12, 85], [13, 89], [14, 93], [15, 96], [16, 100], [17, 104], [18, 109], [19, 113], [20, 116], 
-		[21, 122], [22, 127], [23, 133], [24, 138], [25, 144], [26, 150], [27, 155], [28, 162], [29, 168], [30, 173], 
-		[31, 181], [32, 188], [33, 194], [34, 202], [35, 209], [36, 215], [37, 223], [38, 229], [39, 236], [40, 244], 
-		[41, 253], [42, 263], [43, 272], [44, 283], [45, 292], [46, 302], [47, 311], [48, 322], [49, 331], [50, 341], 
-		[51, 342], [52, 344], [53, 345], [54, 346], [55, 347], [56, 349], [57, 350], [58, 351], [59, 352], [60, 354], 
-		[61, 355], [62, 356], [63, 357], [64, 358], [65, 359], [66, 360], [67, 361], [68, 362], [69, 363], [70, 364], 
-		[71, 365], [72, 366], [73, 367], [74, 368], [75, 370], [76, 372], [77, 374], [78, 376], [79, 378], [80, 380]
-	]
-);
-
-const MP_DATA = {
-	normal: 0.06,
-	combat: 0.02,
-	umbral_1: 0.30,
-	umbral_2: 0.45,
-	umbral_3: 0.60,
-	tick: 3.0
-};
 
 // Add OverlayListeners
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
@@ -76,8 +82,8 @@ $(function() {
 });
 
 async function startZeffUI(){
-	import("https://quisquous.github.io/cactbot/resources/content_type.js").then((data) => { contentType = data.default; });
-	import("https://quisquous.github.io/cactbot/resources/zone_info.js").then((data) => { zoneInfo = data.default; });
+	import("https://quisquous.github.io/cactbot/resources/content_type.js").then((data) => { Object.assign(GAME_DATA.CONTENT_TYPE, data.default); });
+	import("https://quisquous.github.io/cactbot/resources/zone_info.js").then((data) => { Object.assign(GAME_DATA.ZONE_INFO, data.default); });
 	startOverlayEvents();
 	await loadSettings();
 	generateJobStacks();
@@ -187,7 +193,7 @@ async function loadSettings(){
 	$("#health-bar").css("--healthFont", settings.healthbar.font);
 	$("#health-bar").css("-webkit-transform", `rotate(${settings.healthbar.rotation}deg)`);
 	$("#health-bar").css("transform-origin", "top left");
-	dragPosition["health-bar"] = {
+	ui.dragPosition["health-bar"] = {
 		x: settings.healthbar.x,
 		y: settings.healthbar.y
 	};
@@ -230,7 +236,7 @@ async function loadSettings(){
 	$("#mana-bar").css("--manaFont", settings.manabar.font);
 	$("#mana-bar").css("-webkit-transform", `rotate(${settings.manabar.rotation}deg)`);
 	$("#mana-bar").css("transform-origin", "top left");
-	dragPosition["mana-bar"] = {
+	ui.dragPosition["mana-bar"] = {
 		x: settings.manabar.x,
 		y: settings.manabar.y
 	};
@@ -256,7 +262,7 @@ async function loadSettings(){
 	$("#mp-ticker-bar").css("height", settings.mpticker.scale * 15);
 	$("#mp-ticker-bar").css("-webkit-transform", `rotate(${settings.mpticker.rotation}deg)`);
 	$("#mp-ticker-bar").css("transform-origin", "top left");
-	dragPosition["mp-ticker-bar"] = {
+	ui.dragPosition["mp-ticker-bar"] = {
 		x: settings.mpticker.x,
 		y: settings.mpticker.y
 	};
@@ -280,7 +286,7 @@ async function loadSettings(){
 	$("#timer-bar").css("--timerFont", settings.timerbar.font);
 	$("#timer-bar").css("-webkit-transform", `rotate(${settings.timerbar.rotation}deg)`);
 	$("#timer-bar").css("transform-origin", "top left");
-	dragPosition["timer-bar"] = {
+	ui.dragPosition["timer-bar"] = {
 		x: settings.timerbar.x,
 		y: settings.timerbar.y
 	};
@@ -309,7 +315,7 @@ async function loadSettings(){
 	$("#dot-timer-bar").css("--dotFont", settings.dottimerbar.font);
 	$("#dot-bar").css("-webkit-transform", `rotate(${settings.dottimerbar.rotation}deg)`);
 	$("#dot-bar").css("transform-origin", "center");
-	dragPosition["dot-timer-bar"] = {
+	ui.dragPosition["dot-timer-bar"] = {
 		x: settings.dottimerbar.x,
 		y: settings.dottimerbar.y
 	};
@@ -337,7 +343,7 @@ async function loadSettings(){
 	$("#buff-timer-bar").css("--buffFont", settings.bufftimerbar.font);
 	$("#buff-bar").css("-webkit-transform", `rotate(${settings.bufftimerbar.rotation}deg)`);
 	$("#buff-bar").css("transform-origin", "center");
-	dragPosition["buff-timer-bar"] = {
+	ui.dragPosition["buff-timer-bar"] = {
 		x: settings.bufftimerbar.x,
 		y: settings.bufftimerbar.y
 	};
@@ -360,7 +366,7 @@ async function loadSettings(){
 	$("#stacks-bar").css("transform", `scale(${settings.stacksbar.scale})`);
 	$("[id^=stacks-background]").css("margin-left", 0 - (settings.stacksbar.scale * 4));
 	$("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
-	dragPosition["stacks-bar"] = {
+	ui.dragPosition["stacks-bar"] = {
 		x: settings.stacksbar.x,
 		y: settings.stacksbar.y
 	};
@@ -395,7 +401,7 @@ async function loadSettings(){
 	settings.raidbuffs.hidewhensolo ? $("#raid-buffs-bar").hide() : $("#raid-buffs-bar").show();
 
 	$("#raid-buffs-bar").css("font-family", settings.raidbuffs.font);
-	dragPosition["raid-buffs-bar"] = {
+	ui.dragPosition["raid-buffs-bar"] = {
 		x: settings.raidbuffs.x,
 		y: settings.raidbuffs.y
 	};
@@ -429,7 +435,7 @@ async function loadSettings(){
 	settings.mitigation.hidewhensolo ? $("#mitigation-bar").hide() : $("#mitigation-bar").show();
 
 	$("#mitigation-bar").css("font-family", settings.mitigation.font);
-	dragPosition["mitigation-bar"] = {
+	ui.dragPosition["mitigation-bar"] = {
 		x: settings.mitigation.x,
 		y: settings.mitigation.y
 	};
@@ -462,7 +468,7 @@ async function loadSettings(){
 	settings.party.hidewhensolo ? $("#party-bar").hide() : $("#party-bar").show();
 
 	$("#party-bar").css("font-family", settings.party.font);
-	dragPosition["party-bar"] = {
+	ui.dragPosition["party-bar"] = {
 		x: settings.party.x,
 		y: settings.party.y
 	};
@@ -497,7 +503,7 @@ async function loadSettings(){
 	settings.customcd.hidewhensolo ? $("#customcd-bar").hide() : $("#customcd-bar").show();
 
 	$("#customcd-bar").css("font-family", settings.customcd.font);
-	dragPosition["customcd-bar"] = {
+	ui.dragPosition["customcd-bar"] = {
 		x: settings.customcd.x,
 		y: settings.customcd.y
 	};
@@ -509,53 +515,53 @@ async function loadSettings(){
 }
 
 async function saveSettings(){
-	currentSettings.healthbar.x = parseInt(dragPosition["health-bar"].x);
-	currentSettings.healthbar.y = parseInt(dragPosition["health-bar"].y);
+	currentSettings.healthbar.x = parseInt(ui.dragPosition["health-bar"].x);
+	currentSettings.healthbar.y = parseInt(ui.dragPosition["health-bar"].y);
 	$("#health-bar").css("--healthFontSize", currentSettings.healthbar.scale * 10);
 	$("#health-bar").css("--healthFontX", currentSettings.healthbar.scale * 5);
 	$("#health-bar").css("--healthFontY", currentSettings.healthbar.scale * -14);
 
-	currentSettings.manabar.x = parseInt(dragPosition["mana-bar"].x);
-	currentSettings.manabar.y = parseInt(dragPosition["mana-bar"].y);
+	currentSettings.manabar.x = parseInt(ui.dragPosition["mana-bar"].x);
+	currentSettings.manabar.y = parseInt(ui.dragPosition["mana-bar"].y);
 	$("#mana-bar").css("--manaFontSize", currentSettings.manabar.scale * 10);
 	$("#mana-bar").css("--manaFontX", currentSettings.manabar.scale * 5);
 	$("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
 
-	currentSettings.mpticker.x = parseInt(dragPosition["mp-ticker-bar"].x);
-	currentSettings.mpticker.y = parseInt(dragPosition["mp-ticker-bar"].y);
+	currentSettings.mpticker.x = parseInt(ui.dragPosition["mp-ticker-bar"].x);
+	currentSettings.mpticker.y = parseInt(ui.dragPosition["mp-ticker-bar"].y);
 
-	currentSettings.timerbar.x = parseInt(dragPosition["timer-bar"].x);
-	currentSettings.timerbar.y = parseInt(dragPosition["timer-bar"].y);
+	currentSettings.timerbar.x = parseInt(ui.dragPosition["timer-bar"].x);
+	currentSettings.timerbar.y = parseInt(ui.dragPosition["timer-bar"].y);
 	$("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
 	$("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 5);
 	$("#timer-bar").css("--timerFontY", currentSettings.timerbar.scale * -14);
 
-	currentSettings.dottimerbar.x = parseInt(dragPosition["dot-timer-bar"].x);
-	currentSettings.dottimerbar.y = parseInt(dragPosition["dot-timer-bar"].y);
+	currentSettings.dottimerbar.x = parseInt(ui.dragPosition["dot-timer-bar"].x);
+	currentSettings.dottimerbar.y = parseInt(ui.dragPosition["dot-timer-bar"].y);
 	$("#dot-timer-bar").css("--dotFontSize", currentSettings.dottimerbar.scale * 10);
 	$("#dot-timer-bar").css("--dotFontX", currentSettings.dottimerbar.scale * 5);
 	$("#dot-timer-bar").css("--dotFontY", currentSettings.dottimerbar.scale * -14);
 
-	currentSettings.bufftimerbar.x = parseInt(dragPosition["buff-timer-bar"].x);
-	currentSettings.bufftimerbar.y = parseInt(dragPosition["buff-timer-bar"].y);
+	currentSettings.bufftimerbar.x = parseInt(ui.dragPosition["buff-timer-bar"].x);
+	currentSettings.bufftimerbar.y = parseInt(ui.dragPosition["buff-timer-bar"].y);
 	$("#buff-timer-bar").css("--buffFontSize", currentSettings.bufftimerbar.scale * 10);
 	$("#buff-timer-bar").css("--buffFontX", currentSettings.bufftimerbar.scale * 5);
 	$("#buff-timer-bar").css("--buffFontY", currentSettings.bufftimerbar.scale * -14);
 
-	currentSettings.stacksbar.x = parseInt(dragPosition["stacks-bar"].x);
-	currentSettings.stacksbar.y = parseInt(dragPosition["stacks-bar"].y);
+	currentSettings.stacksbar.x = parseInt(ui.dragPosition["stacks-bar"].x);
+	currentSettings.stacksbar.y = parseInt(ui.dragPosition["stacks-bar"].y);
 
-	currentSettings.raidbuffs.x = parseInt(dragPosition["raid-buffs-bar"].x);
-	currentSettings.raidbuffs.y = parseInt(dragPosition["raid-buffs-bar"].y);
+	currentSettings.raidbuffs.x = parseInt(ui.dragPosition["raid-buffs-bar"].x);
+	currentSettings.raidbuffs.y = parseInt(ui.dragPosition["raid-buffs-bar"].y);
 
-	currentSettings.mitigation.x = parseInt(dragPosition["mitigation-bar"].x);
-	currentSettings.mitigation.y = parseInt(dragPosition["mitigation-bar"].y);
+	currentSettings.mitigation.x = parseInt(ui.dragPosition["mitigation-bar"].x);
+	currentSettings.mitigation.y = parseInt(ui.dragPosition["mitigation-bar"].y);
 
-	currentSettings.customcd.x = parseInt(dragPosition["customcd-bar"].x);
-	currentSettings.customcd.y = parseInt(dragPosition["customcd-bar"].y);
+	currentSettings.customcd.x = parseInt(ui.dragPosition["customcd-bar"].x);
+	currentSettings.customcd.y = parseInt(ui.dragPosition["customcd-bar"].y);
 
-	currentSettings.party.x = parseInt(dragPosition["party-bar"].x);
-	currentSettings.party.y = parseInt(dragPosition["party-bar"].y);
+	currentSettings.party.x = parseInt(ui.dragPosition["party-bar"].x);
+	currentSettings.party.y = parseInt(ui.dragPosition["party-bar"].y);
 
 	await callOverlayHandler({ call: "saveData", key: "zeffUI", data: currentSettings });
 	localStorage.setItem("settings", JSON.stringify(currentSettings));
@@ -582,7 +588,7 @@ function loadContextMenu(){
 				openSettings.onload = function(){
 					this.onbeforeunload = function(){
 						loadSettings().then(() => {
-							if(currentPlayer === null) return;
+							if(gameState.player === null) return;
 							location.reload();
 						});
 					};
@@ -677,35 +683,35 @@ function clearGrid(){
 }
 
 function toggleGrid(){
-	if(!gridshown){
+	if(!ui.gridshown){
 		drawGrid();
-		gridshown = true;
+		ui.gridshown = true;
 	}else{
 		clearGrid();
-		gridshown = false;
+		ui.gridshown = false;
 	}
 }
 
 function toggleLock(){
 	interact("[id$=bar]").draggable({
-		enabled: locked,
+		enabled: ui.locked,
 		listeners: {
 			move (event) {
-				dragPosition[event.target.id].x += event.dx;
-				dragPosition[event.target.id].y += event.dy;
+				ui.dragPosition[event.target.id].x += event.dx;
+				ui.dragPosition[event.target.id].y += event.dy;
 
-				event.target.style.transform = `translate(${parseInt(dragPosition[event.target.id].x)}px, ${parseInt(dragPosition[event.target.id].y)}px)`;
+				event.target.style.transform = `translate(${parseInt(ui.dragPosition[event.target.id].x)}px, ${parseInt(ui.dragPosition[event.target.id].y)}px)`;
 			},
 			end () {
 				saveSettings();
 			}
 		}
 	});
-	if(locked){
+	if(ui.locked){
 		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").show();
 		if(currentSettings.mpticker.specificjobsenabled){
-			if(currentPlayer){
-				if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) $("#mp-ticker-bar").show();
+			if(gameState.player){
+				if(!currentSettings.mpticker.specificjobs.includes(gameState.player.job)) $("#mp-ticker-bar").show();
 			}
 		}
 		$("#mp-ticker-bar").attr("data-label", language.find(x => x.id === "mpticker").string);
@@ -727,16 +733,16 @@ function toggleLock(){
 
 		//$("[id$=bar]").draggable("enable");
 		adjustJobStacks(2,4, true);
-		if(!inCombat){
+		if(!gameState.inCombat){
 			toggleHideOutOfCombatElements();
 		}
-		locked = false;
+		ui.locked = false;
 		$("html").css("border", "solid");
 	}else{		
 		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").hide();
 		if(currentSettings.mpticker.specificjobsenabled){
-			if(currentPlayer){
-				if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) $("#mp-ticker-bar").hide();
+			if(gameState.player){
+				if(!currentSettings.mpticker.specificjobs.includes(gameState.player.job)) $("#mp-ticker-bar").hide();
 			}
 		}
 		$("#mp-ticker-bar").attr("data-label", "");
@@ -748,11 +754,11 @@ function toggleLock(){
 		$("#customcd-anchor").remove();
 		$("#party-anchor").remove();
 		toggleHideWhenSoloCombatElements();
-		adjustJobStacks(currentStats.stacks, currentStats.maxStacks, true);
-		if(!inCombat){
+		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks, true);
+		if(!gameState.inCombat){
 			toggleHideOutOfCombatElements();
 		}
-		locked = true;
+		ui.locked = true;
 		$("html").css("border", "none");
 	}
 }
@@ -769,7 +775,7 @@ function getSelectorProperties(selector){
 		object = {
 			id: "raid-buffs",
 			settings: currentSettings.raidbuffs,
-			active: activeRaidBuffs
+			active: activeElements.raidBuffs
 		};
 		break;
 	}
@@ -777,7 +783,7 @@ function getSelectorProperties(selector){
 		object = {
 			id: "mitigation",
 			settings: currentSettings.mitigation,
-			active: activeMitigations
+			active: activeElements.mitigations
 		};
 		break;
 	}
@@ -785,7 +791,7 @@ function getSelectorProperties(selector){
 		object = {
 			id: "party",
 			settings: currentSettings.party,
-			active: activePartyCooldowns
+			active: activeElements.partyCooldowns
 		};
 		break;
 	}
@@ -793,7 +799,7 @@ function getSelectorProperties(selector){
 		object = {
 			id: "customcd",
 			settings: currentSettings.customcd,
-			active: activeCustomCooldowns
+			active: activeElements.customCooldowns
 		};
 		break;
 	}
@@ -822,22 +828,22 @@ async function getACTLocale(){
 }
 
 function toggleHideOutOfCombatElements(){
-	currentSettings.healthbar.hideoutofcombat && !inCombat ? $("#health-bar").addClass("hide-in-combat") : $("#health-bar").removeClass("hide-in-combat");
-	currentSettings.manabar.hideoutofcombat && !inCombat  ? $("#mana-bar").addClass("hide-in-combat") : $("#mana-bar").removeClass("hide-in-combat");
-	currentSettings.mpticker.hideoutofcombat && !inCombat  ? $("#mp-ticker-bar").addClass("hide-in-combat") : $("#mp-ticker-bar").removeClass("hide-in-combat");
-	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-timer]").addClass("hide-in-combat") : $("[id$=dot-timer]").removeClass("hide-in-combat");
-	currentSettings.dottimerbar.hideoutofcombat && !inCombat ? $("[id$=dot-image]").addClass("hide-in-combat") : $("[id$=dot-image]").removeClass("hide-in-combat");
-	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-timer]").addClass("hide-in-combat") : $("[id$=buff-timer]").removeClass("hide-in-combat");
-	currentSettings.bufftimerbar.hideoutofcombat && !inCombat ? $("[id$=buff-image]").addClass("hide-in-combat") : $("[id$=buff-image]").removeClass("hide-in-combat");
-	currentSettings.stacksbar.hideoutofcombat && !inCombat ? $("#stacks-bar").addClass("hide-in-combat") : $("#stacks-bar").removeClass("hide-in-combat");
-	currentSettings.raidbuffs.hideoutofcombat && !inCombat ? $("#raid-buffs-bar").addClass("hide-in-combat") : $("#raid-buffs-bar").removeClass("hide-in-combat");
-	currentSettings.mitigation.hideoutofcombat && !inCombat ? $("#mitigation-bar").addClass("hide-in-combat") : $("#mitigation-bar").removeClass("hide-in-combat");
-	currentSettings.customcd.hideoutofcombat && !inCombat ? $("#customcd-bar").addClass("hide-in-combat") : $("#customcd-bar").removeClass("hide-in-combat");
-	currentSettings.party.hideoutofcombat && !inCombat ? $("#party-bar").addClass("hide-in-combat") : $("#party-bar").removeClass("hide-in-combat");
+	currentSettings.healthbar.hideoutofcombat && !gameState.inCombat ? $("#health-bar").addClass("hide-in-combat") : $("#health-bar").removeClass("hide-in-combat");
+	currentSettings.manabar.hideoutofcombat && !gameState.inCombat  ? $("#mana-bar").addClass("hide-in-combat") : $("#mana-bar").removeClass("hide-in-combat");
+	currentSettings.mpticker.hideoutofcombat && !gameState.inCombat  ? $("#mp-ticker-bar").addClass("hide-in-combat") : $("#mp-ticker-bar").removeClass("hide-in-combat");
+	currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=dot-timer]").addClass("hide-in-combat") : $("[id$=dot-timer]").removeClass("hide-in-combat");
+	currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=dot-image]").addClass("hide-in-combat") : $("[id$=dot-image]").removeClass("hide-in-combat");
+	currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=buff-timer]").addClass("hide-in-combat") : $("[id$=buff-timer]").removeClass("hide-in-combat");
+	currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=buff-image]").addClass("hide-in-combat") : $("[id$=buff-image]").removeClass("hide-in-combat");
+	currentSettings.stacksbar.hideoutofcombat && !gameState.inCombat ? $("#stacks-bar").addClass("hide-in-combat") : $("#stacks-bar").removeClass("hide-in-combat");
+	currentSettings.raidbuffs.hideoutofcombat && !gameState.inCombat ? $("#raid-buffs-bar").addClass("hide-in-combat") : $("#raid-buffs-bar").removeClass("hide-in-combat");
+	currentSettings.mitigation.hideoutofcombat && !gameState.inCombat ? $("#mitigation-bar").addClass("hide-in-combat") : $("#mitigation-bar").removeClass("hide-in-combat");
+	currentSettings.customcd.hideoutofcombat && !gameState.inCombat ? $("#customcd-bar").addClass("hide-in-combat") : $("#customcd-bar").removeClass("hide-in-combat");
+	currentSettings.party.hideoutofcombat && !gameState.inCombat ? $("#party-bar").addClass("hide-in-combat") : $("#party-bar").removeClass("hide-in-combat");
 }
 
 function toggleHideWhenSoloCombatElements(toggleLock = false){
-	let show = currentPartyList.length !== 1;
+	let show = gameState.partyList.length !== 1;
 	if(toggleLock) show = true;
 	if(currentSettings.raidbuffs.hidewhensolo) show ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
 	if(currentSettings.mitigation.hidewhensolo) show ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
@@ -854,13 +860,13 @@ function generateJobStacks(){
 }
 
 function reloadCooldownModules(){
-	toLog(["[reloadCooldownModules] CurrentPartyList:", currentPartyList]);
-	if(currentPlayer.job === "SMN") {
+	toLog(["[reloadCooldownModules] CurrentPartyList:", gameState.partyList]);
+	if(gameState.player.job === "SMN") {
 		initializeSmn();
-		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
 	}
 	generateCustomCooldowns();
-	if(currentZone.type == "Pvp") return;
+	if(gameState.zone.type == "Pvp") return;
 	generateRaidBuffs();
 	generateMitigation();
 	generatePartyCooldowns();
@@ -872,16 +878,16 @@ function generateCustomCooldowns(){
 	let customAbilityList = [];
 	$("#customcd-bar").empty();
 	let playerIndex = 0;
-	let currentJob = jobList.find(x => x.name === currentPlayer.job);
+	let currentJob = jobList.find(x => x.name === gameState.player.job);
 	if(currentSettings.customcd.abilities.length === 0) return;
-	for(let ability of currentSettings.customcd.abilities.filter(x => x.type === "CustomCooldown" && x.level <= currentPlayer.level)){
+	for(let ability of currentSettings.customcd.abilities.filter(x => x.type === "CustomCooldown" && x.level <= gameState.player.level)){
 		let pushAbility = false;
 		if(ability.job === currentJob.name || ability.job === currentJob.type || ability.job === currentJob.position_type){
 			pushAbility = true;
 		}
 		if(pushAbility && ability.enabled){
 			customAbilityList.push({
-				player: currentPlayer.name,
+				player: gameState.player.name,
 				playerIndex: playerIndex,
 				ability: ability
 			});
@@ -895,8 +901,8 @@ function generateMitigation(){
 	let mitigationAbilityList = [];
 	$("#mitigation-bar").empty();
 	let playerIndex = 0;
-	let currentJob = jobList.find(x => x.name === currentPlayer.job);
-	for(let ability of abilityList.filter(x => x.type === "Mitigation" && x.level <= currentPlayer.level)){
+	let currentJob = jobList.find(x => x.name === gameState.player.job);
+	for(let ability of abilityList.filter(x => x.type === "Mitigation" && x.level <= gameState.player.level)){
 		if(currentSettings.override.abilities.some(x => x.name === ability.name)){
 			ability = currentSettings.override.abilities.find(x => x.name === ability.name);
 		}
@@ -906,7 +912,7 @@ function generateMitigation(){
 		}
 		if(pushAbility && ability.enabled){
 			mitigationAbilityList.push({
-				player: currentPlayer.name,
+				player: gameState.player.name,
 				playerIndex: playerIndex,
 				ability: ability
 			});
@@ -920,8 +926,8 @@ function generatePartyCooldowns(){
 	let partyAbilityList = [];
 	$("#party-bar").empty();
 	let playerIndex = 0;
-	for(let partyMember of currentPartyList){
-		for(let ability of abilityList.filter(x => x.type === "Party" && (x.job === partyMember.job.name || x.job === partyMember.job.type || x.job === partyMember.job.position_type) && x.level <= currentPlayer.level)){
+	for(let partyMember of gameState.partyList){
+		for(let ability of abilityList.filter(x => x.type === "Party" && (x.job === partyMember.job.name || x.job === partyMember.job.type || x.job === partyMember.job.position_type) && x.level <= gameState.player.level)){
 			if(currentSettings.override.abilities.some(x => x.name === ability.name)){
 				ability = currentSettings.override.abilities.find(x => x.name === ability.name);
 			}
@@ -944,8 +950,8 @@ function generateRaidBuffs(){
 	let raidAbilityList = [];
 	$("#raid-buffs-bar").empty();
 	let playerIndex = 0;
-	for(let partyMember of currentPartyList){
-		for(let ability of abilityList.filter(x => x.type === "RaidBuff" && x.job === partyMember.job.name && x.level <= currentPlayer.level)){
+	for(let partyMember of gameState.partyList){
+		for(let ability of abilityList.filter(x => x.type === "RaidBuff" && x.job === partyMember.job.name && x.level <= gameState.player.level)){
 			if(currentSettings.override.abilities.some(x => x.name === ability.name)){
 				ability = currentSettings.override.abilities.find(x => x.name === ability.name);
 			}
@@ -1052,23 +1058,23 @@ function generateRawPartyList(fromCombatants, combatants = null){
 		return rawList;
 	}
 	return [{
-		id: parseInt(currentPlayer.id).toString(16).toUpperCase(),
+		id: parseInt(gameState.player.id).toString(16).toUpperCase(),
 		inParty: false,
-		job: jobList.find(x => x.name === currentPlayer.job).id,
-		level: currentPlayer.level,
-		name: currentPlayer.name,
+		job: jobList.find(x => x.name === gameState.player.job).id,
+		level: gameState.player.level,
+		name: gameState.player.name,
 		worldId: null
 	}];
 }
 
 function generatePartyList(party){
 	toLog(["[GeneratePartyList] RawPartyList:", party]);
-	currentRawPartyList = party;
-	currentPartyList = [];
+	gameState.rawPartyList = party;
+	gameState.partyList = [];
 	for (let partyMember of party)
 	{
-		if(!partyMember.inParty && !currentSettings.includealliance && partyMember.name !== currentPlayer.name) break;
-		currentPartyList.push({
+		if(!partyMember.inParty && !currentSettings.includealliance && partyMember.name !== gameState.player.name) break;
+		gameState.partyList.push({
 			id: partyMember.id,
 			inParty: partyMember.inParty,
 			job: jobList.find(x => x.id === partyMember.job),
@@ -1077,22 +1083,22 @@ function generatePartyList(party){
 		});
 	}
 	let jobOrder = currentSettings.partyorder;
-	let currentPlayerElement = currentPartyList.find(x => x.name === currentPlayer.name);
-	currentPartyList.sort((a, b) => a.id - b.id);
-	currentPartyList.sort((a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name));
-	currentPartyList = currentPartyList.filter(x => x !== currentPlayerElement);
+	let currentPlayerElement = gameState.partyList.find(x => x.name === gameState.player.name);
+	gameState.partyList.sort((a, b) => a.id - b.id);
+	gameState.partyList.sort((a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name));
+	gameState.partyList = gameState.partyList.filter(x => x !== currentPlayerElement);
 	if(currentSettings.includealliance){
-		let ownParty = currentPartyList.filter(x => x.inParty);
-		let alliance = currentPartyList.filter(x => !x.inParty);
-		currentPartyList = ownParty.concat(alliance);
+		let ownParty = gameState.partyList.filter(x => x.inParty);
+		let alliance = gameState.partyList.filter(x => !x.inParty);
+		gameState.partyList = ownParty.concat(alliance);
 	}
-	currentPartyList.unshift(currentPlayerElement);
+	gameState.partyList.unshift(currentPlayerElement);
 }
 
 function checkForParty(e){
 	let combatants = e.combatants;
-	if(combatants === undefined|| currentPlayer === undefined) return;
-	let player = combatants.find(x => x.ID === currentPlayer.id);
+	if(combatants === undefined|| gameState.player === undefined) return;
+	let player = combatants.find(x => x.ID === gameState.player.id);
 	let partyList = generateRawPartyList(player.PartyType !== 0, combatants);
 	generatePartyList(partyList);
 	reloadCooldownModules();	
@@ -1111,11 +1117,11 @@ function startAbilityIconTimers(playerIndex, ability, onYou = true, abilityHolde
 
 	let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
 	if(selectedActive.has(`${playerIndex}-${ability.id}`)){
-		if(activeCountdowns.has(`${selector}-duration`)){
-			clearInterval(activeCountdowns.get(`${selector}-duration`));
+		if(activeElements.countdowns.has(`${selector}-duration`)){
+			clearInterval(activeElements.countdowns.get(`${selector}-duration`));
 		}
-		if(activeCountdowns.has(`${selector}-cooldown`)){
-			clearInterval(activeCountdowns.get(`${selector}-cooldown`));
+		if(activeElements.countdowns.has(`${selector}-cooldown`)){
+			clearInterval(activeElements.countdowns.get(`${selector}-cooldown`));
 		}
 		stopAbilityTimer(`${selector}-cooldown`, null);
 		stopAbilityTimer(`${selector}-duration`, null);
@@ -1158,18 +1164,18 @@ function startAbilityBarTimer(ability, duration, onYou, extends_duration = false
 	if(!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled) return;
 	let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
 	let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
-	let targetPosition = dragPosition[`${ability.type.toLowerCase()}-timer-bar`];
+	let targetPosition = ui.dragPosition[`${ability.type.toLowerCase()}-timer-bar`];
 	let selectorBar = `#${abilityUsed.id}-${ability.type.toLowerCase()}-timer`;
 	let selectorImage = `#${abilityUsed.id}-${ability.type.toLowerCase()}-image`;
 	ability.duration = parseInt(duration);
-	if(!activeDotBars.has(abilityUsed.id) && !activeBuffBars.has(abilityUsed.id)){
+	if(!activeElements.dotBars.has(abilityUsed.id) && !activeElements.buffBars.has(abilityUsed.id)){
 		switch(abilityUsed.type){
 		case "DoT":{
-			activeDotBars.set(abilityUsed.id, selectorBar);
+			activeElements.dotBars.set(abilityUsed.id, selectorBar);
 			break;
 		}
 		case "Buff":{
-			activeBuffBars.set(abilityUsed.id, selectorBar);
+			activeElements.buffBars.set(abilityUsed.id, selectorBar);
 			break;
 		}
 		}
@@ -1249,12 +1255,12 @@ function startAbilityBarTimer(ability, duration, onYou, extends_duration = false
 	}
 	if(usingAbilityHolder && currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled) $(selectorImage).attr("src", `${ability.icon}`);
 	if(usingAbilityHolder) applyFilterColorToElement(`bar-${abilityUsed.id}`, ability.color);
-	if(activeCountdowns.has(selectorBar) && extends_duration){
+	if(activeElements.countdowns.has(selectorBar) && extends_duration){
 		
 		duration = (parseInt($(selectorBar).val()) / 1000) + parseInt(duration);
 		if(duration > max_duration) duration = max_duration;
 	}
-	if(activeCountdowns.has(selectorBar)) clearInterval(activeCountdowns.get(selectorBar));
+	if(activeElements.countdowns.has(selectorBar)) clearInterval(activeElements.countdowns.get(selectorBar));
 	handleAbilityTTS(ability, selectorBar, onYou);
 	startBarTimer(duration, selectorBar, currentSettings[`${ability.type.toLowerCase()}timerbar`].hidewhendroppedoff);
 }
@@ -1276,7 +1282,7 @@ function startAbilityTimer(duration, selector, previousIcon = null){
 			}, UPDATE_INTERVAL);
 		}
 	}, UPDATE_INTERVAL);
-	activeCountdowns.set(selector, countdownTimer);
+	activeElements.countdowns.set(selector, countdownTimer);
 }
 
 function startBarTimer(duration, selector, hideTimer = false, reverseBar = false){
@@ -1314,7 +1320,7 @@ function startBarTimer(duration, selector, hideTimer = false, reverseBar = false
 			}, UPDATE_INTERVAL);
 		}
 	}, UPDATE_INTERVAL);
-	activeCountdowns.set(selector, countdownTimer);
+	activeElements.countdowns.set(selector, countdownTimer);
 }
 
 
@@ -1335,26 +1341,26 @@ function stopAbilityTimer(selector, previousIcon = null){
 		}
 	}else{
 		$(selector.replace("-duration", "").replace("-cooldown", "")).remove();
-		activeCountdowns.delete(selector);
+		activeElements.countdowns.delete(selector);
 	}
 }
 
 function stopPlayerDurationTimers(playerindex){
-	activePartyCooldowns.forEach((value, key) =>{
+	activeElements.partyCooldowns.forEach((value, key) =>{
 		if(key.split("-")[0] == playerindex){
-			if(activeCountdowns.has(`${value}-duration`)){
-				clearInterval(activeCountdowns.get(`${value}-duration`));
+			if(activeElements.countdowns.has(`${value}-duration`)){
+				clearInterval(activeElements.countdowns.get(`${value}-duration`));
 			}
 			stopAbilityTimer(`${value}-duration`, null);
 		}
 	});
 
 	if(playerindex === 0){
-		activeCountdowns.forEach((value, key) =>{
+		activeElements.countdowns.forEach((value, key) =>{
 			let split = key.split("-");
 			let last = split[split.length - 1];
 			if(last == "duration"){
-				clearInterval(activeCountdowns.get(key));
+				clearInterval(activeElements.countdowns.get(key));
 				stopAbilityTimer(key, null);
 			}
 		});
@@ -1364,29 +1370,29 @@ function stopPlayerDurationTimers(playerindex){
 function removeTimerBar(selector){
 	$(selector).remove();
 	$(selector.replace("timer", "image")).remove();
-	if(activeBuffBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeBuffBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
-	if(activeDotBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeDotBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
+	if(activeElements.buffBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeElements.buffBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
+	if(activeElements.dotBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeElements.dotBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
 }
 
 function resetTimers(){
-	for(let [, countdownTimer] of activeCountdowns){
+	for(let [, countdownTimer] of activeElements.countdowns){
 		clearInterval(countdownTimer);
 	}
-	for(let [, selector] of activeBuffBars){
+	for(let [, selector] of activeElements.buffBars){
 		removeTimerBar(selector);
 	}
-	for(let [, selector] of activeDotBars){
+	for(let [, selector] of activeElements.dotBars){
 		removeTimerBar(selector);
 	}
-	activeBuffBars.clear();
-	activeDotBars.clear();
-	activeCountdowns.clear();
+	activeElements.buffBars.clear();
+	activeElements.dotBars.clear();
+	activeElements.countdowns.clear();
 }
 
 function startTTSTimer(duration, selector, text, timeWhen = currentSettings.general.ttsearly * 1000){
 	toLog([`[StartTTSTimer] Duration: ${duration} Selector: ${selector} Text: ${text} TimeWhen: ${timeWhen}`]);
-	if(!ttsElements.has(selector)){
-		if(currentSettings.general.usewebtts) ttsElements[selector] = setGoogleTTS(text);
+	if(!activeElements.ttsElements.has(selector)){
+		if(currentSettings.general.usewebtts) activeElements.ttsElements[selector] = setGoogleTTS(text);
 	}
 
 	let timems = duration * 1000;
@@ -1394,17 +1400,17 @@ function startTTSTimer(duration, selector, text, timeWhen = currentSettings.gene
 	let ttsTimer = setInterval(function(){
 		timeLeft -= UPDATE_INTERVAL;
 		if(timeLeft <= timeWhen){
-			currentSettings.general.usewebtts ? ttsElements[selector].play() : callOverlayHandler({"call": "cactbotSay", "text": text});
+			currentSettings.general.usewebtts ? activeElements.ttsElements[selector].play() : callOverlayHandler({"call": "cactbotSay", "text": text});
 			clearInterval(ttsTimer);
 			setTimeout(function(){
 			}, UPDATE_INTERVAL);
 		}
 	}, UPDATE_INTERVAL);
-	activeTTS.set(selector, ttsTimer);
+	activeElements.tts.set(selector, ttsTimer);
 }
 
 function handleAbilityTTS(ability, selector, onYou = true){
-	if(activeTTS.has(selector)) clearInterval(activeTTS.get(selector));
+	if(activeElements.tts.has(selector)) clearInterval(activeElements.tts.get(selector));
 	switch(ability.type){
 	case "DoT":
 		if(!currentSettings.dottimerbar.ttsenabled) return;
@@ -1493,8 +1499,8 @@ function setGoogleTTS(text){
 // Stack maintaining functions
 function adjustJobStacks(value, max, noAdd = false){
 	if(!noAdd){
-		currentStats.stacks = value;
-		if(currentPlayer.job === "SMN" && currentStats.maxStacks === 0){
+		gameState.stats.stacks = value;
+		if(gameState.player.job === "SMN" && gameState.stats.maxStacks === 0){
 			initializeSmn(true);
 			max = 4;
 		}
@@ -1517,37 +1523,37 @@ function adjustJobStacks(value, max, noAdd = false){
 }
 
 function initializeSmn(addStack = false){
-	currentStats.stacks = addStack ? 1 : 0;
-	currentStats.maxStacks = 4;
+	gameState.stats.stacks = addStack ? 1 : 0;
+	gameState.stats.maxStacks = 4;
 }
 
 // OverlayPlugin and Cactbot Event Handlers
 function onChangeZone(e){
-	currentZone = {
+	gameState.zone = {
 		id: e.zoneID, 
 		name: e.zoneName,
 		info: {},
 		type: "Unspecified"
 	};
-	if(zoneInfo[e.zoneID] !== undefined){
-		currentZone.info = zoneInfo[e.zoneID];
-		if(currentZone.info.contentType !== undefined) currentZone.type = Object.keys(contentType).find(x => contentType[x] === currentZone.info.contentType);
+	if(GAME_DATA.ZONE_INFO[e.zoneID] !== undefined){
+		gameState.zone.info = GAME_DATA.ZONE_INFO[e.zoneID];
+		if(gameState.zone.info.contentType !== undefined) gameState.zone.type = Object.keys(GAME_DATA.CONTENT_TYPE).find(x => GAME_DATA.CONTENT_TYPE[x] === gameState.zone.info.contentType);
 	} 
 	
-	if(currentPlayer === null) return;
-	if(currentPlayer.job === "SMN") {
+	if(gameState.player === null) return;
+	if(gameState.player.job === "SMN") {
 		initializeSmn();
-		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
 	}
 	resetTimers();
 }
 
 function onInCombatChangedEvent(e){
-	if(inCombat === e.detail.inGameCombat){
+	if(gameState.inCombat === e.detail.inGameCombat){
 		return;
 	}
 
-	inCombat = e.detail.inGameCombat;
+	gameState.inCombat = e.detail.inGameCombat;
 	toggleHideOutOfCombatElements();
 }
 
@@ -1600,20 +1606,20 @@ function onJobChange(job){
 	}
 	if(job === "SMN") {
 		initializeSmn();
-		adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
 		$("#stacks-bar").show();
 	}else{
 		$("#stacks-bar").hide();
 	}
 	resetTimers();
-	if(currentPartyList.length === 1){
-		currentPartyList = [];
+	if(gameState.partyList.length === 1){
+		gameState.partyList = [];
 	}
 }
 
 function onPartyChanged(e){
 	toLog(["[onPartyChanged]", e]);
-	if(currentPlayer === null) return;
+	if(gameState.player === null) return;
 	let partyList = e.party;
 	if(partyList.length === 0){
 		partyList = generateRawPartyList(false);
@@ -1624,31 +1630,31 @@ function onPartyChanged(e){
 }
 
 function onPartyWipe(){
-	if(currentPlayer === null) return;
+	if(gameState.player === null) return;
 	resetTimers();
 	reloadCooldownModules();
 }
 
 function onPlayerChangedEvent(e){
-	if(currentPlayer !== null && currentPlayer.job !== e.detail.job){
+	if(gameState.player !== null && gameState.player.job !== e.detail.job){
 		onJobChange(e.detail.job);
 	}
-	currentPlayer = e.detail;
-	if(currentPartyList.length === 0){
+	gameState.player = e.detail;
+	if(gameState.partyList.length === 0){
 		window.callOverlayHandler({call: "getCombatants", }).then((e) => checkForParty(e));
 	}
 
-	$("#health-bar").attr("max", currentPlayer.maxHP);
-	$("#health-bar").attr("value", currentPlayer.currentHP);
-	$("#health-bar").attr("data-label", currentSettings.healthbar.textenabled ? `${currentPlayer.currentHP} / ${currentPlayer.maxHP}` : "");
+	$("#health-bar").attr("max", gameState.player.maxHP);
+	$("#health-bar").attr("value", gameState.player.currentHP);
+	$("#health-bar").attr("data-label", currentSettings.healthbar.textenabled ? `${gameState.player.currentHP} / ${gameState.player.maxHP}` : "");
 
-	handleManaUpdate(currentPlayer.currentMP, currentPlayer.maxMP);
+	handleManaUpdate(gameState.player.currentMP, gameState.player.maxMP);
 }
 
 // Regex Event Handlers from ../data/regex.js
 /* exported onInstanceStart */
 function onInstanceStart(){
-	generatePartyList(currentRawPartyList);
+	generatePartyList(gameState.rawPartyList);
 	reloadCooldownModules();
 }
 
@@ -1667,26 +1673,26 @@ function handleCountdownTimer(parameters){
 function handleManaTick(current, max){
 	if(!currentSettings.mpticker.enabled) return;
 	if(currentSettings.mpticker.specificjobsenabled){
-		if(!currentSettings.mpticker.specificjobs.includes(currentPlayer.job)) return;
+		if(!currentSettings.mpticker.specificjobs.includes(gameState.player.job)) return;
 	}
-	let delta = current - previous_MP;
-	previous_MP = current;
+	let delta = current - gameState.previous_MP;
+	gameState.previous_MP = current;
 
-	let tick = inCombat ? MP_DATA.combat : MP_DATA.normal;
+	let tick = gameState.inCombat ? GAME_DATA.MP_DATA.combat : GAME_DATA.MP_DATA.normal;
 
 	let umbralTick = 0;
-	if(currentPlayer.job === "BLM"){
-		switch(currentPlayer.jobDetail.umbralStacks){
+	if(gameState.player.job === "BLM"){
+		switch(gameState.player.jobDetail.umbralStacks){
 		case -1: {
-			umbralTick = MP_DATA.umbral_1;
+			umbralTick = GAME_DATA.MP_DATA.umbral_1;
 			break;
 		}
 		case -2: {
-			umbralTick = MP_DATA.umbral_2;
+			umbralTick = GAME_DATA.MP_DATA.umbral_2;
 			break;
 		}
 		case -3: {
-			umbralTick = MP_DATA.umbral_3;
+			umbralTick = GAME_DATA.MP_DATA.umbral_3;
 			break;
 		}
 		}
@@ -1696,8 +1702,8 @@ function handleManaTick(current, max){
 	let duration = 0;
 
 	if (delta === manaTick){
-		duration = MP_DATA.tick;
-		if(currentPlayer.job === "BLM" && currentPlayer.jobDetail.umbralStacks > 0) duration = 0;
+		duration = GAME_DATA.MP_DATA.tick;
+		if(gameState.player.job === "BLM" && gameState.player.jobDetail.umbralStacks > 0) duration = 0;
 	}
 	if (duration > 0) startBarTimer(duration, "#mp-ticker-bar", false, true);
 }
@@ -1709,10 +1715,10 @@ function handleManaUpdate(current, max){
 	$("#mana-bar").attr("data-label", currentSettings.manabar.textenabled ? `${current} / ${max}` : "");
 
 	if(!currentSettings.manabar.jobthresholdsenabled) return;
-	if(currentPlayer.job === "BLM" || currentPlayer.job === "DRK" || currentPlayer.job === "PLD") {
-		if(current <= currentSettings.manabar[currentPlayer.job].low){
+	if(gameState.player.job === "BLM" || gameState.player.job === "DRK" || gameState.player.job === "PLD") {
+		if(current <= currentSettings.manabar[gameState.player.job].low){
 			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.lowcolor})`);
-		} else if(current <= currentSettings.manabar[currentPlayer.job].med){
+		} else if(current <= currentSettings.manabar[gameState.player.job].med){
 			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.medcolor})`);
 		} else{
 			$("#mana-bar").css("--manaBarColor", `var(${currentSettings.manabar.color})`);
@@ -1722,14 +1728,14 @@ function handleManaUpdate(current, max){
 
 /* exported handleSkill */
 function handleSkill(parameters){
-	if(currentPlayer === null) return;
-	let byYou = (parameters.player === currentPlayer.name);
+	if(gameState.player === null) return;
+	let byYou = (parameters.player === gameState.player.name);
 	let onYou = false;
 	if (parameters.target){
-		if(parameters.target === currentPlayer.name) onYou = true;
+		if(parameters.target === gameState.player.name) onYou = true;
 	}
 
-	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
+	let playerIndex = gameState.partyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
 	for (ability of abilityList.filter(x => x.id == parseInt(parameters.skillid, 16))){
 		if(ability === undefined) return;
@@ -1738,13 +1744,13 @@ function handleSkill(parameters){
 		}
 		if(!ability.enabled) return;
 		if(ability.name === "Shoha" && byYou){
-			adjustJobStacks(0, currentStats.maxStacks);
+			adjustJobStacks(0, gameState.stats.maxStacks);
 		}
 		if(ability.name === "Ruin IV" && byYou){
-			adjustJobStacks(currentStats.stacks - 1, currentStats.maxStacks);
-			blockRuinGained = true;
+			adjustJobStacks(gameState.stats.stacks - 1, gameState.stats.maxStacks);
+			gameState.blockRuinGained = true;
 			setTimeout(function(){
-				blockRuinGained = false;
+				gameState.blockRuinGained = false;
 			}, 1000);
 		}
 		if(ability.type === "RaidBuff"){
@@ -1764,11 +1770,11 @@ function handleSkill(parameters){
 						if(!currentSettings.raidbuffs.alwaysshow) {
 							for(let song of abilityList.filter(x => x.hasOwnProperty("extra") && x.extra.hasOwnProperty("is_song"))){
 								let selector = `#raid-buffs-${playerIndex}-${song.id}`;
-								if(activeCountdowns.has(`${selector}-duration`)){
-									clearInterval(activeCountdowns.get(`${selector}-duration`));
+								if(activeElements.countdowns.has(`${selector}-duration`)){
+									clearInterval(activeElements.countdowns.get(`${selector}-duration`));
 								}
-								if(activeCountdowns.has(`${selector}-cooldown`)){
-									clearInterval(activeCountdowns.get(`${selector}-cooldown`));
+								if(activeElements.countdowns.has(`${selector}-cooldown`)){
+									clearInterval(activeElements.countdowns.get(`${selector}-cooldown`));
 								}
 								stopAbilityTimer(`${selector}-cooldown`, null);
 								stopAbilityTimer(`${selector}-duration`, null);
@@ -1812,10 +1818,10 @@ function handleSkill(parameters){
 
 /* exported handleGainEffect */
 function handleGainEffect(parameters){
-	if(currentPlayer === null) return;
-	let byYou = (parameters.player === currentPlayer.name);
-	let onYou = (parameters.target === currentPlayer.name);
-	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
+	if(gameState.player === null) return;
+	let byYou = (parameters.player === gameState.player.name);
+	let onYou = (parameters.target === gameState.player.name);
+	let playerIndex = gameState.partyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
 	for (ability of abilityList.filter(x => x[`name_${currentSettings.language}`].toLowerCase() == parameters.effect.toLowerCase())){
 		if(ability === undefined) return;
@@ -1853,7 +1859,7 @@ function handleGainEffect(parameters){
 
 		}
 		if(ability.type === "Stacks" && byYou){
-			if(!blockRuinGained) adjustJobStacks(currentStats.stacks + 1, currentStats.maxStacks);
+			if(!gameState.blockRuinGained) adjustJobStacks(gameState.stats.stacks + 1, gameState.stats.maxStacks);
 		}
 		if((ability.type === "DoT"  && byYou) || (ability.type === "Buff" && byYou)){
 			if(ability.hasOwnProperty("extra")){
@@ -1873,10 +1879,10 @@ function handleGainEffect(parameters){
 
 /* exported handleLoseEffect */
 function handleLoseEffect(parameters){
-	if(currentPlayer === null) return;
+	if(gameState.player === null) return;
 	//let byYou = (parameters.player === currentPlayer.name);
 	//let onYou = (parameters.target === currentPlayer.name);
-	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
+	let playerIndex = gameState.partyList.findIndex(x => x.name === parameters.player);
 	let ability = undefined;
 	let mergedAbilityList = abilityList.concat(currentSettings.customcd.abilities);
 	for (ability of mergedAbilityList.filter(x => x[`name_${currentSettings.language}`].toLowerCase() == parameters.effect.toLowerCase())){
@@ -1884,8 +1890,8 @@ function handleLoseEffect(parameters){
 		let barSelector = selectorProperties.id;
 		let abilitySelector = `#${barSelector}-${playerIndex}-${ability.id}`;
 
-		if(activeCountdowns.has(`${abilitySelector}-duration`)){
-			clearInterval(activeCountdowns.get(`${abilitySelector}-duration`));
+		if(activeElements.countdowns.has(`${abilitySelector}-duration`)){
+			clearInterval(activeElements.countdowns.get(`${abilitySelector}-duration`));
 		}
 		stopAbilityTimer(`${abilitySelector}-duration`, null);
 	}
@@ -1893,21 +1899,21 @@ function handleLoseEffect(parameters){
 
 /* exported handleDeath */
 function handleDeath(parameters){
-	let you = (parameters.target === currentPlayer.name);
-	let playerIndex = currentPartyList.findIndex(x => x.name === parameters.player);
+	let you = (parameters.target === gameState.player.name);
+	let playerIndex = gameState.partyList.findIndex(x => x.name === parameters.player);
 	stopPlayerDurationTimers(playerIndex);
 	if(you){
-		if(currentPlayer.job === "SMN") {
+		if(gameState.player.job === "SMN") {
 			initializeSmn();
-			adjustJobStacks(currentStats.stacks, currentStats.maxStacks);
+			adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
 		}
 	}
 }
 
 /* exported handlePlayerStats */
 function handlePlayerStats(parameters){
-	currentStats.skillSpeed = (1000 + Math.floor(130 * (parameters.sks - SPEED_LOOKUP.get(currentPlayer.level)) / 3300)) / 1000;
-	currentStats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - SPEED_LOOKUP.get(currentPlayer.level)) / 3300)) / 1000;
+	gameState.stats.skillSpeed = (1000 + Math.floor(130 * (parameters.sks - GAME_DATA.SPEED_LOOKUP.get(gameState.player.level)) / 3300)) / 1000;
+	gameState.stats.spellSpeed = (1000 + Math.floor(130 * (parameters.sps - GAME_DATA.SPEED_LOOKUP.get(gameState.player.level)) / 3300)) / 1000;
 }
 
 // Functions for debugging
