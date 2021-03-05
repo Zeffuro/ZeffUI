@@ -22,6 +22,10 @@ ZeffUI currently has these modules built in:
 
 ![healthmana screenshot](screenshots/healthmana.png)
 
+* MP Ticker
+
+![mpticker gif](screenshots/mpticker.gif)
+
 * Pulltimer
 
 ![pulltimer screenshot](screenshots/pulltimer.png)
@@ -45,6 +49,10 @@ ZeffUI currently has these modules built in:
 * Party Cooldowns
 
 ![partycooldowns screenshot](screenshots/partycooldowns.png)
+
+* Custom Cooldowns
+
+![customcooldowns gif](screenshots/customcd.gif)
 
 * Stacks for certain classes (like Ruin IV stacks for SMN)
 
