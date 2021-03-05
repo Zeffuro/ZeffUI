@@ -1641,12 +1641,20 @@ function onPlayerChangedEvent(e){
 	}
 	gameState.player = e.detail;
 	if(gameState.partyList.length === 0){
+		if(currentSettings.mpticker.specificjobsenabled){
+			if(currentSettings.mpticker.specificjobs.includes(e.detail.job)){
+				$("#mp-ticker-bar").show();
+			}else{
+				$("#mp-ticker-bar").hide();
+			}
+		}
 		window.callOverlayHandler({call: "getCombatants", }).then((e) => checkForParty(e));
 	}
 
 	$("#health-bar").attr("max", gameState.player.maxHP);
 	$("#health-bar").attr("value", gameState.player.currentHP);
 	$("#health-bar").attr("data-label", currentSettings.healthbar.textenabled ? `${gameState.player.currentHP} / ${gameState.player.maxHP}` : "");
+
 
 	handleManaUpdate(gameState.player.currentMP, gameState.player.maxMP);
 }
