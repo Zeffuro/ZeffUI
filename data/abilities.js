@@ -599,6 +599,25 @@ var abilityList = [
 			shares_cooldown: 163
 		}
 	},
+	// Self-Buffs
+	{
+		id: 737,
+		name: "Ley Lines",
+		name_cn: "黑魔纹",
+		name_de: "Ley-Linien",
+		name_en: "Ley Lines",
+		name_fr: "Manalignements",
+		name_jp: "黒魔紋",
+		name_kr: "흑마법 문양",
+		enabled: true,
+		tts: true,
+		ttstype: 1,
+		job: "BLM",
+		type: "Buff",
+		icon: "https://xivapi.com/i/012000/012653.png",
+		color: "--filter-fuchsia",
+		order: 0
+	},
 	// BLU
 	// Dots
 	{
