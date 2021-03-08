@@ -1,4 +1,4 @@
-// ZeffUI globals
+// ZeffUI globals 
 /* global abilityList, jobList, regexList, language */
 
 // External Globals
