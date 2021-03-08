@@ -45,6 +45,7 @@ var activeElements = {
 
 const GAME_DATA = {
 	CONTENT_TYPE: [],
+	EFFECT_TICK: 3.0,
 	MP_DATA: {
 		normal: 0.06,
 		combat: 0.02,
@@ -278,6 +279,58 @@ async function loadSettings(){
 	};
 	$("#mp-ticker-bar").addClass("ltr");
 	$("#mp-ticker-bar").css("transform", `translate(${settings.mpticker.x}px, ${settings.mpticker.y}px)`);
+
+	// DOT TICKER SETTINGS
+	checkAndInitializeSetting(settings, "dotticker", {});
+	checkAndInitializeSetting(settings.dotticker, "enabled", false);
+	checkAndInitializeSetting(settings.dotticker, "hideoutofcombat", false);
+	checkAndInitializeSetting(settings.dotticker, "color", "--filter-grey");
+	checkAndInitializeSetting(settings.dotticker, "scale", 1);
+	checkAndInitializeSetting(settings.dotticker, "rotation", 0);
+	checkAndInitializeSetting(settings.dotticker, "x", 30);
+	checkAndInitializeSetting(settings.dotticker, "y", 264);
+	checkAndInitializeSetting(settings.dotticker, "specificjobsenabled", true);
+	checkAndInitializeSetting(settings.dotticker, "specificjobs", ["BRD"]);
+
+	settings.dotticker.enabled ? $("#dot-ticker-bar").show() : $("#dot-ticker-bar").hide();
+
+	$("#dot-ticker-bar").css("--dottickerColor", `var(${settings.dotticker.color})`);
+	$("#dot-ticker-bar").css("width", settings.dotticker.scale * 154);
+	$("#dot-ticker-bar").css("height", settings.dotticker.scale * 15);
+	$("#dot-ticker-bar").css("-webkit-transform", `rotate(${settings.dotticker.rotation}deg)`);
+	$("#dot-ticker-bar").css("transform-origin", "top left");
+	ui.dragPosition["dot-ticker-bar"] = {
+		x: settings.dotticker.x,
+		y: settings.dotticker.y
+	};
+	$("#dot-ticker-bar").addClass("ltr");
+	$("#dot-ticker-bar").css("transform", `translate(${settings.dotticker.x}px, ${settings.dotticker.y}px)`);
+
+	// HOT TICKER SETTINGS
+	checkAndInitializeSetting(settings, "hotticker", {});
+	checkAndInitializeSetting(settings.hotticker, "enabled", false);
+	checkAndInitializeSetting(settings.hotticker, "hideoutofcombat", false);
+	checkAndInitializeSetting(settings.hotticker, "color", "--filter-grey");
+	checkAndInitializeSetting(settings.hotticker, "scale", 1);
+	checkAndInitializeSetting(settings.hotticker, "rotation", 0);
+	checkAndInitializeSetting(settings.hotticker, "x", 30);
+	checkAndInitializeSetting(settings.hotticker, "y", 280);
+	checkAndInitializeSetting(settings.hotticker, "specificjobsenabled", true);
+	checkAndInitializeSetting(settings.hotticker, "specificjobs", ["AST", "SCH", "MKN", "WHM"]);
+
+	settings.hotticker.enabled ? $("#hot-ticker-bar").show() : $("#hot-ticker-bar").hide();
+
+	$("#hot-ticker-bar").css("--hottickerColor", `var(${settings.hotticker.color})`);
+	$("#hot-ticker-bar").css("width", settings.hotticker.scale * 154);
+	$("#hot-ticker-bar").css("height", settings.hotticker.scale * 15);
+	$("#hot-ticker-bar").css("-webkit-transform", `rotate(${settings.hotticker.rotation}deg)`);
+	$("#hot-ticker-bar").css("transform-origin", "top left");
+	ui.dragPosition["hot-ticker-bar"] = {
+		x: settings.hotticker.x,
+		y: settings.hotticker.y
+	};
+	$("#hot-ticker-bar").addClass("ltr");
+	$("#hot-ticker-bar").css("transform", `translate(${settings.hotticker.x}px, ${settings.hotticker.y}px)`);
 
 	// PULLTIMER SETTINGS
 	checkAndInitializeSetting(settings, "timerbar", {});
@@ -540,6 +593,12 @@ async function saveSettings(){
 	currentSettings.mpticker.x = parseInt(ui.dragPosition["mp-ticker-bar"].x);
 	currentSettings.mpticker.y = parseInt(ui.dragPosition["mp-ticker-bar"].y);
 
+	currentSettings.dotticker.x = parseInt(ui.dragPosition["dot-ticker-bar"].x);
+	currentSettings.dotticker.y = parseInt(ui.dragPosition["dot-ticker-bar"].y);
+	
+	currentSettings.hotticker.x = parseInt(ui.dragPosition["hot-ticker-bar"].x);
+	currentSettings.hotticker.y = parseInt(ui.dragPosition["hot-ticker-bar"].y);
+
 	currentSettings.timerbar.x = parseInt(ui.dragPosition["timer-bar"].x);
 	currentSettings.timerbar.y = parseInt(ui.dragPosition["timer-bar"].y);
 	$("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
@@ -723,13 +782,16 @@ function toggleLock(){
 		}
 	});
 	if(ui.locked){
-		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").show();
-		if(currentSettings.mpticker.specificjobsenabled){
-			if(gameState.player){
-				if(!currentSettings.mpticker.specificjobs.includes(gameState.player.job)) $("#mp-ticker-bar").show();
+		let tickerTypes = ["mp", "dot", "hot"];
+		for (let tickerType of tickerTypes){
+			if(!currentSettings[`${tickerType}ticker`].enabled) $(`#${tickerType}-ticker-bar`).show();
+			if(currentSettings[`${tickerType}ticker`].specificjobsenabled){
+				if(gameState.player){
+					if(!currentSettings[`${tickerType}ticker`].specificjobs.includes(gameState.player.job)) $(`#${tickerType}-ticker-bar`).show();
+				}
 			}
+			$(`#${tickerType}-ticker-bar`).attr("data-label", language.find(x => x.id === `${tickerType}ticker`).string);
 		}
-		$("#mp-ticker-bar").attr("data-label", language.find(x => x.id === "mpticker").string);
 		$("#timer-bar").show();
 		$("#timer-bar").prop("data-label", language.find(x => x.id === "pulltimer").string);
 		$("#dot-timer-bar").show();
@@ -753,14 +815,17 @@ function toggleLock(){
 		}
 		ui.locked = false;
 		$("html").css("border", "solid");
-	}else{		
-		if(!currentSettings.mpticker.enabled) $("#mp-ticker-bar").hide();
-		if(currentSettings.mpticker.specificjobsenabled){
-			if(gameState.player){
-				if(!currentSettings.mpticker.specificjobs.includes(gameState.player.job)) $("#mp-ticker-bar").hide();
+	}else{
+		let tickerTypes = ["mp", "dot", "hot"];
+		for (let tickerType of tickerTypes){
+			if(!currentSettings[`${tickerType}ticker`].enabled) $(`#${tickerType}-ticker-bar`).hide();
+			if(currentSettings[`${tickerType}ticker`].specificjobsenabled){
+				if(gameState.player){
+					if(!currentSettings[`${tickerType}ticker`].specificjobs.includes(gameState.player.job)) $(`#${tickerType}-ticker-bar`).hide();
+				}
 			}
+			$(`#${tickerType}-ticker-bar`).attr("data-label", "");
 		}
-		$("#mp-ticker-bar").attr("data-label", "");
 		$("#timer-bar").hide();
 		$("#dot-timer-bar").hide();
 		$("#buff-timer-bar").hide();
@@ -846,6 +911,8 @@ function toggleHideOutOfCombatElements(){
 	currentSettings.healthbar.hideoutofcombat && !gameState.inCombat ? $("#health-bar").addClass("hide-in-combat") : $("#health-bar").removeClass("hide-in-combat");
 	currentSettings.manabar.hideoutofcombat && !gameState.inCombat  ? $("#mana-bar").addClass("hide-in-combat") : $("#mana-bar").removeClass("hide-in-combat");
 	currentSettings.mpticker.hideoutofcombat && !gameState.inCombat  ? $("#mp-ticker-bar").addClass("hide-in-combat") : $("#mp-ticker-bar").removeClass("hide-in-combat");
+	currentSettings.dotticker.hideoutofcombat && !gameState.inCombat  ? $("#dot-ticker-bar").addClass("hide-in-combat") : $("#dot-ticker-bar").removeClass("hide-in-combat");
+	currentSettings.hotticker.hideoutofcombat && !gameState.inCombat  ? $("#hot-ticker-bar").addClass("hide-in-combat") : $("#hot-ticker-bar").removeClass("hide-in-combat");
 	currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=dot-timer]").addClass("hide-in-combat") : $("[id$=dot-timer]").removeClass("hide-in-combat");
 	currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=dot-image]").addClass("hide-in-combat") : $("[id$=dot-image]").removeClass("hide-in-combat");
 	currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat ? $("[id$=buff-timer]").addClass("hide-in-combat") : $("[id$=buff-timer]").removeClass("hide-in-combat");
@@ -1301,12 +1368,12 @@ function startAbilityTimer(duration, selector, previousIcon = null){
 	activeElements.countdowns.set(selector, countdownTimer);
 }
 
-function startBarTimer(duration, selector, hideTimer = false, reverseBar = false){
-	toLog([`[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer} Reverse: ${reverseBar}`]);
+function startBarTimer(duration, selector, hideTimer = false, reverseBar = false, loop = false){
+	toLog([`[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer} Reverse: ${reverseBar} Loop: ${loop}`]);
 	let timems = duration * 1000;
 	$(selector).attr("max", timems);
 	$(selector).attr("value", reverseBar ? 0 : timems);
-	if(selector != "#mp-ticker-bar") $(selector).attr("data-label", timems);
+	if(!selector.endsWith("ticker-bar")) $(selector).attr("data-label", timems);
 
 	if(hideTimer) $(selector).show();
 
@@ -1320,10 +1387,10 @@ function startBarTimer(duration, selector, hideTimer = false, reverseBar = false
 		}else{
 			visualTime = timeLeft - UPDATE_INTERVAL;
 		}
-		
+
 		$(selector).attr("value", visualTime);
-		if(selector != "#mp-ticker-bar") $(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
-		if(timeLeft <= 0){
+		if(!selector.endsWith("ticker-bar")) $(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
+		if(timeLeft <= 0 && !loop){
 			clearInterval(countdownTimer);
 			setTimeout(function(){
 				if(hideTimer){
@@ -1334,6 +1401,9 @@ function startBarTimer(duration, selector, hideTimer = false, reverseBar = false
 					}
 				}
 			}, UPDATE_INTERVAL);
+		}		
+		if(timeLeft <= 0 && loop) {
+			timeLeft = GAME_DATA.EFFECT_TICK * 1000;
 		}
 	}, UPDATE_INTERVAL);
 	activeElements.countdowns.set(selector, countdownTimer);
@@ -1390,7 +1460,12 @@ function removeTimerBar(selector){
 	if(activeElements.dotBars.has(parseInt(selector.match(/[0-9]+/g)[0]))) activeElements.dotBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
 }
 
-function resetTimers(){
+function resetTimers(){	
+	let tickerTypes = ["mp", "dot", "hot"];
+	for (let tickerType of tickerTypes){
+		$(`#${tickerType}-ticker-bar`).attr("value", 0);
+		$(`#${tickerType}-ticker-bar`).attr("data-label", "");
+	}
 	for(let [, countdownTimer] of activeElements.countdowns){
 		clearInterval(countdownTimer);
 	}
@@ -1603,19 +1678,23 @@ document.addEventListener("onOverlayStateUpdate", function(e) {
 });
 
 function onJobChange(job){
-	if(currentSettings.mpticker.enabled){
-		if(currentSettings.mpticker.specificjobsenabled){
-			if(currentSettings.mpticker.specificjobs.includes(job)){
-				$("#mp-ticker-bar").show();
+	let tickerTypes = ["mp", "dot", "hot"];
+	for (let tickerType of tickerTypes){
+		if(currentSettings[`${tickerType}ticker`].enabled){
+			if(currentSettings[`${tickerType}ticker`].specificjobsenabled){
+				if(currentSettings[`${tickerType}ticker`].specificjobs.includes(job)){
+					$(`#${tickerType}-ticker-bar`).show();
+				}else{
+					$(`#${tickerType}-ticker-bar`).hide();
+				}
 			}else{
-				$("#mp-ticker-bar").hide();
-			}
+				$(`#${tickerType}-ticker-bar`).hide();
+			}		
 		}else{
-			$("#mp-ticker-bar").hide();
-		}		
-	}else{
-		$("#mp-ticker-bar").hide();
+			$(`#${tickerType}-ticker-bar`).hide();
+		}
 	}
+	
 	if(job === "SMN") {
 		initializeSmn();
 		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
@@ -1653,13 +1732,18 @@ function onPlayerChangedEvent(e){
 	}
 	gameState.player = e.detail;
 	if(gameState.partyList.length === 0){
-		if(currentSettings.mpticker.specificjobsenabled){
-			if(currentSettings.mpticker.specificjobs.includes(e.detail.job)){
-				$("#mp-ticker-bar").show();
-			}else{
-				$("#mp-ticker-bar").hide();
+		let tickerTypes = ["mp", "dot", "hot"];
+		for (let tickerType of tickerTypes){
+			if(currentSettings[`${tickerType}ticker`].enabled){
+				if(currentSettings[`${tickerType}ticker`].specificjobsenabled){
+					if(currentSettings[`${tickerType}ticker`].specificjobs.includes(e.detail.job)){
+						$(`#${tickerType}-ticker-bar`).show();
+					}else{
+						$(`#${tickerType}-ticker-bar`).hide();
+					}
+				}
 			}
-		}
+		}		
 		window.callOverlayHandler({call: "getCombatants", }).then((e) => checkForParty(e));
 	}
 
@@ -1695,6 +1779,18 @@ function checkAndSetZoneInfo(zoneId){
 function handleCountdownTimer(parameters){
 	if(!currentSettings.timerbar.enabled) return;
 	startBarTimer(parameters.seconds, "#timer-bar", true);
+}
+
+/* exported handleEffectTick */
+function handleEffectTick(parameters){
+	let type = parameters.effect.toLowerCase();
+	if(!currentSettings[`${type}ticker`].enabled) return;
+	if(currentSettings[`${type}ticker`].specificjobsenabled){
+		if(!currentSettings[`${type}ticker`].specificjobs.includes(gameState.player.job)) return;
+	}
+	if(!activeElements.countdowns.has(`#${type}-ticker-bar`)) {
+		startBarTimer(GAME_DATA.EFFECT_TICK, `#${type}-ticker-bar`, false, true, true);
+	}
 }
 
 function handleManaTick(current, max){

@@ -729,6 +729,31 @@ async function loadSettings(){
 				$("#mptickerSpecificJobsEnabled").prop("checked", settings.mpticker.specificjobsenabled);
 				createSpecificJobs("#mptickerSpecificJobs", settings.mpticker.specificjobs);
 
+				$("#dottickerEnabled").prop("checked", settings.dotticker.enabled);
+				$("#dottickerHideOutOfCombat").prop("checked", settings.dotticker.hideoutofcombat);
+				$("#dottickerColor").val(settings.dotticker.color);
+				setExampleColor($("#dottickerColor"));
+				$("#dottickerScale").attr("value", settings.dotticker.scale);
+				$("#dottickerRotationRange").val(settings.dotticker.rotation);
+				$("#dottickerRotation").val(settings.dotticker.rotation);
+				$("#dottickerX").attr("value", settings.dotticker.x);
+				$("#dottickerY").attr("value", settings.dotticker.y);				
+				$("#dottickerSpecificJobsEnabled").prop("checked", settings.dotticker.specificjobsenabled);
+				createSpecificJobs("#dottickerSpecificJobs", settings.dotticker.specificjobs);
+
+				$("#hottickerEnabled").prop("checked", settings.hotticker.enabled);
+				$("#hottickerHideOutOfCombat").prop("checked", settings.hotticker.hideoutofcombat);
+				$("#hottickerColor").val(settings.hotticker.color);
+				setExampleColor($("#hottickerColor"));
+				$("#hottickerScale").attr("value", settings.hotticker.scale);
+				$("#hottickerRotationRange").val(settings.hotticker.rotation);
+				$("#hottickerRotation").val(settings.hotticker.rotation);
+				$("#hottickerX").attr("value", settings.hotticker.x);
+				$("#hottickerY").attr("value", settings.hotticker.y);				
+				$("#hottickerSpecificJobsEnabled").prop("checked", settings.hotticker.specificjobsenabled);
+				createSpecificJobs("#hottickerSpecificJobs", settings.hotticker.specificjobs);
+
+
 				$("#pulltimerBarEnabled").prop("checked", settings.timerbar.enabled);
 				$("#pulltimerTextEnabled").prop("checked", settings.timerbar.textenabled);
 				$("#pulltimerColor").val(settings.timerbar.color);
@@ -918,6 +943,28 @@ async function saveSettings(closeWindow = true){
 			y: $("#mptickerY").val(),
 			specificjobsenabled: $("#mptickerSpecificJobsEnabled").is(":checked"),
 			specificjobs: currentSettings.mpticker.specificjobs
+		},
+		dotticker: {
+			enabled: $("#dottickerEnabled").is(":checked"),
+			hideoutofcombat: $("#dottickerHideOutOfCombat").is(":checked"),
+			color: $("#dottickerColor").val(),
+			scale: $("#dottickerScale").val(),
+			rotation: $("#dottickerRotation").val(),
+			x: $("#dottickerX").val(),
+			y: $("#dottickerY").val(),
+			specificjobsenabled: $("#dottickerSpecificJobsEnabled").is(":checked"),
+			specificjobs: currentSettings.dotticker.specificjobs
+		},
+		hotticker: {
+			enabled: $("#hottickerEnabled").is(":checked"),
+			hideoutofcombat: $("#hottickerHideOutOfCombat").is(":checked"),
+			color: $("#hottickerColor").val(),
+			scale: $("#hottickerScale").val(),
+			rotation: $("#hottickerRotation").val(),
+			x: $("#hottickerX").val(),
+			y: $("#hottickerY").val(),
+			specificjobsenabled: $("#hottickerSpecificJobsEnabled").is(":checked"),
+			specificjobs: currentSettings.hotticker.specificjobs
 		},
 		timerbar: {
 			enabled: $("#pulltimerBarEnabled").is(":checked"),

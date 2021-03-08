@@ -384,6 +384,150 @@
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
 							<div class="custom-control custom-switch">
+								<input type="checkbox" class="custom-control-input" id="dottickerEnabled">
+								<label id="lang_dotticker" class="custom-control-label" for="dottickerEnabled">MP Ticker</label>
+							</div>
+						</div>
+						<div class="card-body">
+							<p id="lang_dottickerdescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<div class="form-group row text-right">
+								<label id="lang_posx_11" class="control-label col-sm-4" for="dottickerX">Position X</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dottickerX">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_posy_11" class="col-sm-4" for="dottickerY">Position Y</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dottickerY">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_scale_11" class="col-sm-4" for="dottickerScale">Scale</label>
+								<div class="col-sm-8">
+									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="dottickerScale">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_rotation_11" class="col-sm-4" for="dottickerRotation">Rotation</label>
+								<div class="col-sm-8">
+									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="dottickerRotation" oninput="$('#dottickerRotationRange').val(this.value)">
+									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="dottickerRotationRange" oninput="$('#dottickerRotation').val(this.value)">
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(0); $('#dottickerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(45); $('#dottickerRotationRange').val(45)">&nbsp;45&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(90); $('#dottickerRotationRange').val(90)">&nbsp;90&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(135); $('#dottickerRotationRange').val(135)">135</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(180); $('#dottickerRotationRange').val(180)">180</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(225); $('#dottickerRotationRange').val(225)">225</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(270); $('#dottickerRotationRange').val(270)">270</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(315); $('#dottickerRotationRange').val(315)">315</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(360); $('#dottickerRotationRange').val(360)">360</button>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="dottickerHideOutOfCombat">
+									<label id="lang_hideoutofcombat_10" class="custom-control-label" for="dottickerHideOutOfCombat">Hide out of Combat</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_color_6" class="control-label col-sm-4" for="dottickerColor">Color</label>
+								<div class="col-sm-6">
+									<select class="form-control form-control-sm" id="dottickerColor">
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label id="lang_example_5" class="control-label col-sm-4 text-right" for="dottickerExample">Example</label>
+								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="dottickerExample" class="styled-bar" value="5000" max="10000"></progress>
+							</div>
+							<div class="form-group">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="dottickerSpecificJobsEnabled">
+									<label id="lang_specificjobsonly_1" class="custom-control-label" for="dottickerSpecificJobsEnabled">Specific Jobs Only</label>
+								</div>
+							</div>
+							<div class="form-group" id="dottickerSpecificJobs"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+						<div class="card-header">
+							<div class="custom-control custom-switch">
+								<input type="checkbox" class="custom-control-input" id="hottickerEnabled">
+								<label id="lang_hotticker" class="custom-control-label" for="hottickerEnabled">MP Ticker</label>
+							</div>
+						</div>
+						<div class="card-body">
+							<p id="lang_hottickerdescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<div class="form-group row text-right">
+								<label id="lang_posx_12" class="control-label col-sm-4" for="hottickerX">Position X</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="hottickerX">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_posy_12" class="col-sm-4" for="hottickerY">Position Y</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="hottickerY">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_scale_12" class="col-sm-4" for="hottickerScale">Scale</label>
+								<div class="col-sm-8">
+									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="hottickerScale">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_rotation_12" class="col-sm-4" for="hottickerRotation">Rotation</label>
+								<div class="col-sm-8">
+									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="hottickerRotation" oninput="$('#hottickerRotationRange').val(this.value)">
+									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="hottickerRotationRange" oninput="$('#hottickerRotation').val(this.value)">
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(0); $('#hottickerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(45); $('#hottickerRotationRange').val(45)">&nbsp;45&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(90); $('#hottickerRotationRange').val(90)">&nbsp;90&nbsp;</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(135); $('#hottickerRotationRange').val(135)">135</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(180); $('#hottickerRotationRange').val(180)">180</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(225); $('#hottickerRotationRange').val(225)">225</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(270); $('#hottickerRotationRange').val(270)">270</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(315); $('#hottickerRotationRange').val(315)">315</button>
+									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(360); $('#hottickerRotationRange').val(360)">360</button>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="hottickerHideOutOfCombat">
+									<label id="lang_hideoutofcombat_11" class="custom-control-label" for="hottickerHideOutOfCombat">Hide out of Combat</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_color_7" class="control-label col-sm-4" for="hottickerColor">Color</label>
+								<div class="col-sm-6">
+									<select class="form-control form-control-sm" id="hottickerColor">
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label id="lang_example_6" class="control-label col-sm-4 text-right" for="hottickerExample">Example</label>
+								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="hottickerExample" class="styled-bar" value="5000" max="10000"></progress>
+							</div>
+							<div class="form-group">
+								<div class="custom-control custom-switch">
+									<input type="checkbox" class="custom-control-input" id="hottickerSpecificJobsEnabled">
+									<label id="lang_specificjobsonly_2" class="custom-control-label" for="hottickerSpecificJobsEnabled">Specific Jobs Only</label>
+								</div>
+							</div>
+							<div class="form-group" id="hottickerSpecificJobs"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+						<div class="card-header">
+							<div class="custom-control custom-switch">
 								<input type="checkbox" class="custom-control-input" id="buffBarEnabled">
 								<label id="lang_bufftimers" class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
 							</div>

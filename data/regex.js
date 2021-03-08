@@ -129,6 +129,15 @@ var regexList =
 			}
 		]
 	},
+	"18":{
+		regex: /] 18:/,
+		matches: [
+			{
+				"regex": /18:(?<ability>.*)?(?<effect>DoT|HoT) Tick on (?<target>.*) for (?<value>\d{1,6}) damage\./,
+				"function": "handleEffectTick"
+			}
+		]
+	},
 	"19":{
 		regex: /] 19:/,
 		matches: [

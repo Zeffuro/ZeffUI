@@ -94,6 +94,12 @@
 #mp-ticker-bar {
 	touch-action: none;
 }
+#dot-ticker-bar {
+	touch-action: none;
+}
+#hot-ticker-bar {
+	touch-action: none;
+}
 #raid-buffs-bar {
 	display: none;
 	touch-action: none;
@@ -130,6 +136,12 @@
 }
 #mp-ticker-bar::-webkit-progress-value {
 	filter: var(--mptickerColor);
+}
+#dot-ticker-bar::-webkit-progress-value {
+	filter: var(--dottickerColor);
+}
+#hot-ticker-bar::-webkit-progress-value {
+	filter: var(--hottickerColor);
 }
 #timer-bar::-webkit-progress-value {
 	filter: var(--pulltimerBarColor);
