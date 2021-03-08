@@ -176,6 +176,7 @@ var language = [
 	// CONTEXT MENU
 	{ id: "lock", string: "Lock/Unlock Bars" },
 	{ id: "grid", string: "Toggle Grid" },
+	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "Settings" },
 	{ id: "close", string: "Close" }
 ];

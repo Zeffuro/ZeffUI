@@ -176,6 +176,7 @@ var language = [
 	// CONTEXT MENU
 	{ id: "lock", string: "锁定 / 解锁模块" },
 	{ id: "grid", string: "切换网格" },
+	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "设置" },
 	{ id: "close", string: "关闭菜单" }
 ];

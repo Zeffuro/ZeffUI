@@ -176,6 +176,7 @@ var language = [
 	// CONTEXT MENU
 	{ id: "lock", string: "Verrouiller/Déverrouiller les barres" },
 	{ id: "grid", string: "Activer/Désactiver la grille" },
+	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "Paramètres" },
 	{ id: "close", string: "Fermer"	}
 ];

@@ -176,6 +176,7 @@ var language = [
 	// CONTEXT MENU
 	{ id: "lock", string: "HUD 잠금/해제" },
 	{ id: "grid", string: "격자판 보기/숨기기" },
+	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "설정" },
 	{ id: "close", string: "닫기" }
 ];

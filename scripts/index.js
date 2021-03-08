@@ -82,13 +82,23 @@ $(function() {
 });
 
 async function startZeffUI(){
-	import("https://quisquous.github.io/cactbot/resources/content_type.js").then((data) => { Object.assign(GAME_DATA.CONTENT_TYPE, data.default); });
-	import("https://quisquous.github.io/cactbot/resources/zone_info.js").then((data) => { Object.assign(GAME_DATA.ZONE_INFO, data.default); });
+	initializeContentZoneImports();
 	startOverlayEvents();
 	await loadSettings();
 	generateJobStacks();
 	toggleHideOutOfCombatElements();
 	console.log("ZeffUI fully loaded.");
+}
+
+function initializeContentZoneImports(){
+	import("https://quisquous.github.io/cactbot/resources/content_type.js").then((data) => { 
+		Object.assign(GAME_DATA.CONTENT_TYPE, data.default);
+		import("https://quisquous.github.io/cactbot/resources/zone_info.js").then((data) => { 
+			Object.assign(GAME_DATA.ZONE_INFO, data.default);
+			if(gameState.zone !== undefined) checkAndSetZoneInfo(gameState.zone.id);
+		});
+	});
+
 }
 
 // Settings
@@ -581,6 +591,10 @@ function loadContextMenu(){
 				toggleGrid();
 				break;
 			}
+			case "reload":{
+				location.reload();
+				break;
+			}
 			case "settings":{
 				let parameters = new URLSearchParams(window.location.search);
 				let settingsUrl = parameters.has("OVERLAY_WS") ? `settings.html?OVERLAY_WS=${parameters.get("OVERLAY_WS")}` : "settings.html";
@@ -636,6 +650,7 @@ function loadContextMenu(){
 		items: {
 			"lock": {name: language.find(x => x.id === "lock").string, icon: "fas fa-lock-open"},
 			"grid": {name: language.find(x => x.id === "grid").string, icon: "fas fa-border-all"},
+			"reload": {name: language.find(x => x.id === "reload").string, icon: "fas fa-sync-alt"},
 			"settings": {name: language.find(x => x.id === "settings").string, icon: "fas fa-cog"},
 			"fold1": {
 				name: language.find(x => x.id === "language").string, icon: "fas fa-globe-americas",
@@ -860,7 +875,7 @@ function generateJobStacks(){
 }
 
 function reloadCooldownModules(){
-	toLog(["[reloadCooldownModules] CurrentPartyList:", gameState.partyList]);
+	toLog([`[reloadCooldownModules] Zone: ${gameState.zone.type} CurrentPartyList:`, gameState.partyList]);
 	if(gameState.player.job === "SMN") {
 		initializeSmn();
 		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
@@ -1073,14 +1088,15 @@ function generatePartyList(party){
 	gameState.partyList = [];
 	for (let partyMember of party)
 	{
-		if(!partyMember.inParty && !currentSettings.includealliance && partyMember.name !== gameState.player.name) break;
-		gameState.partyList.push({
-			id: partyMember.id,
-			inParty: partyMember.inParty,
-			job: jobList.find(x => x.id === partyMember.job),
-			name: partyMember.name,
-			worldId: partyMember.worldId
-		});
+		if(!(!partyMember.inParty && !currentSettings.includealliance && partyMember.name !== gameState.player.name)){
+			gameState.partyList.push({
+				id: partyMember.id,
+				inParty: partyMember.inParty,
+				job: jobList.find(x => x.id === partyMember.job),
+				name: partyMember.name,
+				worldId: partyMember.worldId
+			});
+		}
 	}
 	let jobOrder = currentSettings.partyorder;
 	let currentPlayerElement = gameState.partyList.find(x => x.name === gameState.player.name);
@@ -1226,26 +1242,26 @@ function startAbilityBarTimer(ability, duration, onYou, extends_duration = false
 			switch(parseInt(currentSettings[`${ability.type.toLowerCase()}timerbar`].growdirection)){
 			case 1:{
 				// Down
-				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20);
+				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 30);
 				top = top + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4);
 				break;
 			}
 			case 2:{
 				// Up
-				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20);
+				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 30);
 				top = top - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4);
 				break;
 			}
 			case 3:{
 				// Left
 				top = top - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4);
-				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20);
+				left = left - (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 30);
 				break;
 			}
 			case 4:{
 				// Right
 				top = top - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 4);
-				left = left + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 20);
+				left = left + (currentSettings[`${ability.type.toLowerCase()}timerbar`].padding * ability.order) - (currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 30);
 				break;
 			}
 			}
@@ -1535,12 +1551,8 @@ function onChangeZone(e){
 		info: {},
 		type: "Unspecified"
 	};
-	if(GAME_DATA.ZONE_INFO[e.zoneID] !== undefined){
-		gameState.zone.info = GAME_DATA.ZONE_INFO[e.zoneID];
-		if(gameState.zone.info.contentType !== undefined) gameState.zone.type = Object.keys(GAME_DATA.CONTENT_TYPE).find(x => GAME_DATA.CONTENT_TYPE[x] === gameState.zone.info.contentType);
-	} 
-	
 	if(gameState.player === null) return;
+	checkAndSetZoneInfo(e.zoneID);
 	if(gameState.player.job === "SMN") {
 		initializeSmn();
 		adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
@@ -1670,6 +1682,13 @@ function onInstanceStart(){
 function onInstanceEnd(){
 	resetTimers();
 	reloadCooldownModules();
+}
+
+function checkAndSetZoneInfo(zoneId){
+	if(GAME_DATA.ZONE_INFO[zoneId] !== undefined){
+		gameState.zone.info = GAME_DATA.ZONE_INFO[zoneId];
+		if(gameState.zone.info.contentType !== undefined) gameState.zone.type = Object.keys(GAME_DATA.CONTENT_TYPE).find(x => GAME_DATA.CONTENT_TYPE[x] === gameState.zone.info.contentType);
+	} 	
 }
 
 /* exported handleCountdownTimer */

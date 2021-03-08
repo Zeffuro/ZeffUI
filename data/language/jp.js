@@ -176,6 +176,7 @@ var language = [
 	// CONTEXT MENU
 	{ id: "lock", string: "ロックをON/OFF" },
 	{ id: "grid", string: "グリッドをON/OFF" },
+	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "設定" },
 	{ id: "close", string: "閉じる" }
 ];
