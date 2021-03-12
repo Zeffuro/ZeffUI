@@ -1,3 +1,4 @@
+/* prettier-ignore */
 /* exported language */
 var language = [
 	{ id: "settingsheader", string: "환경설정" },

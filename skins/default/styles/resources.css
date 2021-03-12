@@ -1,19 +1,19 @@
 .stack-background {
-	background-image: url("../images/arrow.png");
-	background-size: cover;
-	position: relative;
-	image-rendering: pixelated;
-	float: left;
+    background-image: url("../images/arrow.png");
+    background-size: cover;
+    position: relative;
+    image-rendering: pixelated;
+    float: left;
 }
 .styled-bar::-webkit-progress-bar {
-	background: rgba(0,0,0,0);
-	background-image: url("../images/bar.png");
-	background-size: cover;
-	image-rendering: pixelated;
+    background: rgba(0, 0, 0, 0);
+    background-image: url("../images/bar.png");
+    background-size: cover;
+    image-rendering: pixelated;
 }
 .styled-bar::-webkit-progress-value {
-	background: rgba(0,0,0,0);	
-	background-image: url("../images/fill.png");
-	background-size: cover;
-	image-rendering: pixelated;
+    background: rgba(0, 0, 0, 0);
+    background-image: url("../images/fill.png");
+    background-size: cover;
+    image-rendering: pixelated;
 }

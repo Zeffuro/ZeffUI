@@ -1,4 +1,5 @@
-﻿/* exported language */
+﻿/* prettier-ignore */
+/* exported language */
 var language = [
 	{ id: "settingsheader", string: "Paramètres" },
 	{ id: "savesettings", string: "Sauvegarder les paramètres" },

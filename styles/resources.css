@@ -1,185 +1,187 @@
 * {
-	font-family: var(--defaultFont);
+    font-family: var(--defaultFont);
 }
 .bar {
-	position: absolute;
-	width: 154px;
-	height: 15px;
+    position: absolute;
+    width: 154px;
+    height: 15px;
 }
 .rtl {
-	right: 0px;
-	bottom: 0px;
+    right: 0px;
+    bottom: 0px;
 }
 .ltr {
-	left: 0px;
-	top: 0px;
+    left: 0px;
+    top: 0px;
 }
 .hide-in-combat {
-	visibility: hidden;
+    visibility: hidden;
 }
 .stack-hidden {
-	visibility: hidden;
+    visibility: hidden;
 }
 .stack-color {
-	filter: var(--stacksColor);
+    filter: var(--stacksColor);
 }
 .small-image {
-	position: absolute;
-	width: auto;
-	height: 22px;
-	border: 0px;
+    position: absolute;
+    width: auto;
+    height: 22px;
+    border: 0px;
 }
 .ability-row {
-	display: block;
+    display: block;
 }
 .ability-box {
-	display: flex;
+    display: flex;
 }
 .ability-container {
-	position: relative;
+    position: relative;
 }
-.ability-image, .icon-active, .icon-overlay {
-	position: absolute;
-	margin: 0 auto;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
+.ability-image,
+.icon-active,
+.icon-overlay {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 .ability-text {
-	position: absolute;
-	margin: 0 auto;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
-	text-align: center;
+    position: absolute;
+    margin: 0 auto;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    text-align: center;
 }
 #grid {
-	position: absolute; 
-	left: 0px; 
-	top: 0px;
-	z-index: -1;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
 }
 #dot-image {
-	display: none;
+    display: none;
 }
 #buff-image {
-	display: none;
+    display: none;
 }
 #dot-timer-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #buff-timer-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #stacks-bar {
-	position: absolute;
-	left: 0px; 
-	top: 0px;
-	touch-action: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    touch-action: none;
 }
 #timer-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #health-bar {
-	touch-action: none;
+    touch-action: none;
 }
 #mana-bar {
-	touch-action: none;
+    touch-action: none;
 }
 #mp-ticker-bar {
-	touch-action: none;
+    touch-action: none;
 }
 #dot-ticker-bar {
-	touch-action: none;
+    touch-action: none;
 }
 #hot-ticker-bar {
-	touch-action: none;
+    touch-action: none;
 }
 #raid-buffs-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #mitigation-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #party-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #customcd-bar {
-	display: none;
-	touch-action: none;
+    display: none;
+    touch-action: none;
 }
 #health-bar::-webkit-progress-value {
-	filter: var(--healthBarColor);
+    filter: var(--healthBarColor);
 }
 #health-bar:after {
-	font-size: var(--healthFontSize);
-	font-family: var(--healthFont);
-	left: var(--healthFontX);
-	top: var(--healthFontY);
+    font-size: var(--healthFontSize);
+    font-family: var(--healthFont);
+    left: var(--healthFontX);
+    top: var(--healthFontY);
 }
 #mana-bar::-webkit-progress-value {
-	filter: var(--manaBarColor);
+    filter: var(--manaBarColor);
 }
 #mana-bar:after {
-	font-size: var(--manaFontSize);
-	font-family: var(--manaFont);
-	left: var(--manaFontX);
-	top: var(--manaFontY);
+    font-size: var(--manaFontSize);
+    font-family: var(--manaFont);
+    left: var(--manaFontX);
+    top: var(--manaFontY);
 }
 #mp-ticker-bar::-webkit-progress-value {
-	filter: var(--mptickerColor);
+    filter: var(--mptickerColor);
 }
 #dot-ticker-bar::-webkit-progress-value {
-	filter: var(--dottickerColor);
+    filter: var(--dottickerColor);
 }
 #hot-ticker-bar::-webkit-progress-value {
-	filter: var(--hottickerColor);
+    filter: var(--hottickerColor);
 }
 #timer-bar::-webkit-progress-value {
-	filter: var(--pulltimerBarColor);
+    filter: var(--pulltimerBarColor);
 }
 #timer-bar:after {
-	font-size: var(--timerFontSize);
-	font-family: var(--timerFont);
-	left: var(--timerFontX);
-	top: var(--timerFontY);
+    font-size: var(--timerFontSize);
+    font-family: var(--timerFont);
+    left: var(--timerFontX);
+    top: var(--timerFontY);
 }
 .dot-font-size:after {
-	font-size: var(--dotFontSize);
-	font-family: var(--dotFont);
-	left: var(--dotFontX);
-	top: var(--dotFontY);
+    font-size: var(--dotFontSize);
+    font-family: var(--dotFont);
+    left: var(--dotFontX);
+    top: var(--dotFontY);
 }
 .buff-font-size:after {
-	font-size: var(--buffFontSize);
-	font-family: var(--buffFont);
-	left: var(--buffFontX);
-	top: var(--buffFontY);
+    font-size: var(--buffFontSize);
+    font-family: var(--buffFont);
+    left: var(--buffFontX);
+    top: var(--buffFontY);
 }
-progress[value] {	
-	-webkit-appearance: none;
+progress[value] {
+    -webkit-appearance: none;
 }
 progress:after {
-	position: relative;
-	font-family: Arial, Times, serif;
-	font-weight: bold;
-	color: white;
-	content: attr(data-label);
-	z-index: 10;
+    position: relative;
+    font-family: Arial, Times, serif;
+    font-weight: bold;
+    color: white;
+    content: attr(data-label);
+    z-index: 10;
 }
 .anchor-text {
-	position: absolute;
-	width: 200px;
-	font-family: Arial, Times, serif;
-	font-weight: bold;
-	color: white;
-	z-index: 10;
+    position: absolute;
+    width: 200px;
+    font-family: Arial, Times, serif;
+    font-weight: bold;
+    color: white;
+    z-index: 10;
 }

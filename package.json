@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/Zeffuro/ZeffUI#readme",
   "devDependencies": {
-    "eslint-plugin-html": "^6.0.0"
+    "eslint": "^7.22.0",
+    "eslint-plugin-html": "^6.0.0",
+    "prettier": "^2.2.1"
   }
 }

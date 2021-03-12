@@ -1,3 +1,4 @@
+/* prettier-ignore */
 :root{
 	--filter-dark-red: brightness(10%) sepia(100) saturate(100) hue-rotate(25deg);
 	--filter-bright-red: brightness(10%) sepia(100) saturate(100) hue-rotate(0deg);

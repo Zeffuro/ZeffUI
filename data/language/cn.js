@@ -1,3 +1,4 @@
+/* prettier-ignore */
 /* exported language */
 var language = [
 	{ id: "settingsheader", string: "设置" },
