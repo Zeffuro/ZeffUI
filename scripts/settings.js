@@ -386,7 +386,7 @@ function searchCustomAbility() {
         '<div id="customcdLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>',
     );
     $.getJSON(
-        `http://fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`,
+        `https://fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`,
         function (data) {
             foundAbilities = data;
             $("#customcdAbilitySelect").empty();
