@@ -217,7 +217,7 @@ async function loadSettings() {
         "--healthBarColor",
         `var(${settings.healthbar.color})`,
     );
-    $("#health-bar").css("width", settings.healthbar.scale * 154);
+    $("#health-bar").css("width", settings.healthbar.scale * 160);
     $("#health-bar").css("height", settings.healthbar.scale * 15);
     $("#health-bar").css("--healthFont", settings.healthbar.font);
     $("#health-bar").css(
@@ -274,7 +274,7 @@ async function loadSettings() {
     settings.manabar.enabled ? $("#mana-bar").show() : $("#mana-bar").hide();
 
     $("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
-    $("#mana-bar").css("width", settings.manabar.scale * 154);
+    $("#mana-bar").css("width", settings.manabar.scale * 160);
     $("#mana-bar").css("height", settings.manabar.scale * 15);
     $("#mana-bar").css("--manaFont", settings.manabar.font);
     $("#mana-bar").css(
@@ -312,7 +312,7 @@ async function loadSettings() {
         "--mptickerColor",
         `var(${settings.mpticker.color})`,
     );
-    $("#mp-ticker-bar").css("width", settings.mpticker.scale * 154);
+    $("#mp-ticker-bar").css("width", settings.mpticker.scale * 160);
     $("#mp-ticker-bar").css("height", settings.mpticker.scale * 15);
     $("#mp-ticker-bar").css(
         "-webkit-transform",
@@ -349,7 +349,7 @@ async function loadSettings() {
         "--dottickerColor",
         `var(${settings.dotticker.color})`,
     );
-    $("#dot-ticker-bar").css("width", settings.dotticker.scale * 154);
+    $("#dot-ticker-bar").css("width", settings.dotticker.scale * 160);
     $("#dot-ticker-bar").css("height", settings.dotticker.scale * 15);
     $("#dot-ticker-bar").css(
         "-webkit-transform",
@@ -391,7 +391,7 @@ async function loadSettings() {
         "--hottickerColor",
         `var(${settings.hotticker.color})`,
     );
-    $("#hot-ticker-bar").css("width", settings.hotticker.scale * 154);
+    $("#hot-ticker-bar").css("width", settings.hotticker.scale * 160);
     $("#hot-ticker-bar").css("height", settings.hotticker.scale * 15);
     $("#hot-ticker-bar").css(
         "-webkit-transform",
@@ -423,7 +423,7 @@ async function loadSettings() {
         "--pulltimerBarColor",
         `var(${settings.timerbar.color})`,
     );
-    $("#timer-bar").css("width", settings.timerbar.scale * 154);
+    $("#timer-bar").css("width", settings.timerbar.scale * 160);
     $("#timer-bar").css("height", settings.timerbar.scale * 15);
     $("#timer-bar").css("--timerFont", settings.timerbar.font);
     $("#timer-bar").css(
@@ -462,7 +462,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.dottimerbar, "y", 50);
     checkAndInitializeSetting(settings.dottimerbar, "font", "Arial");
 
-    $("#dot-timer-bar").css("width", settings.dottimerbar.scale * 154);
+    $("#dot-timer-bar").css("width", settings.dottimerbar.scale * 160);
     $("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
     $("#dot-timer-bar").css("--dotFont", settings.dottimerbar.font);
     $("#dot-bar").css(
@@ -1720,18 +1720,31 @@ function startAbilityIconTimers(
     let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
 
     let abilityIndex = `${playerIndex}-${ability.id}`;
+    let abilityHasCharges = false;
     if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
         if (Object.prototype.hasOwnProperty.call(ability.extra, "charges")) {
+            abilityHasCharges = true;
             let max_charges = ability.extra.charges;
             if (!activeElements.currentCharges.has(abilityIndex)) {
                 activeElements.currentCharges.set(
                     abilityIndex,
                     max_charges - 1,
                 );
+            } else {
+                let currentCharges = activeElements.currentCharges.get(
+                    abilityIndex,
+                );
+                activeElements.currentCharges.set(
+                    abilityIndex,
+                    currentCharges - 1,
+                );
             }
         }
     }
-    if (selectedActive.has(`${playerIndex}-${ability.id}`)) {
+    if (
+        selectedActive.has(`${playerIndex}-${ability.id}`) &&
+        !abilityHasCharges
+    ) {
         if (activeElements.countdowns.has(`${selector}-duration`)) {
             clearInterval(
                 activeElements.countdowns.get(`${selector}-duration`),

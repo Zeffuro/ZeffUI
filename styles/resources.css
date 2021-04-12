@@ -1,10 +1,9 @@
+@font-face {
+    font-family: "ITC Avant Garde Gothic LT";
+    src: url("../data/fonts/AvantGardeLT-Medium.otf") format("opentype");
+}
 * {
     font-family: var(--defaultFont);
-}
-.bar {
-    position: absolute;
-    width: 154px;
-    height: 15px;
 }
 .rtl {
     right: 0px;

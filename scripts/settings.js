@@ -165,6 +165,11 @@ function createSkinSelects() {
             language.find((x) => x.id === "skinmaterialdiscord").string
         }</option>`,
     );
+    $("#skinSelect").append(
+        `<option value="hydaelyn">${
+            language.find((x) => x.id === "skinhydaelyn").string
+        }</option>`,
+    );
 }
 
 function createFontSelects() {
@@ -186,6 +191,8 @@ function createFontSelects() {
 		// macOS
 		"American Typewriter", "Andale Mono", "Arial", "Arial Black", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Avenir", "Avenir Next", "Avenir Next Condensed", "Baskerville", "Big Caslon", "Bodoni 72", "Bodoni 72 Oldstyle", "Bodoni 72 Smallcaps", "Bradley Hand", "Brush Script MT", "Chalkboard", "Chalkboard SE", "Chalkduster", "Charter", "Cochin", "Comic Sans MS", "Copperplate", "Courier", "Courier New", "Didot", "DIN Alternate", "DIN Condensed", "Futura", "Geneva", "Georgia", "Gill Sans", "Helvetica", "Helvetica Neue", "Herculanum", "Hoefler Text", "Impact", "Lucida Grande", "Luminari", "Marker Felt", "Menlo", "Microsoft Sans Serif", "Monaco", "Noteworthy", "Optima", "Palatino", "Papyrus", "Phosphate", "Rockwell", "Savoye LET", "SignPainter", "Skia", "Snell Roundhand", "Tahoma", "Times", "Times New Roman", "Trattatello", "Trebuchet MS", "Verdana", "Zapfino",
 	].sort());
+
+    let customFonts = new Set(["ITC Avant Garde Gothic LT"]);
 
     (async () => {
         await document.fonts.ready;
@@ -222,6 +229,38 @@ function createFontSelects() {
                     `<option value="${font}" style="font-family:${font}">${font}</option>`,
                 );
             }
+        }
+        for (const font of customFonts.values()) {
+            $("#defaultFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#healthFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#manaFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#pulltimerFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#buffFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#dotFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#raidbuffFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#mitigationFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#partyFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
+            $("#customcdFont").append(
+                `<option value="${font}" style="font-family:${font}">${font}</option>`,
+            );
         }
         $("#defaultFont").val(currentFont.default);
         $("#healthFont").val(currentFont.health);

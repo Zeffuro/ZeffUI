@@ -1,3 +1,8 @@
+.bar {
+    position: absolute;
+    width: 160px;
+    height: 15px;
+}
 .stack-background {
     background-image: url("../images/arrow.png");
     background-size: cover;

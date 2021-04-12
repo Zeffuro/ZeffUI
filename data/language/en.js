@@ -117,6 +117,7 @@ var language = [
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
 	{ id: "skinmaterialdiscord", string: "Material Discord (by skotlex)" },
+	{ id: "skinhydaelyn", string: "Hydaelyn UI (by Vec7rex)" },
 	// COLORS
 	{ id: "colordarkred", string: "Dark Red" },
 	{ id: "colorbrightred", string: "Bright Red" },

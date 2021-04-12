@@ -117,6 +117,7 @@ var language = [
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
 	{ id: "skinmaterialdiscord", string: "Material Discord（由skotlex设计）" },
+	{ id: "skinhydaelyn", string: "Hydaelyn UI (by Vec7rex)" },
 	// COLORS
 	{ id: "colordarkred", string: "暗红色" },
 	{ id: "colorbrightred", string: "鲜红色" },
