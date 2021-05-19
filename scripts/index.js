@@ -96,6 +96,7 @@ async function startZeffUI() {
 function initializeContentZoneImports() {
     Object.assign(GAME_DATA.CONTENT_TYPE, content_type);
     Object.assign(GAME_DATA.ZONE_INFO, zone_info);
+    if (gameState.zone !== undefined) checkAndSetZoneInfo(gameState.zone.id);
 }
 
 // Settings
