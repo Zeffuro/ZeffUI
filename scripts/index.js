@@ -1,5 +1,5 @@
 // ZeffUI globals
-/* global abilityList, jobList, regexList, language */
+/* global abilityList, jobList, regexList, language, zone_info, content_type */
 
 // External Globals
 /* global addOverlayListener, startOverlayEvents, interact, callOverlayHandler */
@@ -94,18 +94,8 @@ async function startZeffUI() {
 }
 
 function initializeContentZoneImports() {
-    import(
-        "https://quisquous.github.io/cactbot/resources/content_type.js"
-    ).then((data) => {
-        Object.assign(GAME_DATA.CONTENT_TYPE, data.default);
-        import(
-            "https://quisquous.github.io/cactbot/resources/zone_info.js"
-        ).then((data) => {
-            Object.assign(GAME_DATA.ZONE_INFO, data.default);
-            if (gameState.zone !== undefined)
-                checkAndSetZoneInfo(gameState.zone.id);
-        });
-    });
+    Object.assign(GAME_DATA.CONTENT_TYPE, content_type);
+    Object.assign(GAME_DATA.ZONE_INFO, zone_info);
 }
 
 // Settings
