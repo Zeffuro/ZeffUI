@@ -13,3 +13,13 @@
 .job-disabled {
     opacity: 0.3;
 }
+body {
+    padding-top: 56px;
+}
+.full-screen {
+    height: calc(100vh - 56px) !important;
+}
+.anchor {
+    padding-top: 80px;
+    margin-top: -80px;
+}

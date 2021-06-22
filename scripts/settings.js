@@ -72,7 +72,24 @@ async function loadZeffUISettings() {
         }
     });
 
+    if (window.location.hash) shiftWindow();
+    window.addEventListener("hashchange", shiftWindow);
+
     await loadSettings();
+}
+
+function removeHashFromUrl() {
+    var uri = window.location.toString();
+
+    if (uri.indexOf("#") > 0) {
+        var clean_uri = uri.substring(0, uri.indexOf("#"));
+
+        window.history.replaceState({}, document.title, clean_uri);
+    }
+}
+
+function shiftWindow() {
+    removeHashFromUrl();
 }
 
 function setPadding(element) {
@@ -832,10 +849,55 @@ async function exportSettings() {
     alert("Your current settings have been copied to your clipboard.");
 }
 
+/* exported exportSettingsJson */
+async function exportSettingsJson() {
+    if (currentSettings == null) {
+        await saveSettings();
+    }
+    $("#settingsText").val(JSON.stringify(currentSettings, null, 2));
+    $("#settingsText").select();
+    document.execCommand("copy");
+    alert("Your current settings have been copied to your clipboard.");
+}
+
 /* exported importSettings */
 async function importSettings() {
     try {
         let decoded = Base64.decode($("#settingsText").val());
+        let settings = JSON.parse(decoded);
+        if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
+            if (
+                confirm(
+                    "Are you sure you want to import these settings? This will completely overwrite your previous settings!",
+                )
+            ) {
+                let saveSettings = { ...currentSettings, ...settings };
+                await callCurrentOverlayHandler({
+                    call: "saveData",
+                    key: "zeffUI",
+                    data: saveSettings,
+                });
+                localStorage.setItem("settings", JSON.stringify(saveSettings));
+                loadSettings();
+                location.reload();
+                this.close();
+            }
+        } else {
+            alert(
+                "Invalid settings string, please doublecheck what you have pasted in.",
+            );
+        }
+    } catch {
+        alert(
+            "Invalid settings string, please doublecheck what you have pasted in.",
+        );
+    }
+}
+
+/* exported importSettingsJson */
+async function importSettingsJson() {
+    try {
+        let decoded = $("#settingsText").val();
         let settings = JSON.parse(decoded);
         if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
             if (
@@ -1394,7 +1456,7 @@ async function loadSettings() {
     }
 }
 
-async function saveSettings(closeWindow = true) {
+async function saveSettings(closeWindow = true, showPopup = false) {
     let settings = {
         skin: $("#skinSelect").val(),
         language: $("#langSelect").val(),
@@ -1631,8 +1693,16 @@ async function saveSettings(closeWindow = true) {
         settings,
     });
     localStorage.setItem("settings", JSON.stringify(settings));
-    if (closeWindow) window.close();
-    else location.reload();
+    if (closeWindow) {
+        if (showPopup) {
+            if (
+                !confirm("Do you want to save settings and close this window?")
+            ) {
+                return;
+            }
+        }
+        window.close();
+    } else location.reload();
 }
 
 /* exported deleteSettings */

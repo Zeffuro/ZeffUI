@@ -1,25 +1,80 @@
-<!DOCTYPE html lang="en">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.10.0/html5sortable.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/js/bootstrap-colorpicker.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
-		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-		<script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
-		<script src="scripts/settings.js"></script>
-		<script src="data/abilities.js"></script>
 		<link href="styles/settings.css" rel="stylesheet" />
 		<link href="styles/colors.css" rel="stylesheet" />
 		<link href="styles/resources.css" rel="stylesheet" />
-		<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/slate/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.0.1/dist/slate/bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.10.0/html5sortable.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.4.0/js/bootstrap-colorpicker.min.js"></script>
+		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
+		<script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+		<script src="scripts/settings.js"></script>
+		<script src="data/abilities.js"></script>
 		<title>ZeffUI Settings</title>
 	</head>
 	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="navbarColor01">
+					<ul class="navbar-nav me-auto">
+						<li class="nav-item">
+							<a class="nav-link active" href="#anchor_general" id="lang_generaloptions_2">General Options</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="lang_healthmana">Health / Mana</a>
+							<div class="dropdown-menu">
+								<a class="nav-link" href="#anchor_healthbar" id="lang_healthbar_2">Healthbar</a>
+								<a class="nav-link" href="#anchor_manabar" id="lang_manabar_2">Manabar</a>
+							</div>
+				  		</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="lang_tickers">Tickers</a>
+							<div class="dropdown-menu">
+								<a class="nav-link" href="#anchor_mpticker" id="lang_mpticker_2">MP Ticker</a>
+								<a class="nav-link" href="#anchor_dotticker" id="lang_dotticker_2">DoT Ticker</a>
+								<a class="nav-link" href="#anchor_hotticker" id="lang_hotticker_2">HoT Ticker</a>
+							</div>
+				  		</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="lang_timers">Timers</a>
+							<div class="dropdown-menu">
+								<a class="nav-link" href="#anchor_bufftimers" id="lang_bufftimers_2">Buff Timers</a>
+								<a class="nav-link" href="#anchor_dottimers" id="lang_dottimers_2">DoT Timers</a>
+								<a class="nav-link" href="#anchor_pulltimers" id="lang_pulltimers_2">Pulltimers</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#anchor_stacksbar" id="lang_stacksbar_2">Stacks Bar</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" id="lang_cooldowns">Cooldowns</a>
+							<div class="dropdown-menu">
+								<a class="nav-link" href="#anchor_raidbuffs" id="lang_raidbuffs_2">Raid Buffs</a>
+								<a class="nav-link" href="#anchor_mitigations" id="lang_mitigations_2">Mitigations</a>
+								<a class="nav-link" href="#anchor_party" id="lang_party_2">Party Cooldowns</a>
+								<a class="nav-link" href="#anchor_customcd" id="lang_customcooldowns_2">Custom Cooldowns</a>
+								<a class="nav-link" href="#anchor_customcdedit" id="lang_editcustomcooldowns_2">Edit Custom Cooldowns</a>
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#anchor_override" id="lang_overrideoptions_2">Override Options</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#anchor_importexport" id="lang_importexport_2">Import / Export</a>
+						</li>
+						<li>
+							<a class="nav-link" id="lang_savesettings_2" onclick="saveSettings(true, true)">Save Settings</a>
+						</li>
+					</ul>
+			  	</div>
+			</div>
+		</nav>
 		<div class="container">
 			<br />
 			<div class="row">
@@ -32,7 +87,7 @@
 			<div class="row">
 				<br />
 			</div>            
-			<div class="row">
+			<div class="row" id="anchor_general">
 				<div class="col-lg-6">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div id="lang_generaloptions" class="card-header">
@@ -43,7 +98,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_language" class="control-label col-sm-4" for="langSelect">Language</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="langSelect" onchange="loadLanguage()">                                        
+									<select class="form-select form-select-sm" id="langSelect" onchange="loadLanguage()">                                        
 										<option selected="" value="en">English (default)</option>
 										<option value="de">Deutsch</option>
 										<option value="fr">Français</option>
@@ -56,14 +111,14 @@
 							<div class="form-group row text-right">
 								<label id="lang_skin" class="control-label col-sm-4" for="skinSelect">Skin</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="skinSelect" onchange="loadSkin()">
+									<select class="form-select form-select-sm" id="skinSelect" onchange="loadSkin()">
 									</select>
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_font" class="control-label col-sm-4" for="defaultFont">Default Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="defaultFont" onchange="loadFont('default')">
+									<select class="form-select form-select-sm" id="defaultFont" onchange="loadFont('default')">
 									</select>                                    
 								</div>
 							</div>
@@ -72,8 +127,8 @@
 								<div class="col-sm-6"><button id="font_applytoallelements" type="button" class="btn btn-primary btn-sm" onclick="applyDefaultFont()">Apply default font to all elements</button></div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="useWebTTS">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="useWebTTS">
 									<label id="lang_usewebtts" class="custom-control-label" for="useWebTTS">Use Google/Baidu TTS</label>
 								</div>
 							</div>
@@ -84,13 +139,13 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="includeAlliance">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="includeAlliance">
 									<label id="lang_includealliance" class="custom-control-label" for="includeAlliance">Include Alliance in Party Members</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
+								<div class="form-check form-switch">
 									<label id="lang_partyorder" for="partyOrder">Party Order (drag and drop)</label>
 									<table id="partyOrderTable" class="table table-sm" style="width:100%">
 										<tbody id="partyOrder">
@@ -104,8 +159,8 @@
 				<div class="col-lg-6">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="debugEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="debugEnabled">
 								<label id="lang_debug" class="custom-control-label" for="debugEnabled">Debug</label>
 							</div>
 						</div>
@@ -119,11 +174,11 @@
 				<br />
 			</div>  
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_healthbar">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="healthBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="healthBarEnabled">
 								<label id="lang_healthbar" class="custom-control-label" for="healthBarEnabled">Healthbar</label>
 							</div>
 						</div>
@@ -164,14 +219,14 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="healthHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="healthHideOutOfCombat">
 									<label id="lang_hideoutofcombat" class="custom-control-label" for="healthHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="healthTextEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="healthTextEnabled">
 									<label id="lang_healthtext" class="custom-control-label" for="healthTextEnabled">Health Text</label>
 								</div>
 							</div>
@@ -184,14 +239,14 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_2" class="control-label col-sm-4" for="healthFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="healthFont" onchange="loadFont('health')">
+									<select class="form-select form-select-sm" id="healthFont" onchange="loadFont('health')">
 									</select>
 								</div>                                    
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color" class="control-label col-sm-4" for="healthColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="healthColor">
+									<select class="form-select form-select-sm" id="healthColor">
 									</select>
 								</div>                                    
 							</div>
@@ -202,11 +257,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_manabar">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="manaBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="manaBarEnabled">
 								<label id="lang_manabar" class="custom-control-label" for="manaBarEnabled">Manabar</label>
 							</div>
 						</div>
@@ -247,14 +302,14 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="manaHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="manaHideOutOfCombat">
 									<label id="lang_hideoutofcombat_1" class="custom-control-label" for="manaHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="manaTextEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="manaTextEnabled">
 									<label id="lang_manatext" class="custom-control-label" for="manaTextEnabled">Mana Text</label>
 								</div>
 							</div>
@@ -267,14 +322,14 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_1" class="control-label col-sm-4" for="manaFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="manaFont" onchange="loadFont('mana')">
+									<select class="form-select form-select-sm" id="manaFont" onchange="loadFont('mana')">
 									</select>
 								</div>                                    
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_1" class="control-label col-sm-4" for="manaColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="manaColor" >
+									<select class="form-select form-select-sm" id="manaColor" >
 									</select>
 								</div>                                    
 							</div>
@@ -283,22 +338,22 @@
 								&nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="manaJobThresholdsEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="manaJobThresholdsEnabled">
 									<label id="lang_jobthresholds" class="custom-control-label" for="manaJobThresholdsEnabled">Job Thresholds</label>
 								</div>
 							</div>							
 							<div class="form-group row text-right">
 								<label id="lang_lowcolor" class="control-label col-sm-4" for="manaLowColor">Low Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="manaLowColor" >
+									<select class="form-select form-select-sm" id="manaLowColor" >
 									</select>
 								</div>                                    
 							</div>							
 							<div class="form-group row text-right">
 								<label id="lang_medcolor" class="control-label col-sm-4" for="manaMedColor">Medium Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="manaMedColor" >
+									<select class="form-select form-select-sm" id="manaMedColor" >
 									</select>
 								</div>                                    
 							</div>
@@ -307,16 +362,16 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_mpticker">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="mptickerEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="mptickerEnabled">
 								<label id="lang_mpticker" class="custom-control-label" for="mptickerEnabled">MP Ticker</label>
 							</div>
 						</div>
 						<div class="card-body">
-							<p id="lang_mptickerdescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<p id="lang_mptickerdescription" class="card-text">Here you can set your options for your MP Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_10" class="control-label col-sm-4" for="mptickerX">Position X</label>
 								<div class="col-sm-8">
@@ -352,15 +407,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mptickerHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mptickerHideOutOfCombat">
 									<label id="lang_hideoutofcombat_9" class="custom-control-label" for="mptickerHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_5" class="control-label col-sm-4" for="mptickerColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="mptickerColor">
+									<select class="form-select form-select-sm" id="mptickerColor">
 									</select>
 								</div>
 							</div>
@@ -369,8 +424,8 @@
 								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="mptickerExample" class="styled-bar" value="5000" max="10000"></progress>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mptickerSpecificJobsEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mptickerSpecificJobsEnabled">
 									<label id="lang_specificjobsonly" class="custom-control-label" for="mptickerSpecificJobsEnabled">Specific Jobs Only</label>
 								</div>
 							</div>
@@ -379,17 +434,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" id="anchor_dotticker">
 				<div class="col-lg-6">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="dottickerEnabled">
-								<label id="lang_dotticker" class="custom-control-label" for="dottickerEnabled">MP Ticker</label>
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="dottickerEnabled">
+								<label id="lang_dotticker" class="custom-control-label" for="dottickerEnabled">DoT Ticker</label>
 							</div>
 						</div>
 						<div class="card-body">
-							<p id="lang_dottickerdescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<p id="lang_dottickerdescription" class="card-text">Here you can set your options for your DoT Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_11" class="control-label col-sm-4" for="dottickerX">Position X</label>
 								<div class="col-sm-8">
@@ -425,15 +480,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dottickerHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dottickerHideOutOfCombat">
 									<label id="lang_hideoutofcombat_10" class="custom-control-label" for="dottickerHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_6" class="control-label col-sm-4" for="dottickerColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="dottickerColor">
+									<select class="form-select form-select-sm" id="dottickerColor">
 									</select>
 								</div>
 							</div>
@@ -442,8 +497,8 @@
 								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="dottickerExample" class="styled-bar" value="5000" max="10000"></progress>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dottickerSpecificJobsEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dottickerSpecificJobsEnabled">
 									<label id="lang_specificjobsonly_1" class="custom-control-label" for="dottickerSpecificJobsEnabled">Specific Jobs Only</label>
 								</div>
 							</div>
@@ -451,16 +506,16 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_hotticker">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="hottickerEnabled">
-								<label id="lang_hotticker" class="custom-control-label" for="hottickerEnabled">MP Ticker</label>
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="hottickerEnabled">
+								<label id="lang_hotticker" class="custom-control-label" for="hottickerEnabled">HoT Ticker</label>
 							</div>
 						</div>
 						<div class="card-body">
-							<p id="lang_hottickerdescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<p id="lang_hottickerdescription" class="card-text">Here you can set your options for your HoT Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_12" class="control-label col-sm-4" for="hottickerX">Position X</label>
 								<div class="col-sm-8">
@@ -496,15 +551,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="hottickerHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="hottickerHideOutOfCombat">
 									<label id="lang_hideoutofcombat_11" class="custom-control-label" for="hottickerHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_7" class="control-label col-sm-4" for="hottickerColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="hottickerColor">
+									<select class="form-select form-select-sm" id="hottickerColor">
 									</select>
 								</div>
 							</div>
@@ -513,8 +568,8 @@
 								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="hottickerExample" class="styled-bar" value="5000" max="10000"></progress>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="hottickerSpecificJobsEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="hottickerSpecificJobsEnabled">
 									<label id="lang_specificjobsonly_2" class="custom-control-label" for="hottickerSpecificJobsEnabled">Specific Jobs Only</label>
 								</div>
 							</div>
@@ -524,11 +579,11 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_bufftimers">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="buffBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="buffBarEnabled">
 								<label id="lang_bufftimers" class="custom-control-label" for="buffBarEnabled">Buff Timers</label>
 							</div>
 						</div>
@@ -571,7 +626,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_growdirection" class="control-label col-sm-4" for="buffGrowDirection">Grow Direction</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="buffGrowDirection">
+									<select class="form-select form-select-sm" id="buffGrowDirection">
 										<option id="lang_down" selected="" value="1">Down</option>
 										<option id="lang_up" value="2">Up</option>
 										<option id="lang_left" value="3">Left</option>
@@ -586,32 +641,32 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="buffImageEnabled" checked="false">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffImageEnabled" checked="false">
 									<label id="lang_image" class="custom-control-label" for="buffImageEnabled">Image</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="buffTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffTTSEnabled">
 									<label id="lang_ttsenabled" class="custom-control-label" for="buffTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="buffHideWhenDroppedOff">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffHideWhenDroppedOff">
 									<label id="lang_droppedoff" class="custom-control-label" for="buffHideWhenDroppedOff">Hide when dropped off</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="buffHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffHideOutOfCombat">
 									<label id="lang_hideoutofcombat_2" class="custom-control-label" for="buffHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="buffTextEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffTextEnabled">
 									<label id="lang_bufftext" class="custom-control-label" for="buffTextEnabled">Buff Text</label>
 								</div>
 							</div>
@@ -624,18 +679,18 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_3" class="control-label col-sm-4" for="buffFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="buffFont">
+									<select class="form-select form-select-sm" id="buffFont">
 									</select>
 								</div>                                    
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_dottimers">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="dotBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="dotBarEnabled">
 								<label id="lang_dottimers" class="custom-control-label" for="dotBarEnabled">DoT Timers</label>
 							</div>
 						</div>
@@ -678,7 +733,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_growdirection_1" class="control-label col-sm-4" for="dotGrowDirection">Grow Direction</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="dotGrowDirection">
+									<select class="form-select form-select-sm" id="dotGrowDirection">
 										<option id="lang_down_1" selected="" value="1">Down</option>
 										<option id="lang_up_1" value="2">Up</option>
 										<option id="lang_left_1" value="3">Left</option>
@@ -693,38 +748,38 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dotImageEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotImageEnabled">
 									<label id="lang_image_1" class="custom-control-label" for="dotImageEnabled">Image</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dotTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotTTSEnabled">
 									<label id="lang_ttsenabled_1" class="custom-control-label" for="dotTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="multiDotEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="multiDotEnabled">
 									<label id="lang_multidot" class="custom-control-label" for="multiDotEnabled">MultiDoT (not implemented yet)</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dotHideWhenDroppedOff">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotHideWhenDroppedOff">
 									<label id="lang_droppedoff_1" class="custom-control-label" for="dotHideWhenDroppedOff">Hide when dropped off</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dotHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotHideOutOfCombat">
 									<label id="lang_hideoutofcombat_3" class="custom-control-label" for="dotHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="dotTextEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotTextEnabled">
 									<label id="lang_dottext" class="custom-control-label" for="dotTextEnabled">DoT Text</label>
 								</div>
 							</div>
@@ -737,7 +792,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_4" class="control-label col-sm-4" for="dotFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="dotFont">
+									<select class="form-select form-select-sm" id="dotFont">
 									</select>
 								</div>                                    
 							</div>
@@ -746,11 +801,11 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_pulltimers">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="pulltimerBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="pulltimerBarEnabled">
 								<label id="lang_pulltimers" class="custom-control-label" for="pulltimerBarEnabled">Pulltimers</label>
 							</div>
 						</div>
@@ -791,8 +846,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="pulltimerTextEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="pulltimerTextEnabled">
 									<label id="lang_pulltimertext" class="custom-control-label" for="pulltimerTextEnabled">Pulltimer Text</label>
 								</div>
 							</div>
@@ -805,14 +860,14 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_5" class="control-label col-sm-4" for="pulltimerFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="pulltimerFont" onchange="loadFont('pulltimer')">
+									<select class="form-select form-select-sm" id="pulltimerFont" onchange="loadFont('pulltimer')">
 									</select>
 								</div>                                    
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_2" class="control-label col-sm-4" for="pulltimerColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="pulltimerColor" >
+									<select class="form-select form-select-sm" id="pulltimerColor" >
 									</select>
 								</div>                                    
 							</div>
@@ -823,11 +878,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_stacksbar">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="stacksBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="stacksBarEnabled">
 								<label id="lang_stacksbar" class="custom-control-label" for="stacksBarEnabled">Stacks Bar</label>
 							</div>
 						</div>
@@ -852,15 +907,15 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="stacksHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="stacksHideOutOfCombat">
 									<label id="lang_hideoutofcombat_4" class="custom-control-label" for="stacksHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_color_3" class="control-label col-sm-4" for="stacksColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="stacksColor">
+									<select class="form-select form-select-sm" id="stacksColor">
 									</select>
 								</div>                                    
 							</div>
@@ -879,11 +934,11 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_raidbuffs">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="raidbuffBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="raidbuffBarEnabled">
 								<label id="lang_raidbuffs" class="custom-control-label" for="raidbuffBarEnabled">Raidbuffs</label>
 							</div>
 						</div>
@@ -922,7 +977,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_6" class="control-label col-sm-4" for="raidbuffFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="raidbuffFont">
+									<select class="form-select form-select-sm" id="raidbuffFont">
 									</select>
 								</div>
 							</div>
@@ -951,73 +1006,73 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffDurationOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffDurationOutline">
 									<label id="lang_durationoutline" class="custom-control-label" for="raidbuffDurationOutline">Duration Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffDurationBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffDurationBold">
 									<label id="lang_durationbold" class="custom-control-label" for="raidbuffDurationBold">Duration Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffCooldownOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffCooldownOutline">
 									<label id="lang_cooldownoutline" class="custom-control-label" for="raidbuffCooldownOutline">Cooldown Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffCooldownBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffCooldownBold">
 									<label id="lang_cooldownbold" class="custom-control-label" for="raidbuffCooldownBold">Cooldown Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffTTSEnabled">
 									<label id="lang_ttsenabled_2" class="custom-control-label" for="raidbuffTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffGrowLeft" onchange="changeXY('raidbuff')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffGrowLeft" onchange="changeXY('raidbuff')">
 									<label id="lang_growleft" class="custom-control-label" for="raidbuffGrowLeft">Grow icons to the left</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffHideWhenSolo">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffHideWhenSolo">
 									<label id="lang_hidesolo" class="custom-control-label" for="raidbuffHideWhenSolo">Hide when not in Party</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffHideOutOfCombat">
 									<label id="lang_hideoutofcombat_5" class="custom-control-label" for="raidbuffHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffOrderByPartyMember">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffOrderByPartyMember">
 									<label id="lang_orderbypartymember" class="custom-control-label" for="raidbuffOrderByPartyMember">Order by Party Member</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="raidbuffAlwaysShow">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffAlwaysShow">
 									<label id="lang_alwaysshow" class="custom-control-label" for="raidbuffAlwaysShow">Always show abilities (when not on cooldown)</label>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_mitigations">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="mitigationBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="mitigationBarEnabled">
 								<label id="lang_mitigations" class="custom-control-label" for="mitigationBarEnabled">Mitigations</label>
 							</div>
 						</div>
@@ -1056,7 +1111,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_7" class="control-label col-sm-4" for="mitigationFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="mitigationFont">
+									<select class="form-select form-select-sm" id="mitigationFont">
 									</select>
 								</div>                                    
 							</div>
@@ -1085,56 +1140,56 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationDurationOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationDurationOutline">
 									<label id="lang_durationoutline_2" class="custom-control-label" for="mitigationDurationOutline">Duration Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationDurationBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationDurationBold">
 									<label id="lang_durationbold_2" class="custom-control-label" for="mitigationDurationBold">Duration Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationCooldownOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationCooldownOutline">
 									<label id="lang_cooldownoutline_2" class="custom-control-label" for="mitigationCooldownOutline">Cooldown Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationCooldownBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationCooldownBold">
 									<label id="lang_cooldownbold_2" class="custom-control-label" for="mitigationCooldownBold">Cooldown Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationTTSEnabled">
 									<label id="lang_ttsenabled_3" class="custom-control-label" for="mitigationTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationGrowLeft" onchange="changeXY('mitigation')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationGrowLeft" onchange="changeXY('mitigation')">
 									<label id="lang_growleft_1" class="custom-control-label" for="mitigationGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationHideWhenSolo">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationHideWhenSolo">
 									<label id="lang_hidesolo_1" class="custom-control-label" for="mitigationHideWhenSolo">Hide when not in Party</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationHideOutOfCombat">
 									<label id="lang_hideoutofcombat_6" class="custom-control-label" for="mitigationHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="mitigationAlwaysShow">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationAlwaysShow">
 									<label id="lang_alwaysshow_1" class="custom-control-label" for="mitigationAlwaysShow">Always show abilities (when not on cooldown)</label>
 								</div>
 							</div>
@@ -1142,12 +1197,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">                
+			<div class="row" id="anchor_party">                
 				<div class="col-lg-6">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="partyBarEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="partyBarEnabled">
 								<label id="lang_party" class="custom-control-label" for="partyBarEnabled">Party Cooldowns</label>
 							</div>
 						</div>
@@ -1180,7 +1235,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_8" class="control-label col-sm-4" for="partyFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="partyFont">
+									<select class="form-select form-select-sm" id="partyFont">
 									</select>
 								</div>
 							</div>
@@ -1209,67 +1264,67 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyDurationOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyDurationOutline">
 									<label id="lang_durationoutline_3" class="custom-control-label" for="partyDurationOutline">Duration Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyDurationBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyDurationBold">
 									<label id="lang_durationbold_3" class="custom-control-label" for="partyDurationBold">Duration Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyCooldownOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyCooldownOutline">
 									<label id="lang_cooldownoutline_3" class="custom-control-label" for="partyCooldownOutline">Cooldown Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyCooldownBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyCooldownBold">
 									<label id="lang_cooldownbold_3" class="custom-control-label" for="partyCooldownBold">Cooldown Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyTTSEnabled">
 									<label id="lang_ttsenabled_4" class="custom-control-label" for="partyTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyGrowLeft" onchange="changeXY('party')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyGrowLeft" onchange="changeXY('party')">
 									<label id="lang_growleft_2" class="custom-control-label" for="partyGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyHideWhenSolo">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyHideWhenSolo">
 									<label id="lang_hidesolo_2" class="custom-control-label" for="partyHideWhenSolo">Hide when not in Party</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyHideOutOfCombat">
 									<label id="lang_hideoutofcombat_7" class="custom-control-label" for="partyHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="partyAlwaysShow">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyAlwaysShow">
 									<label id="lang_alwaysshow_2" class="custom-control-label" for="partyAlwaysShow">Always show abilities (when not on cooldown)</label>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_customcd">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
-							<div class="custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="customcdEnabled">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="customcdEnabled">
 								<label id="lang_customcooldowns" class="custom-control-label" for="customcdEnabled">Custom Cooldowns</label>
 							</div>
 						</div>
@@ -1308,7 +1363,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_font_9" class="control-label col-sm-4" for="customcdFont">Font</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="customcdFont">
+									<select class="form-select form-select-sm" id="customcdFont">
 									</select>
 								</div>
 							</div>
@@ -1337,56 +1392,56 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdDurationOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdDurationOutline">
 									<label id="lang_durationoutline_4" class="custom-control-label" for="customcdDurationOutline">Duration Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdDurationBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdDurationBold">
 									<label id="lang_durationbold_4" class="custom-control-label" for="customcdDurationBold">Duration Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdCooldownOutline">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdCooldownOutline">
 									<label id="lang_cooldownoutline_4" class="custom-control-label" for="customcdCooldownOutline">Cooldown Outline</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdCooldownBold">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdCooldownBold">
 									<label id="lang_cooldownbold_4" class="custom-control-label" for="customcdCooldownBold">Cooldown Bold Text</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdTTSEnabled">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdTTSEnabled">
 									<label id="lang_ttsenabled_5" class="custom-control-label" for="customcdTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdGrowLeft" onchange="changeXY('customcd')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdGrowLeft" onchange="changeXY('customcd')">
 									<label id="lang_growleft_3" class="custom-control-label" for="customcdGrowLeft">Grow abilities to the left</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdHideWhenSolo">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdHideWhenSolo">
 									<label id="lang_hidesolo_3" class="custom-control-label" for="customcdHideWhenSolo">Hide when not in Party</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdHideOutOfCombat">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdHideOutOfCombat">
 									<label id="lang_hideoutofcombat_8" class="custom-control-label" for="customcdHideOutOfCombat">Hide out of Combat</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="customcdAlwaysShow">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdAlwaysShow">
 									<label id="lang_alwaysshow_3" class="custom-control-label" for="customcdAlwaysShow">Always show abilities (when not on cooldown)</label>
 								</div>
 							</div>
@@ -1395,7 +1450,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_override">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div id="lang_overrideoptions" class="card-header">
 							Override Options
@@ -1411,32 +1466,32 @@
 							<div class="form-group row text-right">
 								<label id="lang_ability" class="control-label col-sm-4" for="overrideSelect">Ability</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="overrideSelect" onchange="loadAbility()">                                        
+									<select class="form-select form-select-sm" id="overrideSelect" onchange="loadAbility()">                                        
 									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="abilityOverrideEnabled" onchange="toggleOverride()">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="abilityOverrideEnabled" onchange="toggleOverride()">
 									<label id="lang_overridedefaults" class="custom-control-label" for="abilityOverrideEnabled">Override Defaults</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="abilityEnabled" onchange="saveOverride('enabled')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="abilityEnabled" onchange="saveOverride('enabled')">
 									<label id="lang_abilityenabled" class="custom-control-label" for="abilityEnabled">Ability Enabled</label>
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="custom-control custom-switch">
-									<input type="checkbox" class="custom-control-input" id="abilityTTSEnabled" onchange="saveOverride('tts')">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="abilityTTSEnabled" onchange="saveOverride('tts')">
 									<label id="lang_ttsenabled_6" class="custom-control-label" for="abilityTTSEnabled">TTS Enabled</label>
 								</div>
 							</div>
 							<div id="abilityTTSTypeDiv" class="form-group row text-right">
 								<label id="lang_ttstype" class="control-label col-sm-4" for="abilityTTSType">TTS Type</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="abilityTTSType" onchange="saveOverride('ttstype')">
+									<select class="form-select form-select-sm" id="abilityTTSType" onchange="saveOverride('ttstype')">
 										<option id="lang_abilitycooldown" selected="" value="0">Ability Cooldown</option>
 										<option id="lang_abilityduration" value="1">Ability Duration</option>
 										<option id="lang_oncast" value="2">On Cast</option>
@@ -1446,7 +1501,7 @@
 							<div id="abilityColorDiv" class="form-group row text-right">
 								<label id="lang_color_4" class="control-label col-sm-4" for="abilityColor">Color</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="abilityColor" onchange="saveOverride('color')">
+									<select class="form-select form-select-sm" id="abilityColor" onchange="saveOverride('color')">
 									</select>
 								</div>
 							</div>
@@ -1471,7 +1526,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_customcdedit">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div id="lang_editcustomcooldowns" class="card-header">
 							Edit Custom Cooldowns
@@ -1481,7 +1536,7 @@
 							<div class="form-group row text-right">
 								<label id="lang_mode" class="control-label col-sm-4" for="customcdMode">Mode</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="customcdMode" onchange="switchCustomcdMode()">
+									<select class="form-select form-select-sm" id="customcdMode" onchange="switchCustomcdMode()">
 										<option id="lang_edit" value="0">Edit</option>
 										<option id="lang_add" value="1">Add</option>
 									</select>
@@ -1514,20 +1569,20 @@
 							<div id="customcdAbilitySelectDiv" class="form-group row text-right">
 								<label id="lang_ability_2" class="control-label col-sm-4" for="customcdAbilitySelect">Ability</label>
 								<div class="col-sm-6">
-									<select class="form-control form-control-sm" id="customcdAbilitySelect" onchange="loadCustomCdAbility()">                                        
+									<select class="form-select form-select-sm" id="customcdAbilitySelect" onchange="loadCustomCdAbility()">                                        
 									</select>
 								</div>
 							</div>
 							<div id="customcdOptionsDiv">
 								<div class="form-group">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="customcdAbilityEnabled">
+									<div class="form-check form-switch">
+										<input type="checkbox" class="form-check-input" id="customcdAbilityEnabled">
 										<label id="lang_abilityenabled_2" class="custom-control-label" for="customcdAbilityEnabled">Ability Enabled</label>
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input" id="customcdAbilityTTSEnabled">
+									<div class="form-check form-switch">
+										<input type="checkbox" class="form-check-input" id="customcdAbilityTTSEnabled">
 										<label id="lang_ttsenabled_7" class="custom-control-label" for="customcdAbilityTTSEnabled">TTS Enabled</label>
 									</div>
 								</div>
@@ -1540,7 +1595,7 @@
 								<div id="customcdAbilityJobDiv" class="form-group row text-right">
 									<label id="lang_jobrole" class="control-label col-sm-4" for="customcdAbilityJob">Job / Role</label>
 									<div class="col-sm-6">
-										<select class="form-control form-control-sm" id="customcdAbilityJob">
+										<select class="form-select form-select-sm" id="customcdAbilityJob">
 											<option id="lang_tank" value="Tank">Tank</option>
 											<option id="lang_healer" value="Healer">Healer</option>
 											<option id="lang_meleedps" value="MeleeDPS">Melee DPS</option>
@@ -1582,7 +1637,7 @@
 								<div id="customcdAbilityTTSTypeDiv" class="form-group row text-right">
 									<label id="lang_ttstype_2" class="control-label col-sm-4" for="customcdAbilityTTSType">TTS Type</label>
 									<div class="col-sm-6">
-										<select class="form-control form-control-sm" id="customcdAbilityTTSType">
+										<select class="form-select form-select-sm" id="customcdAbilityTTSType">
 											<option id="lang_abilitycooldown_2" selected="" value="0">Ability Cooldown</option>
 											<option id="lang_abilityduration_2" value="1">Ability Duration</option>
 											<option id="lang_oncast_2" value="2">On Cast</option>
@@ -1632,7 +1687,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-lg-6 anchor" id="anchor_importexport">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div id="lang_importexport" class="card-header">
 							Import / Export
@@ -1643,13 +1698,29 @@
 							<br />
 							<div class="row">
 								<div class="col-lg-4">
-									<button id="lang_exportsettings" type="button" class="btn btn-primary btn-m" onclick="exportSettings()">Export Settings</button>
-								</div>                                
-								<div class="col-lg-4"></div>
-								<div class="col-lg-4">
-									<button id="lang_importsettings" type="button" class="btn btn-primary btn-m" onclick="importSettings()">Import Settings</button>
+									<button id="lang_exportsettings" type="button" class="btn btn-primary" onclick="exportSettings()">Export Settings</button>
 								</div>
-							</div>                            
+								<div class="col-lg-4">
+									<button id="lang_importsettings" type="button" class="btn btn-primary" onclick="importSettings()">Import Settings</button>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="alert alert-dismissible alert-warning">
+										<h4 class="alert-heading" id="lang_warning">Warning!</h4>
+										<p class="mb-0" id="lang_jsonwarning">Only import/export as JSON if you know what you're doing!</p>
+									</div>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<button id="lang_exportsettingsjson" type="button" class="btn btn-primary" onclick="exportSettingsJson()">Export JSON</button>
+								</div>
+								<div class="col-lg-4">
+									<button id="lang_importsettingsjson" type="button" class="btn btn-primary" onclick="importSettingsJson()">Import JSON</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

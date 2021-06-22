@@ -2207,7 +2207,7 @@ function startTTSTimer(
     ]);
     if (!activeElements.ttsElements.has(selector)) {
         if (currentSettings.general.usewebtts)
-            activeElements.ttsElements[selector] = setGoogleTTS(text);
+            activeElements.ttsElements[selector] = setWebTTS(text);
     }
 
     let timems = duration * 1000;
@@ -2292,31 +2292,25 @@ function handleAbilityTTS(ability, selector, onYou = true) {
     }
 }
 
-function setGoogleTTS(text) {
+function setWebTTS(text) {
     let iframe = document.createElement("iframe");
     iframe.removeAttribute("sandbox");
     iframe.style.display = "none";
     document.body.appendChild(iframe);
     let encText = encodeURIComponent(text);
 
+    /*
     let ttsLang = currentSettings.language;
     if (currentSettings.language == "jp") ttsLang = "ja";
+    */
 
-    if (currentSettings.language == "cn") {
-        // For CN User
-        // https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=
-        iframe.contentDocument.body.innerHTML =
-            '<audio src="https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=' +
-            encText +
-            '" id="TTS">';
-    } else {
-        iframe.contentDocument.body.innerHTML =
-            '<audio src="https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=' +
-            ttsLang +
-            "&q=" +
-            encText +
-            '" id="TTS">';
-    }
+    // For CN User
+    // https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=
+    iframe.contentDocument.body.innerHTML =
+        '<audio src="https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=' +
+        encText +
+        '" id="TTS">';
+
     this.item = iframe.contentDocument.body.firstElementChild;
     return this.item;
 }
