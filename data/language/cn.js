@@ -123,6 +123,7 @@ var language = [
 	{ id: "medcolor", string: "Medium Color" },
 	{ id: "specificjobsonly", string: "Specific Jobs Only" },
 	{ id: "ttsearly", string: "TTS Seconds Early" },
+	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "Warning!" },
 	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
 	// SKINS

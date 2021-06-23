@@ -1687,10 +1687,12 @@ async function saveSettings(closeWindow = true, showPopup = false) {
         },
     };
 
+    console.log(settings);
+
     await callCurrentOverlayHandler({
         call: "saveData",
         key: "zeffUI",
-        settings,
+        data: settings,
     });
     localStorage.setItem("settings", JSON.stringify(settings));
     if (closeWindow) {
