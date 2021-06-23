@@ -54,9 +54,6 @@ var language = [
 	{ id: "overridedescription", string: "Ici, vous pouvez changer certains paramètres par défaut pour toutes les compétences." },
 	{ id: "importexportdescription", string: "Ici, vous pouvez importer ou exporter vos paramètres." },
 	{ id: "debugdescription", string: "Here you can find debug options for ZeffUI." },
-	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
-	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
-	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "Position X" },
 	{ id: "posy", string: "Position Y" },
@@ -125,7 +122,6 @@ var language = [
 	{ id: "ttsearly", string: "TTS Seconds Early" },
 	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "Warning!" },
-	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
 	// SKINS
 	{ id: "skindefault", string: "Défaut (par Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (par skotlex)" },
@@ -197,5 +193,14 @@ var language = [
 	{ id: "grid", string: "Activer/Désactiver la grille" },
 	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "Paramètres" },
-	{ id: "close", string: "Fermer"	}
+	{ id: "close", string: "Fermer"	},
+	// MESSAGES
+	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
+	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
+	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
+	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
+	{ id: "activesettingswindow", string: "There already seems to be an active settings window open. Do you want to close the previous window and open a new one?" },
+	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
+	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
+	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
 ];

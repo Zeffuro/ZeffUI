@@ -54,9 +54,6 @@ var language = [
 	{ id: "overridedescription", string: "적용되는 기술/능력에 대한 개별 설정을 바꿀 수 있습니다." },
 	{ id: "importexportdescription", string: "현재 설정을 추출하거나 불러올 수 있습니다." },
 	{ id: "debugdescription", string: "Here you can find debug options for ZeffUI." },
-	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
-	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
-	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "X 위치값" },
 	{ id: "posy", string: "Y 위치값" },
@@ -125,7 +122,6 @@ var language = [
 	{ id: "ttsearly", string: "TTS Seconds Early" },
 	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "Warning!" },
-	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
@@ -197,5 +193,14 @@ var language = [
 	{ id: "grid", string: "격자판 보기/숨기기" },
 	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "설정" },
-	{ id: "close", string: "닫기" }
+	{ id: "close", string: "닫기" },
+	// MESSAGES
+	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
+	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
+	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
+	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
+	{ id: "activesettingswindow", string: "There already seems to be an active settings window open. Do you want to close the previous window and open a new one?" },
+	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
+	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
+	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
 ];

@@ -846,7 +846,7 @@ async function exportSettings() {
     $("#settingsText").val(Base64.encodeURI(JSON.stringify(currentSettings)));
     $("#settingsText").select();
     document.execCommand("copy");
-    alert("Your current settings have been copied to your clipboard.");
+    alert(language.find((x) => x.id === "currentsettingscopied").string);
 }
 
 /* exported exportSettingsJson */
@@ -857,7 +857,7 @@ async function exportSettingsJson() {
     $("#settingsText").val(JSON.stringify(currentSettings, null, 2));
     $("#settingsText").select();
     document.execCommand("copy");
-    alert("Your current settings have been copied to your clipboard.");
+    alert(language.find((x) => x.id === "currentsettingscopied").string);
 }
 
 /* exported importSettings */
@@ -868,7 +868,8 @@ async function importSettings() {
         if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
             if (
                 confirm(
-                    "Are you sure you want to import these settings? This will completely overwrite your previous settings!",
+                    language.find((x) => x.id === "importsettingsoverwrite")
+                        .string,
                 )
             ) {
                 let saveSettings = { ...currentSettings, ...settings };
@@ -884,13 +885,11 @@ async function importSettings() {
             }
         } else {
             alert(
-                "Invalid settings string, please doublecheck what you have pasted in.",
+                language.find((x) => x.id === "invalidsettingsstring").string,
             );
         }
     } catch {
-        alert(
-            "Invalid settings string, please doublecheck what you have pasted in.",
-        );
+        alert(language.find((x) => x.id === "invalidsettingsstring").string);
     }
 }
 
@@ -902,7 +901,8 @@ async function importSettingsJson() {
         if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
             if (
                 confirm(
-                    "Are you sure you want to import these settings? This will completely overwrite your previous settings!",
+                    language.find((x) => x.id === "importsettingsoverwrite")
+                        .string,
                 )
             ) {
                 let saveSettings = { ...currentSettings, ...settings };
@@ -918,13 +918,11 @@ async function importSettingsJson() {
             }
         } else {
             alert(
-                "Invalid settings string, please doublecheck what you have pasted in.",
+                language.find((x) => x.id === "invalidsettingsstring").string,
             );
         }
     } catch {
-        alert(
-            "Invalid settings string, please doublecheck what you have pasted in.",
-        );
+        alert(language.find((x) => x.id === "invalidsettingsstring").string);
     }
 }
 
@@ -1698,7 +1696,9 @@ async function saveSettings(closeWindow = true, showPopup = false) {
     if (closeWindow) {
         if (showPopup) {
             if (
-                !confirm("Do you want to save settings and close this window?")
+                !confirm(
+                    language.find((x) => x.id === "saveandclosewindow").string,
+                )
             ) {
                 return;
             }
@@ -1709,16 +1709,14 @@ async function saveSettings(closeWindow = true, showPopup = false) {
 
 /* exported deleteSettings */
 async function deleteSettings() {
-    if (confirm("Are you sure you want to delete all settings?")) {
+    if (confirm(language.find((x) => x.id === "deleteallsettings").string)) {
         localStorage.clear();
         await callCurrentOverlayHandler({
             call: "saveData",
             key: "zeffUI",
             data: {},
         });
-        alert(
-            "Please reload overlay to finish clearing the settings and to receive the default settings.",
-        );
+        alert(language.find((x) => x.id === "reloadoverlay").string);
         window.close();
     }
 }

@@ -8,8 +8,8 @@ var language = [
 	{ id: "generaloptions", string: "一般設定" },
 	{ id: "exportsettings", string: "設定をエキスポート" },
 	{ id: "importsettings", string: "設定をインポート" },
-	{ id: "exportsettingsjson", string: "Export JSON" },
-	{ id: "importsettingsjson", string: "Import JSON" },
+	{ id: "exportsettingsjson", string: "JSONエキスポート" },
+	{ id: "importsettingsjson", string: "JSONインポート" },
 	// NAV MENU	
 	{ id: "healthmana", string: "Health / Mana" },
 	{ id: "tickers", string: "Tickers" },
@@ -54,9 +54,6 @@ var language = [
 	{ id: "overridedescription", string: "アビリティ毎の詳細設定の上書き設定。" },
 	{ id: "importexportdescription", string: "設定のインポートやエキスポート。" },
 	{ id: "debugdescription", string: "ZeffUIのデバッグ設定。" },
-	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
-	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
-	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "X軸の位置" },
 	{ id: "posy", string: "Y軸の位置" },
@@ -125,7 +122,6 @@ var language = [
 	{ id: "ttsearly", string: "TTSの早さ（何秒前）" },
 	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "Warning!" },
-	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
@@ -197,5 +193,14 @@ var language = [
 	{ id: "grid", string: "グリッドをON/OFF" },
 	{ id: "reload", string: "Reload" },
 	{ id: "settings", string: "設定" },
-	{ id: "close", string: "閉じる" }
+	{ id: "close", string: "閉じる" },
+	// MESSAGES
+	{ id: "jsonwarning", string: "Only import/export as JSON if you know what you're doing!" },
+	{ id: "reloadoverlay", string: "Please reload overlay to finish clearing the settings and to receive the default settings." },
+	{ id: "saveandclosewindow", string: "Do you want to save settings and close this window?" },
+	{ id: "deleteallsettings", string: "Are you sure you want to delete all settings?" },
+	{ id: "activesettingswindow", string: "There already seems to be an active settings window open. Do you want to close the previous window and open a new one?" },
+	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
+	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
+	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
 ];
