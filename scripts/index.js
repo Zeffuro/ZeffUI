@@ -9,6 +9,7 @@ var ui = {
     locked: true,
     gridshown: false,
     dragPosition: {},
+    activeSettingsWindow: null,
 };
 
 // Global variables for maintaining gamestate and settings
@@ -867,23 +868,22 @@ function loadContextMenu() {
                     break;
                 }
                 case "settings": {
-                    let parameters = new URLSearchParams(
-                        window.location.search,
-                    );
-                    let settingsUrl = parameters.has("OVERLAY_WS")
-                        ? `settings.html?OVERLAY_WS=${parameters.get(
-                              "OVERLAY_WS",
-                          )}`
-                        : "settings.html";
-                    let openSettings = window.open(settingsUrl, "settings");
-                    openSettings.onload = function () {
-                        this.onbeforeunload = function () {
-                            loadSettings().then(() => {
-                                if (gameState.player === null) return;
-                                location.reload();
-                            });
-                        };
-                    };
+                    if (ui.activeSettingsWindow === null) {
+                        openSettingsWindow();
+                    } else {
+                        if (
+                            confirm(
+                                language.find(
+                                    (x) => x.id === "activesettingswindow",
+                                ).string,
+                            )
+                        ) {
+                            ui.activeSettingsWindow.close();
+                            ui.activeSettingsWindow = null;
+                            openSettingsWindow();
+                        }
+                    }
+
                     break;
                 }
                 case "en": {
@@ -962,6 +962,22 @@ function loadContextMenu() {
             },
         },
     });
+}
+
+function openSettingsWindow() {
+    let parameters = new URLSearchParams(window.location.search);
+    let settingsUrl = parameters.has("OVERLAY_WS")
+        ? `settings.html?OVERLAY_WS=${parameters.get("OVERLAY_WS")}`
+        : "settings.html";
+    ui.activeSettingsWindow = window.open(settingsUrl, "settings");
+    ui.activeSettingsWindow.onload = function () {
+        this.onbeforeunload = function () {
+            loadSettings().then(() => {
+                if (gameState.player === null) return;
+                location.reload();
+            });
+        };
+    };
 }
 
 function drawGrid() {
