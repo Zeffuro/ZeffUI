@@ -48,6 +48,7 @@ var activeElements = {
 /* prettier-ignore */
 const GAME_DATA = {
 	CONTENT_TYPE: [],
+    // MP Data copied from cactbot constants: https://github.com/quisquous/cactbot/blob/ecfa4665ba7652e9d4a278e360cc2aadab54bb5a/ui/jobs/constants.ts
 	EFFECT_TICK: 3.0,
 	MP_DATA: {
 		normal: 0.06,
@@ -57,6 +58,7 @@ const GAME_DATA = {
 		umbral_3: 0.60,
 		tick: 3.0
 	},
+    // Comes from https://www.akhmorning.com/allagan-studies/stats/speed/, will need to be updated when Endwalker comes out
 	SPEED_LOOKUP: new Map(
 		[
 			[1, 56], [2, 57],  [3, 60], [4, 62], [5, 65], [6, 68], [7, 70], [8, 73], [9, 76], [10, 78], 
@@ -73,7 +75,9 @@ const GAME_DATA = {
 
 const UPDATE_INTERVAL = 10;
 
-// Add OverlayListeners
+// Add OverlayListeners, some events are found in Cactbot, others in OverlayPlugin itself.
+// Overlay Plugin Events: https://ngld.github.io/OverlayPlugin/devs/event_types and https://github.com/ngld/OverlayPlugin/tree/0da98d8045ec220d6c3d64f4dcf0edd3cd44a8f3/OverlayPlugin.Core/EventSources
+// Cactbot Events: https://github.com/quisquous/cactbot/blob/8615b69424360f69892bf81907d9cbdf3e752592/plugin/CactbotEventSource/CactbotEventSource.cs
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
 addOverlayListener("onPartyWipe", () => onPartyWipe());
@@ -94,19 +98,23 @@ async function startZeffUI() {
     console.log("ZeffUI fully loaded.");
 }
 
+// Imports zone information constants into GAME_DATA for checking if PvP is in effect.
 function initializeContentZoneImports() {
+    // Content manually placed over from https://github.com/quisquous/cactbot/blob/main/resources/zone_info.ts because this project doesn't support typescript
     Object.assign(GAME_DATA.CONTENT_TYPE, content_type);
+    // Content manually placed over from https://github.com/quisquous/cactbot/blob/main/resources/content_type.ts because this project doesn't support typescript
     Object.assign(GAME_DATA.ZONE_INFO, zone_info);
     if (gameState.zone !== undefined) checkAndSetZoneInfo(gameState.zone.id);
 }
 
-// Settings
+// SETTINGS
+// Function to initialize setting property, thanks MikeMatrix for the help with this.
 function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
-    // Thanks MikeMatrix
     if (settingsObject[setting] === undefined)
         settingsObject[setting] = defaultValue;
 }
 
+// Legacy location for the settings, left in so people who hasn't played for a long time still have their settings. Also functions as a backup location for settings.
 function initializeSettings() {
     if (localStorage.getItem("settings") !== null) {
         return JSON.parse(localStorage.getItem("settings"));
@@ -115,6 +123,7 @@ function initializeSettings() {
     }
 }
 
+// Load settings through OverlayPlugin, these settings are stored in %appdata%\Advanced Combat Tracker\Config\RainbowMage.OverlayPlugin.config.json
 async function loadSettings() {
     let settings = {};
     settings = await callOverlayHandler({ call: "loadData", key: "zeffUI" });
@@ -750,6 +759,7 @@ async function loadSettings() {
     saveSettings();
 }
 
+// Parse all current locations of components and then save them in localStorage (legacy) and OverlayPlugin located in %appdata%\Advanced Combat Tracker\Config\RainbowMage.OverlayPlugin.config.json
 async function saveSettings() {
     currentSettings.healthbar.x = parseInt(ui.dragPosition["health-bar"].x);
     currentSettings.healthbar.y = parseInt(ui.dragPosition["health-bar"].y);
@@ -850,6 +860,7 @@ async function saveSettings() {
 }
 
 // UI Elements and functions
+// Context menu whenever someone rightclicks any UI component
 function loadContextMenu() {
     $(":root").contextMenu({
         selector: "body",
@@ -868,6 +879,7 @@ function loadContextMenu() {
                     break;
                 }
                 case "settings": {
+                    // This way of opening the settings window and propegate the made changes to the settings is a bit scuffed but currently can't think of a better way.
                     if (ui.activeSettingsWindow === null) {
                         openSettingsWindow();
                     } else {
@@ -887,39 +899,27 @@ function loadContextMenu() {
                     break;
                 }
                 case "en": {
-                    currentSettings.language = "en";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("en");
                     break;
                 }
                 case "de": {
-                    currentSettings.language = "de";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("de");
                     break;
                 }
                 case "fr": {
-                    currentSettings.language = "fr";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("fr");
                     break;
                 }
                 case "jp": {
-                    currentSettings.language = "jp";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("jp");
                     break;
                 }
                 case "cn": {
-                    currentSettings.language = "cn";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("cn");
                     break;
                 }
                 case "kr": {
-                    currentSettings.language = "kr";
-                    saveSettings();
-                    location.reload();
+                    setUILanguageAndReload("kr");
                     break;
                 }
             }
@@ -964,6 +964,14 @@ function loadContextMenu() {
     });
 }
 
+// Sets the game language, saves the current settings and reloads the UI
+function setUILanguageAndReload(language) {
+    currentSettings.language = language;
+    saveSettings();
+    location.reload();
+}
+
+// Opens the settings window and tries to keep track to see if it's opened, also takes OVERLAY_WS parameters into account.
 function openSettingsWindow() {
     let parameters = new URLSearchParams(window.location.search);
     let settingsUrl = parameters.has("OVERLAY_WS")
@@ -980,6 +988,7 @@ function openSettingsWindow() {
     };
 }
 
+// Draws a grid over the whole area for easier placement. It would be better if we could make all lines consistent and not depend on placement of Overlay in OverlayPlugin
 function drawGrid() {
     let width = window.innerWidth;
     let height = window.innerHeight;
@@ -1014,6 +1023,7 @@ function clearGrid() {
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+// Toggles the grid on and off (and draws them on demand)
 function toggleGrid() {
     if (!ui.gridshown) {
         drawGrid();
@@ -1024,6 +1034,7 @@ function toggleGrid() {
     }
 }
 
+// Tries to show all components available when user unlocks/locks the UI and saves the locations of all the UI components
 function toggleLock() {
     interact("[id$=bar]").draggable({
         enabled: ui.locked,
@@ -1152,12 +1163,14 @@ function toggleLock() {
 }
 
 // Helper functions
+// Puts a color filter over a HTML5 progress bar that's colorcoded in sepia colors so the bars actually gets colored
 function applyFilterColorToElement(classId, filterColor) {
     $("style").append(
         `.${classId}::-webkit-progress-value { filter: var(${filterColor}); }`,
     );
 }
 
+// Gets the correct settings/elements/active components for given selector
 function getSelectorProperties(selector) {
     let object = {};
     switch (selector) {
@@ -1197,6 +1210,7 @@ function getSelectorProperties(selector) {
     return object;
 }
 
+// Gets the set language in FFXIV Plugin Settings
 async function getACTLocale() {
     let lang = await callOverlayHandler({ call: "getLanguage" });
     switch (lang.language) {
@@ -1217,6 +1231,7 @@ async function getACTLocale() {
     }
 }
 
+// Handles showing/hiding of component based on player settings and if he's in combat
 function toggleHideOutOfCombatElements() {
     currentSettings.healthbar.hideoutofcombat && !gameState.inCombat
         ? $("#health-bar").addClass("hide-in-combat")
@@ -1262,6 +1277,7 @@ function toggleHideOutOfCombatElements() {
         : $("#party-bar").removeClass("hide-in-combat");
 }
 
+// Handles showing/hiding of component based on player settings and if he's in a party
 function toggleHideWhenSoloCombatElements(toggleLock = false) {
     let show = gameState.partyList.length !== 1;
     if (toggleLock) show = true;
@@ -1287,6 +1303,7 @@ function generateJobStacks() {
     }
 }
 
+// Handles reloading all the modules (after for example changing settings or coming into a battle live)
 function reloadCooldownModules() {
     toLog([
         `[reloadCooldownModules] Zone: ${gameState.zone.type} CurrentPartyList:`,
@@ -1338,6 +1355,7 @@ function generateCustomCooldowns() {
         );
 }
 
+// Sets up all the abilities for mitigation and then generates them
 function generateMitigation() {
     toLog(["[generateMitigation]"]);
     let mitigationAbilityList = [];
@@ -1382,6 +1400,7 @@ function generateMitigation() {
         );
 }
 
+// Sets up all the abilities for party cooldowns and then generates them
 function generatePartyCooldowns() {
     toLog(["[generatePartyCooldowns]"]);
     let partyAbilityList = [];
@@ -1420,6 +1439,7 @@ function generatePartyCooldowns() {
         generateIconBarElements("Party", partyAbilityList, 20);
 }
 
+// Sets up all the abilities for raidbuffs and then generates them
 function generateRaidBuffs() {
     toLog(["[generateRaidBuffs]"]);
     let raidAbilityList = [];
@@ -1484,6 +1504,7 @@ function generateRaidBuffs() {
         );
 }
 
+// Generates all the needed HTML elements for current abilities that are relevant for the current job
 function generateIconBarElements(selector, iconAbilityList, columns) {
     let selectorProperties = getSelectorProperties(selector);
     let barSelector = selectorProperties.id;
@@ -1550,6 +1571,7 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
     }
 }
 
+// Generates a single ability icon based on player and ability
 function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
@@ -1627,6 +1649,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
 }
 
 // Handlers for creating/maintaining party list
+// Generates "raw" partylist that's in the format that generatePartyList expects, made for cases where a player joins late and other sources needs to be used to determine what job classes are in the players party
 function generateRawPartyList(fromCombatants, combatants = null) {
     if (fromCombatants) {
         let partyList = combatants.filter((x) => x.PartyType !== 0);
@@ -1655,6 +1678,7 @@ function generateRawPartyList(fromCombatants, combatants = null) {
     ];
 }
 
+// Generate partylist with extra metadata (for example player jobs and what type the job is)
 function generatePartyList(party) {
     toLog(["[GeneratePartyList] RawPartyList:", party]);
     gameState.rawPartyList = party;
@@ -1695,6 +1719,7 @@ function generatePartyList(party) {
     gameState.partyList.unshift(currentPlayerElement);
 }
 
+// Manual party check from getCombatants in case the players party is null (for example when player reloaded the UI)
 function checkForParty(e) {
     let combatants = e.combatants;
     if (combatants === undefined || gameState.player === undefined) return;
@@ -1705,6 +1730,7 @@ function checkForParty(e) {
 }
 
 // Timer and TTS handlers
+// Handle ability timers when ability is used
 function startAbilityIconTimers(
     playerIndex,
     ability,
@@ -1812,6 +1838,7 @@ function startAbilityIconTimers(
     selectedActive.set(`${playerIndex}-${ability.id}`, selector);
 }
 
+// Handle ability bar timers when effects occur or certain cooldowns are used
 function startAbilityBarTimer(
     ability,
     duration,
@@ -2055,6 +2082,7 @@ function startAbilityBarTimer(
     );
 }
 
+// Start and handle actual timer for ability
 function startAbilityTimer(duration, selector, previousIcon = null) {
     let timems = duration * 1000;
 
@@ -2075,6 +2103,7 @@ function startAbilityTimer(duration, selector, previousIcon = null) {
     activeElements.countdowns.set(selector, countdownTimer);
 }
 
+// Start and handle actual timer for bars/effects
 function startBarTimer(
     duration,
     selector,
@@ -2126,6 +2155,7 @@ function startBarTimer(
     activeElements.countdowns.set(selector, countdownTimer);
 }
 
+// Stop active ability timer right away and handles the visual aspect of it
 function stopAbilityTimer(selector, previousIcon = null) {
     if (currentSettings.raidbuffs.alwaysshow) {
         $(selector).text("");
@@ -2159,6 +2189,7 @@ function stopAbilityTimer(selector, previousIcon = null) {
     }
 }
 
+// Stop all active timers for certain player in your party (when he for example dies)
 function stopPlayerDurationTimers(playerindex) {
     activeElements.partyCooldowns.forEach((value, key) => {
         if (key.split("-")[0] == playerindex) {
@@ -2183,6 +2214,7 @@ function stopPlayerDurationTimers(playerindex) {
     }
 }
 
+// Stop remove active bar
 function removeTimerBar(selector) {
     $(selector).remove();
     $(selector.replace("timer", "image")).remove();
@@ -2192,6 +2224,7 @@ function removeTimerBar(selector) {
         activeElements.dotBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
 }
 
+// Reset all timers
 function resetTimers() {
     let tickerTypes = ["mp", "dot", "hot"];
     for (let tickerType of tickerTypes) {
@@ -2212,6 +2245,7 @@ function resetTimers() {
     activeElements.countdowns.clear();
 }
 
+// Set actual timer for when TTS needs to be played for certain abilities
 function startTTSTimer(
     duration,
     selector,
@@ -2241,6 +2275,7 @@ function startTTSTimer(
     activeElements.tts.set(selector, ttsTimer);
 }
 
+// Set up event for when TTS needs to occur for certain abilities
 function handleAbilityTTS(ability, selector, onYou = true) {
     if (activeElements.tts.has(selector))
         clearInterval(activeElements.tts.get(selector));
@@ -2308,6 +2343,7 @@ function handleAbilityTTS(ability, selector, onYou = true) {
     }
 }
 
+// Originally used for google TTS but this hack stopped working, still relevant for the TTS from Baidu
 function setWebTTS(text) {
     let iframe = document.createElement("iframe");
     iframe.removeAttribute("sandbox");
@@ -2362,12 +2398,14 @@ function adjustJobStacks(value, max, noAdd = false) {
     }
 }
 
+// Handles Ruin IV stacks for summoner
 function initializeSmn(addStack = false) {
     gameState.stats.stacks = addStack ? 1 : 0;
     gameState.stats.maxStacks = 4;
 }
 
 // OverlayPlugin and Cactbot Event Handlers
+// When user changes zones
 function onChangeZone(e) {
     gameState.zone = {
         id: e.zoneID,
@@ -2384,6 +2422,7 @@ function onChangeZone(e) {
     resetTimers();
 }
 
+// When user enters / leaves combat
 function onInCombatChangedEvent(e) {
     if (gameState.inCombat === e.detail.inGameCombat) {
         return;
@@ -2393,9 +2432,10 @@ function onInCombatChangedEvent(e) {
     toggleHideOutOfCombatElements();
 }
 
+// When any log event occurs, then process them and forwards them to corresponding event
 function onLogEvent(e) {
     for (let logLine of e.detail.logs) {
-        toLog([logLine]);
+        toLog([`[OnLogEvent] ${logLine}`]);
         for (let logType of Object.keys(regexList)) {
             let regexObject = regexList[logType];
             let regex = new RegExp(regexObject.regex);
@@ -2421,6 +2461,7 @@ function onLogEvent(e) {
     }
 }
 
+// Listens for user unlocks/locks the overlay in OverlayPlugin
 document.addEventListener("onOverlayStateUpdate", function (e) {
     if (!e.detail.isLocked) {
         $(":root").css("background", "rgba(0,0,255,0.5)");
@@ -2429,6 +2470,7 @@ document.addEventListener("onOverlayStateUpdate", function (e) {
     }
 });
 
+// When user switches jobs
 function onJobChange(job) {
     let tickerTypes = ["mp", "dot", "hot"];
     for (let tickerType of tickerTypes) {
@@ -2464,6 +2506,7 @@ function onJobChange(job) {
     }
 }
 
+// When anyone joins/leaves party
 function onPartyChanged(e) {
     toLog(["[onPartyChanged]", e]);
     if (gameState.player === null) return;
@@ -2476,12 +2519,14 @@ function onPartyChanged(e) {
     toggleHideWhenSoloCombatElements();
 }
 
+// When the party wipes on an encounter
 function onPartyWipe() {
     if (gameState.player === null) return;
     resetTimers();
     reloadCooldownModules();
 }
 
+// When any change occurs to the player/players resources, mostly used for HP/MP and detecting job changes
 function onPlayerChangedEvent(e) {
     if (gameState.player !== null && gameState.player.job !== e.detail.job) {
         onJobChange(e.detail.job);
@@ -2536,6 +2581,7 @@ function onInstanceEnd() {
     reloadCooldownModules();
 }
 
+// Checks if current zone is available in static zone_info and sets it in the current gamestate
 function checkAndSetZoneInfo(zoneId) {
     if (GAME_DATA.ZONE_INFO[zoneId] !== undefined) {
         gameState.zone.info = GAME_DATA.ZONE_INFO[zoneId];
@@ -2548,12 +2594,14 @@ function checkAndSetZoneInfo(zoneId) {
     }
 }
 
+// When user uses /countdown or /cd
 /* exported handleCountdownTimer */
 function handleCountdownTimer(parameters) {
     if (!currentSettings.timerbar.enabled) return;
     startBarTimer(parameters.seconds, "#timer-bar", true);
 }
 
+// Whenever any DoT/HoT ticks
 /* exported handleEffectTick */
 function handleEffectTick(parameters) {
     let type = parameters.effect.toLowerCase();
@@ -2577,6 +2625,7 @@ function handleEffectTick(parameters) {
     }
 }
 
+// When user's mana changes
 function handleManaTick(current, max) {
     if (!currentSettings.mpticker.enabled) return;
     if (currentSettings.mpticker.specificjobsenabled) {
@@ -2626,6 +2675,7 @@ function handleManaTick(current, max) {
     if (duration > 0) startBarTimer(duration, "#mp-ticker-bar", false, true);
 }
 
+// When user's mana changes
 function handleManaUpdate(current, max) {
     handleManaTick(current, max);
     $("#mana-bar").attr("max", max);
@@ -2662,6 +2712,7 @@ function handleManaUpdate(current, max) {
     }
 }
 
+// Handles majority of the logic on 15/16 log lines
 /* exported handleSkill */
 function handleSkill(parameters) {
     if (gameState.player === null) return;
@@ -2827,6 +2878,7 @@ function handleSkill(parameters) {
     }
 }
 
+// Handles majority of the logic on 1A log lines
 /* exported handleGainEffect */
 function handleGainEffect(parameters) {
     if (gameState.player === null) return;
@@ -2941,6 +2993,7 @@ function handleGainEffect(parameters) {
     }
 }
 
+// Handles majority of the logic on 1E log lines
 /* exported handleLoseEffect */
 function handleLoseEffect(parameters) {
     if (gameState.player === null) return;
@@ -2971,6 +3024,7 @@ function handleLoseEffect(parameters) {
     }
 }
 
+// Handles 19 log lines
 /* exported handleDeath */
 function handleDeath(parameters) {
     let you = parameters.target === gameState.player.name;
@@ -2986,6 +3040,7 @@ function handleDeath(parameters) {
     }
 }
 
+// Handles changed player stats, mostly to keep the current SKS/SPS modifiers up to date
 /* exported handlePlayerStats */
 function handlePlayerStats(parameters) {
     gameState.stats.skillSpeed =

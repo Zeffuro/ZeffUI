@@ -1,3 +1,4 @@
+// Content manually placed over from https://github.com/quisquous/cactbot/blob/main/resources/zone_info.ts because this project doesn't support typescript
 var zone_info = {
     128: {
         exVersion: 0,

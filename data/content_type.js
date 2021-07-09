@@ -1,3 +1,4 @@
+// Content manually placed over from https://github.com/quisquous/cactbot/blob/main/resources/content_type.ts because this project doesn't support typescript
 var content_type = {
     BeastTribeQuests: 13,
     Companions: 12,
