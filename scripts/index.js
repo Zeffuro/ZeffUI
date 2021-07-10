@@ -208,6 +208,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.healthbar, "rotation", 0);
     checkAndInitializeSetting(settings.healthbar, "x", 30);
     checkAndInitializeSetting(settings.healthbar, "y", 216);
+    checkAndInitializeSetting(settings.healthbar, "align", "left");
     checkAndInitializeSetting(settings.healthbar, "font", "Arial");
 
     settings.healthbar.enabled
@@ -246,6 +247,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.manabar, "rotation", 0);
     checkAndInitializeSetting(settings.manabar, "x", 30);
     checkAndInitializeSetting(settings.manabar, "y", 232);
+    checkAndInitializeSetting(settings.manabar, "align", "left");
     checkAndInitializeSetting(settings.manabar, "font", "Arial");
 
     checkAndInitializeSetting(settings.manabar, "jobthresholdsenabled", true);
@@ -763,11 +765,35 @@ async function loadSettings() {
 async function saveSettings() {
     currentSettings.healthbar.x = parseInt(ui.dragPosition["health-bar"].x);
     currentSettings.healthbar.y = parseInt(ui.dragPosition["health-bar"].y);
+
+    $("#health-bar").css("text-align", currentSettings.healthbar.align);
+    switch (currentSettings.healthbar.align) {
+        case "left":
+            $("#health-bar").css(
+                "--healthFontX",
+                currentSettings.healthbar.scale * 8,
+            );
+            break;
+        case "center":
+            $("#health-bar").css("--healthFontX", 0);
+            break;
+        case "right":
+            $("#health-bar").css(
+                "--healthFontX",
+                -Math.abs(currentSettings.healthbar.scale * 8),
+            );
+            break;
+        default:
+            $("#health-bar").css(
+                "--healthFontX",
+                currentSettings.healthbar.scale * 8,
+            );
+    }
     $("#health-bar").css(
         "--healthFontSize",
         currentSettings.healthbar.scale * 10,
     );
-    $("#health-bar").css("--healthFontX", currentSettings.healthbar.scale * 5);
+
     $("#health-bar").css(
         "--healthFontY",
         currentSettings.healthbar.scale * -14,
@@ -775,8 +801,32 @@ async function saveSettings() {
 
     currentSettings.manabar.x = parseInt(ui.dragPosition["mana-bar"].x);
     currentSettings.manabar.y = parseInt(ui.dragPosition["mana-bar"].y);
+
+    $("#mana-bar").css("text-align", currentSettings.manabar.align);
+    switch (currentSettings.manabar.align) {
+        case "left":
+            $("#mana-bar").css(
+                "--manaFontX",
+                currentSettings.manabar.scale * 8,
+            );
+            break;
+        case "center":
+            $("#mana-bar").css("--manaFontX", 0);
+            break;
+        case "right":
+            $("#mana-bar").css(
+                "--manaFontX",
+                -Math.abs(currentSettings.manabar.scale * 8),
+            );
+            break;
+        default:
+            $("#mana-bar").css(
+                "--manaFontX",
+                currentSettings.manabar.scale * 8,
+            );
+    }
+
     $("#mana-bar").css("--manaFontSize", currentSettings.manabar.scale * 10);
-    $("#mana-bar").css("--manaFontX", currentSettings.manabar.scale * 5);
     $("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
 
     currentSettings.mpticker.x = parseInt(ui.dragPosition["mp-ticker-bar"].x);

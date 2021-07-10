@@ -122,6 +122,8 @@ var language = [
 	{ id: "ttsearly", string: "TTSの早さ（何秒前）" },
 	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "Warning!" },
+	{ id: "textalign", string: "Text Align" },
+	{ id: "center", string: "Center" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

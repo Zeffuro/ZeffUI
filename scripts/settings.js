@@ -998,6 +998,7 @@ async function loadSettings() {
                 $("#healthRotation").val(settings.healthbar.rotation);
                 $("#healthX").attr("value", settings.healthbar.x);
                 $("#healthY").attr("value", settings.healthbar.y);
+                $("#healthAlign").val(settings.healthbar.align);
 
                 $("#manaBarEnabled").prop("checked", settings.manabar.enabled);
                 $("#manaHideOutOfCombat").prop(
@@ -1021,6 +1022,7 @@ async function loadSettings() {
                 $("#manaRotation").val(settings.manabar.rotation);
                 $("#manaX").attr("value", settings.manabar.x);
                 $("#manaY").attr("value", settings.manabar.y);
+                $("#manaAlign").val(settings.manabar.align);
 
                 $("#mptickerEnabled").prop(
                     "checked",
@@ -1478,6 +1480,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             rotation: $("#healthRotation").val(),
             x: parseInt($("#healthX").val()),
             y: parseInt($("#healthY").val()),
+            align: $("#healthAlign").val(),
             font: $("#healthFont").val(),
         },
         manabar: {
@@ -1492,6 +1495,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             rotation: $("#manaRotation").val(),
             x: parseInt($("#manaX").val()),
             y: parseInt($("#manaY").val()),
+            align: $("#manaAlign").val(),
             font: $("#manaFont").val(),
         },
         mpticker: {

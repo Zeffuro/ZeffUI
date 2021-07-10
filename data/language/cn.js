@@ -122,6 +122,8 @@ var language = [
 	{ id: "ttsearly", string: "TTS提前播报（秒）" },
 	{ id: "charges", string: "Charges" },
 	{ id: "warning", string: "警告!" },
+	{ id: "textalign", string: "Text Align" },
+	{ id: "center", string: "Center" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
