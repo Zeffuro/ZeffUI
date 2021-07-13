@@ -503,7 +503,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.bufftimerbar, "y", 100);
     checkAndInitializeSetting(settings.bufftimerbar, "font", "Arial");
 
-    $("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 154);
+    $("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 160);
     $("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
     $("#buff-timer-bar").css("--buffFont", settings.bufftimerbar.font);
     $("#buff-bar").css(
@@ -841,7 +841,7 @@ async function saveSettings() {
     currentSettings.timerbar.x = parseInt(ui.dragPosition["timer-bar"].x);
     currentSettings.timerbar.y = parseInt(ui.dragPosition["timer-bar"].y);
     $("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
-    $("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 5);
+    $("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 8);
     $("#timer-bar").css("--timerFontY", currentSettings.timerbar.scale * -14);
 
     currentSettings.dottimerbar.x = parseInt(
@@ -856,7 +856,7 @@ async function saveSettings() {
     );
     $("#dot-timer-bar").css(
         "--dotFontX",
-        currentSettings.dottimerbar.scale * 5,
+        currentSettings.dottimerbar.scale * 8,
     );
     $("#dot-timer-bar").css(
         "--dotFontY",
@@ -875,7 +875,7 @@ async function saveSettings() {
     );
     $("#buff-timer-bar").css(
         "--buffFontX",
-        currentSettings.bufftimerbar.scale * 5,
+        currentSettings.bufftimerbar.scale * 8,
     );
     $("#buff-timer-bar").css(
         "--buffFontY",
