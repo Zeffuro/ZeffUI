@@ -586,7 +586,7 @@ function addCustomAbility() {
                 tts: $("#customcdAbilityTTSEnabled").is(":checked"),
                 ttstype: $("#customcdAbilityTTSType").val(),
                 job: $("#customcdAbilityJob").val(),
-                level: ability.ClassJobLevel,
+                level: ability.level,
                 duration: $("#customcdAbilityDuration").val(),
                 cooldown: $("#customcdAbilityCooldown").val(),
                 type: "CustomCooldown",
