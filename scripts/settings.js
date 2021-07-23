@@ -542,6 +542,7 @@ function loadCustomCdAbility() {
                 $("#customcdAbilityCharges").val(0);
             }
             $("#customcdAbilityOrder").val(ability.order);
+            $("#customcdAbilityType").val(ability.type);
             break;
         case "1":
             ability = foundAbilities.find((x) => x.ID == id);
@@ -561,6 +562,7 @@ function loadCustomCdAbility() {
             $("#customcdAbilityCooldown").val(ability.Cooldown);
             $("#customcdAbilityCharges").val(ability.Charges);
             $("#customcdAbilityOrder").val(0);
+            $("#customcdAbilityType").val("CustomCooldown");
             break;
     }
 }
@@ -589,7 +591,7 @@ function addCustomAbility() {
                 level: ability.level,
                 duration: $("#customcdAbilityDuration").val(),
                 cooldown: $("#customcdAbilityCooldown").val(),
-                type: "CustomCooldown",
+                type: $("#customcdAbilityType").val(),
                 icon: ability.icon,
                 color: "--filter-light-blue",
                 order: $("#customcdAbilityOrder").val(),
@@ -622,7 +624,7 @@ function addCustomAbility() {
                 level: ability.ClassJobLevel,
                 duration: $("#customcdAbilityDuration").val(),
                 cooldown: $("#customcdAbilityCooldown").val(),
-                type: "CustomCooldown",
+                type: $("#customcdAbilityType").val(),
                 icon: `https://xivapi.com${ability.Icon}`,
                 color: "--filter-light-blue",
                 order: $("#customcdAbilityOrder").val(),

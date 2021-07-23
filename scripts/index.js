@@ -1411,8 +1411,13 @@ function generateMitigation() {
     let mitigationAbilityList = [];
     $("#mitigation-bar").empty();
     let playerIndex = 0;
+
+    let mergedAbilityList = abilityList.concat(
+        currentSettings.customcd.abilities,
+    );
+
     let currentJob = jobList.find((x) => x.name === gameState.player.job);
-    for (let ability of abilityList.filter(
+    for (let ability of mergedAbilityList.filter(
         (x) => x.type === "Mitigation" && x.level <= gameState.player.level,
     )) {
         if (
@@ -1456,8 +1461,13 @@ function generatePartyCooldowns() {
     let partyAbilityList = [];
     $("#party-bar").empty();
     let playerIndex = 0;
+
+    let mergedAbilityList = abilityList.concat(
+        currentSettings.customcd.abilities,
+    );
+
     for (let partyMember of gameState.partyList) {
-        for (let ability of abilityList.filter(
+        for (let ability of mergedAbilityList.filter(
             (x) =>
                 x.type === "Party" &&
                 (x.job === partyMember.job.name ||
@@ -1495,11 +1505,18 @@ function generateRaidBuffs() {
     let raidAbilityList = [];
     $("#raid-buffs-bar").empty();
     let playerIndex = 0;
+
+    let mergedAbilityList = abilityList.concat(
+        currentSettings.customcd.abilities,
+    );
+
     for (let partyMember of gameState.partyList) {
-        for (let ability of abilityList.filter(
+        for (let ability of mergedAbilityList.filter(
             (x) =>
                 x.type === "RaidBuff" &&
-                x.job === partyMember.job.name &&
+                (x.job === partyMember.job.name ||
+                    x.job === partyMember.job.type ||
+                    x.job === partyMember.job.position_type) &&
                 x.level <= gameState.player.level,
         )) {
             if (
@@ -1786,9 +1803,10 @@ function startAbilityIconTimers(
     ability,
     onYou = true,
     abilityHolder = null,
+    ignoreCooldown = false,
 ) {
     toLog([
-        `[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou}`,
+        `[StartAbilityIconTimers] PlayerIndex: ${playerIndex} On You: ${onYou} Ignore Cooldown: ${ignoreCooldown}`,
         ability,
         abilityHolder,
     ]);
@@ -1833,12 +1851,15 @@ function startAbilityIconTimers(
                 activeElements.countdowns.get(`${selector}-duration`),
             );
         }
-        if (activeElements.countdowns.has(`${selector}-cooldown`)) {
+        if (
+            activeElements.countdowns.has(`${selector}-cooldown`) &&
+            !ignoreCooldown
+        ) {
             clearInterval(
                 activeElements.countdowns.get(`${selector}-cooldown`),
             );
         }
-        stopAbilityTimer(`${selector}-cooldown`, null);
+        if (!ignoreCooldown) stopAbilityTimer(`${selector}-cooldown`, null);
         stopAbilityTimer(`${selector}-duration`, null);
     }
 
@@ -1882,7 +1903,7 @@ function startAbilityIconTimers(
         $(`${selector}-cooldown`).show();
         $(`${selector}-cooldown`).text(ability.cooldown);
     }
-    if (selectedSettings.alwaysshow)
+    if (selectedSettings.alwaysshow && !ignoreCooldown)
         startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
 
     selectedActive.set(`${playerIndex}-${ability.id}`, selector);
@@ -2776,7 +2797,12 @@ function handleSkill(parameters) {
         (x) => x.name === parameters.player,
     );
     let ability = undefined;
-    for (ability of abilityList.filter(
+
+    let mergedAbilityList = abilityList.concat(
+        currentSettings.customcd.abilities,
+    );
+
+    for (ability of mergedAbilityList.filter(
         (x) => x.id == parseInt(parameters.skillid, 16),
     )) {
         if (ability === undefined) return;
@@ -2806,7 +2832,7 @@ function handleSkill(parameters) {
         if (ability.type === "RaidBuff") {
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
                 if (ability.extra.is_card) {
-                    let abilityHolder = abilityList.find(
+                    let abilityHolder = mergedAbilityList.find(
                         (x) => x.name === "Play",
                     );
                     if (onYou) {
@@ -2824,12 +2850,12 @@ function handleSkill(parameters) {
                     startAbilityIconTimers(playerIndex, ability, false);
                 }
                 if (ability.extra.is_song) {
-                    let abilityHolder = abilityList.find(
+                    let abilityHolder = mergedAbilityList.find(
                         (x) => x.name === "Song",
                     );
                     if (byYou) {
                         if (!currentSettings.raidbuffs.alwaysshow) {
-                            for (let song of abilityList.filter(
+                            for (let song of mergedAbilityList.filter(
                                 (x) =>
                                     Object.prototype.hasOwnProperty.call(
                                         x,
@@ -2878,7 +2904,9 @@ function handleSkill(parameters) {
                     }
                 }
                 if (ability.extra.is_ss) {
-                    let abilityHolder = abilityList.find((x) => x.id === 15997);
+                    let abilityHolder = mergedAbilityList.find(
+                        (x) => x.id === 15997,
+                    );
                     startAbilityIconTimers(
                         playerIndex,
                         ability,
@@ -2886,10 +2914,13 @@ function handleSkill(parameters) {
                         currentSettings.raidbuffs.alwaysshow
                             ? abilityHolder
                             : ability,
+                        byYou,
                     );
                 }
                 if (ability.extra.is_ts) {
-                    let abilityHolder = abilityList.find((x) => x.id === 16004);
+                    let abilityHolder = mergedAbilityList.find(
+                        (x) => x.id === 16004,
+                    );
                     startAbilityIconTimers(
                         playerIndex,
                         ability,
@@ -2897,6 +2928,7 @@ function handleSkill(parameters) {
                         currentSettings.raidbuffs.alwaysshow
                             ? abilityHolder
                             : ability,
+                        byYou,
                     );
                 }
             } else {
@@ -2918,12 +2950,8 @@ function handleSkill(parameters) {
         if (ability.type === "Party") {
             startAbilityIconTimers(playerIndex, ability, true);
         }
-    }
-    if (currentSettings.customcd.abilities.length > 0) {
-        for (ability of currentSettings.customcd.abilities.filter(
-            (x) => x.id == parseInt(parameters.skillid, 16),
-        )) {
-            if (byYou) startAbilityIconTimers(playerIndex, ability, true);
+        if (ability.type === "CustomCooldown") {
+            startAbilityIconTimers(playerIndex, ability, true);
         }
     }
 }
@@ -2938,7 +2966,12 @@ function handleGainEffect(parameters) {
         (x) => x.name === parameters.player,
     );
     let ability = undefined;
-    for (ability of abilityList.filter(
+
+    let mergedAbilityList = abilityList.concat(
+        currentSettings.customcd.abilities,
+    );
+
+    for (ability of mergedAbilityList.filter(
         (x) =>
             x[`name_${currentSettings.language}`].toLowerCase() ==
             parameters.effect.toLowerCase(),
@@ -2963,7 +2996,7 @@ function handleGainEffect(parameters) {
                 return;
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
                 if (ability.extra.is_song) {
-                    let abilityHolder = abilityList.find(
+                    let abilityHolder = mergedAbilityList.find(
                         (x) => x.name === "Song",
                     );
                     if (byYou) {
@@ -2991,7 +3024,7 @@ function handleGainEffect(parameters) {
                         startAbilityIconTimers(playerIndex, ability, true);
                         startAbilityIconTimers(
                             playerIndex,
-                            abilityList.find(
+                            mergedAbilityList.find(
                                 (x) => x.id === ability.extra.shares_cooldown,
                             ),
                             false,
@@ -3021,7 +3054,7 @@ function handleGainEffect(parameters) {
                         onYou,
                         false,
                         0,
-                        abilityList.find(
+                        mergedAbilityList.find(
                             (x) => x.id === ability.extra.shares_cooldown,
                         ),
                     );
