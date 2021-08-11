@@ -124,6 +124,7 @@ var language = [
 	{ id: "warning", string: "Warning!" },
 	{ id: "textalign", string: "Text Align" },
 	{ id: "center", string: "Center" },
+	{ id: "alwaystick", string: "Always Tick" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

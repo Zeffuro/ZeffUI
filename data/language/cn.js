@@ -124,6 +124,7 @@ var language = [
 	{ id: "warning", string: "警告!" },
 	{ id: "textalign", string: "Text Align" },
 	{ id: "center", string: "Center" },
+	{ id: "alwaystick", string: "Always Tick" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },

@@ -306,6 +306,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.mpticker, "y", 248);
     checkAndInitializeSetting(settings.mpticker, "specificjobsenabled", true);
     checkAndInitializeSetting(settings.mpticker, "specificjobs", ["BLM"]);
+    checkAndInitializeSetting(settings.mpticker, "alwaystick", false);
 
     settings.mpticker.enabled
         ? $("#mp-ticker-bar").show()
@@ -2743,7 +2744,18 @@ function handleManaTick(current, max) {
         )
             duration = 0;
     }
-    if (duration > 0) startBarTimer(duration, "#mp-ticker-bar", false, true);
+
+    if (duration > 0) {
+        if (
+            currentSettings.mpticker.alwaystick &&
+            activeElements.countdowns.get("#mp-ticker-bar") == undefined
+        ) {
+            startBarTimer(duration, "#mp-ticker-bar", false, true, true);
+        }
+        if (!currentSettings.mpticker.alwaystick) {
+            startBarTimer(duration, "#mp-ticker-bar", false, true, false);
+        }
+    }
 }
 
 // When user's mana changes

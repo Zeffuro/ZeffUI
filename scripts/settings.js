@@ -1045,6 +1045,10 @@ async function loadSettings() {
                     "checked",
                     settings.mpticker.specificjobsenabled,
                 );
+                $("#mptickerAlwaysTick").prop(
+                    "checked",
+                    settings.mpticker.alwaystick,
+                );
                 createSpecificJobs(
                     "#mptickerSpecificJobs",
                     settings.mpticker.specificjobs,
@@ -1512,6 +1516,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
                 ":checked",
             ),
             specificjobs: currentSettings.mpticker.specificjobs,
+            alwaystick: $("#mptickerAlwaysTick").is(":checked"),
         },
         dotticker: {
             enabled: $("#dottickerEnabled").is(":checked"),
