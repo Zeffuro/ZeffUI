@@ -211,6 +211,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.healthbar, "y", 216);
     checkAndInitializeSetting(settings.healthbar, "align", "left");
     checkAndInitializeSetting(settings.healthbar, "font", "Arial");
+    checkAndInitializeSetting(settings.healthbar, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.healthbar, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.healthbar, "staticfontsize", false);
+    checkAndInitializeSetting(settings.healthbar, "fontsize", 10);
 
     settings.healthbar.enabled
         ? $("#health-bar").show()
@@ -250,6 +254,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.manabar, "y", 232);
     checkAndInitializeSetting(settings.manabar, "align", "left");
     checkAndInitializeSetting(settings.manabar, "font", "Arial");
+    checkAndInitializeSetting(settings.manabar, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.manabar, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.manabar, "staticfontsize", false);
+    checkAndInitializeSetting(settings.manabar, "fontsize", 10);
 
     checkAndInitializeSetting(settings.manabar, "jobthresholdsenabled", true);
     checkAndInitializeSetting(
@@ -423,6 +431,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.timerbar, "x", 30);
     checkAndInitializeSetting(settings.timerbar, "y", 200);
     checkAndInitializeSetting(settings.timerbar, "font", "Arial");
+    checkAndInitializeSetting(settings.timerbar, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.timerbar, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.timerbar, "staticfontsize", false);
+    checkAndInitializeSetting(settings.timerbar, "fontsize", 10);
 
     $("#timer-bar").css(
         "--pulltimerBarColor",
@@ -466,6 +478,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.dottimerbar, "x", 30);
     checkAndInitializeSetting(settings.dottimerbar, "y", 50);
     checkAndInitializeSetting(settings.dottimerbar, "font", "Arial");
+    checkAndInitializeSetting(settings.dottimerbar, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.dottimerbar, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.dottimerbar, "staticfontsize", false);
+    checkAndInitializeSetting(settings.dottimerbar, "fontsize", 10);
 
     $("#dot-timer-bar").css("width", settings.dottimerbar.scale * 160);
     $("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
@@ -504,6 +520,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.bufftimerbar, "x", 30);
     checkAndInitializeSetting(settings.bufftimerbar, "y", 100);
     checkAndInitializeSetting(settings.bufftimerbar, "font", "Arial");
+    checkAndInitializeSetting(settings.bufftimerbar, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.bufftimerbar, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.bufftimerbar, "staticfontsize", false);
+    checkAndInitializeSetting(settings.bufftimerbar, "fontsize", 10);
 
     $("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 160);
     $("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
@@ -573,6 +593,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.raidbuffs, "x", 30);
     checkAndInitializeSetting(settings.raidbuffs, "y", 240);
     checkAndInitializeSetting(settings.raidbuffs, "font", "Arial");
+    checkAndInitializeSetting(settings.raidbuffs, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.raidbuffs, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.raidbuffs, "staticfontsize", false);
+    checkAndInitializeSetting(settings.raidbuffs, "fontsize", 24);
     checkAndInitializeSetting(settings.raidbuffs, "durationoutline", true);
     checkAndInitializeSetting(settings.raidbuffs, "cooldownoutline", true);
     checkAndInitializeSetting(settings.raidbuffs, "durationbold", true);
@@ -624,6 +648,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.mitigation, "x", 30);
     checkAndInitializeSetting(settings.mitigation, "y", 280);
     checkAndInitializeSetting(settings.mitigation, "font", "Arial");
+    checkAndInitializeSetting(settings.mitigation, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.mitigation, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.mitigation, "staticfontsize", false);
+    checkAndInitializeSetting(settings.mitigation, "fontsize", 24);
     checkAndInitializeSetting(settings.mitigation, "durationoutline", true);
     checkAndInitializeSetting(settings.mitigation, "cooldownoutline", true);
     checkAndInitializeSetting(settings.mitigation, "durationbold", true);
@@ -674,6 +702,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.party, "x", 30);
     checkAndInitializeSetting(settings.party, "y", 320);
     checkAndInitializeSetting(settings.party, "font", "Arial");
+    checkAndInitializeSetting(settings.party, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.party, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.party, "staticfontsize", false);
+    checkAndInitializeSetting(settings.party, "fontsize", 24);
     checkAndInitializeSetting(settings.party, "durationoutline", true);
     checkAndInitializeSetting(settings.party, "cooldownoutline", true);
     checkAndInitializeSetting(settings.party, "durationbold", true);
@@ -722,6 +754,10 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.customcd, "x", 30);
     checkAndInitializeSetting(settings.customcd, "y", 320);
     checkAndInitializeSetting(settings.customcd, "font", "Arial");
+    checkAndInitializeSetting(settings.customcd, "fontxoffset", 0);
+    checkAndInitializeSetting(settings.customcd, "fontyoffset", 0);
+    checkAndInitializeSetting(settings.customcd, "staticfontsize", false);
+    checkAndInitializeSetting(settings.customcd, "fontsize", 24);
     checkAndInitializeSetting(settings.customcd, "durationoutline", true);
     checkAndInitializeSetting(settings.customcd, "cooldownoutline", true);
     checkAndInitializeSetting(settings.customcd, "durationbold", true);
@@ -773,32 +809,44 @@ async function saveSettings() {
         case "left":
             $("#health-bar").css(
                 "--healthFontX",
-                currentSettings.healthbar.scale * 8,
+                currentSettings.healthbar.scale * 8 +
+                    currentSettings.healthbar.fontxoffset,
             );
             break;
         case "center":
-            $("#health-bar").css("--healthFontX", 0);
+            $("#health-bar").css(
+                "--healthFontX",
+                0 + currentSettings.healthbar.fontxoffset,
+            );
             break;
         case "right":
             $("#health-bar").css(
                 "--healthFontX",
-                -Math.abs(currentSettings.healthbar.scale * 8),
+                -Math.abs(
+                    currentSettings.healthbar.scale * 8 +
+                        currentSettings.healthbar.fontxoffset,
+                ),
             );
             break;
         default:
             $("#health-bar").css(
                 "--healthFontX",
-                currentSettings.healthbar.scale * 8,
+                currentSettings.healthbar.scale * 8 +
+                    currentSettings.healthbar.fontxoffset,
             );
     }
+
     $("#health-bar").css(
         "--healthFontSize",
-        currentSettings.healthbar.scale * 10,
+        currentSettings.healthbar.staticfontsize
+            ? currentSettings.healthbar.fontsize
+            : currentSettings.healthbar.scale * 10,
     );
 
     $("#health-bar").css(
         "--healthFontY",
-        currentSettings.healthbar.scale * -14,
+        currentSettings.healthbar.scale * -14 +
+            currentSettings.healthbar.fontyoffset,
     );
 
     currentSettings.manabar.x = parseInt(ui.dragPosition["mana-bar"].x);
@@ -809,27 +857,44 @@ async function saveSettings() {
         case "left":
             $("#mana-bar").css(
                 "--manaFontX",
-                currentSettings.manabar.scale * 8,
+                currentSettings.manabar.scale * 8 +
+                    currentSettings.manabar.fontxoffset,
             );
             break;
         case "center":
-            $("#mana-bar").css("--manaFontX", 0);
+            $("#mana-bar").css(
+                "--manaFontX",
+                0 + currentSettings.manabar.fontxoffset,
+            );
             break;
         case "right":
             $("#mana-bar").css(
                 "--manaFontX",
-                -Math.abs(currentSettings.manabar.scale * 8),
+                -Math.abs(
+                    currentSettings.manabar.scale * 8 +
+                        currentSettings.manabar.fontxoffset,
+                ),
             );
             break;
         default:
             $("#mana-bar").css(
                 "--manaFontX",
-                currentSettings.manabar.scale * 8,
+                currentSettings.manabar.scale * 8 +
+                    currentSettings.manabar.fontxoffset,
             );
     }
 
-    $("#mana-bar").css("--manaFontSize", currentSettings.manabar.scale * 10);
-    $("#mana-bar").css("--manaFontY", currentSettings.manabar.scale * -14);
+    $("#mana-bar").css(
+        "--manaFontSize",
+        currentSettings.manabar.staticfontsize
+            ? currentSettings.manabar.fontsize
+            : currentSettings.manabar.scale * 10,
+    );
+    $("#mana-bar").css(
+        "--manaFontY",
+        currentSettings.manabar.scale * -14 +
+            currentSettings.manabar.fontyoffset,
+    );
 
     currentSettings.mpticker.x = parseInt(ui.dragPosition["mp-ticker-bar"].x);
     currentSettings.mpticker.y = parseInt(ui.dragPosition["mp-ticker-bar"].y);
@@ -842,9 +907,22 @@ async function saveSettings() {
 
     currentSettings.timerbar.x = parseInt(ui.dragPosition["timer-bar"].x);
     currentSettings.timerbar.y = parseInt(ui.dragPosition["timer-bar"].y);
-    $("#timer-bar").css("--timerFontSize", currentSettings.timerbar.scale * 10);
-    $("#timer-bar").css("--timerFontX", currentSettings.timerbar.scale * 8);
-    $("#timer-bar").css("--timerFontY", currentSettings.timerbar.scale * -14);
+    $("#timer-bar").css(
+        "--timerFontSize",
+        currentSettings.timerbar.staticfontsize
+            ? currentSettings.timerbar.fontsize
+            : currentSettings.timerbar.scale * 10,
+    );
+    $("#timer-bar").css(
+        "--timerFontX",
+        currentSettings.timerbar.scale * 8 +
+            currentSettings.timerbar.fontxoffset,
+    );
+    $("#timer-bar").css(
+        "--timerFontY",
+        currentSettings.timerbar.scale * -14 +
+            currentSettings.timerbar.fontyoffset,
+    );
 
     currentSettings.dottimerbar.x = parseInt(
         ui.dragPosition["dot-timer-bar"].x,
@@ -854,15 +932,19 @@ async function saveSettings() {
     );
     $("#dot-timer-bar").css(
         "--dotFontSize",
-        currentSettings.dottimerbar.scale * 10,
+        currentSettings.dottimerbar.staticfontsize
+            ? currentSettings.dottimerbar.fontsize
+            : currentSettings.dottimerbar.scale * 10,
     );
     $("#dot-timer-bar").css(
         "--dotFontX",
-        currentSettings.dottimerbar.scale * 8,
+        currentSettings.dottimerbar.scale * 8 +
+            currentSettings.dottimerbar.fontxoffset,
     );
     $("#dot-timer-bar").css(
         "--dotFontY",
-        currentSettings.dottimerbar.scale * -14,
+        currentSettings.dottimerbar.scale * -14 +
+            currentSettings.dottimerbar.fontyoffset,
     );
 
     currentSettings.bufftimerbar.x = parseInt(
@@ -873,15 +955,19 @@ async function saveSettings() {
     );
     $("#buff-timer-bar").css(
         "--buffFontSize",
-        currentSettings.bufftimerbar.scale * 10,
+        currentSettings.bufftimerbar.staticfontsize
+            ? currentSettings.bufftimerbar.fontsize
+            : currentSettings.bufftimerbar.scale * 10,
     );
     $("#buff-timer-bar").css(
         "--buffFontX",
-        currentSettings.bufftimerbar.scale * 8,
+        currentSettings.bufftimerbar.scale * 8 +
+            currentSettings.bufftimerbar.fontxoffset,
     );
     $("#buff-timer-bar").css(
         "--buffFontY",
-        currentSettings.bufftimerbar.scale * -14,
+        currentSettings.bufftimerbar.scale * -14 +
+            currentSettings.bufftimerbar.fontyoffset,
     );
 
     currentSettings.stacksbar.x = parseInt(ui.dragPosition["stacks-bar"].x);
@@ -1704,27 +1790,31 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
         `<img id="${abilitySelector}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${overlayWidth}px" height="${overlayHeight}px" />`,
     );
     $(containerSelector).append(
-        `<span id="${abilitySelector}-cooldown" class="ability-text" style="line-height: ${lineHeight}px; padding-left: ${
-            selectedSettings.scale * 2
-        }px; ${
+        `<span id="${abilitySelector}-cooldown" class="ability-text" style="line-height: ${lineHeight}px; margin-left: ${
+            selectedSettings.scale * 2 + selectedSettings.fontxoffset
+        }px; margin-top: ${selectedSettings.fontyoffset}px; ${
             selectedSettings.cooldownoutline
                 ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};`
                 : ""
         } color: ${selectedSettings.cooldowncolor}; font-size: ${
-            selectedSettings.scale * 24
+            selectedSettings.staticfontsize
+                ? selectedSettings.fontsize
+                : selectedSettings.scale * 24
         }px; font-weight:${
             selectedSettings.cooldownbold ? "bold" : "normal"
         }"></span>`,
     );
     $(containerSelector).append(
-        `<span id="${abilitySelector}-duration" class="ability-text" style="line-height: ${lineHeight}px; padding-left: ${
-            selectedSettings.scale * 2
-        }px; ${
+        `<span id="${abilitySelector}-duration" class="ability-text" style="line-height: ${lineHeight}px; margin-left: ${
+            selectedSettings.scale * 2 + selectedSettings.fontxoffset
+        }px; margin-top: ${selectedSettings.fontyoffset}px; ${
             selectedSettings.durationoutline
                 ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};`
                 : ""
         } color: ${selectedSettings.durationcolor}; font-size: ${
-            selectedSettings.scale * 24
+            selectedSettings.staticfontsize
+                ? selectedSettings.fontsize
+                : selectedSettings.scale * 24
         }px; font-weight:${
             selectedSettings.durationbold ? "bold" : "normal"
         };"></span>`,

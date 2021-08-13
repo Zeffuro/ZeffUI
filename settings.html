@@ -140,7 +140,7 @@
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_ttsearly" class="control-label col-sm-4" for="ttsEarly">TTS Seconds Early</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="ttsEarly">
 								</div>
 							</div>
@@ -192,25 +192,25 @@
 							<p id="lang_healthbardescription" class="card-text">Here you can set your options for your healthbar.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx" class="control-label col-sm-4" for="healthX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy" class="col-sm-4" for="healthY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale" class="col-sm-4" for="healthScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="healthScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation" class="col-sm-4" for="healthRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="healthRotation" oninput="$('#healthRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="healthRotationRange" oninput="$('#healthRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#healthRotation').val(0); $('#healthRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -236,9 +236,10 @@
 									<label id="lang_healthtext" class="custom-control-label" for="healthTextEnabled">Health Text</label>
 								</div>
 							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_textformat" class="control-label col-sm-4" for="healthFormat">Text Format</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="healthFormat">
 								</div>
 							</div>
@@ -250,15 +251,42 @@
 										<option id="lang_center" value="center">Center</option>
 										<option id="lang_right_3" value="right">Right</option>
 									</select>
-								</div>                                    
+								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_font_2" class="control-label col-sm-4" for="healthFont">Font</label>
 								<div class="col-sm-6">
 									<select class="form-select form-select-sm" id="healthFont" onchange="loadFont('health')">
 									</select>
-								</div>                                    
+								</div>
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="healthStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled" class="custom-control-label" for="healthStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize" class="control-label col-sm-4" for="healthFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset" class="control-label col-sm-4" for="healthFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset" class="control-label col-sm-4" for="healthFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="healthFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_color" class="control-label col-sm-4" for="healthColor">Color</label>
 								<div class="col-sm-6">
@@ -285,25 +313,25 @@
 							<p id="lang_manabardescription" class="card-text">Here you can set your options for your manabar.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_1" class="control-label col-sm-4" for="manaX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_1" class="col-sm-4" for="manaY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_1" class="col-sm-4" for="manaScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="manaScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_1" class="col-sm-4" for="manaRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="manaRotation" oninput="$('#manaRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="manaRotationRange" oninput="$('#manaRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#manaRotation').val(0); $('#manaRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -329,6 +357,7 @@
 									<label id="lang_manatext" class="custom-control-label" for="manaTextEnabled">Mana Text</label>
 								</div>
 							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_textformat_1" class="control-label col-sm-4" for="manaFormat">Text Format</label>
 								<div class="col-sm-6">
@@ -352,6 +381,33 @@
 									</select>
 								</div>                                    
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="manaStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_1" class="custom-control-label" for="manaStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_1" class="control-label col-sm-4" for="manaFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_1" class="control-label col-sm-4" for="manaFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_1" class="control-label col-sm-4" for="manaFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="manaFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_color_1" class="control-label col-sm-4" for="manaColor">Color</label>
 								<div class="col-sm-6">
@@ -363,6 +419,7 @@
 								<label id="lang_example_1" class="control-label col-sm-4 text-right" for="manaExample">Example</label>
 								&nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
 							</div>
+							<br />
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="manaJobThresholdsEnabled">
@@ -400,25 +457,25 @@
 							<p id="lang_mptickerdescription" class="card-text">Here you can set your options for your MP Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_10" class="control-label col-sm-4" for="mptickerX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mptickerX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_10" class="col-sm-4" for="mptickerY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mptickerY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_10" class="col-sm-4" for="mptickerScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="mptickerScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_10" class="col-sm-4" for="mptickerRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="mptickerRotation" oninput="$('#mptickerRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="mptickerRotationRange" oninput="$('#mptickerRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#mptickerRotation').val(0); $('#mptickerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -479,25 +536,25 @@
 							<p id="lang_dottickerdescription" class="card-text">Here you can set your options for your DoT Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_11" class="control-label col-sm-4" for="dottickerX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dottickerX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_11" class="col-sm-4" for="dottickerY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dottickerY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_11" class="col-sm-4" for="dottickerScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="dottickerScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_11" class="col-sm-4" for="dottickerRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="dottickerRotation" oninput="$('#dottickerRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="dottickerRotationRange" oninput="$('#dottickerRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dottickerRotation').val(0); $('#dottickerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -550,25 +607,25 @@
 							<p id="lang_hottickerdescription" class="card-text">Here you can set your options for your HoT Ticker.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_12" class="control-label col-sm-4" for="hottickerX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="hottickerX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_12" class="col-sm-4" for="hottickerY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="hottickerY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_12" class="col-sm-4" for="hottickerScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="hottickerScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_12" class="col-sm-4" for="hottickerRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="hottickerRotation" oninput="$('#hottickerRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="hottickerRotationRange" oninput="$('#hottickerRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#hottickerRotation').val(0); $('#hottickerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -623,25 +680,25 @@
 							<p id="lang_bufftimersdescription" class="card-text">Here you can set your options for your personal buffs.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_2" class="control-label col-sm-4" for="buffX">Position Anchor X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_2" class="col-sm-4" for="buffY">Position Anchor Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_2" class="col-sm-4" for="buffScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="buffScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_2" class="col-sm-4" for="buffRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="buffRotation" oninput="$('#buffRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="buffRotationRange" oninput="$('#buffRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#buffRotation').val(0); $('#buffRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -668,7 +725,7 @@
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding" class="col-sm-4" for="buffPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffPadding">
 								</div>
 							</div>
@@ -715,6 +772,33 @@
 									</select>
 								</div>                                    
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="buffStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_2" class="custom-control-label" for="buffStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_2" class="control-label col-sm-4" for="buffFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_2" class="control-label col-sm-4" for="buffFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_2" class="control-label col-sm-4" for="buffFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="buffFontYOffset">
+								</div>
+							</div>
+							<br />
 						</div>
 					</div>
 				</div>
@@ -730,25 +814,25 @@
 							<p id="lang_dottimersdescription" class="card-text">Here you can set your options for your personal debuffs.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_3" class="control-label col-sm-4" for="dotX">Position Anchor X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_3" class="col-sm-4" for="dotY">Position Anchor Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_3" class="col-sm-4" for="dotScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="dotScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_3" class="col-sm-4" for="dotRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="dotRotation" oninput="$('#dotRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="dotRotationRange" oninput="$('#dotRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#dotRotation').val(0); $('#dotRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -775,7 +859,7 @@
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding_1" class="col-sm-4" for="dotPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotPadding">
 								</div>
 							</div>
@@ -828,6 +912,33 @@
 									</select>
 								</div>                                    
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="dotStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_3" class="custom-control-label" for="dotStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_3" class="control-label col-sm-4" for="dotFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_3" class="control-label col-sm-4" for="dotFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_3" class="control-label col-sm-4" for="dotFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="dotFontYOffset">
+								</div>
+							</div>
+							<br />
 						</div>
 					</div>
 				</div>
@@ -845,25 +956,25 @@
 							<p class="card-text" id="lang_pulltimersdescription">Here you can set your options for the pulltimer.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_4" class="control-label col-sm-4" for="pulltimerX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_4" class="col-sm-4" for="pulltimerY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_4" class="col-sm-4" for="pulltimerScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="pulltimerScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_rotation_4" class="col-sm-4" for="pulltimerRotation">Rotation</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="1" class="form-control form-control-sm" placeholder="Default input" id="pulltimerRotation" oninput="$('#pulltimerRotationRange').val(this.value)">
 									<input type="range" step="1" min="0" max="360" class="custom-range" placeholder="Default input" id="pulltimerRotationRange" oninput="$('#pulltimerRotation').val(this.value)">
 									<button type="button" class="btn btn-primary btn-sm p-1" onclick="$('#pulltimerRotation').val(0); $('#pulltimerRotationRange').val(0)">&nbsp;&nbsp;0&nbsp;&nbsp;</button>
@@ -896,6 +1007,33 @@
 									</select>
 								</div>                                    
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="pulltimerStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_4" class="custom-control-label" for="pulltimerStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_4" class="control-label col-sm-4" for="pulltimerFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_4" class="control-label col-sm-4" for="pulltimerFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_4" class="control-label col-sm-4" for="pulltimerFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="pulltimerFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_color_2" class="control-label col-sm-4" for="pulltimerColor">Color</label>
 								<div class="col-sm-6">
@@ -922,19 +1060,19 @@
 							<p id="lang_stacksbardescription" class="card-text">Here you can set your options for your personal stacks.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_5" class="control-label col-sm-4" for="stacksX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_5" class="col-sm-4" for="stacksY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="stacksY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_5" class="col-sm-4" for="stacksScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="stacksScale">
 								</div>
 							</div>
@@ -978,31 +1116,31 @@
 							<p id="lang_raidbuffdescription" class="card-text">Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only).</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_6" class="control-label col-sm-4" for="raidbuffX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_6" class="col-sm-4" for="raidbuffY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding_2" class="col-sm-4" for="raidbuffPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffPadding">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_6" class="col-sm-4" for="raidbuffScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="raidbuffScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_columns" class="col-sm-4" for="raidbuffColumns">Columns per row</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffColumns">
 								</div>
 							</div>
@@ -1013,27 +1151,54 @@
 									</select>
 								</div>
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="raidbuffStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_5" class="custom-control-label" for="raidbuffStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_5" class="control-label col-sm-4" for="raidbuffFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_5" class="control-label col-sm-4" for="raidbuffFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_5" class="control-label col-sm-4" for="raidbuffFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="raidbuffFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_durationcolor" class="col-sm-4" for="raidbuffDurationColorPicker">Duration Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="raidbuffDurationColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldowncolor" class="col-sm-4" for="raidbuffCooldownColorPicker">Cooldown Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="raidbuffCooldownColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_durationoutlinecolor" class="col-sm-4" for="raidbuffDurationOutlineColorPicker">Duration Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="raidbuffDurationOutlineColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldownoutlinecolor" class="col-sm-4" for="raidbuffCooldownOutlineColorPicker">Cooldown Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="raidbuffCooldownOutlineColorPicker">
 								</div>
 							</div>
@@ -1112,31 +1277,31 @@
 							<p id="lang_mitigationdescription" class="card-text">Here you can set your options for your mitigation bar.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_7" class="control-label col-sm-4" for="mitigationX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_7" class="col-sm-4" for="mitigationY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding_3" class="col-sm-4" for="mitigationPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationPadding">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_7" class="col-sm-4" for="mitigationScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="mitigationScale">
 								</div>
 							</div>                            
 							<div class="form-group row text-right">
 								<label id="lang_columns_1" class="col-sm-4" for="mitigationColumns">Columns per row</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationColumns">
 								</div>
 							</div>
@@ -1145,29 +1310,56 @@
 								<div class="col-sm-6">
 									<select class="form-select form-select-sm" id="mitigationFont">
 									</select>
-								</div>                                    
+								</div>
+							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="mitigationStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_6" class="custom-control-label" for="mitigationStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
 							</div>
 							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_6" class="control-label col-sm-4" for="mitigationFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_6" class="control-label col-sm-4" for="mitigationFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_6" class="control-label col-sm-4" for="mitigationFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="mitigationFontYOffset">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
 								<label id="lang_durationcolor_2" class="col-sm-4" for="mitigationDurationColorPicker">Duration Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="mitigationDurationColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldowncolor_2" class="col-sm-4" for="mitigationCooldownColorPicker">Cooldown Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="mitigationCooldownColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_durationoutlinecolor_2" class="col-sm-4" for="mitigationDurationOutlineColorPicker">Duration Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="mitigationDurationOutlineColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldownoutlinecolor_2" class="col-sm-4" for="mitigationCooldownOutlineColorPicker">Cooldown Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="mitigationCooldownOutlineColorPicker">
 								</div>
 							</div>
@@ -1242,25 +1434,25 @@
 							<p id="lang_partydescription" class="card-text">Here you can set your options for your party cooldowns.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_8" class="control-label col-sm-4" for="partyX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_8" class="col-sm-4" for="partyY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding_4" class="col-sm-4" for="partyPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyPadding">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_8" class="col-sm-4" for="partyScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="partyScale">
 								</div>
 							</div>
@@ -1271,27 +1463,54 @@
 									</select>
 								</div>
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="partyStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_7" class="custom-control-label" for="partyStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_7" class="control-label col-sm-4" for="partyFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_7" class="control-label col-sm-4" for="partyFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_7" class="control-label col-sm-4" for="partyFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="partyFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_durationcolor_3" class="col-sm-4" for="partyDurationColorPicker">Duration Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="partyDurationColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldowncolor_3" class="col-sm-4" for="partyCooldownColorPicker">Cooldown Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="partyCooldownColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_durationoutlinecolor_3" class="col-sm-4" for="partyDurationOutlineColorPicker">Duration Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="partyDurationOutlineColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldownoutlinecolor_3" class="col-sm-4" for="partyCooldownOutlineColorPicker">Cooldown Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="partyCooldownOutlineColorPicker">
 								</div>
 							</div>
@@ -1364,31 +1583,31 @@
 							<p id="lang_customcooldownsdescription" class="card-text">Here you can set your options for your custom cooldowns.</p>
 							<div class="form-group row text-right">
 								<label id="lang_posx_9" class="control-label col-sm-4" for="partyX">Position X</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdX">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_posy_9" class="col-sm-4" for="partyY">Position Y</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdY">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_padding_5" class="col-sm-4" for="customcdPadding">Padding</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdPadding">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_scale_9" class="col-sm-4" for="customcdScale">Scale</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="customcdScale">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_columns_2" class="col-sm-4" for="customcdColumns">Columns per row</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdColumns">
 								</div>
 							</div>
@@ -1399,27 +1618,54 @@
 									</select>
 								</div>
 							</div>
+							<br />
+							<div class="form-group">
+								<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="customcdStaticFontSizeEnabled">
+									<label id="lang_staticfontsizeenabled_8" class="custom-control-label" for="customcdStaticFontSizeEnabled">Static Font Size Enabled</label>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_staticfontsize_8" class="control-label col-sm-4" for="customcdFontSize">Static Font Size</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdFontSize">
+								</div>
+							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_fontxoffset_8" class="control-label col-sm-4" for="customcdFontXOffset">Font X Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdFontXOffset">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_fontyoffset_8" class="control-label col-sm-4" for="customcdFontYOffset">Font Y Offset</label>
+								<div class="col-sm-6">
+									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdFontYOffset">
+								</div>
+							</div>
+							<br />
 							<div class="form-group row text-right">
 								<label id="lang_durationcolor_4" class="col-sm-4" for="customcdDurationColorPicker">Duration Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="customcdDurationColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldowncolor_4" class="col-sm-4" for="customcdCooldownColorPicker">Cooldown Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="customcdCooldownColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_durationoutlinecolor_4" class="col-sm-4" for="customcdDurationOutlineColorPicker">Duration Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="customcdDurationOutlineColorPicker">
 								</div>
 							</div>
 							<div class="form-group row text-right">
 								<label id="lang_cooldownoutlinecolor_4" class="col-sm-4" for="customcdCooldownOutlineColorPicker">Cooldown Outline Color</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="customcdCooldownOutlineColorPicker">
 								</div>
 							</div>
@@ -1539,19 +1785,19 @@
 							</div>
 							<div id="abilityDurationDiv" class="form-group row text-right">
 								<label id="lang_duration" class="control-label col-sm-4" for="abilityDuration">Duration</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityDuration" onchange="saveOverride('duration')">
 								</div>
 							</div>
 							<div id="abilityCooldownDiv" class="form-group row text-right">
 								<label id="lang_cooldown" class="control-label col-sm-4" for="abilityCooldown">Cooldown</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityCooldown" onchange="saveOverride('cooldown')">
 								</div>
 							</div>
 							<div id="abilityOrderDiv" class="form-group row text-right">
 								<label id="lang_order" class="control-label col-sm-4" for="abilityOrder">Order</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="number" class="form-control form-control-sm" placeholder="Default input" id="abilityOrder" onchange="saveOverride('order')">
 								</div>
 							</div>
@@ -1576,7 +1822,7 @@
 							</div>
 							<div id="customcdSearchDiv" class="form-group row text-right">
 								<label id="lang_search_1" class="control-label col-sm-4" for="customcdSearch">Search</label>
-								<div class="col-sm-8">
+								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="Default input" id="customcdSearch">
 								</div>
 							</div>
@@ -1620,7 +1866,7 @@
 								</div>
 								<div id="customcdAbilityIdDiv" class="form-group row text-right">
 									<label id="lang_id" class="control-label col-sm-4" for="customcdAbilityId">ID</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdAbilityId">
 									</div>
 								</div>
@@ -1678,25 +1924,25 @@
 								</div>
 								<div id="customcdAbilityDurationDiv" class="form-group row text-right">
 									<label id="lang_duration_2" class="control-label col-sm-4" for="customcdAbilityDuration">Duration</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdAbilityDuration">
 									</div>
 								</div>
 								<div id="customcdAbilityCooldownDiv" class="form-group row text-right">
 									<label id="lang_cooldown_2" class="control-label col-sm-4" for="customcdAbilityCooldown">Cooldown</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdAbilityCooldown">
 									</div>
 								</div>
 								<div id="customcdAbilityChargesDiv" class="form-group row text-right">
 									<label id="lang_charges" class="control-label col-sm-4" for="customcdAbilityCooldown">Charges</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdAbilityCharges">
 									</div>
 								</div>
 								<div id="customcdAbilityOrderDiv" class="form-group row text-right">
 									<label id="lang_order_2" class="control-label col-sm-4" for="customcdAbilityOrder">Order</label>
-									<div class="col-sm-8">
+									<div class="col-sm-6">
 										<input type="number" class="form-control form-control-sm" placeholder="Default input" id="customcdAbilityOrder">
 									</div>
 								</div>

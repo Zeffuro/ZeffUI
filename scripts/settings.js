@@ -1003,6 +1003,20 @@ async function loadSettings() {
                 $("#healthY").attr("value", settings.healthbar.y);
                 $("#healthAlign").val(settings.healthbar.align);
 
+                $("#healthFontXOffset").attr(
+                    "value",
+                    settings.healthbar.fontxoffset,
+                );
+                $("#healthFontYOffset").attr(
+                    "value",
+                    settings.healthbar.fontyoffset,
+                );
+                $("#healthStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.healthbar.staticfontsize,
+                );
+                $("#healthFontSize").attr("value", settings.healthbar.fontsize);
+
                 $("#manaBarEnabled").prop("checked", settings.manabar.enabled);
                 $("#manaHideOutOfCombat").prop(
                     "checked",
@@ -1026,6 +1040,20 @@ async function loadSettings() {
                 $("#manaX").attr("value", settings.manabar.x);
                 $("#manaY").attr("value", settings.manabar.y);
                 $("#manaAlign").val(settings.manabar.align);
+
+                $("#manaFontXOffset").attr(
+                    "value",
+                    settings.manabar.fontxoffset,
+                );
+                $("#manaFontYOffset").attr(
+                    "value",
+                    settings.manabar.fontyoffset,
+                );
+                $("#manaStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.manabar.staticfontsize,
+                );
+                $("#manaFontSize").attr("value", settings.manabar.fontsize);
 
                 $("#mptickerEnabled").prop(
                     "checked",
@@ -1119,6 +1147,23 @@ async function loadSettings() {
                 $("#pulltimerX").attr("value", settings.timerbar.x);
                 $("#pulltimerY").attr("value", settings.timerbar.y);
 
+                $("#pulltimerFontXOffset").attr(
+                    "value",
+                    settings.timerbar.fontxoffset,
+                );
+                $("#pulltimerFontYOffset").attr(
+                    "value",
+                    settings.timerbar.fontyoffset,
+                );
+                $("#pulltimerStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.timerbar.staticfontsize,
+                );
+                $("#pulltimerFontSize").attr(
+                    "value",
+                    settings.timerbar.fontsize,
+                );
+
                 $("#dotBarEnabled").prop(
                     "checked",
                     settings.dottimerbar.enabled,
@@ -1155,6 +1200,20 @@ async function loadSettings() {
                 $("#dotX").attr("value", settings.dottimerbar.x);
                 $("#dotY").attr("value", settings.dottimerbar.y);
 
+                $("#dotFontXOffset").attr(
+                    "value",
+                    settings.dottimerbar.fontxoffset,
+                );
+                $("#dotFontYOffset").attr(
+                    "value",
+                    settings.dottimerbar.fontyoffset,
+                );
+                $("#dotStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.dottimerbar.staticfontsize,
+                );
+                $("#dotFontSize").attr("value", settings.dottimerbar.fontsize);
+
                 $("#buffBarEnabled").prop(
                     "checked",
                     settings.bufftimerbar.enabled,
@@ -1188,6 +1247,23 @@ async function loadSettings() {
                 $("#buffRotation").val(settings.bufftimerbar.rotation);
                 $("#buffX").attr("value", settings.bufftimerbar.x);
                 $("#buffY").attr("value", settings.bufftimerbar.y);
+
+                $("#buffFontXOffset").attr(
+                    "value",
+                    settings.bufftimerbar.fontxoffset,
+                );
+                $("#buffFontYOffset").attr(
+                    "value",
+                    settings.bufftimerbar.fontyoffset,
+                );
+                $("#buffStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.bufftimerbar.staticfontsize,
+                );
+                $("#buffFontSize").attr(
+                    "value",
+                    settings.bufftimerbar.fontsize,
+                );
 
                 $("#stacksBarEnabled").prop(
                     "checked",
@@ -1236,6 +1312,24 @@ async function loadSettings() {
                 $("#raidbuffScale").attr("value", settings.raidbuffs.scale);
                 $("#raidbuffX").attr("value", settings.raidbuffs.x);
                 $("#raidbuffY").attr("value", settings.raidbuffs.y);
+
+                $("#raidbuffFontXOffset").attr(
+                    "value",
+                    settings.raidbuffs.fontxoffset,
+                );
+                $("#raidbuffFontYOffset").attr(
+                    "value",
+                    settings.raidbuffs.fontyoffset,
+                );
+                $("#raidbuffStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.raidbuffs.staticfontsize,
+                );
+                $("#raidbuffFontSize").attr(
+                    "value",
+                    settings.raidbuffs.fontsize,
+                );
+
                 $("#raidbuffDurationOutline").prop(
                     "checked",
                     settings.raidbuffs.durationoutline,
@@ -1304,6 +1398,24 @@ async function loadSettings() {
                 $("#mitigationScale").attr("value", settings.mitigation.scale);
                 $("#mitigationX").attr("value", settings.mitigation.x);
                 $("#mitigationY").attr("value", settings.mitigation.y);
+
+                $("#mitigationFontXOffset").attr(
+                    "value",
+                    settings.mitigation.fontxoffset,
+                );
+                $("#mitigationFontYOffset").attr(
+                    "value",
+                    settings.mitigation.fontyoffset,
+                );
+                $("#mitigationStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.mitigation.staticfontsize,
+                );
+                $("#mitigationFontSize").attr(
+                    "value",
+                    settings.mitigation.fontsize,
+                );
+
                 $("#mitigationDurationOutline").prop(
                     "checked",
                     settings.mitigation.durationoutline,
@@ -1359,6 +1471,21 @@ async function loadSettings() {
                 $("#partyScale").attr("value", settings.party.scale);
                 $("#partyX").attr("value", settings.party.x);
                 $("#partyY").attr("value", settings.party.y);
+
+                $("#partyFontXOffset").attr(
+                    "value",
+                    settings.party.fontxoffset,
+                );
+                $("#partyFontYOffset").attr(
+                    "value",
+                    settings.party.fontyoffset,
+                );
+                $("#partyStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.party.staticfontsize,
+                );
+                $("#partyFontSize").attr("value", settings.party.fontsize);
+
                 $("#partyDurationOutline").prop(
                     "checked",
                     settings.party.durationoutline,
@@ -1421,6 +1548,24 @@ async function loadSettings() {
                 $("#customcdColumns").attr("value", settings.customcd.columns);
                 $("#customcdX").attr("value", settings.customcd.x);
                 $("#customcdY").attr("value", settings.customcd.y);
+
+                $("#customcdFontXOffset").attr(
+                    "value",
+                    settings.customcd.fontxoffset,
+                );
+                $("#customcdFontYOffset").attr(
+                    "value",
+                    settings.customcd.fontyoffset,
+                );
+                $("#customcdStaticFontSizeEnabled").prop(
+                    "checked",
+                    settings.customcd.staticfontsize,
+                );
+                $("#customcdFontSize").attr(
+                    "value",
+                    settings.customcd.fontsize,
+                );
+
                 $("#customcdDurationOutline").prop(
                     "checked",
                     settings.customcd.durationoutline,
@@ -1490,6 +1635,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             y: parseInt($("#healthY").val()),
             align: $("#healthAlign").val(),
             font: $("#healthFont").val(),
+            fontxoffset: parseInt($("#healthFontXOffset").val()),
+            fontyoffset: parseInt($("#healthFontYOffset").val()),
+            staticfontsize: $("#healthStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#healthFontSize").val()),
         },
         manabar: {
             enabled: $("#manaBarEnabled").is(":checked"),
@@ -1505,6 +1654,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             y: parseInt($("#manaY").val()),
             align: $("#manaAlign").val(),
             font: $("#manaFont").val(),
+            fontxoffset: parseInt($("#manaFontXOffset").val()),
+            fontyoffset: parseInt($("#manaFontYOffset").val()),
+            staticfontsize: $("#manaStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#manaFontSize").val()),
         },
         mpticker: {
             enabled: $("#mptickerEnabled").is(":checked"),
@@ -1555,6 +1708,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#pulltimerX").val()),
             y: parseInt($("#pulltimerY").val()),
             font: $("#pulltimerFont").val(),
+            fontxoffset: parseInt($("#pulltimerFontXOffset").val()),
+            fontyoffset: parseInt($("#pulltimerFontYOffset").val()),
+            staticfontsize: $("#pulltimerStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#pulltimerFontSize").val()),
         },
         dottimerbar: {
             enabled: $("#dotBarEnabled").is(":checked"),
@@ -1571,6 +1728,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#dotX").val()),
             y: parseInt($("#dotY").val()),
             font: $("#dotFont").val(),
+            fontxoffset: parseInt($("#dotFontXOffset").val()),
+            fontyoffset: parseInt($("#dotFontYOffset").val()),
+            staticfontsize: $("#dotStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#dotFontSize").val()),
         },
         bufftimerbar: {
             enabled: $("#buffBarEnabled").is(":checked"),
@@ -1586,6 +1747,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#buffX").val()),
             y: parseInt($("#buffY").val()),
             font: $("#buffFont").val(),
+            fontxoffset: parseInt($("#buffFontXOffset").val()),
+            fontyoffset: parseInt($("#buffFontYOffset").val()),
+            staticfontsize: $("#buffStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#buffFontSize").val()),
         },
         stacksbar: {
             enabled: $("#stacksBarEnabled").is(":checked"),
@@ -1609,6 +1774,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#raidbuffX").val()),
             y: parseInt($("#raidbuffY").val()),
             font: $("#raidbuffFont").val(),
+            fontxoffset: parseInt($("#raidbuffFontXOffset").val()),
+            fontyoffset: parseInt($("#raidbuffFontYOffset").val()),
+            staticfontsize: $("#raidbuffStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#raidbuffFontSize").val()),
             durationoutline: $("#raidbuffDurationOutline").is(":checked"),
             durationbold: $("#raidbuffDurationBold").is(":checked"),
             cooldownoutline: $("#raidbuffCooldownOutline").is(":checked"),
@@ -1635,6 +1804,12 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#mitigationX").val()),
             y: parseInt($("#mitigationY").val()),
             font: $("#mitigationFont").val(),
+            fontxoffset: parseInt($("#mitigationFontXOffset").val()),
+            fontyoffset: parseInt($("#mitigationFontYOffset").val()),
+            staticfontsize: $("#mitigationStaticFontSizeEnabled").is(
+                ":checked",
+            ),
+            fontsize: parseInt($("#mitigationFontSize").val()),
             durationoutline: $("#mitigationDurationOutline").is(":checked"),
             durationbold: $("#mitigationDurationBold").is(":checked"),
             cooldownoutline: $("#mitigationCooldownOutline").is(":checked"),
@@ -1660,6 +1835,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#partyX").val()),
             y: parseInt($("#partyY").val()),
             font: $("#partyFont").val(),
+            fontxoffset: parseInt($("#partyFontXOffset").val()),
+            fontyoffset: parseInt($("#partyFontYOffset").val()),
+            staticfontsize: $("#partyStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#partyFontSize").val()),
             durationoutline: $("#partyDurationOutline").is(":checked"),
             durationbold: $("#partyDurationBold").is(":checked"),
             cooldownoutline: $("#partyCooldownOutline").is(":checked"),
@@ -1683,6 +1862,10 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             x: parseInt($("#customcdX").val()),
             y: parseInt($("#customcdY").val()),
             font: $("#customcdFont").val(),
+            fontxoffset: parseInt($("#customcdFontXOffset").val()),
+            fontyoffset: parseInt($("#customcdFontYOffset").val()),
+            staticfontsize: $("#customcdStaticFontSizeEnabled").is(":checked"),
+            fontsize: parseInt($("#customcdFontSize").val()),
             durationoutline: $("#customcdDurationOutline").is(":checked"),
             durationbold: $("#customcdDurationBold").is(":checked"),
             cooldownoutline: $("#customcdCooldownOutline").is(":checked"),

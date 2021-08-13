@@ -126,6 +126,11 @@ var language = [
 	{ id: "center", string: "Center" },
 	{ id: "alwaystick", string: "Always Tick" },
 	{ id: "usehdicons", string: "Use HD Icons" },
+	{ id: "type", string: "Type" },
+	{ id: "staticfontsizeenabled", string: "Static Font Size Enabled" },
+	{ id: "staticfontsize", string: "Static Font Size" },
+	{ id: "fontxoffset", string: "Font X Offset" },
+	{ id: "fontyoffset", string: "Font Y Offset" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
