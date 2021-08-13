@@ -1383,12 +1383,13 @@ function generateCustomCooldowns() {
         (x) => x.type === "CustomCooldown" && x.level <= gameState.player.level,
     )) {
         let pushAbility = false;
+        console.log(ability.extra.hide);
         if (
             ability.job === currentJob.name ||
             ability.job === currentJob.type ||
             ability.job === currentJob.position_type
         ) {
-            pushAbility = true;
+            if (ability.extra.hide !== true) pushAbility = true;
         }
         if (pushAbility && ability.enabled) {
             customAbilityList.push({
@@ -2963,6 +2964,23 @@ function handleSkill(parameters) {
             startAbilityIconTimers(playerIndex, ability, true);
         }
         if (ability.type === "CustomCooldown") {
+            if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
+                if (ability.extra.shares_cooldown) {
+                    let abilityHolder = mergedAbilityList.find(
+                        (x) => x.id === ability.extra.shares_cooldown,
+                    );
+                    console.log(ability, abilityHolder);
+                    startAbilityIconTimers(
+                        playerIndex,
+                        ability,
+                        true,
+                        currentSettings.customcd.alwaysshow
+                            ? abilityHolder
+                            : ability,
+                    );
+                    return;
+                }
+            }
             startAbilityIconTimers(playerIndex, ability, true);
         }
     }
