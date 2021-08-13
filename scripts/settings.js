@@ -976,6 +976,7 @@ async function loadSettings() {
                 $("#debugEnabled").prop("checked", settings.debug.enabled);
 
                 $("#useWebTTS").prop("checked", settings.general.usewebtts);
+                $("#useHDIcons").prop("checked", settings.general.usehdicons);
                 $("#ttsEarly").val(settings.general.ttsearly);
 
                 $("#includeAlliance").prop("checked", settings.includealliance);
@@ -1476,6 +1477,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
         general: {
             usewebtts: $("#useWebTTS").is(":checked"),
             ttsearly: $("#ttsEarly").val(),
+            usehdicons: $("#useHDIcons").is(":checked"),
         },
         healthbar: {
             enabled: $("#healthBarEnabled").is(":checked"),

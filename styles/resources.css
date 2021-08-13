@@ -34,6 +34,9 @@
 .ability-box {
     display: flex;
 }
+.ability-reverse {
+    flex-direction: row-reverse;
+}
 .ability-container {
     position: relative;
 }

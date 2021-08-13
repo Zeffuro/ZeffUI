@@ -146,6 +146,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings, "general", {});
     checkAndInitializeSetting(settings.general, "usewebtts", false);
     checkAndInitializeSetting(settings.general, "ttsearly", 5);
+    checkAndInitializeSetting(settings.general, "usehdicons", false);
 
     // SKIN SETTINGS
     checkAndInitializeSetting(settings, "skin", "default");
@@ -1383,7 +1384,6 @@ function generateCustomCooldowns() {
         (x) => x.type === "CustomCooldown" && x.level <= gameState.player.level,
     )) {
         let pushAbility = false;
-        console.log(ability.extra.hide);
         if (
             ability.job === currentJob.name ||
             ability.job === currentJob.type ||
@@ -1584,8 +1584,12 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
     if (selector !== "Party") {
         for (let i = 1; i <= rows; i++) {
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;">
-					<div id="${barSelector}-row-${i}-box" class="ability-box">
+                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${
+                    selectedSettings.padding
+                }px;">
+					<div id="${barSelector}-row-${i}-box" class="ability-box ${
+                    selectedSettings.growleft ? "ability-reverse" : ""
+                }">
 					</div>
 				</div>`,
             );
@@ -1602,8 +1606,12 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
         if (currentSettings.includealliance) players = 24;
         for (let i = 1; i <= players; i++) {
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;">
-					<div id="${barSelector}-row-${i}-box" class="ability-box">
+                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${
+                    selectedSettings.padding
+                }px;">
+					<div id="${barSelector}-row-${i}-box" class="ability-box ${
+                    selectedSettings.growleft ? "ability-reverse" : ""
+                }">
 					</div>
 				</div>`,
             );
@@ -1642,6 +1650,8 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
 
 // Generates a single ability icon based on player and ability
 function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
+    if (currentSettings.general.usehdicons)
+        ability.icon = ability.icon.replace(".png", "_hr1.png");
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
@@ -1649,8 +1659,12 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
         if (row === 0) row = 1;
         if ($(`#${barSelector}-row-${row}`).length === 0)
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${selectedSettings.padding}px;">
-					<div id="${barSelector}-row-${row}-box" class="ability-box">
+                `<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${
+                    selectedSettings.padding
+                }px;">
+					<div id="${barSelector}-row-${row}-box" class="ability-box ${
+                    selectedSettings.growleft ? "ability-reverse" : ""
+                }">
 					</div>
 				</div>`,
             );
@@ -1814,6 +1828,12 @@ function startAbilityIconTimers(
     ]);
     let abilityUsed = abilityHolder === null ? ability : abilityHolder;
     let usingAbilityHolder = abilityHolder !== null;
+
+    if (currentSettings.general.usehdicons) {
+        ability.icon = ability.icon.replace(".png", "_hr1.png");
+        if (usingAbilityHolder)
+            abilityHolder.icon = abilityHolder.icon.replace(".png", "_hr1.png");
+    }
 
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
@@ -2969,7 +2989,6 @@ function handleSkill(parameters) {
                     let abilityHolder = mergedAbilityList.find(
                         (x) => x.id === ability.extra.shares_cooldown,
                     );
-                    console.log(ability, abilityHolder);
                     startAbilityIconTimers(
                         playerIndex,
                         ability,

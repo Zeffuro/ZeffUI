@@ -125,6 +125,7 @@ var language = [
 	{ id: "textalign", string: "Text Align" },
 	{ id: "center", string: "Center" },
 	{ id: "alwaystick", string: "Always Tick" },
+	{ id: "usehdicons", string: "Use HD Icons" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
