@@ -512,7 +512,10 @@ function loadCustomCdAbilitySelect() {
         let name = ability[`name_${currentSettings.language}`];
         $("#customcdAbilitySelect").append(
             `<option value="${ability.id}">${
-                language.find((x) => x.id === ability.job.toLowerCase()).string
+                ability.job != null
+                    ? language.find((x) => x.id === ability.job.toLowerCase())
+                          .string
+                    : language.find((x) => x.id === "setjob").string
             }: ${name}</option>`,
         );
     }
