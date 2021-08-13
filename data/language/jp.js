@@ -213,4 +213,5 @@ var language = [
 	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
 	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
 	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
+	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },	
 ];

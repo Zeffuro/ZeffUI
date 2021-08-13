@@ -7,6 +7,7 @@
 // UI related global variables
 var ui = {
     locked: true,
+    actlocked: false,
     gridshown: false,
     dragPosition: {},
     activeSettingsWindow: null,
@@ -190,6 +191,12 @@ async function loadSettings() {
     if ($("#language").length == 0) {
         $.getScript(`data/language/${settings.language}.js`, function () {
             loadContextMenu();
+
+            $("#lock-overlay-reminder").text(
+                language.find((x) => x.id === "lockoverlay").string,
+            );
+
+            $("#lock-overlay-reminder").hide();
         });
     } else {
         $("#language").attr("src", `data/language/${settings.language}.js`);
@@ -1191,6 +1198,7 @@ function toggleLock() {
         },
     });
     if (ui.locked) {
+        if (!ui.actlocked) $("#lock-overlay-reminder").show();
         let tickerTypes = ["mp", "dot", "hot"];
         for (let tickerType of tickerTypes) {
             if (!currentSettings[`${tickerType}ticker`].enabled)
@@ -1296,6 +1304,7 @@ function toggleLock() {
             toggleHideOutOfCombatElements();
         }
         ui.locked = true;
+        $("#lock-overlay-reminder").hide();
         $("html").css("border", "none");
     }
 }
@@ -2648,9 +2657,13 @@ function onLogEvent(e) {
 document.addEventListener("onOverlayStateUpdate", function (e) {
     if (!e.detail.isLocked) {
         $(":root").css("background", "rgba(0,0,255,0.5)");
+        if (!ui.locked) $("#lock-overlay-reminder").show();
     } else {
         $(":root").css("background", "");
+        if (!ui.locked) $("#lock-overlay-reminder").hide();
     }
+
+    ui.actlocked = e.detail.isLocked;
 });
 
 // When user switches jobs

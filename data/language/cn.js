@@ -213,4 +213,5 @@ var language = [
 	{ id: "currentsettingscopied", string: "你当前的设置已被复制到剪贴板中。" },
 	{ id: "importsettingsoverwrite", string: "你确定要导入这些设置吗？这将完全覆盖你以前的设置！" },
 	{ id: "invalidsettingsstring", string: "设置字符串无效，请仔细检查你所粘贴的内容。" },
+	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },	
 ];
