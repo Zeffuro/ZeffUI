@@ -1745,7 +1745,10 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
 
 // Generates a single ability icon based on player and ability
 function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
-    if (currentSettings.general.usehdicons)
+    if (
+        currentSettings.general.usehdicons &&
+        !ability.icon.includes("_hr1.png")
+    )
         ability.icon = ability.icon.replace(".png", "_hr1.png");
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
@@ -1928,9 +1931,12 @@ function startAbilityIconTimers(
     let abilityUsed = abilityHolder === null ? ability : abilityHolder;
     let usingAbilityHolder = abilityHolder !== null;
 
-    if (currentSettings.general.usehdicons) {
+    if (
+        currentSettings.general.usehdicons &&
+        !ability.icon.includes("_hr1.png")
+    ) {
         ability.icon = ability.icon.replace(".png", "_hr1.png");
-        if (usingAbilityHolder)
+        if (usingAbilityHolder && !abilityHolder.icon.includes("_hr1.png"))
             abilityHolder.icon = abilityHolder.icon.replace(".png", "_hr1.png");
     }
 
