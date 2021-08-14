@@ -589,7 +589,7 @@ function addCustomAbility() {
         case "0": {
             ability = removedAbility;
             addAbility = {
-                id: $("#customcdAbilityId").val(),
+                id: parseInt($("#customcdAbilityId").val()),
                 name: ability.name,
                 name_cn: ability.name_cn,
                 name_de: ability.name_de,
@@ -599,17 +599,17 @@ function addCustomAbility() {
                 name_kr: ability.name_kr,
                 enabled: $("#customcdAbilityEnabled").is(":checked"),
                 tts: $("#customcdAbilityTTSEnabled").is(":checked"),
-                ttstype: $("#customcdAbilityTTSType").val(),
+                ttstype: parseInt($("#customcdAbilityTTSType").val()),
                 job: $("#customcdAbilityJob").val(),
-                level: ability.level,
-                duration: $("#customcdAbilityDuration").val(),
-                cooldown: $("#customcdAbilityCooldown").val(),
+                level: parseInt(ability.level),
+                duration: parseInt($("#customcdAbilityDuration").val()),
+                cooldown: parseInt($("#customcdAbilityCooldown").val()),
                 type: $("#customcdAbilityType").val(),
                 icon: ability.icon,
                 color: "--filter-light-blue",
-                order: $("#customcdAbilityOrder").val(),
+                order: parseInt($("#customcdAbilityOrder").val()),
                 extra: {
-                    charges: $("#customcdAbilityCharges").val(),
+                    charges: parseInt($("#customcdAbilityCharges").val()),
                 },
             };
             break;
