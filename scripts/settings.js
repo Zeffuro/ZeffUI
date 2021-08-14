@@ -200,6 +200,11 @@ function createFontSelects() {
     $("#mitigationFont").empty();
     $("#partyFont").empty();
     $("#customcdFont").empty();
+    $("#customFonts").empty();
+
+    currentSettings.customfonts.forEach((font) => {
+        $("#customFonts").append(`<option value="${font}">${font}</option>`);
+    });
 
     /* prettier-ignore */
     let fontCheck = new Set([
@@ -210,6 +215,8 @@ function createFontSelects() {
         // Custom Fonts that might be installed but won't be included/embedded due to licensing
         "Expressway"
 	].sort());
+
+    currentSettings.customfonts.forEach((font) => fontCheck.add(font));
 
     let customFonts = new Set(["ITC Avant Garde Gothic LT"]);
 
@@ -396,6 +403,28 @@ function toggleOverride() {
 function changeXY(type) {
     $(`#${type}X`).val($(`#${type}X`).val() * -1);
     $(`#${type}Y`).val($(`#${type}Y`).val() * -1);
+}
+
+/* exported addCustomFont */
+function addCustomFont() {
+    let font = $("#customFontText").val();
+
+    if (!font || currentSettings.customfonts.includes(font)) {
+        return;
+    }
+
+    currentSettings.customfonts.push(font);
+    $("#customFonts").append(`<option value="${font}">${font}</option>`);
+    $("#customFonts").val(font);
+}
+
+/* exported removeCustomFont */
+function removeCustomFont() {
+    let font = $("#customFonts").val();
+    currentSettings.customfonts = currentSettings.customfonts.filter(
+        (x) => x !== font,
+    );
+    $(`#customFonts option[value="${font}"]`).remove();
 }
 
 /* exported saveOverride */
@@ -1630,6 +1659,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
         skin: $("#skinSelect").val(),
         language: $("#langSelect").val(),
         font: $("#defaultFont").val(),
+        customfonts: currentSettings.customfonts,
         includealliance: $("#includeAlliance").is(":checked"),
         partyorder: await sortable("#partyOrder", "serialize")[0].items,
         override: currentSettings.override,

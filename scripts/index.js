@@ -154,6 +154,7 @@ async function loadSettings() {
 
     // FONT SETTINGS
     checkAndInitializeSetting(settings, "font", "Arial");
+    checkAndInitializeSetting(settings, "customfonts", []);
     $("*").css("--defaultFont", `${settings.font}`);
 
     if ($("#skin").length == 0) {

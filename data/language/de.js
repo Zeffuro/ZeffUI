@@ -132,6 +132,7 @@ var language = [
 	{ id: "fontxoffset", string: "SChriftart X Offset" },
 	{ id: "fontyoffset", string: "Schriftart Y Offset" },
 	{ id: "setjob", string: "SET JOB" },
+	{ id: "customfonts", string: "Custom Fonts" },
 	// SKINS
 	{ id: "skindefault", string: "Standard (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

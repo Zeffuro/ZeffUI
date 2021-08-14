@@ -126,6 +126,24 @@
 								<label id="lang_applytoallelements" class="control-label col-sm-4" for="font_applytoallelements"></label>
 								<div class="col-sm-6"><button id="font_applytoallelements" type="button" class="btn btn-primary btn-sm" onclick="applyDefaultFont()">Apply default font to all elements</button></div>
 							</div>
+							<br />
+							<div class="form-group row text-right">
+								<label id="lang_customfonts" class="control-label col-sm-4" for="defaultFont">Custom Fonts</label>
+								<div class="col-sm-6">
+									<select class="form-select form-select-sm" id="customFonts">
+										
+									</select>                                    
+								</div>
+								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="removeCustomFont()" id="customcdDeleteButton"><span id="lang_delete_1">Delete</span></button></div>
+							</div>
+							<div class="form-group row text-right">
+								<label class="control-label col-sm-4"></label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control form-control-sm" placeholder="" id="customFontText">
+								</div>
+								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="addCustomFont()" id="customcdSaveButton"><span id="lang_add_1">Add</span></button></div>
+							</div>
+							<br />
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="useHDIcons">

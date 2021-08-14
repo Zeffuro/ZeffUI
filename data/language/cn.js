@@ -132,6 +132,7 @@ var language = [
 	{ id: "fontxoffset", string: "Font X Offset" },
 	{ id: "fontyoffset", string: "Font Y Offset" },
 	{ id: "setjob", string: "SET JOB" },
+	{ id: "customfonts", string: "Custom Fonts" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
