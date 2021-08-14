@@ -308,11 +308,11 @@ function createSpecificJobs(selector, enabledJobs) {
 function createOverrideSelects() {
     for (let ability of abilityList) {
         let override = currentSettings.override.abilities.find(
-            (x) => x.id == ability.id,
+            (x) => x.id == ability.id && x.type == ability.type,
         );
         let name = ability[`name_${currentSettings.language}`];
         $("#overrideSelect").append(
-            `<option value="${ability.id}">${
+            `<option value="${ability.id}-${ability.type}">${
                 override != null ? "[Override] " : ""
             }${
                 language.find((x) => x.id === ability.job.toLowerCase()).string
@@ -357,8 +357,12 @@ function toggleJob(element) {
 
 function toggleOverride() {
     let checked = $("#abilityOverrideEnabled").is(":checked");
-    let id = $("#overrideSelect").val();
-    let override = currentSettings.override.abilities.find((x) => x.id == id);
+    let currentAbility = $("#overrideSelect").val();
+    let id = parseInt(currentAbility.split("-")[0]);
+    let type = currentAbility.split("-")[1];
+    let override = currentSettings.override.abilities.find(
+        (x) => x.id == id && x.type == type,
+    );
 
     if (checked) {
         $("#abilityEnabled").removeAttr("disabled");
@@ -370,7 +374,7 @@ function toggleOverride() {
         $("#abilityTTSType").removeAttr("disabled");
         if (override == null)
             currentSettings.override.abilities.push(
-                abilityList.find((x) => x.id == id),
+                abilityList.find((x) => x.id == id && x.type == type),
             );
     } else {
         $("#abilityEnabled").attr("disabled", "disabled");
@@ -380,9 +384,11 @@ function toggleOverride() {
         $("#abilityOrder").attr("disabled", "disabled");
         $("#abilityTTSEnabled").attr("disabled", "disabled");
         $("#abilityTTSType").attr("disabled", "disabled");
-        currentSettings.override.abilities = currentSettings.override.abilities.filter(
-            (x) => x.id != id,
+
+        let index = currentSettings.override.abilities.findIndex(
+            (x) => x.id === id && x.type == type,
         );
+        if (index !== -1) currentSettings.override.abilities.splice(index, 1);
     }
 }
 
@@ -394,41 +400,43 @@ function changeXY(type) {
 
 /* exported saveOverride */
 function saveOverride(type) {
-    let id = $("#overrideSelect").val();
+    let currentAbility = $("#overrideSelect").val();
+    let id = parseInt(currentAbility.split("-")[0]);
+    let abilityType = currentAbility.split("-")[1];
     switch (type) {
         case "color":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
+                (x) => x.id == id && x.type == abilityType,
             ).color = $("#abilityColor").val();
             break;
         case "enabled":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
+                (x) => x.id == id && x.type == abilityType,
             ).enabled = $("#abilityEnabled").is(":checked");
             break;
         case "cooldown":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
-            ).cooldown = $("#abilityCooldown").val();
+                (x) => x.id == id && x.type == abilityType,
+            ).cooldown = parseInt($("#abilityCooldown").val());
             break;
         case "order":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
-            ).order = $("#abilityOrder").val();
+                (x) => x.id == id && x.type == abilityType,
+            ).order = parseInt($("#abilityOrder").val());
             break;
         case "duration":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
-            ).duration = $("#abilityDuration").val();
+                (x) => x.id == id && x.type == abilityType,
+            ).duration = parseInt($("#abilityDuration").val());
             break;
         case "tts":
-            currentSettings.override.abilities.find((x) => x.id == id).tts = $(
-                "#abilityTTSEnabled",
-            ).is(":checked");
+            currentSettings.override.abilities.find(
+                (x) => x.id == id && x.type == abilityType,
+            ).tts = $("#abilityTTSEnabled").is(":checked");
             break;
         case "ttstype":
             currentSettings.override.abilities.find(
-                (x) => x.id == id,
+                (x) => x.id == id && x.type == abilityType,
             ).ttstype = parseInt($("#abilityTTSType").val());
             break;
     }
@@ -675,9 +683,13 @@ function toggleCustomCdOptions(show = false) {
 }
 
 function loadAbility() {
-    let id = $("#overrideSelect").val();
-    let ability = abilityList.find((x) => x.id == id);
-    let override = currentSettings.override.abilities.find((x) => x.id == id);
+    let currentAbility = $("#overrideSelect").val();
+    let id = parseInt(currentAbility.split("-")[0]);
+    let type = currentAbility.split("-")[1];
+    let ability = abilityList.find((x) => x.id == id && x.type == type);
+    let override = currentSettings.override.abilities.find(
+        (x) => x.id == id && x.type == type,
+    );
     if (override != null) ability = override;
     $("#abilityEnabled").prop("checked", ability.enabled);
     $("#abilityIconPreview").prop("src", ability.icon);

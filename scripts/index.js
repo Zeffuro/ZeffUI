@@ -1519,11 +1519,11 @@ function generateMitigation() {
     )) {
         if (
             currentSettings.override.abilities.some(
-                (x) => x.name === ability.name,
+                (x) => x.id === ability.id && x.type === ability.type,
             )
         ) {
             ability = currentSettings.override.abilities.find(
-                (x) => x.name === ability.name,
+                (x) => x.id === ability.id && x.type === ability.type,
             );
         }
         let pushAbility = false;
@@ -1574,11 +1574,11 @@ function generatePartyCooldowns() {
         )) {
             if (
                 currentSettings.override.abilities.some(
-                    (x) => x.name === ability.name,
+                    (x) => x.id === ability.id && x.type == ability.type,
                 )
             ) {
                 ability = currentSettings.override.abilities.find(
-                    (x) => x.name === ability.name,
+                    (x) => x.name === ability.name && x.type == ability.type,
                 );
             }
             let pushAbility = true;
@@ -1618,11 +1618,11 @@ function generateRaidBuffs() {
         )) {
             if (
                 currentSettings.override.abilities.some(
-                    (x) => x.name === ability.name,
+                    (x) => x.id === ability.id && x.type == ability.type,
                 )
             ) {
                 ability = currentSettings.override.abilities.find(
-                    (x) => x.name === ability.name,
+                    (x) => x.id === ability.id && x.type == ability.type,
                 );
             }
             let pushAbility = true;
@@ -1670,6 +1670,12 @@ function generateRaidBuffs() {
 
 // Generates all the needed HTML elements for current abilities that are relevant for the current job
 function generateIconBarElements(selector, iconAbilityList, columns) {
+    iconAbilityList.sort((a, b) => {
+        return (
+            a.playerIndex - b.playerIndex || a.ability.order - b.ability.order
+        );
+    });
+    console.log(iconAbilityList);
     let selectorProperties = getSelectorProperties(selector);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
