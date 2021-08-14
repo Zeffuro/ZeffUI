@@ -1679,7 +1679,7 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
     if (selector !== "Party") {
         for (let i = 1; i <= rows; i++) {
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${
+                `<div id="${barSelector}-row-${i}" class="ability-row" style="margin-top: ${
                     selectedSettings.padding
                 }px;">
 					<div id="${barSelector}-row-${i}-box" class="ability-box ${
@@ -1701,7 +1701,7 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
         if (currentSettings.includealliance) players = 24;
         for (let i = 1; i <= players; i++) {
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="padding-top: ${
+                `<div id="${barSelector}-row-${i}" class="ability-row" style="margin-top: ${
                     selectedSettings.padding
                 }px;">
 					<div id="${barSelector}-row-${i}-box" class="ability-box ${
@@ -1720,7 +1720,7 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
                         selectedSettings.scale * 48
                     }px; height: ${
                         selectedSettings.scale * 48
-                    }px; padding-right: ${selectedSettings.padding}px;"></div>`,
+                    }px; margin-right: ${selectedSettings.padding}px;"></div>`,
                 );
                 $(`#${barSelector}-${i}-dummy-container`).append(
                     `<img id="${barSelector}-${i}-dummy-image" class="ability-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="${
@@ -1757,7 +1757,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
         if (row === 0) row = 1;
         if ($(`#${barSelector}-row-${row}`).length === 0)
             $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${row}" class="ability-row" style="padding-top: ${
+                `<div id="${barSelector}-row-${row}" class="ability-row" style="margin-top: ${
                     selectedSettings.padding
                 }px;">
 					<div id="${barSelector}-row-${row}-box" class="ability-box ${
@@ -1782,7 +1782,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
     let containerSelector = `#${abilitySelector}-container`;
 
     $(`#${barSelector}-row-${row}-box`).append(
-        `<div id="${abilitySelector}-container" class="ability-container" style="width: ${boxWidth}px; height: ${boxHeight}px; padding-right: ${selectedSettings.padding}px;"></div>`,
+        `<div id="${abilitySelector}-container" class="ability-container" style="width: ${boxWidth}px; height: ${boxHeight}px; margin-right: ${selectedSettings.padding}px;"></div>`,
     );
     $(containerSelector).append(
         `<img id="${abilitySelector}-image" class="ability-image" src="${
