@@ -184,3 +184,14 @@ The blue background will disappear once the overlay has been locked.
 1. After that your setup should be complete.
 
 If you need any help either raise an issue or find me on the ACT/Triggernometry Discord servers or DM me directly on Zeffuro#3033
+
+## Licensing, Trademarks, Copyright
+
+ZeffUI is open source under the [Apache License, Version 2.0](LICENSE).
+
+FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.
+
+Final Fantasy art and icons reused non-commercially under the
+[FINAL FANTASY® XIV Materials Usage License](https://support.na.square-enix.com/rule.php?id=5382).
+
+See the [LICENSE](LICENSE) file for more details about other bundled projects.
