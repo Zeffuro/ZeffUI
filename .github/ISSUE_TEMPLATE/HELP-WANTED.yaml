@@ -3,10 +3,6 @@ description: For when you are having issues setting up ZeffUI
 title: "[Help wanted]: "
 labels: [help wanted]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
   - type: textarea
     id: what-happened
     attributes:
