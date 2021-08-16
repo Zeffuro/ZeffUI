@@ -6,16 +6,8 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: What's the issue?
-      description: Also tell us, what are you trying to do / achieve?
-      placeholder: Tell us what you see!
-    validations:
-      required: true
-  - type: textarea
-    id: what-happened
-    attributes:
-      label: What did you expect?
-      description: Also tell us, what are you trying to do / achieve?
+      label: What are you trying to do?
+      description: What are you trying to do?
       placeholder: Tell us what you see!
     validations:
       required: true
@@ -35,6 +27,14 @@ body:
       placeholder: Tell us what you see!
     validations:
       required: true
+  - type: textarea
+    id: suggested-solution
+    attributes:
+      label: Suggested solution
+      description: If you have any idea how we could solve it let me know.
+      placeholder: Tell us what you see!
+    validations:
+      required: false
   - type: textarea
     id: logs
     attributes:
