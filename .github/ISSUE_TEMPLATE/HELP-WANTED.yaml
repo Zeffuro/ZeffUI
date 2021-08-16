@@ -13,7 +13,6 @@ body:
       label: What's the issue?
       description: Also tell us, what are you trying to do / achieve?
       placeholder: Tell us what you see!
-      value: ""
     validations:
       required: true
   - type: textarea
