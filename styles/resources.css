@@ -39,6 +39,7 @@
 }
 .ability-container {
     position: relative;
+    image-rendering: pixelated;
 }
 .ability-image,
 .icon-active,
