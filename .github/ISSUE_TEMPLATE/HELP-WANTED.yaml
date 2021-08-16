@@ -1,0 +1,32 @@
+name: Help wanted
+description: For when you are having issues setting up ZeffUI
+title: "[Help wanted]: "
+labels: [help wanted]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's the issue?
+      description: Also tell us, what are you trying to do / achieve?
+      placeholder: Tell us what you see!
+      value: ""
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Settings Export
+      description: Please export your settings by going into Settings -> Import / Export -> Export Settings. Just paste the code in here and it will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: FFXIV Update
+      description: Whenever Final Fantasy has an update, FFXIV Plugin needs an update, please don't open issues when there hasn't been a new version of the plugin yet when FFXIV has been updated.
+      options:
+        - label: I have confirmed that I have the latest version of Ravahn's FFXIV_ACT_Plugin, ngld's OverlayPlugin and cactbot (for the memory reading) are up to date.
+          required: true
