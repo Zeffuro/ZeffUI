@@ -1,0 +1,51 @@
+name: Bug
+description: For when you have found a bug
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's the issue?
+      description: Also tell us, what are you trying to do / achieve?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What did you expect?
+      description: Also tell us, what are you trying to do / achieve?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: What is the expected behaviour?
+      description: What do you think should happen?
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: actually-happened
+    attributes:
+      label: What actually happened?
+      description: Please try to be as descriptive as possible.
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: If you have any errors in the console or OverlayPlugin Log please put them here, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: FFXIV Update
+      description: Whenever Final Fantasy has an update, FFXIV Plugin needs an update, please don't open issues when there hasn't been a new version of the plugin yet when FFXIV has been updated.
+      options:
+        - label: I have confirmed that I have the latest version of Ravahn's FFXIV_ACT_Plugin, ngld's OverlayPlugin and cactbot (for the memory reading) are up to date.
+          required: true
