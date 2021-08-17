@@ -1886,6 +1886,7 @@ function generatePartyList(party) {
                 id: partyMember.id,
                 inParty: partyMember.inParty,
                 job: jobList.find((x) => x.id === partyMember.job),
+                level: partyMember.level,
                 name: partyMember.name,
                 worldId: partyMember.worldId,
             });
@@ -2800,6 +2801,32 @@ function checkAndSetZoneInfo(zoneId) {
                     gameState.zone.info.contentType,
             );
     }
+}
+
+/* exported handleAddNewCombatant */
+function handleAddNewCombatant(parameters) {
+    if (gameState.partyList.filter((x) => x.id == parameters.id).length == 0)
+        return;
+    let job = jobList.find((x) => x.name === parameters.job.toUpperCase());
+    let player = gameState.partyList.find((x) => x.id == parameters.id);
+    let reload = false;
+    if (player.job != job) {
+        player.job = job;
+        reload = true;
+        toLog(
+            "[handleAddNewCombatant] Party Member Job Changed, cooldowns will be reloaded",
+            job,
+        );
+    }
+    if (player.level != parseInt(parameters.level)) {
+        player.level = parseInt(parameters.level);
+        reload = true;
+        toLog(
+            "[handleAddNewCombatant] Party Member Level Changed, cooldowns will be reloaded",
+            parseInt(parameters.level),
+        );
+    }
+    if (reload) reloadCooldownModules();
 }
 
 // When user uses /countdown or /cd
