@@ -1676,7 +1676,6 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
             a.playerIndex - b.playerIndex || a.ability.order - b.ability.order
         );
     });
-    console.log(iconAbilityList);
     let selectorProperties = getSelectorProperties(selector);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
@@ -2954,17 +2953,17 @@ function handleSkill(parameters) {
     for (ability of mergedAbilityList.filter(
         (x) => x.id == parseInt(parameters.skillid, 16),
     )) {
-        if (ability === undefined) return;
+        if (ability === undefined) continue;
         if (
             currentSettings.override.abilities.some(
-                (x) => x.id == parseInt(parameters.skillid, 16),
+                (x) => x.id == ability.id && x.type == ability.type,
             )
         ) {
             ability = currentSettings.override.abilities.find(
-                (x) => x.id == parseInt(parameters.skillid, 16),
+                (x) => x.id == ability.id && x.type == ability.type,
             );
         }
-        if (!ability.enabled) return;
+        if (!ability.enabled) continue;
         if (ability.name === "Shoha" && byYou) {
             adjustJobStacks(0, gameState.stats.maxStacks);
         }
@@ -3113,7 +3112,7 @@ function handleSkill(parameters) {
                             ? abilityHolder
                             : ability,
                     );
-                    return;
+                    continue;
                 }
             }
             startAbilityIconTimers(playerIndex, ability, true);
@@ -3141,31 +3140,31 @@ function handleGainEffect(parameters) {
             x[`name_${currentSettings.language}`].toLowerCase() ==
             parameters.effect.toLowerCase(),
     )) {
-        if (ability === undefined) return;
+        if (ability === undefined) continue;
         if (
             currentSettings.override.abilities.some(
-                (x) => x.name === ability.name,
+                (x) => x.name === ability.name && x.type == ability.type,
             )
         ) {
             ability = currentSettings.override.abilities.find(
-                (x) => x.name === ability.name,
+                (x) => x.name === ability.name && x.type == ability.type,
             );
         }
-        if (!ability.enabled) return;
+        if (!ability.enabled) continue;
         if (ability.type === "RaidBuff") {
             if (
                 ability.name === "Standard Step" ||
                 ability.name === "Technical Step" ||
                 ability.name === "Embolden"
             )
-                return;
+                continue;
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
                 if (ability.extra.is_song) {
                     let abilityHolder = mergedAbilityList.find(
                         (x) => x.name === "Song",
                     );
                     if (byYou) {
-                        return;
+                        continue;
                     }
                     if (onYou) {
                         ability.duration = 5;
@@ -3223,7 +3222,7 @@ function handleGainEffect(parameters) {
                             (x) => x.id === ability.extra.shares_cooldown,
                         ),
                     );
-                    return;
+                    continue;
                 }
                 if (ability.extra.extends_duration) {
                     startAbilityBarTimer(
@@ -3233,7 +3232,7 @@ function handleGainEffect(parameters) {
                         true,
                         ability.extra.max_duration,
                     );
-                    return;
+                    continue;
                 }
             }
             startAbilityBarTimer(ability, parameters.duration, onYou);
