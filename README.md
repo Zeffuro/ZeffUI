@@ -162,6 +162,8 @@ You should always lock your overlay once you are done resizing and placing it.
 1. Click the `OK` button to add this as an Overlay.
 It will now appear in the list of overlays in the `Plugins` -> `OverlayPlugin.dll` tab.
 
+1.  If for some reason the UI doesn't show up confirm that the following URL is populating the URL field: https://zeffuro.github.io/ZeffUI/
+
 1. Drag and resize the overlay to the location that you want it in.
 
 1. In the `General` tab of the `ZeffUI` overlay, click the `Lock Overlay` checkbox.
