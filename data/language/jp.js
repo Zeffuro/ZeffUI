@@ -133,6 +133,7 @@ var language = [
 	{ id: "fontyoffset", string: "Font Y Offset" },
 	{ id: "setjob", string: "SET JOB" },
 	{ id: "customfonts", string: "Custom Fonts" },
+	{ id: "customcss", string: "Custom CSS" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },

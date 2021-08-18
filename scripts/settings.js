@@ -1040,6 +1040,8 @@ async function loadSettings() {
                 $("#useHDIcons").prop("checked", settings.general.usehdicons);
                 $("#ttsEarly").val(settings.general.ttsearly);
 
+                $("#customcss").val(settings.general.customcss);
+
                 $("#includeAlliance").prop("checked", settings.includealliance);
                 setPartyOrder(settings.rolepartyorder.tank);
 
@@ -1689,6 +1691,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             usewebtts: $("#useWebTTS").is(":checked"),
             ttsearly: $("#ttsEarly").val(),
             usehdicons: $("#useHDIcons").is(":checked"),
+            customcss: $("#customcss").val(),
         },
         healthbar: {
             enabled: $("#healthBarEnabled").is(":checked"),

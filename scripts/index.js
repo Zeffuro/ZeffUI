@@ -150,6 +150,11 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.general, "ttsearly", 5);
     checkAndInitializeSetting(settings.general, "usehdicons", false);
 
+    checkAndInitializeSetting(settings.general, "customcss", "");
+
+    if (settings.general.customcss)
+        $("head").append(`<style>${settings.general.customcss}</style>`);
+
     // SKIN SETTINGS
     checkAndInitializeSetting(settings, "skin", "default");
 
@@ -1153,7 +1158,10 @@ function openSettingsWindow() {
     ui.activeSettingsWindow.onload = function () {
         this.onbeforeunload = function () {
             loadSettings().then(() => {
-                if (gameState.player === null) return;
+                if (gameState.player === null) {
+                    ui.activeSettingsWindow = null;
+                    return;
+                }
                 location.reload();
             });
         };
