@@ -6,6 +6,7 @@
 
 var currentSettings = null;
 var currentFont = {};
+var currentPartyRole = "tank";
 var foundAbilities = [];
 var removedAbility = {};
 var callCurrentOverlayHandler = null;
@@ -129,7 +130,21 @@ function setExampleColor(element) {
     }
 }
 
+function saveCurrentPartyRoleOrder() {
+    console.log("Saving Order", currentPartyRole);
+    currentSettings.rolepartyorder[currentPartyRole] = sortable(
+        "#partyOrder",
+        "serialize",
+    )[0].items;
+}
+
 function setPartyOrder(partyOrder) {
+    if (!partyOrder) {
+        partyOrder = currentSettings.rolepartyorder[$("#partyRole").val()];
+        saveCurrentPartyRoleOrder();
+        $("#partyOrder").empty();
+        currentPartyRole = $("#partyRole").val();
+    }
     for (let job of partyOrder) {
         // Initially used the wrong job shorthand, need this to not break people's party orders.
         if (job == "GLD") job = "GLA";
@@ -1026,7 +1041,7 @@ async function loadSettings() {
                 $("#ttsEarly").val(settings.general.ttsearly);
 
                 $("#includeAlliance").prop("checked", settings.includealliance);
-                setPartyOrder(settings.partyorder);
+                setPartyOrder(settings.rolepartyorder.tank);
 
                 $("#healthBarEnabled").prop(
                     "checked",
@@ -1655,6 +1670,7 @@ async function loadSettings() {
 }
 
 async function saveSettings(closeWindow = true, showPopup = false) {
+    saveCurrentPartyRoleOrder();
     let settings = {
         skin: $("#skinSelect").val(),
         language: $("#langSelect").val(),
@@ -1662,6 +1678,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
         customfonts: currentSettings.customfonts,
         includealliance: $("#includeAlliance").is(":checked"),
         partyorder: await sortable("#partyOrder", "serialize")[0].items,
+        rolepartyorder: currentSettings.rolepartyorder,
         override: currentSettings.override,
         debug: {
             enabled: $("#debugEnabled").is(":checked"),

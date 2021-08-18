@@ -20,6 +20,7 @@ var gameState = {
     inCombat: false,
     blockRuinGained: false,
     player: null,
+    currentrole: null,
     zone: {},
     partyList: [],
     rawPartyList: [],
@@ -184,6 +185,29 @@ async function loadSettings() {
 			// Caster DPS
 			"BLM", "THM", "SMN", "ACN", "RDM", "BLU"]
 	);
+
+    checkAndInitializeSetting(settings, "rolepartyorder", {});
+
+    checkAndInitializeSetting(
+        settings.rolepartyorder,
+        "tank",
+        settings.partyorder,
+    );
+    checkAndInitializeSetting(
+        settings.rolepartyorder,
+        "healer",
+        settings.partyorder,
+    );
+    checkAndInitializeSetting(
+        settings.rolepartyorder,
+        "dps",
+        settings.partyorder,
+    );
+    checkAndInitializeSetting(
+        settings.rolepartyorder,
+        "other",
+        settings.partyorder,
+    );
 
     // LANGUAGE SETTINGS
     let actLang = await getACTLocale();
@@ -1892,7 +1916,8 @@ function generatePartyList(party) {
             });
         }
     }
-    let jobOrder = currentSettings.partyorder;
+
+    let jobOrder = currentSettings.rolepartyorder[gameState.currentrole];
     let currentPlayerElement = gameState.partyList.find(
         (x) => x.name === gameState.player.name,
     );
@@ -2572,6 +2597,21 @@ function setWebTTS(text) {
     return this.item;
 }
 
+// Sets Party Role based on current job
+function setCurrentRole() {
+    gameState.currentrole = jobList
+        .find((x) => x.name === gameState.player.job)
+        .type.toLowerCase();
+    if (gameState.currentrole.includes("dps")) gameState.currentrole = "dps";
+    if (
+        gameState.currentrole != "tank" &&
+        gameState.currentrole != "healer" &&
+        gameState.currentrole != "dps"
+    ) {
+        gameState.currentrole = "other";
+    }
+}
+
 // Stack maintaining functions
 function adjustJobStacks(value, max, noAdd = false) {
     if (!noAdd) {
@@ -2739,8 +2779,12 @@ function onPartyWipe() {
 function onPlayerChangedEvent(e) {
     if (gameState.player !== null && gameState.player.job !== e.detail.job) {
         onJobChange(e.detail.job);
+        setCurrentRole();
     }
     gameState.player = e.detail;
+    if (gameState.currentrole === null) {
+        setCurrentRole();
+    }
     if (gameState.partyList.length === 0) {
         let tickerTypes = ["mp", "dot", "hot"];
         for (let tickerType of tickerTypes) {

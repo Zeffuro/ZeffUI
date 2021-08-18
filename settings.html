@@ -172,6 +172,14 @@
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<label id="lang_partyorder" for="partyOrder">Party Order (drag and drop)</label>
+									<div class="col-sm-4">
+										<select class="form-select form-select-sm" id="partyRole" onchange="setPartyOrder()">											
+											<option id="lang_tank" value="tank">Tank</option>
+											<option id="lang_healer" value="healer">Healer</option>
+											<option id="lang_dps" value="dps">DPS</option>
+											<option id="lang_other" value="other">Other</option>
+										</select>                                    
+									</div>
 									<table id="partyOrderTable" class="table table-sm" style="width:100%">
 										<tbody id="partyOrder">
 										</tbody>                                        

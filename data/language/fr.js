@@ -186,11 +186,13 @@ var language = [
 	{ id: "tank", string: "Tank" },
 	{ id: "healer", string: "Healer" },
 	{ id: "meleedps", string: "Melee DPS" },
+	{ id: "dps", string: "DPS" },
 	{ id: "rangeddps", string: "Physical Ranged DPS" },
 	{ id: "casterdps", string: "Magic Ranged DPS" },
 	{ id: "melee", string: "Melee" },
 	{ id: "ranged", string: "Ranged" },
 	{ id: "caster", string: "Caster" },
+	{ id: "other", string: "Other" },
 	// UI TEXT
 	{ id: "dot-anchor", string: "DoT Anchor" },
 	{ id: "buff-anchor", string: "Buff Anchor" },
