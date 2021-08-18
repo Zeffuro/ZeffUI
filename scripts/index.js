@@ -237,6 +237,7 @@ async function loadSettings() {
         "color",
         "--filter-dark-green",
     );
+    checkAndInitializeSetting(settings.healthbar, "textformat", "");
     checkAndInitializeSetting(settings.healthbar, "scale", 1);
     checkAndInitializeSetting(settings.healthbar, "rotation", 0);
     checkAndInitializeSetting(settings.healthbar, "x", 30);
@@ -280,6 +281,7 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.manabar, "hideoutofcombat", false);
     checkAndInitializeSetting(settings.manabar, "textenabled", true);
     checkAndInitializeSetting(settings.manabar, "color", "--filter-light-pink");
+    checkAndInitializeSetting(settings.manabar, "textformat", "");
     checkAndInitializeSetting(settings.manabar, "scale", 1);
     checkAndInitializeSetting(settings.manabar, "rotation", 0);
     checkAndInitializeSetting(settings.manabar, "x", 30);
@@ -2809,15 +2811,7 @@ function onPlayerChangedEvent(e) {
             .then((e) => checkForParty(e));
     }
 
-    $("#health-bar").attr("max", gameState.player.maxHP);
-    $("#health-bar").attr("value", gameState.player.currentHP);
-    $("#health-bar").attr(
-        "data-label",
-        currentSettings.healthbar.textenabled
-            ? `${gameState.player.currentHP} / ${gameState.player.maxHP}`
-            : "",
-    );
-
+    handleHealthUpdate(gameState.player.currentHP, gameState.player.maxHP);
     handleManaUpdate(gameState.player.currentMP, gameState.player.maxMP);
 }
 
@@ -2965,14 +2959,74 @@ function handleManaTick(current, max) {
     }
 }
 
+function processTextFormat(text) {
+    let percentHP = Math.round(
+        (100 * gameState.player.currentHP) / gameState.player.maxHP,
+    );
+    let deficitHP = gameState.player.maxHP - gameState.player.currentHP;
+    let percentMP = Math.round(
+        (100 * gameState.player.currentMP) / gameState.player.maxMP,
+    );
+    let deficitMP = gameState.player.maxMP - gameState.player.currentMP;
+
+    let tagMap = {
+        "[health:current]": gameState.player.currentHP,
+        "[health:current-max]": `${gameState.player.currentHP} / ${gameState.player.maxHP}`,
+        "[health:max]": gameState.player.maxHP,
+        "[health:percent]": percentHP,
+        "[health:deficit]": `-${deficitHP}`,
+        "[mana:current]": gameState.player.currentMP,
+        "[mana:current-max]": `${gameState.player.currentMP} / ${gameState.player.maxMP}`,
+        "[mana:max]": gameState.player.maxMP,
+        "[mana:percent]": percentMP,
+        "[mana:deficit]": `-${deficitMP}`,
+        "[name]": gameState.player.name,
+        "[name:veryshort]": gameState.player.name.substr(0, 5),
+        "[name:short]": gameState.player.name.substr(0, 10),
+        "[name:medium]": gameState.player.name.substr(0, 15),
+        "[name:long]": gameState.player.name.substr(0, 20),
+        "[job]": language.find(
+            (x) => x.id === gameState.player.job.toLowerCase(),
+        ).string,
+        "[job:short]": gameState.player.job,
+        " ": " ",
+    };
+
+    for (let [key, value] of Object.entries(tagMap)) {
+        text = text.replace(
+            new RegExp(key.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"), "gi"),
+            value,
+        );
+    }
+    return text;
+}
+
+// When user's health changes
+function handleHealthUpdate(current, max) {
+    $("#health-bar").attr("max", max);
+    $("#health-bar").attr("value", current);
+    let datalabel = `${gameState.player.currentHP} / ${gameState.player.maxHP}`;
+    if (currentSettings.healthbar.textformat) {
+        datalabel = processTextFormat(currentSettings.healthbar.textformat);
+    }
+    $("#health-bar").attr(
+        "data-label",
+        currentSettings.healthbar.textenabled ? datalabel : "",
+    );
+}
+
 // When user's mana changes
 function handleManaUpdate(current, max) {
     handleManaTick(current, max);
     $("#mana-bar").attr("max", max);
     $("#mana-bar").attr("value", current);
+    let datalabel = `${gameState.player.currentMP} / ${gameState.player.maxMP}`;
+    if (currentSettings.manabar.textformat) {
+        datalabel = processTextFormat(currentSettings.manabar.textformat);
+    }
     $("#mana-bar").attr(
         "data-label",
-        currentSettings.manabar.textenabled ? `${current} / ${max}` : "",
+        currentSettings.manabar.textenabled ? datalabel : "",
     );
 
     if (!currentSettings.manabar.jobthresholdsenabled) return;

@@ -1055,6 +1055,7 @@ async function loadSettings() {
                     "checked",
                     settings.healthbar.textenabled,
                 );
+                $("#healthFormat").val(settings.healthbar.textformat);
                 $("#healthColor").val(settings.healthbar.color);
                 setExampleColor($("#healthColor"));
                 $("#healthScale").attr("value", settings.healthbar.scale);
@@ -1091,6 +1092,7 @@ async function loadSettings() {
                     "checked",
                     settings.manabar.jobthresholdsenabled,
                 );
+                $("#manaFormat").val(settings.manabar.textformat);
                 $("#manaColor").val(settings.manabar.color);
                 $("#manaLowColor").val(settings.manabar.lowcolor);
                 $("#manaMedColor").val(settings.manabar.medcolor);
@@ -1692,6 +1694,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             enabled: $("#healthBarEnabled").is(":checked"),
             hideoutofcombat: $("#healthHideOutOfCombat").is(":checked"),
             textenabled: $("#healthTextEnabled").is(":checked"),
+            textformat: $("#healthFormat").val(),
             color: $("#healthColor").val(),
             scale: $("#healthScale").val(),
             rotation: $("#healthRotation").val(),
@@ -1709,6 +1712,7 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             hideoutofcombat: $("#manaHideOutOfCombat").is(":checked"),
             textenabled: $("#manaTextEnabled").is(":checked"),
             jobthresholdsenabled: $("#manaJobThresholdsEnabled").is(":checked"),
+            textformat: $("#manaFormat").val(),
             color: $("#manaColor").val(),
             lowcolor: $("#manaLowColor").val(),
             medcolor: $("#manaMedColor").val(),
