@@ -495,36 +495,36 @@ function searchCustomAbility() {
     $("#customcdIconPreviewDiv").append(
         '<div id="customcdLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>',
     );
-    $.getJSON(
-        `https://fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`,
-        function (data) {
-            foundAbilities = data;
-            $("#customcdAbilitySelect").empty();
-            $("#customcdLoading").remove();
-            $("#customcdIconPreview").show();
-            $("#customcdAbilitySelectDiv").show();
-            toggleCustomCdOptions(foundAbilities.length !== 0);
-            if (foundAbilities.length === 0) {
-                $("#customcdAbilityNoAbilitiesDiv").show();
-                return;
-            }
+    let url = `https://fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`;
+    if (currentSettings.language == "cn")
+        url = `https://act.diemoe.net/FFXIVSpellNamesXIVAPI/index.php?name=${query}&type=action&lang=${currentSettings.language}`;
+    $.getJSON(url, function (data) {
+        foundAbilities = data;
+        $("#customcdAbilitySelect").empty();
+        $("#customcdLoading").remove();
+        $("#customcdIconPreview").show();
+        $("#customcdAbilitySelectDiv").show();
+        toggleCustomCdOptions(foundAbilities.length !== 0);
+        if (foundAbilities.length === 0) {
+            $("#customcdAbilityNoAbilitiesDiv").show();
+            return;
+        }
 
-            for (let ability of data) {
-                if (ability.IsPlayerAction) {
-                    let name = ability[`Name_${currentSettings.language}`];
-                    if (ability.IsPvP)
-                        name = `[${
-                            language.find((x) => x.id === "pvp").string
-                        }] ${name}`;
-                    $("#customcdAbilitySelect").append(
-                        `<option value="${ability.ID}">${name}</option>`,
-                    );
-                }
+        for (let ability of data) {
+            if (ability.IsPlayerAction) {
+                let name = ability[`Name_${currentSettings.language}`];
+                if (ability.IsPvP)
+                    name = `[${
+                        language.find((x) => x.id === "pvp").string
+                    }] ${name}`;
+                $("#customcdAbilitySelect").append(
+                    `<option value="${ability.ID}">${name}</option>`,
+                );
             }
+        }
 
-            loadCustomCdAbility();
-        },
-    );
+        loadCustomCdAbility();
+    });
 }
 
 function switchCustomcdMode() {
