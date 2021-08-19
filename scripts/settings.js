@@ -667,7 +667,7 @@ function addCustomAbility() {
             ability = foundAbilities.find((x) => x.ID == id);
             addAbility = {
                 id: $("#customcdAbilityId").val(),
-                name: ability.Name,
+                name: ability.Name_en,
                 name_cn: ability.Name_cn,
                 name_de: ability.Name_de,
                 name_en: ability.Name_en,
