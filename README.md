@@ -193,9 +193,11 @@ You can customize ZeffUI further by using custom CSS and text format tags
 
 ![image](https://user-images.githubusercontent.com/4972345/130093739-9993b2a6-33a9-4964-8a5e-6034775c23fc.png)
 
-[Custom CSS Examples](https://github.com/Zeffuro/ZeffUI/blob/master/CUSTOMCSS.md)
+[Custom CSS Examples](CUSTOMCSS.md)
 
-[Text Format List](https://github.com/Zeffuro/ZeffUI/blob/master/TEXTFORMAT.md)
+[Text Format List](TEXTFORMAT.md)
+
+[UI Exports](UIEXPORTS.md)
 
 ## Licensing, Trademarks, Copyright
 
