@@ -3,6 +3,7 @@ A FFXIV Overlay for OverlayPlugin using HTML and JS
 
 1. [About](#about)
 1. [Installing](#installing)
+1. [Customization](#customization)
 
 ## About
 
@@ -186,6 +187,15 @@ The blue background will disappear once the overlay has been locked.
 1. After that your setup should be complete.
 
 If you need any help either raise an issue or find me on the ACT/Triggernometry Discord servers or DM me directly on Zeffuro#3033
+
+## Customization
+You can customize ZeffUI further by using custom CSS and text format tags
+
+![image](https://user-images.githubusercontent.com/4972345/130093739-9993b2a6-33a9-4964-8a5e-6034775c23fc.png)
+
+[Custom CSS Examples](https://github.com/Zeffuro/ZeffUI/blob/master/CUSTOMCSS.md)
+
+[Text Format List](https://github.com/Zeffuro/ZeffUI/blob/master/TEXTFORMAT.md)
 
 ## Licensing, Trademarks, Copyright
 
