@@ -1785,11 +1785,8 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
 
 // Generates a single ability icon based on player and ability
 function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
-    if (
-        currentSettings.general.usehdicons &&
-        !ability.icon.includes("_hr1.png")
-    )
-        ability.icon = ability.icon.replace(".png", "_hr1.png");
+    ability.icon = processIconUrl(ability.icon);
+
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
@@ -1980,6 +1977,11 @@ function startAbilityIconTimers(
         ability.icon = ability.icon.replace(".png", "_hr1.png");
         if (usingAbilityHolder && !abilityHolder.icon.includes("_hr1.png"))
             abilityHolder.icon = abilityHolder.icon.replace(".png", "_hr1.png");
+    }
+    if (usingAbilityHolder) {
+        abilityHolder.icon = processIconUrl(abilityHolder.icon);
+    } else {
+        ability.icon = processIconUrl(ability.icon);
     }
 
     let selectorProperties = getSelectorProperties(ability.type);
@@ -2581,6 +2583,20 @@ function handleAbilityTTS(ability, selector, onYou = true) {
                 break;
         }
     }
+}
+
+function processIconUrl(icon) {
+    if (
+        currentSettings.general.usehdicons &&
+        !icon.includes("_hr1.png") &&
+        currentSettings.language != "cn"
+    )
+        icon = icon.replace(".png", "_hr1.png");
+    if (currentSettings.language == "cn") {
+        icon = icon.replace("xivapi", "cafemaker.wakingsands");
+    }
+
+    return icon;
 }
 
 // Originally used for google TTS but this hack stopped working, still relevant for the TTS from Baidu
