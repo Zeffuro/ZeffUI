@@ -20,7 +20,7 @@ eyJza2luIjoibWF0ZXJpYWwtZGFyayIsImxhbmd1YWdlIjoiZW4iLCJmb250IjoiQXJpYWwiLCJjdXN0
 
 This will serve as a starting point, however it's important to point out some differences: Maximum uses XIVLauncher plugins to seperate the official HP/MP bar with SimpleTweaks
 He also mixes real actionbars in to keep track of certain combos and procs.
-Also uses [https://github.com/skotlex/ffxiv-material-ui](Material Dark) Mod for the rest of his textures in his game.
+Also uses [Material Dark](https://github.com/skotlex/ffxiv-material-ui) Mod for the rest of his textures in his game.
 
 ##### ZeffUI Export
 
