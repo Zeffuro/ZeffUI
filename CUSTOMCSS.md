@@ -12,10 +12,10 @@ Skin the HP and MP bar regularly without using game images/textures. This exampl
       width: 200px !important;
       height: 40px !important;
     }
-    #health-bar {	
+    #health-bar {
       height: 40px !important;
     }
-    #mana-bar {	
+    #mana-bar {
       height: 10px !important;
     }
     #health-bar::-webkit-progress-value, #mana-bar::-webkit-progress-value {
@@ -27,4 +27,10 @@ Skin the HP and MP bar regularly without using game images/textures. This exampl
       background-image: linear-gradient(black, black) !important;
       border-style: solid;
       border-width: 2px;
+    }
+
+HP/MP Text Color
+
+    #health-bar:after, #mana-bar:after {
+      color: red !important;
     }
