@@ -2,7 +2,7 @@
     font-family: "ITC Avant Garde Gothic LT";
     src: url("../data/fonts/AvantGardeLT-Medium.otf") format("opentype");
 }
-* {
+.context-menu-item span {
     font-family: var(--defaultFont);
 }
 .rtl {
