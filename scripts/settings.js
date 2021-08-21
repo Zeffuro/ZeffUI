@@ -672,7 +672,7 @@ function addCustomAbility() {
                 name_de: ability.Name_de,
                 name_en: ability.Name_en,
                 name_fr: ability.Name_fr,
-                name_jp: ability.Name_jp,
+                name_jp: ability.Name_ja,
                 name_kr: ability.Name_kr,
                 enabled: $("#customcdAbilityEnabled").is(":checked"),
                 tts: $("#customcdAbilityTTSEnabled").is(":checked"),
