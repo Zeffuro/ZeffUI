@@ -2222,6 +2222,8 @@ function startAbilityIconTimers(
     let selectedSettings = selectorProperties.settings;
     let selectedActive = selectorProperties.active;
 
+    if (!selectedSettings.enabled) return;
+
     let selector = `${barSelector}-${playerIndex}-${abilityUsed.id}`;
 
     let abilityIndex = `${playerIndex}-${ability.id}`;
