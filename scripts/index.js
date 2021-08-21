@@ -1243,9 +1243,15 @@ function toggleLock() {
                 ui.dragPosition[event.target.id].x += event.dx;
                 ui.dragPosition[event.target.id].y += event.dy;
 
+                let rotate = null;
+                if (event.target.style.transform.includes("rotate"))
+                    rotate = event.target.style.transform.split("rotate").pop();
+
                 event.target.style.transform = `translate(${parseInt(
                     ui.dragPosition[event.target.id].x,
-                )}px, ${parseInt(ui.dragPosition[event.target.id].y)}px)`;
+                )}px, ${parseInt(ui.dragPosition[event.target.id].y)}px)${
+                    rotate ? `rotate${rotate}` : ""
+                }`;
             },
             end() {
                 saveSettings();
