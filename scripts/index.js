@@ -1981,7 +1981,7 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
-    // TODO
+
     if (generateRow) {
         if (row === 0) row = 1;
         if (
@@ -2223,6 +2223,8 @@ function startAbilityIconTimers(
     let selectedActive = selectorProperties.active;
 
     if (!selectedSettings.enabled) return;
+    if (playerIndex == -1) return;
+    if (barSelector === "customcd" && playerIndex !== 0) return;
 
     let selector = `${barSelector}-${playerIndex}-${abilityUsed.id}`;
 
@@ -2287,6 +2289,7 @@ function startAbilityIconTimers(
                     .appendChild(abilityElement);
             }
         }
+
         if (document.getElementById(`${selector}-overlay`))
             document.getElementById(
                 `${selector}-overlay`,
