@@ -5,21 +5,24 @@
 /* global addOverlayListener, startOverlayEvents, interact, callOverlayHandler */
 
 // UI related global variables
-var ui = {
+let ui = {
     locked: true,
     actlocked: false,
     gridshown: false,
     dragPosition: {},
     activeSettingsWindow: null,
+    labels: {},
 };
 
 // Global variables for maintaining gamestate and settings
-var currentSettings = null;
+let currentSettings = null;
 
-var gameState = {
+let gameState = {
     inCombat: false,
     blockRuinGained: false,
     player: null,
+    playerPrevious: null,
+    playerTags: {},
     currentrole: null,
     zone: {},
     partyList: [],
@@ -34,7 +37,7 @@ var gameState = {
 };
 
 // Global variables for maintaining active timers and elements that get reused
-var activeElements = {
+let activeElements = {
     dotBars: new Map(),
     buffBars: new Map(),
     raidBuffs: new Map(),
@@ -87,7 +90,7 @@ addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
 addOverlayListener("ChangeZone", (e) => onChangeZone(e));
 addOverlayListener("PartyChanged", (e) => onPartyChanged(e));
 
-$(function () {
+$(document).ready(() => {
     startZeffUI();
 });
 
@@ -139,6 +142,8 @@ async function loadSettings() {
         settings = settings.data;
     }
 
+    let head = document.getElementsByTagName("head")[0];
+
     // OVERRIDE SETTINGS
     checkAndInitializeSetting(settings, "override", {});
     checkAndInitializeSetting(settings.override, "enabled", false);
@@ -152,8 +157,11 @@ async function loadSettings() {
 
     checkAndInitializeSetting(settings.general, "customcss", "");
 
-    if (settings.general.customcss)
-        $("head").append(`<style>${settings.general.customcss}</style>`);
+    if (settings.general.customcss) {
+        let style = document.createElement("style");
+        style.textContent = settings.general.customcss;
+        head.appendChild(style);
+    }
 
     // SKIN SETTINGS
     checkAndInitializeSetting(settings, "skin", "default");
@@ -161,14 +169,19 @@ async function loadSettings() {
     // FONT SETTINGS
     checkAndInitializeSetting(settings, "font", "Arial");
     checkAndInitializeSetting(settings, "customfonts", []);
-    $("*").css("--defaultFont", `${settings.font}`);
+    document.documentElement.style.setProperty("--defaultFont", settings.font);
 
-    if ($("#skin").length == 0) {
-        $("head").append(
-            `<link id="skin" rel="stylesheet" href="skins/${settings.skin}/styles/resources.css">`,
-        );
+    if (document.getElementById("skin") === null) {
+        let link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = `skins/${settings.skin}/styles/resources.css`;
+        link.id = "skin";
+        head.append(link);
     } else {
-        $("#skin").attr("href", `skins/${settings.skin}/styles/resources.css`);
+        document.getElementById(
+            "skin",
+        ).href = `skins/${settings.skin}/styles/resources.css`;
     }
 
     // DEBUG SETTINGS
@@ -218,18 +231,21 @@ async function loadSettings() {
     let actLang = await getACTLocale();
     checkAndInitializeSetting(settings, "language", actLang);
 
-    if ($("#language").length == 0) {
-        $.getScript(`data/language/${settings.language}.js`, function () {
+    if (document.getElementById("language") === null) {
+        getScript(`data/language/${settings.language}.js`, () => {
             loadContextMenu();
 
-            $("#lock-overlay-reminder").text(
-                language.find((x) => x.id === "lockoverlay").string,
-            );
+            let reminder = document.getElementById("lock-overlay-reminder");
+            reminder.textContent = language.find(
+                (x) => x.id === "lockoverlay",
+            ).string;
 
-            $("#lock-overlay-reminder").hide();
+            reminder.style.display = "none";
         });
     } else {
-        $("#language").attr("src", `data/language/${settings.language}.js`);
+        document.getElementById(
+            "language",
+        ).src = `data/language/${settings.language}.js`;
     }
 
     // HEALTHBAR SETTINGS
@@ -254,31 +270,32 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.healthbar, "staticfontsize", false);
     checkAndInitializeSetting(settings.healthbar, "fontsize", 10);
 
+    let healthbar = document.getElementById("health-bar");
     settings.healthbar.enabled
-        ? $("#health-bar").show()
-        : $("#health-bar").hide();
+        ? (healthbar.style.display = "")
+        : (healthbar.style.display = "none");
 
-    $("#health-bar").css(
+    healthbar.style.setProperty(
         "--healthBarColor",
         `var(${settings.healthbar.color})`,
     );
-    $("#health-bar").css("width", settings.healthbar.scale * 160);
-    $("#health-bar").css("height", settings.healthbar.scale * 15);
-    $("#health-bar").css("--healthFont", settings.healthbar.font);
-    $("#health-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.healthbar.rotation}deg)`,
-    );
-    $("#health-bar").css("transform-origin", "top left");
+    healthbar.style.width = settings.healthbar.scale * 160;
+    healthbar.style.height = settings.healthbar.scale * 15;
+    healthbar.style.setProperty("--healthFont", settings.healthbar.font);
+    healthbar.style.transformOrigin = "top left";
+
     ui.dragPosition["health-bar"] = {
         x: settings.healthbar.x,
         y: settings.healthbar.y,
     };
-    $("#health-bar").addClass("ltr");
-    $("#health-bar").css(
-        "transform",
-        `translate(${settings.healthbar.x}px, ${settings.healthbar.y}px)`,
-    );
+    healthbar.classList.add("ltr");
+    healthbar.style.transform = `translate(${settings.healthbar.x}px, ${
+        settings.healthbar.y
+    }px)${
+        settings.healthbar.rotation
+            ? ` rotate(${settings.healthbar.rotation}deg`
+            : ""
+    }`;
 
     // MANABAR SETTINGS
     checkAndInitializeSetting(settings, "manabar", {});
@@ -322,26 +339,33 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.manabar.DRK, "low", 2999);
     checkAndInitializeSetting(settings.manabar.DRK, "med", 5999);
 
-    settings.manabar.enabled ? $("#mana-bar").show() : $("#mana-bar").hide();
+    let manabar = document.getElementById("mana-bar");
+    settings.manabar.enabled
+        ? (manabar.style.display = "")
+        : (manabar.style.display = "none");
 
-    $("#mana-bar").css("--manaBarColor", `var(${settings.manabar.color})`);
-    $("#mana-bar").css("width", settings.manabar.scale * 160);
-    $("#mana-bar").css("height", settings.manabar.scale * 15);
-    $("#mana-bar").css("--manaFont", settings.manabar.font);
-    $("#mana-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.manabar.rotation}deg)`,
+    manabar.style.setProperty(
+        "--manaBarColor",
+        `var(${settings.manabar.color})`,
     );
-    $("#mana-bar").css("transform-origin", "top left");
+    manabar.style.width = settings.manabar.scale * 160;
+    manabar.style.height = settings.manabar.scale * 15;
+    manabar.style.setProperty("--manaFont", settings.manabar.font);
+
+    manabar.style.transformOrigin = "top left";
     ui.dragPosition["mana-bar"] = {
         x: settings.manabar.x,
         y: settings.manabar.y,
     };
-    $("#mana-bar").addClass("ltr");
-    $("#mana-bar").css(
-        "transform",
-        `translate(${settings.manabar.x}px, ${settings.manabar.y}px)`,
-    );
+
+    manabar.classList.add("ltr");
+    manabar.style.transform = `translate(${settings.manabar.x}px, ${
+        settings.manabar.y
+    }px)${
+        settings.manabar.rotation
+            ? ` rotate(${settings.manabar.rotation}deg`
+            : ""
+    }`;
 
     // MP TICKER SETTINGS
     checkAndInitializeSetting(settings, "mpticker", {});
@@ -356,30 +380,32 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.mpticker, "specificjobs", ["BLM"]);
     checkAndInitializeSetting(settings.mpticker, "alwaystick", false);
 
+    let mpticker = document.getElementById("mp-ticker-bar");
     settings.mpticker.enabled
-        ? $("#mp-ticker-bar").show()
-        : $("#mp-ticker-bar").hide();
+        ? (mpticker.style.display = "")
+        : (mpticker.style.display = "none");
 
-    $("#mp-ticker-bar").css(
+    mpticker.style.setProperty(
         "--mptickerColor",
         `var(${settings.mpticker.color})`,
     );
-    $("#mp-ticker-bar").css("width", settings.mpticker.scale * 160);
-    $("#mp-ticker-bar").css("height", settings.mpticker.scale * 15);
-    $("#mp-ticker-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.mpticker.rotation}deg)`,
-    );
-    $("#mp-ticker-bar").css("transform-origin", "top left");
+
+    mpticker.style.width = settings.mpticker.scale * 160;
+    mpticker.style.height = settings.mpticker.scale * 15;
+
+    mpticker.style.transformOrigin = "top left";
     ui.dragPosition["mp-ticker-bar"] = {
         x: settings.mpticker.x,
         y: settings.mpticker.y,
     };
-    $("#mp-ticker-bar").addClass("ltr");
-    $("#mp-ticker-bar").css(
-        "transform",
-        `translate(${settings.mpticker.x}px, ${settings.mpticker.y}px)`,
-    );
+    mpticker.classList.add("ltr");
+    mpticker.style.transform = `translate(${settings.mpticker.x}px, ${
+        settings.mpticker.y
+    }px)${
+        settings.mpticker.rotation
+            ? ` rotate(${settings.mpticker.rotation}deg`
+            : ""
+    }`;
 
     // DOT TICKER SETTINGS
     checkAndInitializeSetting(settings, "dotticker", {});
@@ -393,30 +419,29 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.dotticker, "specificjobsenabled", true);
     checkAndInitializeSetting(settings.dotticker, "specificjobs", ["BRD"]);
 
-    settings.dotticker.enabled
-        ? $("#dot-ticker-bar").show()
-        : $("#dot-ticker-bar").hide();
+    let dotticker = document.getElementById("dot-ticker-bar");
+    dotticker.style.display = settings.dotticker.enabled ? "block" : "none";
 
-    $("#dot-ticker-bar").css(
+    dotticker.style.setProperty(
         "--dottickerColor",
         `var(${settings.dotticker.color})`,
     );
-    $("#dot-ticker-bar").css("width", settings.dotticker.scale * 160);
-    $("#dot-ticker-bar").css("height", settings.dotticker.scale * 15);
-    $("#dot-ticker-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.dotticker.rotation}deg)`,
-    );
-    $("#dot-ticker-bar").css("transform-origin", "top left");
+    dotticker.style.width = settings.dotticker.scale * 160;
+    dotticker.style.height = settings.dotticker.scale * 15;
+
+    dotticker.style.transformOrigin = "top left";
     ui.dragPosition["dot-ticker-bar"] = {
         x: settings.dotticker.x,
         y: settings.dotticker.y,
     };
-    $("#dot-ticker-bar").addClass("ltr");
-    $("#dot-ticker-bar").css(
-        "transform",
-        `translate(${settings.dotticker.x}px, ${settings.dotticker.y}px)`,
-    );
+    dotticker.classList.add("ltr");
+    dotticker.style.transform = `translate(${settings.dotticker.x}px, ${
+        settings.dotticker.y
+    }px)${
+        settings.dotticker.rotation
+            ? ` rotate(${settings.dotticker.rotation}deg`
+            : ""
+    }`;
 
     // HOT TICKER SETTINGS
     checkAndInitializeSetting(settings, "hotticker", {});
@@ -435,30 +460,29 @@ async function loadSettings() {
         "WHM",
     ]);
 
-    settings.hotticker.enabled
-        ? $("#hot-ticker-bar").show()
-        : $("#hot-ticker-bar").hide();
+    let hotticker = document.getElementById("hot-ticker-bar");
+    hotticker.style.display = settings.hotticker.enabled ? "block" : "none";
 
-    $("#hot-ticker-bar").css(
+    hotticker.style.setProperty(
         "--hottickerColor",
         `var(${settings.hotticker.color})`,
     );
-    $("#hot-ticker-bar").css("width", settings.hotticker.scale * 160);
-    $("#hot-ticker-bar").css("height", settings.hotticker.scale * 15);
-    $("#hot-ticker-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.hotticker.rotation}deg)`,
-    );
-    $("#hot-ticker-bar").css("transform-origin", "top left");
+    hotticker.style.width = settings.hotticker.scale * 160;
+    hotticker.style.height = settings.hotticker.scale * 15;
+
+    hotticker.style.transformOrigin = "top left";
     ui.dragPosition["hot-ticker-bar"] = {
         x: settings.hotticker.x,
         y: settings.hotticker.y,
     };
-    $("#hot-ticker-bar").addClass("ltr");
-    $("#hot-ticker-bar").css(
-        "transform",
-        `translate(${settings.hotticker.x}px, ${settings.hotticker.y}px)`,
-    );
+    hotticker.classList.add("ltr");
+    hotticker.style.transform = `translate(${settings.hotticker.x}px, ${
+        settings.hotticker.y
+    }px)${
+        settings.hotticker.rotation
+            ? ` rotate(${settings.hotticker.rotation}deg`
+            : ""
+    }`;
 
     // PULLTIMER SETTINGS
     checkAndInitializeSetting(settings, "timerbar", {});
@@ -475,27 +499,30 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.timerbar, "staticfontsize", false);
     checkAndInitializeSetting(settings.timerbar, "fontsize", 10);
 
-    $("#timer-bar").css(
+    let timerbar = document.getElementById("timer-bar");
+    timerbar.style.setProperty(
         "--pulltimerBarColor",
         `var(${settings.timerbar.color})`,
     );
-    $("#timer-bar").css("width", settings.timerbar.scale * 160);
-    $("#timer-bar").css("height", settings.timerbar.scale * 15);
-    $("#timer-bar").css("--timerFont", settings.timerbar.font);
-    $("#timer-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.timerbar.rotation}deg)`,
-    );
-    $("#timer-bar").css("transform-origin", "top left");
+
+    timerbar.style.width = settings.timerbar.scale * 160;
+    timerbar.style.height = settings.timerbar.scale * 15;
+    timerbar.style.setProperty("--timerFont", settings.timerbar.font);
+    timerbar.style.transformOrigin = "top left";
+
     ui.dragPosition["timer-bar"] = {
         x: settings.timerbar.x,
         y: settings.timerbar.y,
     };
-    $("#timer-bar").addClass("ltr");
-    $("#timer-bar").css(
-        "transform",
-        `translate(${settings.timerbar.x}px, ${settings.timerbar.y}px)`,
-    );
+
+    timerbar.classList.add("ltr");
+    timerbar.style.transform = `translate(${settings.timerbar.x}px, ${
+        settings.timerbar.y
+    }px)${
+        settings.timerbar.rotation
+            ? ` rotate(${settings.timerbar.rotation}deg`
+            : ""
+    }`;
 
     // DOT TIMER SETTINGS
     checkAndInitializeSetting(settings, "dottimerbar", {});
@@ -522,23 +549,22 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.dottimerbar, "staticfontsize", false);
     checkAndInitializeSetting(settings.dottimerbar, "fontsize", 10);
 
-    $("#dot-timer-bar").css("width", settings.dottimerbar.scale * 160);
-    $("#dot-timer-bar").css("height", settings.dottimerbar.scale * 15);
-    $("#dot-timer-bar").css("--dotFont", settings.dottimerbar.font);
-    $("#dot-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.dottimerbar.rotation}deg)`,
-    );
-    $("#dot-bar").css("transform-origin", "center");
+    let dottimerbar = document.getElementById("dot-timer-bar");
+    dottimerbar.style.width = settings.dottimerbar.scale * 160;
+    dottimerbar.style.height = settings.dottimerbar.scale * 15;
+    dottimerbar.style.setProperty("--dotFont", settings.dottimerbar.font);
+
+    let dotbar = document.getElementById("dot-bar");
+    dotbar.style.transform = `rotate(${settings.dottimerbar.rotation}deg)`;
+    dotbar.style.transformOrigin = "center";
+
     ui.dragPosition["dot-timer-bar"] = {
         x: settings.dottimerbar.x,
         y: settings.dottimerbar.y,
     };
-    $("#dot-timer-bar").addClass("ltr");
-    $("#dot-timer-bar").css(
-        "transform",
-        `translate(${settings.dottimerbar.x}px, ${settings.dottimerbar.y}px)`,
-    );
+
+    dottimerbar.classList.add("ltr");
+    dottimerbar.style.transform = `translate(${settings.dottimerbar.x}px, ${settings.dottimerbar.y}px)`;
 
     // BUFF TIMER SETTINGS
     checkAndInitializeSetting(settings, "bufftimerbar", {});
@@ -564,23 +590,22 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.bufftimerbar, "staticfontsize", false);
     checkAndInitializeSetting(settings.bufftimerbar, "fontsize", 10);
 
-    $("#buff-timer-bar").css("width", settings.bufftimerbar.scale * 160);
-    $("#buff-timer-bar").css("height", settings.bufftimerbar.scale * 15);
-    $("#buff-timer-bar").css("--buffFont", settings.bufftimerbar.font);
-    $("#buff-bar").css(
-        "-webkit-transform",
-        `rotate(${settings.bufftimerbar.rotation}deg)`,
-    );
-    $("#buff-bar").css("transform-origin", "center");
+    let bufftimerbar = document.getElementById("buff-timer-bar");
+    bufftimerbar.style.width = settings.bufftimerbar.scale * 160;
+    bufftimerbar.style.height = settings.bufftimerbar.scale * 15;
+    bufftimerbar.style.setProperty("--buffFont", settings.bufftimerbar.font);
+
+    let buffbar = document.getElementById("buff-bar");
+    buffbar.style.transform = `rotate(${settings.bufftimerbar.rotation}deg)`;
+    buffbar.style.transformOrigin = "center";
+
     ui.dragPosition["buff-timer-bar"] = {
         x: settings.bufftimerbar.x,
         y: settings.bufftimerbar.y,
     };
-    $("#buff-timer-bar").addClass("ltr");
-    $("#buff-timer-bar").css(
-        "transform",
-        `translate(${settings.bufftimerbar.x}px, ${settings.bufftimerbar.y}px)`,
-    );
+
+    bufftimerbar.classList.add("ltr");
+    bufftimerbar.style.transform = `translate(${settings.bufftimerbar.x}px, ${settings.bufftimerbar.y}px)`;
 
     // STACKBAR SETTINGS
     checkAndInitializeSetting(settings, "stacksbar", {});
@@ -595,27 +620,29 @@ async function loadSettings() {
     checkAndInitializeSetting(settings.stacksbar, "x", 30);
     checkAndInitializeSetting(settings.stacksbar, "y", 170);
 
-    settings.stacksbar.enabled
-        ? $("#stacks-bar").show()
-        : $("#stacks-bar").hide();
+    let stacksbar = document.getElementById("stacks-bar");
+    stacksbar.style.display = settings.stacksbar.enabled ? "block" : "none";
 
-    $("#stacks-bar").attr("width", settings.stacksbar.scale * (4 * 25));
-    $("#stacks-bar").attr("height", settings.stacksbar.scale * 21);
-    $("#stacks-bar").css("transform", `scale(${settings.stacksbar.scale})`);
-    $("[id^=stacks-background]").css(
-        "margin-left",
-        0 - settings.stacksbar.scale * 4,
+    stacksbar.style.width = settings.stacksbar.scale * (4 * 25);
+    stacksbar.style.height = settings.stacksbar.scale * 21;
+
+    let stackbgs = document.querySelectorAll("[id^=stacks-background]");
+    Array.prototype.forEach.call(stackbgs, (stack) => {
+        stack.style.marginLeft = 0 - settings.stacksbar.scale * 4;
+    });
+
+    stacksbar.style.setProperty(
+        "--stacksColor",
+        `var(${settings.stacksbar.color})`,
     );
-    $("#stacks-bar").css("--stacksColor", `var(${settings.stacksbar.color})`);
+
     ui.dragPosition["stacks-bar"] = {
         x: settings.stacksbar.x,
         y: settings.stacksbar.y,
     };
-    $("#stacks-bar").addClass("ltr");
-    $("#stacks-bar").css(
-        "transform",
-        `translate(${settings.stacksbar.x}px, ${settings.stacksbar.y}px)`,
-    );
+
+    stacksbar.classList.add("ltr");
+    stacksbar.style.transform = `translate(${settings.stacksbar.x}px, ${settings.stacksbar.y}px) scale(${settings.stacksbar.scale})`;
 
     // RAIDBUFF SETTINGS
     checkAndInitializeSetting(settings, "raidbuffs", {});
@@ -653,25 +680,21 @@ async function loadSettings() {
         "#000000",
     );
 
-    settings.raidbuffs.enabled
-        ? $("#raid-buffs-bar").show()
-        : $("#raid-buffs-bar").hide();
-    settings.raidbuffs.hidewhensolo
-        ? $("#raid-buffs-bar").hide()
-        : $("#raid-buffs-bar").show();
+    let raidbuffs = document.getElementById("raid-buffs-bar");
+    raidbuffs.style.display = settings.raidbuffs.enabled ? "block" : "none";
+    raidbuffs.style.display = settings.raidbuffs.hidewhensolo
+        ? "none"
+        : "block";
 
-    $("#raid-buffs-bar").css("font-family", settings.raidbuffs.font);
+    raidbuffs.style.fontFamily = settings.raidbuffs.font;
+
     ui.dragPosition["raid-buffs-bar"] = {
         x: settings.raidbuffs.x,
         y: settings.raidbuffs.y,
     };
-    $("#raid-buffs-bar").addClass(
-        `${settings.raidbuffs.growleft ? "rtl" : "ltr"}`,
-    );
-    $("#raid-buffs-bar").css(
-        "transform",
-        `translate(${settings.raidbuffs.x}px, ${settings.raidbuffs.y}px)`,
-    );
+
+    raidbuffs.classList.add(`${settings.raidbuffs.growleft ? "rtl" : "ltr"}`);
+    raidbuffs.style.transform = `translate(${settings.raidbuffs.x}px, ${settings.raidbuffs.y}px)`;
 
     // MITIGATION SETTINGS
     checkAndInitializeSetting(settings, "mitigation", {});
@@ -708,25 +731,21 @@ async function loadSettings() {
         "#000000",
     );
 
-    settings.mitigation.enabled
-        ? $("#mitigation-bar").show()
-        : $("#mitigation-bar").hide();
-    settings.mitigation.hidewhensolo
-        ? $("#mitigation-bar").hide()
-        : $("#mitigation-bar").show();
+    let mitigation = document.getElementById("mitigation-bar");
+    mitigation.style.display = settings.mitigation.enabled ? "block" : "none";
+    mitigation.style.display = settings.mitigation.hidewhensolo
+        ? "none"
+        : "block";
 
-    $("#mitigation-bar").css("font-family", settings.mitigation.font);
+    mitigation.style.fontFamily = settings.mitigation.font;
+
     ui.dragPosition["mitigation-bar"] = {
         x: settings.mitigation.x,
         y: settings.mitigation.y,
     };
-    $("#mitigation-bar").addClass(
-        `${settings.mitigation.growleft ? "rtl" : "ltr"}`,
-    );
-    $("#mitigation-bar").css(
-        "transform",
-        `translate(${settings.mitigation.x}px, ${settings.mitigation.y}px)`,
-    );
+
+    mitigation.classList.add(`${settings.mitigation.growleft ? "rtl" : "ltr"}`);
+    mitigation.style.transform = `translate(${settings.mitigation.x}px, ${settings.mitigation.y}px)`;
 
     // PARTY COOLDOWN SETTINGS
     checkAndInitializeSetting(settings, "party", {});
@@ -762,21 +781,18 @@ async function loadSettings() {
         "#000000",
     );
 
-    settings.party.enabled ? $("#party-bar").show() : $("#party-bar").hide();
-    settings.party.hidewhensolo
-        ? $("#party-bar").hide()
-        : $("#party-bar").show();
+    let party = document.getElementById("party-bar");
+    party.style.display = settings.party.enabled ? "block" : "none";
+    party.style.display = settings.party.hidewhensolo ? "none" : "block";
 
-    $("#party-bar").css("font-family", settings.party.font);
+    party.style.fontFamily = settings.party.font;
+
     ui.dragPosition["party-bar"] = {
         x: settings.party.x,
         y: settings.party.y,
     };
-    $("#party-bar").addClass(`${settings.party.growleft ? "rtl" : "ltr"}`);
-    $("#party-bar").css(
-        "transform",
-        `translate(${settings.party.x}px, ${settings.party.y}px)`,
-    );
+    party.classList.add(`${settings.party.growleft ? "rtl" : "ltr"}`);
+    party.style.transform = `translate(${settings.party.x}px, ${settings.party.y}px)`;
 
     // CUSTOM COOLDOWN SETTINGS
     checkAndInitializeSetting(settings, "customcd", {});
@@ -814,25 +830,20 @@ async function loadSettings() {
         "#000000",
     );
 
-    settings.customcd.enabled
-        ? $("#customcd-bar").show()
-        : $("#customcd-bar").hide();
-    settings.customcd.hidewhensolo
-        ? $("#customcd-bar").hide()
-        : $("#customcd-bar").show();
+    let customcd = document.getElementById("customcd-bar");
 
-    $("#customcd-bar").css("font-family", settings.customcd.font);
+    customcd.style.display = settings.customcd.enabled ? "block" : "none";
+    customcd.style.display = settings.customcd.hidewhensolo ? "none" : "block";
+
+    customcd.style.fontFamily = settings.customcd.font;
+
     ui.dragPosition["customcd-bar"] = {
         x: settings.customcd.x,
         y: settings.customcd.y,
     };
-    $("#customcd-bar").addClass(
-        `${settings.customcd.growleft ? "rtl" : "ltr"}`,
-    );
-    $("#customcd-bar").css(
-        "transform",
-        `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`,
-    );
+
+    customcd.classList.add(`${settings.customcd.growleft ? "rtl" : "ltr"}`);
+    customcd.style.customcd = `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`;
 
     currentSettings = settings;
     saveSettings();
@@ -843,23 +854,24 @@ async function saveSettings() {
     currentSettings.healthbar.x = parseInt(ui.dragPosition["health-bar"].x);
     currentSettings.healthbar.y = parseInt(ui.dragPosition["health-bar"].y);
 
-    $("#health-bar").css("text-align", currentSettings.healthbar.align);
+    let healthbar = document.getElementById("health-bar");
+    healthbar.style.textAlign = currentSettings.healthbar.align;
     switch (currentSettings.healthbar.align) {
         case "left":
-            $("#health-bar").css(
+            healthbar.style.setProperty(
                 "--healthFontX",
                 currentSettings.healthbar.scale * 8 +
                     currentSettings.healthbar.fontxoffset,
             );
             break;
         case "center":
-            $("#health-bar").css(
+            healthbar.style.setProperty(
                 "--healthFontX",
                 0 + currentSettings.healthbar.fontxoffset,
             );
             break;
         case "right":
-            $("#health-bar").css(
+            healthbar.style.setProperty(
                 "--healthFontX",
                 -Math.abs(
                     currentSettings.healthbar.scale * 8 +
@@ -868,21 +880,21 @@ async function saveSettings() {
             );
             break;
         default:
-            $("#health-bar").css(
+            healthbar.style.setProperty(
                 "--healthFontX",
                 currentSettings.healthbar.scale * 8 +
                     currentSettings.healthbar.fontxoffset,
             );
     }
 
-    $("#health-bar").css(
+    healthbar.style.setProperty(
         "--healthFontSize",
         currentSettings.healthbar.staticfontsize
             ? currentSettings.healthbar.fontsize
             : currentSettings.healthbar.scale * 10,
     );
 
-    $("#health-bar").css(
+    healthbar.style.setProperty(
         "--healthFontY",
         currentSettings.healthbar.scale * -14 +
             currentSettings.healthbar.fontyoffset,
@@ -891,23 +903,24 @@ async function saveSettings() {
     currentSettings.manabar.x = parseInt(ui.dragPosition["mana-bar"].x);
     currentSettings.manabar.y = parseInt(ui.dragPosition["mana-bar"].y);
 
-    $("#mana-bar").css("text-align", currentSettings.manabar.align);
+    let manabar = document.getElementById("mana-bar");
+    manabar.style.textAlign = currentSettings.manabar.align;
     switch (currentSettings.manabar.align) {
         case "left":
-            $("#mana-bar").css(
+            manabar.style.setProperty(
                 "--manaFontX",
                 currentSettings.manabar.scale * 8 +
                     currentSettings.manabar.fontxoffset,
             );
             break;
         case "center":
-            $("#mana-bar").css(
+            manabar.style.setProperty(
                 "--manaFontX",
                 0 + currentSettings.manabar.fontxoffset,
             );
             break;
         case "right":
-            $("#mana-bar").css(
+            manabar.style.setProperty(
                 "--manaFontX",
                 -Math.abs(
                     currentSettings.manabar.scale * 8 +
@@ -916,20 +929,20 @@ async function saveSettings() {
             );
             break;
         default:
-            $("#mana-bar").css(
+            manabar.style.setProperty(
                 "--manaFontX",
                 currentSettings.manabar.scale * 8 +
                     currentSettings.manabar.fontxoffset,
             );
     }
 
-    $("#mana-bar").css(
+    manabar.style.setProperty(
         "--manaFontSize",
         currentSettings.manabar.staticfontsize
             ? currentSettings.manabar.fontsize
             : currentSettings.manabar.scale * 10,
     );
-    $("#mana-bar").css(
+    manabar.style.setProperty(
         "--manaFontY",
         currentSettings.manabar.scale * -14 +
             currentSettings.manabar.fontyoffset,
@@ -946,18 +959,20 @@ async function saveSettings() {
 
     currentSettings.timerbar.x = parseInt(ui.dragPosition["timer-bar"].x);
     currentSettings.timerbar.y = parseInt(ui.dragPosition["timer-bar"].y);
-    $("#timer-bar").css(
+
+    let timerbar = document.getElementById("timer-bar");
+    timerbar.style.setProperty(
         "--timerFontSize",
         currentSettings.timerbar.staticfontsize
             ? currentSettings.timerbar.fontsize
             : currentSettings.timerbar.scale * 10,
     );
-    $("#timer-bar").css(
+    timerbar.style.setProperty(
         "--timerFontX",
         currentSettings.timerbar.scale * 8 +
             currentSettings.timerbar.fontxoffset,
     );
-    $("#timer-bar").css(
+    timerbar.style.setProperty(
         "--timerFontY",
         currentSettings.timerbar.scale * -14 +
             currentSettings.timerbar.fontyoffset,
@@ -969,18 +984,20 @@ async function saveSettings() {
     currentSettings.dottimerbar.y = parseInt(
         ui.dragPosition["dot-timer-bar"].y,
     );
-    $("#dot-timer-bar").css(
+
+    let dottimerbar = document.getElementById("dot-timer-bar");
+    dottimerbar.style.setProperty(
         "--dotFontSize",
         currentSettings.dottimerbar.staticfontsize
             ? currentSettings.dottimerbar.fontsize
             : currentSettings.dottimerbar.scale * 10,
     );
-    $("#dot-timer-bar").css(
+    dottimerbar.style.setProperty(
         "--dotFontX",
         currentSettings.dottimerbar.scale * 8 +
             currentSettings.dottimerbar.fontxoffset,
     );
-    $("#dot-timer-bar").css(
+    dottimerbar.style.setProperty(
         "--dotFontY",
         currentSettings.dottimerbar.scale * -14 +
             currentSettings.dottimerbar.fontyoffset,
@@ -992,18 +1009,20 @@ async function saveSettings() {
     currentSettings.bufftimerbar.y = parseInt(
         ui.dragPosition["buff-timer-bar"].y,
     );
-    $("#buff-timer-bar").css(
+
+    let bufftimerbar = document.getElementById("buff-timer-bar");
+    bufftimerbar.style.setProperty(
         "--buffFontSize",
         currentSettings.bufftimerbar.staticfontsize
             ? currentSettings.bufftimerbar.fontsize
             : currentSettings.bufftimerbar.scale * 10,
     );
-    $("#buff-timer-bar").css(
+    bufftimerbar.style.setProperty(
         "--buffFontX",
         currentSettings.bufftimerbar.scale * 8 +
             currentSettings.bufftimerbar.fontxoffset,
     );
-    $("#buff-timer-bar").css(
+    bufftimerbar.style.setProperty(
         "--buffFontY",
         currentSettings.bufftimerbar.scale * -14 +
             currentSettings.bufftimerbar.fontyoffset,
@@ -1173,11 +1192,11 @@ function drawGrid() {
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    let canvas = $("#grid").attr({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
-    let canvasContext = canvas.get(0).getContext("2d");
+    let grid = document.getElementById("grid");
+    grid.width = window.innerWidth;
+    grid.height = window.innerHeight;
+
+    let canvasContext = grid.getContext("2d");
     canvasContext.beginPath();
 
     for (let x = 0; x <= width; x += 25) {
@@ -1195,12 +1214,12 @@ function drawGrid() {
 }
 
 function clearGrid() {
-    let canvas = $("#grid").attr({
-        width: window.innerWidth,
-        height: window.innerHeight,
-    });
-    let canvasContext = $("#grid").get(0).getContext("2d");
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    let grid = document.getElementById("grid");
+    grid.width = window.innerWidth;
+    grid.height = window.innerHeight;
+
+    let canvasContext = grid.getContext("2d");
+    canvasContext.clearRect(0, 0, grid.width, grid.height);
 }
 
 // Toggles the grid on and off (and draws them on demand)
@@ -1220,6 +1239,7 @@ function toggleLock() {
         enabled: ui.locked,
         listeners: {
             move(event) {
+                //let settings =
                 ui.dragPosition[event.target.id].x += event.dx;
                 ui.dragPosition[event.target.id].y += event.dy;
 
@@ -1233,11 +1253,16 @@ function toggleLock() {
         },
     });
     if (ui.locked) {
-        if (!ui.actlocked) $("#lock-overlay-reminder").show();
+        if (!ui.actlocked) {
+            document.getElementById("lock-overlay-reminder").style.display =
+                "block";
+        }
+
         let tickerTypes = ["mp", "dot", "hot"];
         for (let tickerType of tickerTypes) {
+            let ticker = document.getElementById(`${tickerType}-ticker-bar`);
             if (!currentSettings[`${tickerType}ticker`].enabled)
-                $(`#${tickerType}-ticker-bar`).show();
+                ticker.style.display = "block";
             if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
                 if (gameState.player) {
                     if (
@@ -1245,71 +1270,87 @@ function toggleLock() {
                             `${tickerType}ticker`
                         ].specificjobs.includes(gameState.player.job)
                     )
-                        $(`#${tickerType}-ticker-bar`).show();
+                        ticker.style.display = "block";
                 }
             }
-            $(`#${tickerType}-ticker-bar`).attr(
+
+            ticker.setAttribute(
                 "data-label",
                 language.find((x) => x.id === `${tickerType}ticker`).string,
             );
         }
-        $("#timer-bar").show();
-        $("#timer-bar").prop(
+
+        let timerbar = document.getElementById("timer-bar");
+        timerbar.style.display = "block";
+        timerbar.setAttribute(
             "data-label",
             language.find((x) => x.id === "pulltimer").string,
         );
-        $("#dot-timer-bar").show();
-        $("#dot-timer-bar").prop(
+
+        let dottimerbar = document.getElementById("dot-timer-bar");
+        dottimerbar.style.display = "block";
+        dottimerbar.setAttribute(
             "data-label",
             language.find((x) => x.id === "dot-anchor").string,
         );
-        $("#buff-timer-bar").show();
-        $("#buff-timer-bar").prop(
+
+        let bufftimerbar = document.getElementById("buff-timer-bar");
+        bufftimerbar.style.display = "block";
+        bufftimerbar.setAttribute(
             "data-label",
             language.find((x) => x.id === "buff-anchor").string,
         );
-        $("#raid-buffs-bar").append(
-            `<span id="raid-buffs-anchor" class="anchor-text">${
-                language.find((x) => x.id === "raidbuffs-anchor").string
-            }</span>`,
-        );
-        $("#mitigation-bar").append(
-            `<span id="mitigation-anchor" class="anchor-text">${
-                language.find((x) => x.id === "mitigation-anchor").string
-            }</span>`,
-        );
-        $("#customcd-bar").append(
-            `<span id="customcd-anchor" class="anchor-text">${
-                language.find((x) => x.id === "customcd-anchor").string
-            }</span>`,
-        );
-        if ($("#party-bar>div").length === 0) {
-            $("#party-bar").append(
-                `<span id="party-anchor" class="anchor-text">${
-                    language.find((x) => x.id === "party-anchor").string
-                }</span>`,
-            );
+
+        let raidbuffAnchor = document.createElement("span");
+        raidbuffAnchor.id = "raid-buffs-anchor";
+        raidbuffAnchor.className = "anchor-text";
+        raidbuffAnchor.textContent = language.find(
+            (x) => x.id === "raidbuffs-anchor",
+        ).string;
+        document.getElementById("raid-buffs-bar").appendChild(raidbuffAnchor);
+
+        let mitigationAnchor = document.createElement("span");
+        mitigationAnchor.id = "mitigation-anchor";
+        mitigationAnchor.className = "anchor-text";
+        mitigationAnchor.textContent = language.find(
+            (x) => x.id === "mitigation-anchor",
+        ).string;
+        document.getElementById("mitigation-bar").appendChild(mitigationAnchor);
+
+        let customcdAnchor = document.createElement("span");
+        customcdAnchor.id = "customcd-anchor";
+        customcdAnchor.className = "anchor-text";
+        customcdAnchor.textContent = language.find(
+            (x) => x.id === "customcd-anchor",
+        ).string;
+        document.getElementById("customcd-bar").appendChild(customcdAnchor);
+
+        let partyAnchor = document.createElement("span");
+        partyAnchor.id = "party-anchor";
+        partyAnchor.className = "anchor-text";
+        partyAnchor.textContent = language.find(
+            (x) => x.id === "party-anchor",
+        ).string;
+
+        if (document.querySelectorAll("#party-bar>div").length === 0) {
+            document.getElementById("party-bar").appendChild(partyAnchor);
         } else {
-            $("#party-bar>div:eq(0)").append(
-                `<span id="party-anchor" class="anchor-text">${
-                    language.find((x) => x.id === "party-anchor").string
-                }</span>`,
-            );
+            document.getElementById("party-row-1").appendChild(partyAnchor);
         }
         toggleHideWhenSoloCombatElements(true);
 
-        //$("[id$=bar]").draggable("enable");
         adjustJobStacks(2, 4, true);
         if (!gameState.inCombat) {
             toggleHideOutOfCombatElements();
         }
         ui.locked = false;
-        $("html").css("border", "solid");
+        document.documentElement.style.border = "solid";
     } else {
         let tickerTypes = ["mp", "dot", "hot"];
         for (let tickerType of tickerTypes) {
+            let ticker = document.getElementById(`${tickerType}-ticker-bar`);
             if (!currentSettings[`${tickerType}ticker`].enabled)
-                $(`#${tickerType}-ticker-bar`).hide();
+                ticker.style.display = "none";
             if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
                 if (gameState.player) {
                     if (
@@ -1317,18 +1358,19 @@ function toggleLock() {
                             `${tickerType}ticker`
                         ].specificjobs.includes(gameState.player.job)
                     )
-                        $(`#${tickerType}-ticker-bar`).hide();
+                        ticker.style.display = "none";
                 }
             }
-            $(`#${tickerType}-ticker-bar`).attr("data-label", "");
+            ticker.setAttribute("data-label", "");
         }
-        $("#timer-bar").hide();
-        $("#dot-timer-bar").hide();
-        $("#buff-timer-bar").hide();
-        $("#raid-buffs-anchor").remove();
-        $("#mitigation-anchor").remove();
-        $("#customcd-anchor").remove();
-        $("#party-anchor").remove();
+        document.getElementById("timer-bar").style.display = "none";
+        document.getElementById("dot-timer-bar").style.display = "none";
+        document.getElementById("buff-timer-bar").style.display = "none";
+        document.getElementById("buff-timer-bar").style.display = "none";
+        document.getElementById("raid-buffs-anchor").remove();
+        document.getElementById("mitigation-anchor").remove();
+        document.getElementById("customcd-anchor").remove();
+        document.getElementById("party-anchor").remove();
         toggleHideWhenSoloCombatElements();
         adjustJobStacks(
             gameState.stats.stacks,
@@ -1339,17 +1381,26 @@ function toggleLock() {
             toggleHideOutOfCombatElements();
         }
         ui.locked = true;
-        $("#lock-overlay-reminder").hide();
-        $("html").css("border", "none");
+        document.getElementById("lock-overlay-reminder").style.display = "none";
+        document.documentElement.style.border = "none";
     }
 }
 
 // Helper functions
 // Puts a color filter over a HTML5 progress bar that's colorcoded in sepia colors so the bars actually gets colored
 function applyFilterColorToElement(classId, filterColor) {
-    $("style").append(
-        `.${classId}::-webkit-progress-value { filter: var(${filterColor}); }`,
-    );
+    let barcolors = document.getElementById("bar-colors");
+    let filter = `.${classId}::-webkit-progress-value { filter: var(${filterColor}); }`;
+    barcolors.sheet.insertRule(filter);
+}
+
+// Vanilla JS way of loading a script and getting a callback
+function getScript(scriptUrl, callback) {
+    const script = document.createElement("script");
+    script.src = scriptUrl;
+    script.onload = callback;
+
+    document.body.appendChild(script);
 }
 
 // Gets the correct settings/elements/active components for given selector
@@ -1388,7 +1439,16 @@ function getSelectorProperties(selector) {
             };
             break;
         }
+        case "Buff": {
+            object = {
+                id: "buff",
+                settings: currentSettings.bufftimerbar,
+                active: activeElements.buffBars,
+            };
+            break;
+        }
     }
+
     return object;
 }
 
@@ -1416,47 +1476,104 @@ async function getACTLocale() {
 // Handles showing/hiding of component based on player settings and if he's in combat
 function toggleHideOutOfCombatElements() {
     currentSettings.healthbar.hideoutofcombat && !gameState.inCombat
-        ? $("#health-bar").addClass("hide-in-combat")
-        : $("#health-bar").removeClass("hide-in-combat");
+        ? document.getElementById("health-bar").classList.add("hide-in-combat")
+        : document
+              .getElementById("health-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.manabar.hideoutofcombat && !gameState.inCombat
-        ? $("#mana-bar").addClass("hide-in-combat")
-        : $("#mana-bar").removeClass("hide-in-combat");
+        ? document.getElementById("mana-bar").classList.add("hide-in-combat")
+        : document
+              .getElementById("mana-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.mpticker.hideoutofcombat && !gameState.inCombat
-        ? $("#mp-ticker-bar").addClass("hide-in-combat")
-        : $("#mp-ticker-bar").removeClass("hide-in-combat");
+        ? document
+              .getElementById("mp-ticker-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("mp-ticker-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.dotticker.hideoutofcombat && !gameState.inCombat
-        ? $("#dot-ticker-bar").addClass("hide-in-combat")
-        : $("#dot-ticker-bar").removeClass("hide-in-combat");
+        ? document
+              .getElementById("dot-ticker-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("dot-ticker-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.hotticker.hideoutofcombat && !gameState.inCombat
-        ? $("#hot-ticker-bar").addClass("hide-in-combat")
-        : $("#hot-ticker-bar").removeClass("hide-in-combat");
-    currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat
-        ? $("[id$=dot-timer]").addClass("hide-in-combat")
-        : $("[id$=dot-timer]").removeClass("hide-in-combat");
-    currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat
-        ? $("[id$=dot-image]").addClass("hide-in-combat")
-        : $("[id$=dot-image]").removeClass("hide-in-combat");
-    currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat
-        ? $("[id$=buff-timer]").addClass("hide-in-combat")
-        : $("[id$=buff-timer]").removeClass("hide-in-combat");
-    currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat
-        ? $("[id$=buff-image]").addClass("hide-in-combat")
-        : $("[id$=buff-image]").removeClass("hide-in-combat");
+        ? document
+              .getElementById("hot-ticker-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("hot-ticker-bar")
+              .classList.remove("hide-in-combat");
+
+    let bufftimers = document.querySelectorAll("[id$=buff-timer]");
+    let bufftimerimages = document.querySelectorAll("[id$=buff-image]");
+    if (currentSettings.bufftimerbar.hideoutofcombat && !gameState.inCombat) {
+        Array.prototype.forEach.call(bufftimers, (bufftimer) => {
+            bufftimer.classList.add("hide-in-combat");
+        });
+        Array.prototype.forEach.call(bufftimerimages, (bufftimerimage) => {
+            bufftimerimage.classList.add("hide-in-combat");
+        });
+    } else {
+        Array.prototype.forEach.call(bufftimers, (bufftimer) => {
+            bufftimer.classList.remove("hide-in-combat");
+        });
+        Array.prototype.forEach.call(bufftimerimages, (bufftimerimage) => {
+            bufftimerimage.classList.remove("hide-in-combat");
+        });
+    }
+
+    let dottimers = document.querySelectorAll("[id$=dot-timer]");
+    let dottimerimages = document.querySelectorAll("[id$=dot-image]");
+    if (currentSettings.dottimerbar.hideoutofcombat && !gameState.inCombat) {
+        Array.prototype.forEach.call(dottimers, (dottimer) => {
+            dottimer.classList.add("hide-in-combat");
+        });
+        Array.prototype.forEach.call(dottimerimages, (dottimerimage) => {
+            dottimerimage.classList.add("hide-in-combat");
+        });
+    } else {
+        Array.prototype.forEach.call(dottimers, (dottimer) => {
+            dottimer.classList.remove("hide-in-combat");
+        });
+        Array.prototype.forEach.call(dottimerimages, (dottimerimage) => {
+            dottimerimage.classList.remove("hide-in-combat");
+        });
+    }
+
     currentSettings.stacksbar.hideoutofcombat && !gameState.inCombat
-        ? $("#stacks-bar").addClass("hide-in-combat")
-        : $("#stacks-bar").removeClass("hide-in-combat");
+        ? document.getElementById("stacks-bar").classList.add("hide-in-combat")
+        : document
+              .getElementById("stacks-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.raidbuffs.hideoutofcombat && !gameState.inCombat
-        ? $("#raid-buffs-bar").addClass("hide-in-combat")
-        : $("#raid-buffs-bar").removeClass("hide-in-combat");
+        ? document
+              .getElementById("raid-buffs-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("raid-buffs-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.mitigation.hideoutofcombat && !gameState.inCombat
-        ? $("#mitigation-bar").addClass("hide-in-combat")
-        : $("#mitigation-bar").removeClass("hide-in-combat");
+        ? document
+              .getElementById("mitigation-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("mitigation-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.customcd.hideoutofcombat && !gameState.inCombat
-        ? $("#customcd-bar").addClass("hide-in-combat")
-        : $("#customcd-bar").removeClass("hide-in-combat");
+        ? document
+              .getElementById("customcd-bar")
+              .classList.add("hide-in-combat")
+        : document
+              .getElementById("customcd-bar")
+              .classList.remove("hide-in-combat");
     currentSettings.party.hideoutofcombat && !gameState.inCombat
-        ? $("#party-bar").addClass("hide-in-combat")
-        : $("#party-bar").removeClass("hide-in-combat");
+        ? document.getElementById("party-bar").classList.add("hide-in-combat")
+        : document
+              .getElementById("party-bar")
+              .classList.remove("hide-in-combat");
 }
 
 // Handles showing/hiding of component based on player settings and if he's in a party
@@ -1464,25 +1581,46 @@ function toggleHideWhenSoloCombatElements(toggleLock = false) {
     let show = gameState.partyList.length !== 1;
     if (toggleLock) show = true;
     if (currentSettings.raidbuffs.hidewhensolo)
-        show ? $("#raid-buffs-bar").show() : $("#raid-buffs-bar").hide();
+        document.getElementById("raid-buffs-bar").style.display = show
+            ? "block"
+            : "none";
     if (currentSettings.mitigation.hidewhensolo)
-        show ? $("#mitigation-bar").show() : $("#mitigation-bar").hide();
+        document.getElementById("mitigation-bar").style.display = show
+            ? "block"
+            : "none";
     if (currentSettings.customcd.hidewhensolo)
-        show ? $("#customcd-bar").show() : $("#customcd-bar").hide();
+        document.getElementById("customcd-bar").style.display = show
+            ? "block"
+            : "none";
     if (currentSettings.party.hidewhensolo)
-        show ? $("#party-bar").show() : $("#party-bar").hide();
+        document.getElementById("party-bar").style.display = show
+            ? "block"
+            : "none";
 }
 
 // UI Generation for Job Stacks
 function generateJobStacks() {
-    $("#stacks-bar").empty();
+    let stacks = document.getElementById("stacks-bar");
+    let range = document.createRange();
+    range.selectNodeContents(stacks);
+    range.deleteContents();
+
+    let stackfragment = document.createDocumentFragment();
+
     for (let i = 1; i <= 4; i++) {
-        $("#stacks-bar").append(
-            `<div id="stacks-background-${i}" class="stack-background stack-hidden">
-				<img id="stacks-${i}" class="stack-color" src="skins/${currentSettings.skin}/images/arrow-fill-empty.png" />
-			</div>`,
-        );
+        let stackbg = document.createElement("div");
+        stackbg.id = `stacks-background-${i}`;
+        stackbg.classList.add("stack-background", "stack-hidden");
+
+        let stack = document.createElement("img");
+        stack.id = `stacks-${i}`;
+        stack.className = "stack-color";
+        stack.src = `skins/${currentSettings.skin}/images/arrow-fill-empty.png`;
+
+        stackbg.appendChild(stack);
+        stackfragment.appendChild(stackbg);
     }
+    stacks.appendChild(stackfragment);
 }
 
 // Handles reloading all the modules (after for example changing settings or coming into a battle live)
@@ -1506,7 +1644,12 @@ function reloadCooldownModules() {
 function generateCustomCooldowns() {
     toLog(["[generateCustomCooldowns]"]);
     let customAbilityList = [];
-    $("#customcd-bar").empty();
+
+    let customcd = document.getElementById("customcd-bar");
+    let range = document.createRange();
+    range.selectNodeContents(customcd);
+    range.deleteContents();
+
     let playerIndex = 0;
     let currentJob = jobList.find((x) => x.name === gameState.player.job);
     if (currentSettings.customcd.abilities.length === 0) return;
@@ -1541,7 +1684,12 @@ function generateCustomCooldowns() {
 function generateMitigation() {
     toLog(["[generateMitigation]"]);
     let mitigationAbilityList = [];
-    $("#mitigation-bar").empty();
+
+    let mitigation = document.getElementById("mitigation-bar");
+    let range = document.createRange();
+    range.selectNodeContents(mitigation);
+    range.deleteContents();
+
     let playerIndex = 0;
 
     let mergedAbilityList = abilityList.concat(
@@ -1591,7 +1739,12 @@ function generateMitigation() {
 function generatePartyCooldowns() {
     toLog(["[generatePartyCooldowns]"]);
     let partyAbilityList = [];
-    $("#party-bar").empty();
+
+    let party = document.getElementById("party-bar");
+    let range = document.createRange();
+    range.selectNodeContents(party);
+    range.deleteContents();
+
     let playerIndex = 0;
 
     let mergedAbilityList = abilityList.concat(
@@ -1635,7 +1788,12 @@ function generatePartyCooldowns() {
 function generateRaidBuffs() {
     toLog(["[generateRaidBuffs]"]);
     let raidAbilityList = [];
-    $("#raid-buffs-bar").empty();
+
+    let raidbuffs = document.getElementById("raid-buffs-bar");
+    let range = document.createRange();
+    range.selectNodeContents(raidbuffs);
+    range.deleteContents();
+
     let playerIndex = 0;
 
     let mergedAbilityList = abilityList.concat(
@@ -1716,70 +1874,103 @@ function generateIconBarElements(selector, iconAbilityList, columns) {
 
     let rows = Math.ceil(iconAbilityList.length / columns);
     let abilityIndex = 0;
+
+    let barElement = document.getElementById(`${barSelector}-bar`);
+    let barFragment = document.createDocumentFragment();
+
     if (selector !== "Party") {
         for (let i = 1; i <= rows; i++) {
-            $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="margin-top: ${
-                    selectedSettings.padding
-                }px;">
-					<div id="${barSelector}-row-${i}-box" class="ability-box ${
-                    selectedSettings.growleft ? "ability-reverse" : ""
-                }">
-					</div>
-				</div>`,
-            );
+            let barRow = document.createElement("div");
+            barRow.id = `${barSelector}-row-${i}`;
+            barRow.className = "ability-row";
+            barRow.style.marginTop = `${selectedSettings.padding}px`;
+
+            let barBox = document.createElement("div");
+            barBox.id = `${barSelector}-row-${i}-box`;
+            barBox.className = "ability-box";
+            if (selectedSettings.growleft)
+                barBox.classList.add("ability-reverse");
+
             for (let j = 1; j <= columns; j++) {
                 let ability = iconAbilityList[abilityIndex];
-                generateAbilityIcon(ability.playerIndex, ability.ability, i);
+                barBox.appendChild(
+                    generateAbilityIcon(
+                        ability.playerIndex,
+                        ability.ability,
+                        i,
+                    ),
+                );
                 if (abilityIndex == iconAbilityList.length - 1) break;
                 abilityIndex++;
             }
+            barRow.appendChild(barBox);
+            barFragment.appendChild(barRow);
         }
+        barElement.appendChild(barFragment);
     } else {
         let currentPlayerIndex = 0;
         let players = 8;
         if (currentSettings.includealliance) players = 24;
+        let barRowArray = [];
+        let barBoxArray = [];
         for (let i = 1; i <= players; i++) {
-            $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${i}" class="ability-row" style="margin-top: ${
-                    selectedSettings.padding
-                }px;">
-					<div id="${barSelector}-row-${i}-box" class="ability-box ${
-                    selectedSettings.growleft ? "ability-reverse" : ""
-                }">
-					</div>
-				</div>`,
-            );
+            let barRow = document.createElement("div");
+            barRow.id = `${barSelector}-row-${i}`;
+            barRow.className = "ability-row";
+            barRow.style.marginTop = `${selectedSettings.padding}px`;
+
+            let barBox = document.createElement("div");
+            barBox.id = `${barSelector}-row-${i}-box`;
+            barBox.className = "ability-box";
+            if (selectedSettings.growleft)
+                barBox.classList.add("ability-reverse");
+
             if (
                 iconAbilityList.filter(
                     (ability) => ability.playerIndex === i - 1,
                 ).length === 0
             ) {
-                $(`#${barSelector}-row-${i}-box`).append(
-                    `<div id="${barSelector}-${i}-dummy-container" class="ability-container" style="width: ${
-                        selectedSettings.scale * 48
-                    }px; height: ${
-                        selectedSettings.scale * 48
-                    }px; margin-right: ${selectedSettings.padding}px;"></div>`,
-                );
-                $(`#${barSelector}-${i}-dummy-container`).append(
-                    `<img id="${barSelector}-${i}-dummy-image" class="ability-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="${
-                        selectedSettings.scale * 40
-                    }px" height="${
-                        selectedSettings.scale * 40
-                    }px" style="top: ${selectedSettings.scale * 2}px;" />`,
-                );
+                let dummyContainer = document.createElement("div");
+                dummyContainer.id = `${barSelector}-${i}-dummy-container`;
+                dummyContainer.className = "ability-container";
+                dummyContainer.style.width = `${selectedSettings.scale * 48}px`;
+                dummyContainer.style.height = `${
+                    selectedSettings.scale * 48
+                }px`;
+                dummyContainer.style.marginRight = `${selectedSettings.padding}px`;
+
+                let dummyImage = document.createElement("img");
+                dummyImage.id = `${barSelector}-${i}-dummy-image`;
+                dummyImage.className = "ability-image";
+                dummyImage.src =
+                    "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+                dummyImage.width = selectedSettings.scale * 40;
+                dummyImage.height = selectedSettings.scale * 40;
+                dummyImage.style.top = `${selectedSettings.scale * 3}px`;
+
+                dummyContainer.appendChild(dummyImage);
+                barBox.appendChild(dummyContainer);
             }
+
+            barRow.appendChild(barBox);
+            barBoxArray.push(barBox);
+            barRowArray.push(barRow);
         }
         for (let ability of iconAbilityList) {
             if (currentPlayerIndex != ability.playerIndex)
                 currentPlayerIndex = ability.playerIndex;
-            generateAbilityIcon(
-                ability.playerIndex,
-                ability.ability,
-                ability.playerIndex + 1,
+            barBoxArray[ability.playerIndex].appendChild(
+                generateAbilityIcon(
+                    ability.playerIndex,
+                    ability.ability,
+                    ability.playerIndex + 1,
+                ),
             );
         }
+        Array.prototype.forEach.call(barRowArray, (barRow) => {
+            barFragment.appendChild(barRow);
+        });
+        barElement.appendChild(barFragment);
     }
 }
 
@@ -1790,84 +1981,126 @@ function generateAbilityIcon(playerIndex, ability, row, generateRow = false) {
     let selectorProperties = getSelectorProperties(ability.type);
     let barSelector = selectorProperties.id;
     let selectedSettings = selectorProperties.settings;
+    // TODO
     if (generateRow) {
         if (row === 0) row = 1;
-        if ($(`#${barSelector}-row-${row}`).length === 0)
-            $(`#${barSelector}-bar`).append(
-                `<div id="${barSelector}-row-${row}" class="ability-row" style="margin-top: ${
-                    selectedSettings.padding
-                }px;">
-					<div id="${barSelector}-row-${row}-box" class="ability-box ${
-                    selectedSettings.growleft ? "ability-reverse" : ""
-                }">
-					</div>
-				</div>`,
-            );
+        if (
+            document.querySelectorAll(`#${barSelector}-row-${row}`).length === 0
+        ) {
+            let barElement = document.createElement("div");
+            barElement.id = `${barSelector}-row-${row}`;
+            barElement.className = "ability-row";
+            barElement.style.marginTop = `${selectedSettings.padding}px`;
+
+            let barBox = document.createElement("div");
+            barBox.id = `${barSelector}-row-${row}-box`;
+            barBox.className = "ability-box";
+            barBox.style.marginTop = `${selectedSettings.padding}px`;
+            if (selectedSettings.growleft)
+                barBox.classList.add("ability-reverse");
+
+            barElement.appendChild(barBox);
+
+            document
+                .getElementById(`${barSelector}-bar`)
+                .appendChild(barElement);
+        }
     }
 
-    let iconWidth = selectedSettings.scale * 40;
-    let iconHeight = selectedSettings.scale * 40;
-    let activeWidth = selectedSettings.scale * 42;
-    let activeHeight = selectedSettings.scale * 42;
-    let boxWidth = selectedSettings.scale * 48;
-    let boxHeight = selectedSettings.scale * 48;
-    let overlayWidth = selectedSettings.scale * 48;
-    let overlayHeight = selectedSettings.scale * 48;
-    let lineHeight = selectedSettings.scale * 44;
+    let iconWidth = Math.ceil(selectedSettings.scale * 40);
+    let iconHeight = Math.ceil(selectedSettings.scale * 40);
+    let activeWidth = Math.ceil(selectedSettings.scale * 42);
+    let activeHeight = Math.ceil(selectedSettings.scale * 42);
+    let boxWidth = Math.ceil(selectedSettings.scale * 48);
+    let boxHeight = Math.ceil(selectedSettings.scale * 48);
+    let overlayWidth = Math.ceil(selectedSettings.scale * 48);
+    let overlayHeight = Math.ceil(selectedSettings.scale * 48);
+    let lineHeight = Math.ceil(selectedSettings.scale * 44);
 
     let abilitySelector = `${barSelector}-${playerIndex}-${ability.id}`;
-    let containerSelector = `#${abilitySelector}-container`;
 
-    $(`#${barSelector}-row-${row}-box`).append(
-        `<div id="${abilitySelector}-container" class="ability-container" style="width: ${boxWidth}px; height: ${boxHeight}px; margin-right: ${selectedSettings.padding}px;"></div>`,
-    );
-    $(containerSelector).append(
-        `<img id="${abilitySelector}-image" class="ability-image" src="${
-            ability.icon
-        }" width="${iconWidth}px" height="${iconHeight}px" style="top: ${
-            selectedSettings.scale * 2
-        }px;" />`,
-    );
-    $(containerSelector).append(
-        `<img id="${abilitySelector}-active" class="icon-active" src="skins/${
-            currentSettings.skin
-        }/images/combo.gif" width="${activeWidth}px" height="${activeHeight}px" style="top: ${
-            selectedSettings.scale * 1
-        }px; display: none;" />`,
-    );
-    $(containerSelector).append(
-        `<img id="${abilitySelector}-overlay" class="icon-overlay" src="skins/${currentSettings.skin}/images/icon-overlay.png" width="${overlayWidth}px" height="${overlayHeight}px" />`,
-    );
-    $(containerSelector).append(
-        `<span id="${abilitySelector}-cooldown" class="ability-text" style="line-height: ${lineHeight}px; margin-left: ${
-            selectedSettings.scale * 2 + selectedSettings.fontxoffset
-        }px; margin-top: ${selectedSettings.fontyoffset}px; ${
-            selectedSettings.cooldownoutline
-                ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};`
-                : ""
-        } color: ${selectedSettings.cooldowncolor}; font-size: ${
-            selectedSettings.staticfontsize
-                ? selectedSettings.fontsize
-                : selectedSettings.scale * 24
-        }px; font-weight:${
-            selectedSettings.cooldownbold ? "bold" : "normal"
-        }"></span>`,
-    );
-    $(containerSelector).append(
-        `<span id="${abilitySelector}-duration" class="ability-text" style="line-height: ${lineHeight}px; margin-left: ${
-            selectedSettings.scale * 2 + selectedSettings.fontxoffset
-        }px; margin-top: ${selectedSettings.fontyoffset}px; ${
-            selectedSettings.durationoutline
-                ? `-webkit-text-stroke: 1.5px ${selectedSettings.durationoutlinecolor};`
-                : ""
-        } color: ${selectedSettings.durationcolor}; font-size: ${
-            selectedSettings.staticfontsize
-                ? selectedSettings.fontsize
-                : selectedSettings.scale * 24
-        }px; font-weight:${
-            selectedSettings.durationbold ? "bold" : "normal"
-        };"></span>`,
-    );
+    let abilityContainer = document.createElement("div");
+    abilityContainer.id = `${abilitySelector}-container`;
+    abilityContainer.className = "ability-container";
+    abilityContainer.style.width = `${boxWidth}px`;
+    abilityContainer.style.height = `${boxHeight}px`;
+    abilityContainer.style.marginRight = `${selectedSettings.padding}px`;
+
+    let abilityImage = document.createElement("img");
+    abilityImage.id = `${abilitySelector}-image`;
+    abilityImage.className = "ability-image";
+    abilityImage.src = ability.icon;
+    abilityImage.width = iconWidth;
+    abilityImage.height = iconHeight;
+    abilityImage.style.top = `${selectedSettings.scale * 2}px`;
+
+    abilityContainer.appendChild(abilityImage);
+
+    let abilityActive = document.createElement("img");
+    abilityActive.id = `${abilitySelector}-active`;
+    abilityActive.className = "icon-active";
+    abilityActive.src = `skins/${currentSettings.skin}/images/combo.gif`;
+    abilityActive.width = activeWidth;
+    abilityActive.height = activeHeight;
+    abilityActive.style.top = `${selectedSettings.scale * 1}px`;
+    abilityActive.style.display = "none";
+
+    abilityContainer.appendChild(abilityActive);
+
+    let abilityOverlay = document.createElement("img");
+    abilityOverlay.id = `${abilitySelector}-overlay`;
+    abilityOverlay.className = "icon-overlay";
+    abilityOverlay.src = `skins/${currentSettings.skin}/images/icon-overlay.png`;
+    abilityOverlay.width = overlayWidth;
+    abilityOverlay.height = overlayHeight;
+
+    abilityContainer.appendChild(abilityOverlay);
+
+    let abilityCooldown = document.createElement("span");
+    abilityCooldown.id = `${abilitySelector}-cooldown`;
+    abilityCooldown.className = "ability-text";
+    abilityCooldown.style.lineHeight = `${lineHeight}px`;
+    abilityCooldown.style.marginLeft = `${
+        selectedSettings.scale * 2 + selectedSettings.fontxoffset
+    }px`;
+    abilityCooldown.style.marginTop = `${selectedSettings.fontyoffset}px`;
+    abilityCooldown.style.color = selectedSettings.cooldowncolor;
+    abilityCooldown.style.fontSize = selectedSettings.staticfontsize
+        ? selectedSettings.fontsize
+        : selectedSettings.scale * 24;
+    abilityCooldown.style.fontWeight = selectedSettings.cooldownbold
+        ? "bold"
+        : "normal";
+
+    if (selectedSettings.cooldownoutline) {
+        abilityCooldown.style.webkitTextStroke = `1.5px ${selectedSettings.durationoutlinecolor}`;
+    }
+
+    abilityContainer.appendChild(abilityCooldown);
+
+    let abilityDuration = document.createElement("span");
+    abilityDuration.id = `${abilitySelector}-duration`;
+    abilityDuration.className = "ability-text";
+    abilityDuration.style.lineHeight = `${lineHeight}px`;
+    abilityDuration.style.marginLeft = `${
+        selectedSettings.scale * 2 + selectedSettings.fontxoffset
+    }px`;
+    abilityDuration.style.marginTop = `${selectedSettings.fontyoffset}px`;
+    abilityDuration.style.color = selectedSettings.durationcolor;
+    abilityDuration.style.fontSize = selectedSettings.staticfontsize
+        ? selectedSettings.fontsize
+        : selectedSettings.scale * 24;
+    abilityDuration.style.fontWeight = selectedSettings.durationbold
+        ? "bold"
+        : "normal";
+
+    if (selectedSettings.durationoutline) {
+        abilityDuration.style.webkitTextStroke = `1.5px ${selectedSettings.durationoutlinecolor}`;
+    }
+
+    abilityContainer.appendChild(abilityDuration);
+
+    return abilityContainer;
 }
 
 // Handlers for creating/maintaining party list
@@ -1989,7 +2222,7 @@ function startAbilityIconTimers(
     let selectedSettings = selectorProperties.settings;
     let selectedActive = selectorProperties.active;
 
-    let selector = `#${barSelector}-${playerIndex}-${abilityUsed.id}`;
+    let selector = `${barSelector}-${playerIndex}-${abilityUsed.id}`;
 
     let abilityIndex = `${playerIndex}-${ability.id}`;
     let abilityHasCharges = false;
@@ -2021,6 +2254,7 @@ function startAbilityIconTimers(
             clearInterval(
                 activeElements.countdowns.get(`${selector}-duration`),
             );
+            stopAbilityTimer(`${selector}-duration`, null);
         }
         if (
             activeElements.countdowns.has(`${selector}-cooldown`) &&
@@ -2031,31 +2265,42 @@ function startAbilityIconTimers(
             );
         }
         if (!ignoreCooldown) stopAbilityTimer(`${selector}-cooldown`, null);
-        stopAbilityTimer(`${selector}-duration`, null);
     }
 
     handleAbilityTTS(ability, selector, onYou);
 
     if (onYou) {
         if (!selectedSettings.alwaysshow) {
-            generateAbilityIcon(
+            let row = Math.ceil(selectedActive.size / selectedSettings.columns);
+            let abilityElement = generateAbilityIcon(
                 playerIndex,
                 ability,
-                Math.ceil(selectedActive.size / selectedSettings.columns),
+                row,
                 true,
             );
+            if (row === 0) row = 1;
+            if (!document.getElementById(`${selector}-container`)) {
+                document
+                    .getElementById(`${barSelector}-row-${row}-box`)
+                    .appendChild(abilityElement);
+            }
         }
-        $(`${selector}-overlay`).attr(
-            "src",
-            `skins/${currentSettings.skin}/images/icon-overlay.png`,
-        );
-        $(`${selector}-active`).show();
-        $(`${selector}-duration`).show();
-        $(`${selector}-duration`).text(ability.duration);
-        $(`${selector}-cooldown`).hide();
+        if (document.getElementById(`${selector}-overlay`))
+            document.getElementById(
+                `${selector}-overlay`,
+            ).src = `skins/${currentSettings.skin}/images/icon-overlay.png`;
+
+        document.getElementById(`${selector}-active`).style.display = "block";
+        document.getElementById(`${selector}-duration`).style.display = "block";
+        document.getElementById(`${selector}-duration`).textContent =
+            ability.duration;
+        if (document.getElementById(`${selector}-cooldown`))
+            document.getElementById(`${selector}-cooldown`).style.display =
+                "none";
+
         if (usingAbilityHolder) {
             let previousIcon = `${abilityHolder.icon}`;
-            $(`${selector}-image`).attr("src", `${ability.icon}`);
+            document.getElementById(`${selector}-image`).src = ability.icon;
             startAbilityTimer(
                 ability.duration,
                 `${selector}-duration`,
@@ -2065,14 +2310,18 @@ function startAbilityIconTimers(
             startAbilityTimer(ability.duration, `${selector}-duration`);
         }
     } else {
-        $(`${selector}-overlay`).attr(
-            "src",
-            ability.cooldown > 0
-                ? `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png`
-                : `skins/${currentSettings.skin}/images/icon-overlay.png`,
-        );
-        $(`${selector}-cooldown`).show();
-        $(`${selector}-cooldown`).text(ability.cooldown);
+        if (document.getElementById(`${selector}-overlay`)) {
+            document.getElementById(`${selector}-overlay`).src =
+                ability.cooldown > 0
+                    ? `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png`
+                    : `skins/${currentSettings.skin}/images/icon-overlay.png`;
+        }
+        if (document.getElementById(`${selector}-cooldown`)) {
+            document.getElementById(`${selector}-cooldown`).style.display =
+                "block";
+            document.getElementById(`${selector}-cooldown`).textContent =
+                ability.cooldown;
+        }
     }
     if (selectedSettings.alwaysshow && !ignoreCooldown)
         startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
@@ -2099,14 +2348,12 @@ function startAbilityBarTimer(
 
     if (!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled)
         return;
-    let targetBarSelector = `#${ability.type.toLowerCase()}-timer-bar`;
-    let targetImageSelector = `#${ability.type.toLowerCase()}-image`;
+    let targetBarSelector = `${ability.type.toLowerCase()}-timer-bar`;
+    let targetImageSelector = `${ability.type.toLowerCase()}-image`;
     let targetPosition =
         ui.dragPosition[`${ability.type.toLowerCase()}-timer-bar`];
-    let selectorBar = `#${abilityUsed.id}-${ability.type.toLowerCase()}-timer`;
-    let selectorImage = `#${
-        abilityUsed.id
-    }-${ability.type.toLowerCase()}-image`;
+    let selectorBar = `${abilityUsed.id}-${ability.type.toLowerCase()}-timer`;
+    let selectorImage = `${abilityUsed.id}-${ability.type.toLowerCase()}-image`;
     ability.duration = parseInt(duration);
     if (
         !activeElements.dotBars.has(abilityUsed.id) &&
@@ -2122,21 +2369,22 @@ function startAbilityBarTimer(
                 break;
             }
         }
-        let newBar = $(targetBarSelector)
-            .clone()
-            .prop("id", selectorBar.replace("#", ""));
-        $(targetBarSelector).after(newBar);
-        let newImage = $(targetImageSelector)
-            .clone()
-            .prop("id", selectorImage.replace("#", ""));
-        $(targetImageSelector).after(newImage);
+        let targetBar = document.getElementById(targetBarSelector);
+        let newBar = targetBar.cloneNode(true);
+        newBar.id = selectorBar;
+        newBar.style.display = "block";
+        newBar.classList.add(`bar-${ability.id}`);
+        newBar.classList.add(`${ability.type.toLowerCase()}-font-size`);
+        targetBar.insertAdjacentElement("afterend", newBar);
 
-        $(selectorBar).show();
-        $(selectorBar).addClass(`bar-${ability.id}`);
-        $(selectorBar).addClass(`${ability.type.toLowerCase()}-font-size`);
+        let targetImage = document.getElementById(targetImageSelector);
+        let newImage = targetImage.cloneNode(true);
+        newImage.id = selectorImage;
+        targetImage.insertAdjacentElement("afterend", newImage);
+
         applyFilterColorToElement(`bar-${ability.id}`, ability.color);
 
-        $(targetBarSelector).attr(
+        newBar.setAttribute(
             "data-font-size",
             currentSettings[`${ability.type.toLowerCase()}timerbar`].scale * 10,
         );
@@ -2149,54 +2397,42 @@ function startAbilityBarTimer(
         ) {
             case 1: {
                 // Down
-                $(selectorBar).css(
-                    "transform",
-                    `translate(${targetPosition.x}px, ${
-                        targetPosition.y +
-                        currentSettings[`${ability.type.toLowerCase()}timerbar`]
-                            .padding *
-                            ability.order
-                    }px)`,
-                );
+                newBar.style.transform = `translate(${targetPosition.x}px, ${
+                    targetPosition.y +
+                    currentSettings[`${ability.type.toLowerCase()}timerbar`]
+                        .padding *
+                        ability.order
+                }px)`;
                 break;
             }
             case 2: {
                 // Up
-                $(selectorBar).css(
-                    "transform",
-                    `translate(${targetPosition.x}px, ${
-                        targetPosition.y -
-                        currentSettings[`${ability.type.toLowerCase()}timerbar`]
-                            .padding *
-                            ability.order
-                    }px)`,
-                );
+                newBar.style.transform = `translate(${targetPosition.x}px, ${
+                    targetPosition.y -
+                    currentSettings[`${ability.type.toLowerCase()}timerbar`]
+                        .padding *
+                        ability.order
+                }px)`;
                 break;
             }
             case 3: {
                 // Left
-                $(selectorBar).css(
-                    "transform",
-                    `translate(${
-                        targetPosition.x -
-                        currentSettings[`${ability.type.toLowerCase()}timerbar`]
-                            .padding *
-                            ability.order
-                    }px, ${targetPosition.y}px)`,
-                );
+                newBar.style.transform = `translate(${
+                    targetPosition.x -
+                    currentSettings[`${ability.type.toLowerCase()}timerbar`]
+                        .padding *
+                        ability.order
+                }px, ${targetPosition.y}px)`;
                 break;
             }
             case 4: {
                 // Right
-                $(selectorBar).css(
-                    "transform",
-                    `translate(${
-                        targetPosition.x +
-                        currentSettings[`${ability.type.toLowerCase()}timerbar`]
-                            .padding *
-                            ability.order
-                    }px, ${targetPosition.y}px)`,
-                );
+                newBar.style.transform = `translate(${
+                    targetPosition.x +
+                    currentSettings[`${ability.type.toLowerCase()}timerbar`]
+                        .padding *
+                        ability.order
+                }px, ${targetPosition.y}px)`;
                 break;
             }
         }
@@ -2205,20 +2441,16 @@ function startAbilityBarTimer(
             currentSettings[`${ability.type.toLowerCase()}timerbar`]
                 .imageenabled
         ) {
-            $(selectorImage).show();
-            $(selectorImage).attr("src", `${ability.icon}`);
-            $(selectorImage).css(
-                "image-rendering",
+            newImage.style.display = "block";
+            newImage.src = ability.icon;
+            newImage.style.imageRendering =
                 currentSettings[`${ability.type.toLowerCase()}timerbar`].scale >
-                    1
+                1
                     ? "pixelated"
-                    : "-webkit-optimize-contrast",
-            );
-            $(selectorImage).css(
-                "height",
+                    : "-webkit-optimize-contrast";
+            newImage.style.height =
                 currentSettings[`${ability.type.toLowerCase()}timerbar`].scale *
-                    22,
-            );
+                22;
 
             let left = targetPosition.x;
             let top = targetPosition.y;
@@ -2298,19 +2530,20 @@ function startAbilityBarTimer(
                     break;
                 }
             }
-
-            $(selectorImage).css("transform", `translate(${left}px, ${top}px)`);
+            newImage.style.transform = `translate(${left}px, ${top}px)`;
         }
     }
     if (
         usingAbilityHolder &&
         currentSettings[`${ability.type.toLowerCase()}timerbar`].imageenabled
     )
-        $(selectorImage).attr("src", `${ability.icon}`);
+        document.getElementById(selectorImage).src = ability.icon;
     if (usingAbilityHolder)
         applyFilterColorToElement(`bar-${abilityUsed.id}`, ability.color);
     if (activeElements.countdowns.has(selectorBar) && extends_duration) {
-        duration = parseInt($(selectorBar).val()) / 1000 + parseInt(duration);
+        duration =
+            parseInt(document.getElementById(selectorBar).textContent) / 1000 +
+            parseInt(duration);
         if (duration > max_duration) duration = max_duration;
     }
     if (activeElements.countdowns.has(selectorBar))
@@ -2328,13 +2561,13 @@ function startAbilityBarTimer(
 function startAbilityTimer(duration, selector, previousIcon = null) {
     let timems = duration * 1000;
 
-    $(selector).text(duration);
+    let abilityElement = document.getElementById(selector);
+    abilityElement.textContent = duration;
 
     let timeLeft = timems;
     let countdownTimer = setInterval(function () {
         timeLeft -= UPDATE_INTERVAL;
-
-        $(selector).text((timeLeft / 1000).toFixed(0));
+        abilityElement.textContent = (timeLeft / 1000).toFixed(0);
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
             setTimeout(function () {
@@ -2357,12 +2590,13 @@ function startBarTimer(
         `[StartBarTimer] Duration: ${duration} Selector: ${selector} Hidetimer: ${hideTimer} Reverse: ${reverseBar} Loop: ${loop}`,
     ]);
     let timems = duration * 1000;
-    $(selector).attr("max", timems);
-    $(selector).attr("value", reverseBar ? 0 : timems);
+    let barElement = document.getElementById(selector);
+    barElement.value = reverseBar ? 0 : timems;
+    barElement.max = timems;
     if (!selector.endsWith("ticker-bar"))
-        $(selector).attr("data-label", timems);
+        barElement.setAttribute("data-label", timems);
 
-    if (hideTimer) $(selector).show();
+    if (hideTimer) barElement.style.display = "block";
 
     let timeLeft = timems;
     let maxTime = timems;
@@ -2375,17 +2609,18 @@ function startBarTimer(
             visualTime = timeLeft - UPDATE_INTERVAL;
         }
 
-        $(selector).attr("value", visualTime);
+        if (barElement.value != visualTime) barElement.value = visualTime;
+
         if (!selector.endsWith("ticker-bar"))
-            $(selector).attr("data-label", (timeLeft / 1000).toFixed(1));
+            barElement.setAttribute("data-label", (timeLeft / 1000).toFixed(1));
         if (timeLeft <= 0 && !loop) {
             clearInterval(countdownTimer);
             setTimeout(function () {
                 if (hideTimer) {
-                    if (selector !== "#timer-bar") {
+                    if (selector !== "timer-bar") {
                         removeTimerBar(selector);
                     } else {
-                        $(selector).hide();
+                        barElement.style.display = "none";
                     }
                 }
             }, UPDATE_INTERVAL);
@@ -2397,38 +2632,67 @@ function startBarTimer(
     activeElements.countdowns.set(selector, countdownTimer);
 }
 
+function getElementType(selector) {
+    if (selector.startsWith("raid-buffs")) return "raidbuffs";
+    if (selector.startsWith("mitigation")) return "mitigation";
+    if (selector.startsWith("party")) return "party";
+    if (selector.startsWith("customcd")) return "customcd";
+    return "undefined";
+}
+
 // Stop active ability timer right away and handles the visual aspect of it
 function stopAbilityTimer(selector, previousIcon = null) {
-    if (currentSettings.raidbuffs.alwaysshow) {
-        $(selector).text("");
-        if (selector.endsWith("duration")) {
-            if (previousIcon !== null)
-                $(selector.replace("duration", "image")).attr(
-                    "src",
-                    previousIcon,
-                );
-            $(selector.replace("duration", "cooldown")).show();
-            $(selector.replace("duration", "active")).hide();
+    let elementType = getElementType(selector);
+    if (selector.endsWith("duration")) {
+        let cooldown = selector.replace("duration", "cooldown");
+        let image = selector.replace("duration", "image");
+        let active = selector.replace("duration", "active");
+        let overlay = selector.replace("duration", "overlay");
+        let container = selector.replace("duration", "container");
 
-            if (
-                $(selector.replace("duration", "cooldown")).text().length !== 0
-            ) {
-                $(selector.replace("duration", "overlay")).attr(
-                    "src",
-                    `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png`,
-                );
+        if (!currentSettings[elementType].alwaysshow) {
+            if (document.getElementById(container)) {
+                document.getElementById(container).remove();
             }
         }
-        if (selector.endsWith("cooldown")) {
-            $(selector.replace("cooldown", "overlay")).attr(
-                "src",
-                `skins/${currentSettings.skin}/images/icon-overlay.png`,
-            );
+        if (document.getElementById(selector))
+            document.getElementById(selector).textContent = "";
+
+        if (previousIcon !== null && currentSettings[elementType].alwaysshow) {
+            document.getElementById(image).src = previousIcon;
         }
-    } else {
-        $(selector.replace("-duration", "").replace("-cooldown", "")).remove();
-        activeElements.countdowns.delete(selector);
+        if (document.getElementById(cooldown)) {
+            document.getElementById(cooldown).style.display = "block";
+        }
+        if (document.getElementById(active)) {
+            document.getElementById(active).style.display = "none";
+        }
+        if (document.getElementById(cooldown)) {
+            if (document.getElementById(cooldown).textContent.length !== 0) {
+                document.getElementById(
+                    overlay,
+                ).src = `skins/${currentSettings.skin}/images/icon-overlay-cooldown.png`;
+            }
+        }
     }
+    if (selector.endsWith("cooldown")) {
+        if (!currentSettings[elementType].alwaysshow) {
+            if (document.getElementById(selector))
+                document.getElementById(selector).remove();
+            return;
+        }
+        if (document.getElementById(selector)) {
+            document.getElementById(selector).textContent = "";
+            document.getElementById(
+                selector.replace("cooldown", "overlay"),
+            ).src = `skins/${currentSettings.skin}/images/icon-overlay.png`;
+        }
+    }
+}
+
+function stopBarTimer(selector) {
+    document.getElementById(selector).value = 0;
+    document.getElementById(selector).setAttribute("data-label", "");
 }
 
 // Stop all active timers for certain player in your party (when he for example dies)
@@ -2458,8 +2722,8 @@ function stopPlayerDurationTimers(playerindex) {
 
 // Stop remove active bar
 function removeTimerBar(selector) {
-    $(selector).remove();
-    $(selector.replace("timer", "image")).remove();
+    document.getElementById(selector).remove();
+    document.getElementById(selector.replace("timer", "image")).remove();
     if (activeElements.buffBars.has(parseInt(selector.match(/[0-9]+/g)[0])))
         activeElements.buffBars.delete(parseInt(selector.match(/[0-9]+/g)[0]));
     if (activeElements.dotBars.has(parseInt(selector.match(/[0-9]+/g)[0])))
@@ -2470,8 +2734,10 @@ function removeTimerBar(selector) {
 function resetTimers() {
     let tickerTypes = ["mp", "dot", "hot"];
     for (let tickerType of tickerTypes) {
-        $(`#${tickerType}-ticker-bar`).attr("value", 0);
-        $(`#${tickerType}-ticker-bar`).attr("data-label", "");
+        document.getElementById(`${tickerType}-ticker-bar`).value = 0;
+        document
+            .getElementById(`${tickerType}-ticker-bar`)
+            .setAttribute("data-label", "");
     }
     for (let [, countdownTimer] of activeElements.countdowns) {
         clearInterval(countdownTimer);
@@ -2649,23 +2915,22 @@ function adjustJobStacks(value, max, noAdd = false) {
     }
 
     for (let i = 1; i <= 4; i++) {
-        let backgroundSelector = `#stacks-background-${i}`;
-        let selector = `#stacks-${i}`;
+        let backgroundElement = document.getElementById(
+            `stacks-background-${i}`,
+        );
         if (i <= max) {
-            if ($(backgroundSelector).hasClass("stack-hidden")) {
-                $(backgroundSelector).removeClass("stack-hidden");
+            if (backgroundElement.classList.contains("stack-hidden")) {
+                backgroundElement.classList.remove("stack-hidden");
             }
         } else {
-            if (!$(backgroundSelector).hasClass("stack-hidden")) {
-                $(backgroundSelector).addClass("stack-hidden");
+            if (!backgroundElement.classList.contains("stack-hidden")) {
+                backgroundElement.classList.add("stack-hidden");
             }
         }
-        $(selector).attr(
-            "src",
+        document.getElementById(`stacks-${i}`).src =
             i <= value
                 ? `skins/${currentSettings.skin}/images/arrow-fill.png`
-                : `skins/${currentSettings.skin}/images/arrow-fill-empty.png`,
-        );
+                : `skins/${currentSettings.skin}/images/arrow-fill-empty.png`;
     }
 }
 
@@ -2734,12 +2999,13 @@ function onLogEvent(e) {
 
 // Listens for user unlocks/locks the overlay in OverlayPlugin
 document.addEventListener("onOverlayStateUpdate", function (e) {
+    let element = document.getElementById("lock-overlay-reminder");
     if (!e.detail.isLocked) {
-        $(":root").css("background", "rgba(0,0,255,0.5)");
-        if (!ui.locked) $("#lock-overlay-reminder").show();
+        document.documentElement.style.background = "rgba(0,0,255,0.5)";
+        if (!ui.locked) element.style.display = "block";
     } else {
-        $(":root").css("background", "");
-        if (!ui.locked) $("#lock-overlay-reminder").hide();
+        document.documentElement.style.background = "";
+        if (!ui.locked) element.style.display = "none";
     }
 
     ui.actlocked = e.detail.isLocked;
@@ -2747,8 +3013,12 @@ document.addEventListener("onOverlayStateUpdate", function (e) {
 
 // When user switches jobs
 function onJobChange(job) {
+    gameState.playerTags.job = language.find(
+        (x) => x.id === job.toLowerCase(),
+    ).string;
     let tickerTypes = ["mp", "dot", "hot"];
     for (let tickerType of tickerTypes) {
+        let tickerBar = document.getElementById(`${tickerType}-ticker-bar`);
         if (currentSettings[`${tickerType}ticker`].enabled) {
             if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
                 if (
@@ -2756,24 +3026,24 @@ function onJobChange(job) {
                         `${tickerType}ticker`
                     ].specificjobs.includes(job)
                 ) {
-                    $(`#${tickerType}-ticker-bar`).show();
+                    tickerBar.style.display = "block";
                 } else {
-                    $(`#${tickerType}-ticker-bar`).hide();
+                    tickerBar.style.display = "none";
                 }
             } else {
-                $(`#${tickerType}-ticker-bar`).hide();
+                tickerBar.style.display = "none";
             }
         } else {
-            $(`#${tickerType}-ticker-bar`).hide();
+            tickerBar.style.display = "none";
         }
     }
 
     if (job === "SMN") {
         initializeSmn();
         adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
-        $("#stacks-bar").show();
+        document.getElementById("stacks-bar").style.display = "block";
     } else {
-        $("#stacks-bar").hide();
+        document.getElementById("stacks-bar").style.display = "none";
     }
     resetTimers();
     if (gameState.partyList.length === 1) {
@@ -2807,13 +3077,18 @@ function onPlayerChangedEvent(e) {
         onJobChange(e.detail.job);
         setCurrentRole();
     }
+    gameState.playerPrevious = gameState.playerPrevious
+        ? gameState.player
+        : e.detail;
     gameState.player = e.detail;
     if (gameState.currentrole === null) {
+        onJobChange(e.detail.job);
         setCurrentRole();
     }
     if (gameState.partyList.length === 0) {
         let tickerTypes = ["mp", "dot", "hot"];
         for (let tickerType of tickerTypes) {
+            let tickerBar = document.getElementById(`${tickerType}-ticker-bar`);
             if (currentSettings[`${tickerType}ticker`].enabled) {
                 if (
                     currentSettings[`${tickerType}ticker`].specificjobsenabled
@@ -2823,9 +3098,9 @@ function onPlayerChangedEvent(e) {
                             `${tickerType}ticker`
                         ].specificjobs.includes(e.detail.job)
                     ) {
-                        $(`#${tickerType}-ticker-bar`).show();
+                        tickerBar.style.display = "block";
                     } else {
-                        $(`#${tickerType}-ticker-bar`).hide();
+                        tickerBar.style.display = "none";
                     }
                 }
             }
@@ -2895,7 +3170,7 @@ function handleAddNewCombatant(parameters) {
 /* exported handleCountdownTimer */
 function handleCountdownTimer(parameters) {
     if (!currentSettings.timerbar.enabled) return;
-    startBarTimer(parameters.seconds, "#timer-bar", true);
+    startBarTimer(parameters.seconds, "timer-bar", true);
 }
 
 // Whenever any DoT/HoT ticks
@@ -2911,10 +3186,10 @@ function handleEffectTick(parameters) {
         )
             return;
     }
-    if (!activeElements.countdowns.has(`#${type}-ticker-bar`)) {
+    if (!activeElements.countdowns.has(`${type}-ticker-bar`)) {
         startBarTimer(
             GAME_DATA.EFFECT_TICK,
-            `#${type}-ticker-bar`,
+            `${type}-ticker-bar`,
             false,
             true,
             true,
@@ -2973,85 +3248,113 @@ function handleManaTick(current, max) {
     if (duration > 0) {
         if (
             currentSettings.mpticker.alwaystick &&
-            activeElements.countdowns.get("#mp-ticker-bar") == undefined
+            activeElements.countdowns.get("mp-ticker-bar") == undefined
         ) {
-            startBarTimer(duration, "#mp-ticker-bar", false, true, true);
+            startBarTimer(duration, "mp-ticker-bar", false, true, true);
         }
         if (!currentSettings.mpticker.alwaystick) {
-            startBarTimer(duration, "#mp-ticker-bar", false, true, false);
+            startBarTimer(duration, "mp-ticker-bar", false, true, false);
         }
     }
 }
 
-function processTextFormat(text) {
-    let percentHP = Math.round(
+// Prepare health tags in ui object
+function updateHealthTags() {
+    gameState.playerTags.percentHP = Math.round(
         (100 * gameState.player.currentHP) / gameState.player.maxHP,
     );
-    let deficitHP = gameState.player.maxHP - gameState.player.currentHP;
-    let percentMP = Math.round(
+    gameState.playerTags.deficitHP = `-${
+        gameState.player.maxHP - gameState.player.currentHP
+    }`;
+    gameState.playerTags.currentMaxHP = `${gameState.player.currentHP} / ${gameState.player.maxHP}`;
+}
+
+// Prepare mana tags in ui object
+function updateManaTags() {
+    gameState.playerTags.percentMP = Math.round(
         (100 * gameState.player.currentMP) / gameState.player.maxMP,
     );
-    let deficitMP = gameState.player.maxMP - gameState.player.currentMP;
+    gameState.playerTags.deficitMP = `-${
+        gameState.player.maxMP - gameState.player.currentMP
+    }`;
+    gameState.playerTags.currentMaxMP = `${gameState.player.currentMP} / ${gameState.player.maxMP}`;
+}
 
+// Loop through all possible tags and returns text
+function processTextFormat(text) {
     let tagMap = {
         "[health:current]": gameState.player.currentHP,
-        "[health:current-max]": `${gameState.player.currentHP} / ${gameState.player.maxHP}`,
+        "[health:current-max]": gameState.playerTags.currentMaxHP,
         "[health:max]": gameState.player.maxHP,
-        "[health:percent]": percentHP,
-        "[health:deficit]": `-${deficitHP}`,
+        "[health:percent]": gameState.playerTags.percentHP,
+        "[health:deficit]": gameState.playerTags.deficitHP,
         "[mana:current]": gameState.player.currentMP,
-        "[mana:current-max]": `${gameState.player.currentMP} / ${gameState.player.maxMP}`,
+        "[mana:current-max]": gameState.playerTags.currentMaxMP,
         "[mana:max]": gameState.player.maxMP,
-        "[mana:percent]": percentMP,
-        "[mana:deficit]": `-${deficitMP}`,
+        "[mana:percent]": gameState.playerTags.percentMP,
+        "[mana:deficit]": gameState.playerTags.deficitMP,
         "[name]": gameState.player.name,
         "[name:veryshort]": gameState.player.name.substr(0, 5),
         "[name:short]": gameState.player.name.substr(0, 10),
         "[name:medium]": gameState.player.name.substr(0, 15),
         "[name:long]": gameState.player.name.substr(0, 20),
-        "[job]": language.find(
-            (x) => x.id === gameState.player.job.toLowerCase(),
-        ).string,
+        "[job]": gameState.playerTags.job,
         "[job:short]": gameState.player.job,
         " ": " ",
     };
-
     for (let [key, value] of Object.entries(tagMap)) {
-        text = text.replace(
-            new RegExp(key.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"), "gi"),
-            value,
-        );
+        text = text.split(key).join(value);
     }
     return text;
 }
 
 // When user's health changes
 function handleHealthUpdate(current, max) {
-    $("#health-bar").attr("max", max);
-    $("#health-bar").attr("value", current);
-    let datalabel = `${gameState.player.currentHP} / ${gameState.player.maxHP}`;
-    if (currentSettings.healthbar.textformat) {
-        datalabel = processTextFormat(currentSettings.healthbar.textformat);
+    if (
+        gameState.playerPrevious.currentHP !== current ||
+        gameState.playerPrevious.maxHP !== max ||
+        !ui.labels.health
+    ) {
+        let health = document.getElementById("health-bar");
+        health.value = current;
+        health.max = max;
+        ui.labels.health = `${gameState.player.currentHP} / ${gameState.player.maxHP}`;
+        if (currentSettings.healthbar.textformat) {
+            updateHealthTags();
+            ui.labels.health = processTextFormat(
+                currentSettings.healthbar.textformat,
+            );
+        }
+        health.setAttribute(
+            "data-label",
+            currentSettings.healthbar.textenabled ? ui.labels.health : "",
+        );
     }
-    $("#health-bar").attr(
-        "data-label",
-        currentSettings.healthbar.textenabled ? datalabel : "",
-    );
 }
 
 // When user's mana changes
 function handleManaUpdate(current, max) {
+    let mana = document.getElementById("mana-bar");
     handleManaTick(current, max);
-    $("#mana-bar").attr("max", max);
-    $("#mana-bar").attr("value", current);
-    let datalabel = `${gameState.player.currentMP} / ${gameState.player.maxMP}`;
-    if (currentSettings.manabar.textformat) {
-        datalabel = processTextFormat(currentSettings.manabar.textformat);
+    if (
+        gameState.playerPrevious.currentMP !== current ||
+        gameState.playerPrevious.maxMP !== max ||
+        !ui.labels.mana
+    ) {
+        mana.value = current;
+        mana.max = max;
+        ui.labels.mana = `${gameState.player.currentMP} / ${gameState.player.maxMP}`;
+        if (currentSettings.manabar.textformat) {
+            updateManaTags();
+            ui.labels.mana = processTextFormat(
+                currentSettings.manabar.textformat,
+            );
+        }
+        mana.setAttribute(
+            "data-label",
+            currentSettings.manabar.textenabled ? ui.labels.mana : "",
+        );
     }
-    $("#mana-bar").attr(
-        "data-label",
-        currentSettings.manabar.textenabled ? datalabel : "",
-    );
 
     if (!currentSettings.manabar.jobthresholdsenabled) return;
     if (
@@ -3060,19 +3363,19 @@ function handleManaUpdate(current, max) {
         gameState.player.job === "PLD"
     ) {
         if (current <= currentSettings.manabar[gameState.player.job].low) {
-            $("#mana-bar").css(
+            mana.style.setProperty(
                 "--manaBarColor",
                 `var(${currentSettings.manabar.lowcolor})`,
             );
         } else if (
             current <= currentSettings.manabar[gameState.player.job].med
         ) {
-            $("#mana-bar").css(
+            mana.style.setProperty(
                 "--manaBarColor",
                 `var(${currentSettings.manabar.medcolor})`,
             );
         } else {
-            $("#mana-bar").css(
+            mana.style.setProperty(
                 "--manaBarColor",
                 `var(${currentSettings.manabar.color})`,
             );
@@ -3163,7 +3466,7 @@ function handleSkill(parameters) {
                                         "is_song",
                                     ),
                             )) {
-                                let selector = `#raid-buffs-${playerIndex}-${song.id}`;
+                                let selector = `raid-buffs-${playerIndex}-${song.id}`;
                                 if (
                                     activeElements.countdowns.has(
                                         `${selector}-duration`,
@@ -3211,12 +3514,12 @@ function handleSkill(parameters) {
                         currentSettings.raidbuffs.alwaysshow
                             ? abilityHolder
                             : ability,
-                        byYou,
+                        true,
                     );
                 }
                 if (ability.extra.is_ts) {
                     let abilityHolder = mergedAbilityList.find(
-                        (x) => x.id === 16004,
+                        (x) => x.id === 15998,
                     );
                     startAbilityIconTimers(
                         playerIndex,
@@ -3308,6 +3611,7 @@ function handleGainEffect(parameters) {
             )
                 continue;
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
+                if (ability.extra.is_card) continue;
                 if (ability.extra.is_song) {
                     let abilityHolder = mergedAbilityList.find(
                         (x) => x.name === "Song",
@@ -3407,16 +3711,25 @@ function handleLoseEffect(parameters) {
             x[`name_${currentSettings.language}`].toLowerCase() ==
             parameters.effect.toLowerCase(),
     )) {
+        if (ability.name == "Standard Step") return;
+        if (ability.name == "Technical Step") return;
         let selectorProperties = getSelectorProperties(ability.type);
         let barSelector = selectorProperties.id;
-        let abilitySelector = `#${barSelector}-${playerIndex}-${ability.id}`;
+        let abilitySelector = `${barSelector}-${playerIndex}-${ability.id}`;
+        console.log(abilitySelector);
 
         if (activeElements.countdowns.has(`${abilitySelector}-duration`)) {
             clearInterval(
                 activeElements.countdowns.get(`${abilitySelector}-duration`),
             );
+            stopAbilityTimer(`${abilitySelector}-duration`, null);
         }
-        stopAbilityTimer(`${abilitySelector}-duration`, null);
+        if (activeElements.countdowns.has(`${ability.id}-buff-timer`)) {
+            clearInterval(
+                activeElements.countdowns.get(`${ability.id}-buff-timer`),
+            );
+            stopBarTimer(`${ability.id}-buff-timer`);
+        }
     }
 }
 
