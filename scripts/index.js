@@ -2310,9 +2310,15 @@ function startAbilityIconTimers(
                 ability.duration,
                 `${selector}-duration`,
                 previousIcon,
+                abilityIndex,
             );
         } else {
-            startAbilityTimer(ability.duration, `${selector}-duration`);
+            startAbilityTimer(
+                ability.duration,
+                `${selector}-duration`,
+                null,
+                abilityIndex,
+            );
         }
     } else {
         if (document.getElementById(`${selector}-overlay`)) {
@@ -2329,7 +2335,12 @@ function startAbilityIconTimers(
         }
     }
     if (selectedSettings.alwaysshow && !ignoreCooldown)
-        startAbilityTimer(ability.cooldown, `${selector}-cooldown`);
+        startAbilityTimer(
+            ability.cooldown,
+            `${selector}-cooldown`,
+            null,
+            abilityIndex,
+        );
 
     selectedActive.set(`${playerIndex}-${ability.id}`, selector);
 }
@@ -2563,7 +2574,12 @@ function startAbilityBarTimer(
 }
 
 // Start and handle actual timer for ability
-function startAbilityTimer(duration, selector, previousIcon = null) {
+function startAbilityTimer(
+    duration,
+    selector,
+    previousIcon = null,
+    abilityIndex = null,
+) {
     let timems = duration * 1000;
 
     let abilityElement = document.getElementById(selector);
@@ -2576,7 +2592,7 @@ function startAbilityTimer(duration, selector, previousIcon = null) {
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
             setTimeout(function () {
-                stopAbilityTimer(selector, previousIcon);
+                stopAbilityTimer(selector, previousIcon, abilityIndex);
             }, UPDATE_INTERVAL);
         }
     }, UPDATE_INTERVAL);
@@ -2646,7 +2662,7 @@ function getElementType(selector) {
 }
 
 // Stop active ability timer right away and handles the visual aspect of it
-function stopAbilityTimer(selector, previousIcon = null) {
+function stopAbilityTimer(selector, previousIcon = null, abilityIndex = null) {
     let elementType = getElementType(selector);
     if (selector.endsWith("duration")) {
         let cooldown = selector.replace("duration", "cooldown");
@@ -2681,6 +2697,15 @@ function stopAbilityTimer(selector, previousIcon = null) {
         }
     }
     if (selector.endsWith("cooldown")) {
+        if (abilityIndex) {
+            if (activeElements.currentCharges.has(abilityIndex)) {
+                activeElements.currentCharges.set(
+                    abilityIndex,
+                    parseInt(activeElements.currentCharges.get(abilityIndex)) +
+                        1,
+                );
+            }
+        }
         if (!currentSettings[elementType].alwaysshow) {
             if (document.getElementById(selector))
                 document.getElementById(selector).remove();
