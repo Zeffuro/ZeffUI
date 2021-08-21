@@ -843,7 +843,7 @@ async function loadSettings() {
     };
 
     customcd.classList.add(`${settings.customcd.growleft ? "rtl" : "ltr"}`);
-    customcd.style.customcd = `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`;
+    customcd.style.transform = `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`;
 
     currentSettings = settings;
     saveSettings();
@@ -3716,7 +3716,6 @@ function handleLoseEffect(parameters) {
         let selectorProperties = getSelectorProperties(ability.type);
         let barSelector = selectorProperties.id;
         let abilitySelector = `${barSelector}-${playerIndex}-${ability.id}`;
-        console.log(abilitySelector);
 
         if (activeElements.countdowns.has(`${abilitySelector}-duration`)) {
             clearInterval(
