@@ -2527,7 +2527,7 @@ var abilityList = [
         job: "SCH",
         level: 50,
         duration: 15,
-        cooldown: 90,
+        cooldown: 30,
         type: "Party",
         icon: "https://xivapi.com/i/002000/002804.png",
         color: "--filter-light-blue",
