@@ -1,5 +1,5 @@
 // ZeffUI globals
-/* global abilityList, jobList, regexList, language, zone_info, content_type */
+/* global abilityList, jobList, regexList, language, zone_info, content_type, checkAndInitializeDefaultSettingsObject */
 
 // External Globals
 /* global addOverlayListener, startOverlayEvents, interact, callOverlayHandler */
@@ -113,12 +113,6 @@ function initializeContentZoneImports() {
 }
 
 // SETTINGS
-// Function to initialize setting property, thanks MikeMatrix for the help with this.
-function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
-    if (settingsObject[setting] === undefined)
-        settingsObject[setting] = defaultValue;
-}
-
 // Legacy location for the settings, left in so people who hasn't played for a long time still have their settings. Also functions as a backup location for settings.
 function initializeSettings() {
     if (localStorage.getItem("settings") !== null) {
@@ -142,94 +136,7 @@ async function loadSettings() {
         settings = settings.data;
     }
 
-    let head = document.getElementsByTagName("head")[0];
-
-    // OVERRIDE SETTINGS
-    checkAndInitializeSetting(settings, "override", {});
-    checkAndInitializeSetting(settings.override, "enabled", false);
-    checkAndInitializeSetting(settings.override, "abilities", []);
-
-    // GENERAL SETTINGS
-    checkAndInitializeSetting(settings, "general", {});
-    checkAndInitializeSetting(settings.general, "usewebtts", false);
-    checkAndInitializeSetting(settings.general, "ttsearly", 5);
-    checkAndInitializeSetting(settings.general, "usehdicons", false);
-
-    checkAndInitializeSetting(settings.general, "customcss", "");
-
-    if (settings.general.customcss) {
-        let style = document.createElement("style");
-        style.textContent = settings.general.customcss;
-        head.appendChild(style);
-    }
-
-    // SKIN SETTINGS
-    checkAndInitializeSetting(settings, "skin", "default");
-
-    // FONT SETTINGS
-    checkAndInitializeSetting(settings, "font", "Arial");
-    checkAndInitializeSetting(settings, "customfonts", []);
-    document.documentElement.style.setProperty("--defaultFont", settings.font);
-
-    if (document.getElementById("skin") === null) {
-        let link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.type = "text/css";
-        link.href = `skins/${settings.skin}/styles/resources.css`;
-        link.id = "skin";
-        head.append(link);
-    } else {
-        document.getElementById(
-            "skin",
-        ).href = `skins/${settings.skin}/styles/resources.css`;
-    }
-
-    // DEBUG SETTINGS
-    checkAndInitializeSetting(settings, "debug", {});
-    checkAndInitializeSetting(settings.debug, "enabled", false);
-
-    // GLOBAL SETTINGS
-    /* prettier-ignore */
-    checkAndInitializeSetting(settings, "partyorder",
-		[
-		// Tanks
-			"PLD", "GLA", "WAR", "MRD", "DRK", "GNB",
-			// Healers
-			"WHM", "CNJ", "SCH", "AST",
-			// Melee DPS
-			"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM",
-			// Physical Ranged DPS
-			"BRD", "ARC", "MCH", "DNC",
-			// Caster DPS
-			"BLM", "THM", "SMN", "ACN", "RDM", "BLU"]
-	);
-
-    checkAndInitializeSetting(settings, "rolepartyorder", {});
-
-    checkAndInitializeSetting(
-        settings.rolepartyorder,
-        "tank",
-        settings.partyorder,
-    );
-    checkAndInitializeSetting(
-        settings.rolepartyorder,
-        "healer",
-        settings.partyorder,
-    );
-    checkAndInitializeSetting(
-        settings.rolepartyorder,
-        "dps",
-        settings.partyorder,
-    );
-    checkAndInitializeSetting(
-        settings.rolepartyorder,
-        "other",
-        settings.partyorder,
-    );
-
-    // LANGUAGE SETTINGS
-    let actLang = await getACTLocale();
-    checkAndInitializeSetting(settings, "language", actLang);
+    settings = await checkAndInitializeDefaultSettingsObject(settings);
 
     if (document.getElementById("language") === null) {
         getScript(`data/language/${settings.language}.js`, () => {
@@ -248,28 +155,52 @@ async function loadSettings() {
         ).src = `data/language/${settings.language}.js`;
     }
 
-    // HEALTHBAR SETTINGS
-    checkAndInitializeSetting(settings, "healthbar", {});
-    checkAndInitializeSetting(settings.healthbar, "enabled", true);
-    checkAndInitializeSetting(settings.healthbar, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.healthbar, "textenabled", true);
-    checkAndInitializeSetting(
-        settings.healthbar,
-        "color",
-        "--filter-dark-green",
-    );
-    checkAndInitializeSetting(settings.healthbar, "textformat", "");
-    checkAndInitializeSetting(settings.healthbar, "scale", 1);
-    checkAndInitializeSetting(settings.healthbar, "rotation", 0);
-    checkAndInitializeSetting(settings.healthbar, "x", 30);
-    checkAndInitializeSetting(settings.healthbar, "y", 216);
-    checkAndInitializeSetting(settings.healthbar, "align", "left");
-    checkAndInitializeSetting(settings.healthbar, "font", "Arial");
-    checkAndInitializeSetting(settings.healthbar, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.healthbar, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.healthbar, "staticfontsize", false);
-    checkAndInitializeSetting(settings.healthbar, "fontsize", 10);
+    // Check and load profiles
+    if (settings.profiles.profiles.length !== 0) {
+        let profiles = settings.profiles;
+        if (profiles.currentprofile) {
+            settings = JSON.parse(
+                JSON.stringify(profiles.profiles[profiles.currentprofile]),
+            );
+            settings.profiles = profiles;
+        }
+    }
 
+    currentSettings = settings;
+    setLoadedElements();
+    saveSettings();
+}
+
+function setLoadedElements() {
+    let head = document.getElementsByTagName("head")[0];
+
+    let settings = currentSettings;
+
+    if (document.getElementById("customcss"))
+        document.getElementById("customcss").remove();
+    if (settings.general.customcss) {
+        let style = document.createElement("style");
+        style.id = "customcss";
+        style.textContent = settings.general.customcss;
+        head.appendChild(style);
+    }
+
+    document.documentElement.style.setProperty("--defaultFont", settings.font);
+
+    if (document.getElementById("skin") === null) {
+        let link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.type = "text/css";
+        link.href = `skins/${settings.skin}/styles/resources.css`;
+        link.id = "skin";
+        head.append(link);
+    } else {
+        document.getElementById(
+            "skin",
+        ).href = `skins/${settings.skin}/styles/resources.css`;
+    }
+
+    // HEALTHBAR SETTINGS
     let healthbar = document.getElementById("health-bar");
     settings.healthbar.enabled
         ? (healthbar.style.display = "")
@@ -297,48 +228,12 @@ async function loadSettings() {
             : ""
     }`;
 
+    healthbar.setAttribute(
+        "data-label",
+        currentSettings.healthbar.textenabled ? ui.labels.health : "",
+    );
+
     // MANABAR SETTINGS
-    checkAndInitializeSetting(settings, "manabar", {});
-    checkAndInitializeSetting(settings.manabar, "enabled", true);
-    checkAndInitializeSetting(settings.manabar, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.manabar, "textenabled", true);
-    checkAndInitializeSetting(settings.manabar, "color", "--filter-light-pink");
-    checkAndInitializeSetting(settings.manabar, "textformat", "");
-    checkAndInitializeSetting(settings.manabar, "scale", 1);
-    checkAndInitializeSetting(settings.manabar, "rotation", 0);
-    checkAndInitializeSetting(settings.manabar, "x", 30);
-    checkAndInitializeSetting(settings.manabar, "y", 232);
-    checkAndInitializeSetting(settings.manabar, "align", "left");
-    checkAndInitializeSetting(settings.manabar, "font", "Arial");
-    checkAndInitializeSetting(settings.manabar, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.manabar, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.manabar, "staticfontsize", false);
-    checkAndInitializeSetting(settings.manabar, "fontsize", 10);
-
-    checkAndInitializeSetting(settings.manabar, "jobthresholdsenabled", true);
-    checkAndInitializeSetting(
-        settings.manabar,
-        "lowcolor",
-        "--filter-dark-red",
-    );
-    checkAndInitializeSetting(
-        settings.manabar,
-        "medcolor",
-        "--filter-light-blue",
-    );
-
-    checkAndInitializeSetting(settings.manabar, "BLM", {});
-    checkAndInitializeSetting(settings.manabar.BLM, "low", 2399);
-    checkAndInitializeSetting(settings.manabar.BLM, "med", 3999);
-
-    checkAndInitializeSetting(settings.manabar, "PLD", {});
-    checkAndInitializeSetting(settings.manabar.PLD, "low", 3600);
-    checkAndInitializeSetting(settings.manabar.PLD, "med", 9400);
-
-    checkAndInitializeSetting(settings.manabar, "DRK", {});
-    checkAndInitializeSetting(settings.manabar.DRK, "low", 2999);
-    checkAndInitializeSetting(settings.manabar.DRK, "med", 5999);
-
     let manabar = document.getElementById("mana-bar");
     settings.manabar.enabled
         ? (manabar.style.display = "")
@@ -367,19 +262,12 @@ async function loadSettings() {
             : ""
     }`;
 
-    // MP TICKER SETTINGS
-    checkAndInitializeSetting(settings, "mpticker", {});
-    checkAndInitializeSetting(settings.mpticker, "enabled", false);
-    checkAndInitializeSetting(settings.mpticker, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.mpticker, "color", "--filter-grey");
-    checkAndInitializeSetting(settings.mpticker, "scale", 1);
-    checkAndInitializeSetting(settings.mpticker, "rotation", 0);
-    checkAndInitializeSetting(settings.mpticker, "x", 30);
-    checkAndInitializeSetting(settings.mpticker, "y", 248);
-    checkAndInitializeSetting(settings.mpticker, "specificjobsenabled", true);
-    checkAndInitializeSetting(settings.mpticker, "specificjobs", ["BLM"]);
-    checkAndInitializeSetting(settings.mpticker, "alwaystick", false);
+    manabar.setAttribute(
+        "data-label",
+        currentSettings.manabar.textenabled ? ui.labels.mana : "",
+    );
 
+    // MP TICKER SETTINGS
     let mpticker = document.getElementById("mp-ticker-bar");
     settings.mpticker.enabled
         ? (mpticker.style.display = "")
@@ -408,17 +296,6 @@ async function loadSettings() {
     }`;
 
     // DOT TICKER SETTINGS
-    checkAndInitializeSetting(settings, "dotticker", {});
-    checkAndInitializeSetting(settings.dotticker, "enabled", false);
-    checkAndInitializeSetting(settings.dotticker, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.dotticker, "color", "--filter-grey");
-    checkAndInitializeSetting(settings.dotticker, "scale", 1);
-    checkAndInitializeSetting(settings.dotticker, "rotation", 0);
-    checkAndInitializeSetting(settings.dotticker, "x", 30);
-    checkAndInitializeSetting(settings.dotticker, "y", 264);
-    checkAndInitializeSetting(settings.dotticker, "specificjobsenabled", true);
-    checkAndInitializeSetting(settings.dotticker, "specificjobs", ["BRD"]);
-
     let dotticker = document.getElementById("dot-ticker-bar");
     dotticker.style.display = settings.dotticker.enabled ? "block" : "none";
 
@@ -444,22 +321,6 @@ async function loadSettings() {
     }`;
 
     // HOT TICKER SETTINGS
-    checkAndInitializeSetting(settings, "hotticker", {});
-    checkAndInitializeSetting(settings.hotticker, "enabled", false);
-    checkAndInitializeSetting(settings.hotticker, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.hotticker, "color", "--filter-grey");
-    checkAndInitializeSetting(settings.hotticker, "scale", 1);
-    checkAndInitializeSetting(settings.hotticker, "rotation", 0);
-    checkAndInitializeSetting(settings.hotticker, "x", 30);
-    checkAndInitializeSetting(settings.hotticker, "y", 280);
-    checkAndInitializeSetting(settings.hotticker, "specificjobsenabled", true);
-    checkAndInitializeSetting(settings.hotticker, "specificjobs", [
-        "AST",
-        "SCH",
-        "MKN",
-        "WHM",
-    ]);
-
     let hotticker = document.getElementById("hot-ticker-bar");
     hotticker.style.display = settings.hotticker.enabled ? "block" : "none";
 
@@ -484,21 +345,7 @@ async function loadSettings() {
             : ""
     }`;
 
-    // PULLTIMER SETTINGS
-    checkAndInitializeSetting(settings, "timerbar", {});
-    checkAndInitializeSetting(settings.timerbar, "enabled", true);
-    checkAndInitializeSetting(settings.timerbar, "textenabled", true);
-    checkAndInitializeSetting(settings.timerbar, "color", "--filter-dark-red");
-    checkAndInitializeSetting(settings.timerbar, "scale", 1);
-    checkAndInitializeSetting(settings.timerbar, "rotation", 0);
-    checkAndInitializeSetting(settings.timerbar, "x", 30);
-    checkAndInitializeSetting(settings.timerbar, "y", 200);
-    checkAndInitializeSetting(settings.timerbar, "font", "Arial");
-    checkAndInitializeSetting(settings.timerbar, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.timerbar, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.timerbar, "staticfontsize", false);
-    checkAndInitializeSetting(settings.timerbar, "fontsize", 10);
-
+    // PULL TIMER SETTINGS
     let timerbar = document.getElementById("timer-bar");
     timerbar.style.setProperty(
         "--pulltimerBarColor",
@@ -525,30 +372,6 @@ async function loadSettings() {
     }`;
 
     // DOT TIMER SETTINGS
-    checkAndInitializeSetting(settings, "dottimerbar", {});
-    checkAndInitializeSetting(settings.dottimerbar, "enabled", true);
-    checkAndInitializeSetting(settings.dottimerbar, "hideoutofcombat", false);
-    checkAndInitializeSetting(
-        settings.dottimerbar,
-        "hidewhendroppedoff",
-        false,
-    );
-    checkAndInitializeSetting(settings.dottimerbar, "textenabled", true);
-    checkAndInitializeSetting(settings.dottimerbar, "imageenabled", true);
-    checkAndInitializeSetting(settings.dottimerbar, "ttsenabled", false);
-    checkAndInitializeSetting(settings.dottimerbar, "multidotenabled", true);
-    checkAndInitializeSetting(settings.dottimerbar, "growdirection", 1);
-    checkAndInitializeSetting(settings.dottimerbar, "padding", 20);
-    checkAndInitializeSetting(settings.dottimerbar, "scale", 1);
-    checkAndInitializeSetting(settings.dottimerbar, "rotation", 0);
-    checkAndInitializeSetting(settings.dottimerbar, "x", 30);
-    checkAndInitializeSetting(settings.dottimerbar, "y", 50);
-    checkAndInitializeSetting(settings.dottimerbar, "font", "Arial");
-    checkAndInitializeSetting(settings.dottimerbar, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.dottimerbar, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.dottimerbar, "staticfontsize", false);
-    checkAndInitializeSetting(settings.dottimerbar, "fontsize", 10);
-
     let dottimerbar = document.getElementById("dot-timer-bar");
     dottimerbar.style.width = settings.dottimerbar.scale * 160;
     dottimerbar.style.height = settings.dottimerbar.scale * 15;
@@ -567,29 +390,6 @@ async function loadSettings() {
     dottimerbar.style.transform = `translate(${settings.dottimerbar.x}px, ${settings.dottimerbar.y}px)`;
 
     // BUFF TIMER SETTINGS
-    checkAndInitializeSetting(settings, "bufftimerbar", {});
-    checkAndInitializeSetting(settings.bufftimerbar, "enabled", true);
-    checkAndInitializeSetting(settings.bufftimerbar, "hideoutofcombat", false);
-    checkAndInitializeSetting(
-        settings.bufftimerbar,
-        "hidewhendroppedoff",
-        false,
-    );
-    checkAndInitializeSetting(settings.bufftimerbar, "textenabled", true);
-    checkAndInitializeSetting(settings.bufftimerbar, "imageenabled", true);
-    checkAndInitializeSetting(settings.bufftimerbar, "ttsenabled", false);
-    checkAndInitializeSetting(settings.bufftimerbar, "growdirection", 1);
-    checkAndInitializeSetting(settings.bufftimerbar, "padding", 20);
-    checkAndInitializeSetting(settings.bufftimerbar, "scale", 1);
-    checkAndInitializeSetting(settings.bufftimerbar, "rotation", 0);
-    checkAndInitializeSetting(settings.bufftimerbar, "x", 30);
-    checkAndInitializeSetting(settings.bufftimerbar, "y", 100);
-    checkAndInitializeSetting(settings.bufftimerbar, "font", "Arial");
-    checkAndInitializeSetting(settings.bufftimerbar, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.bufftimerbar, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.bufftimerbar, "staticfontsize", false);
-    checkAndInitializeSetting(settings.bufftimerbar, "fontsize", 10);
-
     let bufftimerbar = document.getElementById("buff-timer-bar");
     bufftimerbar.style.width = settings.bufftimerbar.scale * 160;
     bufftimerbar.style.height = settings.bufftimerbar.scale * 15;
@@ -608,18 +408,6 @@ async function loadSettings() {
     bufftimerbar.style.transform = `translate(${settings.bufftimerbar.x}px, ${settings.bufftimerbar.y}px)`;
 
     // STACKBAR SETTINGS
-    checkAndInitializeSetting(settings, "stacksbar", {});
-    checkAndInitializeSetting(settings.stacksbar, "enabled", true);
-    checkAndInitializeSetting(settings.stacksbar, "hideoutofcombat", false);
-    checkAndInitializeSetting(
-        settings.stacksbar,
-        "color",
-        "--filter-bright-red",
-    );
-    checkAndInitializeSetting(settings.stacksbar, "scale", 1);
-    checkAndInitializeSetting(settings.stacksbar, "x", 30);
-    checkAndInitializeSetting(settings.stacksbar, "y", 170);
-
     let stacksbar = document.getElementById("stacks-bar");
     stacksbar.style.display = settings.stacksbar.enabled ? "block" : "none";
 
@@ -645,41 +433,6 @@ async function loadSettings() {
     stacksbar.style.transform = `translate(${settings.stacksbar.x}px, ${settings.stacksbar.y}px) scale(${settings.stacksbar.scale})`;
 
     // RAIDBUFF SETTINGS
-    checkAndInitializeSetting(settings, "raidbuffs", {});
-    checkAndInitializeSetting(settings.raidbuffs, "enabled", true);
-    checkAndInitializeSetting(settings.raidbuffs, "ttsenabled", false);
-    checkAndInitializeSetting(settings.raidbuffs, "alwaysshow", true);
-    checkAndInitializeSetting(settings.raidbuffs, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.raidbuffs, "hidewhensolo", false);
-    checkAndInitializeSetting(settings.raidbuffs, "orderbypartymember", true);
-    checkAndInitializeSetting(settings.raidbuffs, "growleft", false);
-    checkAndInitializeSetting(settings.raidbuffs, "padding", 0);
-    checkAndInitializeSetting(settings.raidbuffs, "scale", 1);
-    checkAndInitializeSetting(settings.raidbuffs, "columns", 8);
-    checkAndInitializeSetting(settings.raidbuffs, "x", 30);
-    checkAndInitializeSetting(settings.raidbuffs, "y", 240);
-    checkAndInitializeSetting(settings.raidbuffs, "font", "Arial");
-    checkAndInitializeSetting(settings.raidbuffs, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.raidbuffs, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.raidbuffs, "staticfontsize", false);
-    checkAndInitializeSetting(settings.raidbuffs, "fontsize", 24);
-    checkAndInitializeSetting(settings.raidbuffs, "durationoutline", true);
-    checkAndInitializeSetting(settings.raidbuffs, "cooldownoutline", true);
-    checkAndInitializeSetting(settings.raidbuffs, "durationbold", true);
-    checkAndInitializeSetting(settings.raidbuffs, "cooldownbold", true);
-    checkAndInitializeSetting(settings.raidbuffs, "durationcolor", "#FFA500");
-    checkAndInitializeSetting(settings.raidbuffs, "cooldowncolor", "#FFFFFF");
-    checkAndInitializeSetting(
-        settings.raidbuffs,
-        "durationoutlinecolor",
-        "#000000",
-    );
-    checkAndInitializeSetting(
-        settings.raidbuffs,
-        "cooldownoutlinecolor",
-        "#000000",
-    );
-
     let raidbuffs = document.getElementById("raid-buffs-bar");
     raidbuffs.style.display = settings.raidbuffs.enabled ? "block" : "none";
     raidbuffs.style.display = settings.raidbuffs.hidewhensolo
@@ -693,44 +446,11 @@ async function loadSettings() {
         y: settings.raidbuffs.y,
     };
 
+    raidbuffs.classList.remove("ltr", "rtl");
     raidbuffs.classList.add(`${settings.raidbuffs.growleft ? "rtl" : "ltr"}`);
     raidbuffs.style.transform = `translate(${settings.raidbuffs.x}px, ${settings.raidbuffs.y}px)`;
 
     // MITIGATION SETTINGS
-    checkAndInitializeSetting(settings, "mitigation", {});
-    checkAndInitializeSetting(settings.mitigation, "enabled", true);
-    checkAndInitializeSetting(settings.mitigation, "ttsenabled", false);
-    checkAndInitializeSetting(settings.mitigation, "alwaysshow", true);
-    checkAndInitializeSetting(settings.mitigation, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.mitigation, "hidewhensolo", false);
-    checkAndInitializeSetting(settings.mitigation, "growleft", false);
-    checkAndInitializeSetting(settings.mitigation, "padding", 0);
-    checkAndInitializeSetting(settings.mitigation, "scale", 1);
-    checkAndInitializeSetting(settings.mitigation, "columns", 8);
-    checkAndInitializeSetting(settings.mitigation, "x", 30);
-    checkAndInitializeSetting(settings.mitigation, "y", 280);
-    checkAndInitializeSetting(settings.mitigation, "font", "Arial");
-    checkAndInitializeSetting(settings.mitigation, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.mitigation, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.mitigation, "staticfontsize", false);
-    checkAndInitializeSetting(settings.mitigation, "fontsize", 24);
-    checkAndInitializeSetting(settings.mitigation, "durationoutline", true);
-    checkAndInitializeSetting(settings.mitigation, "cooldownoutline", true);
-    checkAndInitializeSetting(settings.mitigation, "durationbold", true);
-    checkAndInitializeSetting(settings.mitigation, "cooldownbold", true);
-    checkAndInitializeSetting(settings.mitigation, "durationcolor", "#FFA500");
-    checkAndInitializeSetting(settings.mitigation, "cooldowncolor", "#FFFFFF");
-    checkAndInitializeSetting(
-        settings.mitigation,
-        "durationoutlinecolor",
-        "#000000",
-    );
-    checkAndInitializeSetting(
-        settings.mitigation,
-        "cooldownoutlinecolor",
-        "#000000",
-    );
-
     let mitigation = document.getElementById("mitigation-bar");
     mitigation.style.display = settings.mitigation.enabled ? "block" : "none";
     mitigation.style.display = settings.mitigation.hidewhensolo
@@ -744,43 +464,11 @@ async function loadSettings() {
         y: settings.mitigation.y,
     };
 
+    mitigation.classList.remove("ltr", "rtl");
     mitigation.classList.add(`${settings.mitigation.growleft ? "rtl" : "ltr"}`);
     mitigation.style.transform = `translate(${settings.mitigation.x}px, ${settings.mitigation.y}px)`;
 
     // PARTY COOLDOWN SETTINGS
-    checkAndInitializeSetting(settings, "party", {});
-    checkAndInitializeSetting(settings.party, "enabled", true);
-    checkAndInitializeSetting(settings.party, "ttsenabled", false);
-    checkAndInitializeSetting(settings.party, "alwaysshow", true);
-    checkAndInitializeSetting(settings.party, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.party, "hidewhensolo", false);
-    checkAndInitializeSetting(settings.party, "growleft", false);
-    checkAndInitializeSetting(settings.party, "padding", 0);
-    checkAndInitializeSetting(settings.party, "scale", 0.8);
-    checkAndInitializeSetting(settings.party, "x", 30);
-    checkAndInitializeSetting(settings.party, "y", 320);
-    checkAndInitializeSetting(settings.party, "font", "Arial");
-    checkAndInitializeSetting(settings.party, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.party, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.party, "staticfontsize", false);
-    checkAndInitializeSetting(settings.party, "fontsize", 24);
-    checkAndInitializeSetting(settings.party, "durationoutline", true);
-    checkAndInitializeSetting(settings.party, "cooldownoutline", true);
-    checkAndInitializeSetting(settings.party, "durationbold", true);
-    checkAndInitializeSetting(settings.party, "cooldownbold", true);
-    checkAndInitializeSetting(settings.party, "durationcolor", "#FFA500");
-    checkAndInitializeSetting(settings.party, "cooldowncolor", "#FFFFFF");
-    checkAndInitializeSetting(
-        settings.party,
-        "durationoutlinecolor",
-        "#000000",
-    );
-    checkAndInitializeSetting(
-        settings.party,
-        "cooldownoutlinecolor",
-        "#000000",
-    );
-
     let party = document.getElementById("party-bar");
     party.style.display = settings.party.enabled ? "block" : "none";
     party.style.display = settings.party.hidewhensolo ? "none" : "block";
@@ -791,45 +479,12 @@ async function loadSettings() {
         x: settings.party.x,
         y: settings.party.y,
     };
+
+    party.classList.remove("ltr", "rtl");
     party.classList.add(`${settings.party.growleft ? "rtl" : "ltr"}`);
     party.style.transform = `translate(${settings.party.x}px, ${settings.party.y}px)`;
 
     // CUSTOM COOLDOWN SETTINGS
-    checkAndInitializeSetting(settings, "customcd", {});
-    checkAndInitializeSetting(settings.customcd, "abilities", []);
-    checkAndInitializeSetting(settings.customcd, "enabled", true);
-    checkAndInitializeSetting(settings.customcd, "ttsenabled", false);
-    checkAndInitializeSetting(settings.customcd, "alwaysshow", true);
-    checkAndInitializeSetting(settings.customcd, "hideoutofcombat", false);
-    checkAndInitializeSetting(settings.customcd, "hidewhensolo", false);
-    checkAndInitializeSetting(settings.customcd, "growleft", false);
-    checkAndInitializeSetting(settings.customcd, "padding", 0);
-    checkAndInitializeSetting(settings.customcd, "scale", 1);
-    checkAndInitializeSetting(settings.customcd, "columns", 8);
-    checkAndInitializeSetting(settings.customcd, "x", 30);
-    checkAndInitializeSetting(settings.customcd, "y", 320);
-    checkAndInitializeSetting(settings.customcd, "font", "Arial");
-    checkAndInitializeSetting(settings.customcd, "fontxoffset", 0);
-    checkAndInitializeSetting(settings.customcd, "fontyoffset", 0);
-    checkAndInitializeSetting(settings.customcd, "staticfontsize", false);
-    checkAndInitializeSetting(settings.customcd, "fontsize", 24);
-    checkAndInitializeSetting(settings.customcd, "durationoutline", true);
-    checkAndInitializeSetting(settings.customcd, "cooldownoutline", true);
-    checkAndInitializeSetting(settings.customcd, "durationbold", true);
-    checkAndInitializeSetting(settings.customcd, "cooldownbold", true);
-    checkAndInitializeSetting(settings.customcd, "durationcolor", "#FFA500");
-    checkAndInitializeSetting(settings.customcd, "cooldowncolor", "#FFFFFF");
-    checkAndInitializeSetting(
-        settings.customcd,
-        "durationoutlinecolor",
-        "#000000",
-    );
-    checkAndInitializeSetting(
-        settings.customcd,
-        "cooldownoutlinecolor",
-        "#000000",
-    );
-
     let customcd = document.getElementById("customcd-bar");
 
     customcd.style.display = settings.customcd.enabled ? "block" : "none";
@@ -842,11 +497,9 @@ async function loadSettings() {
         y: settings.customcd.y,
     };
 
+    customcd.classList.remove("ltr", "rtl");
     customcd.classList.add(`${settings.customcd.growleft ? "rtl" : "ltr"}`);
     customcd.style.transform = `translate(${settings.customcd.x}px, ${settings.customcd.y}px)`;
-
-    currentSettings = settings;
-    saveSettings();
 }
 
 // Parse all current locations of components and then save them in localStorage (legacy) and OverlayPlugin located in %appdata%\Advanced Combat Tracker\Config\RainbowMage.OverlayPlugin.config.json
@@ -1047,6 +700,14 @@ async function saveSettings() {
     currentSettings.party.x = parseInt(ui.dragPosition["party-bar"].x);
     currentSettings.party.y = parseInt(ui.dragPosition["party-bar"].y);
 
+    if (currentSettings.profiles.currentprofile) {
+        let saveSettings = JSON.parse(JSON.stringify(currentSettings));
+        delete saveSettings.profiles;
+        currentSettings.profiles.profiles[
+            currentSettings.profiles.currentprofile
+        ] = saveSettings;
+    }
+
     await callOverlayHandler({
         call: "saveData",
         key: "zeffUI",
@@ -1056,6 +717,16 @@ async function saveSettings() {
 }
 
 // UI Elements and functions
+// Generate Profile options for context menu
+function generateProfileItems() {
+    let profileItems = {};
+    for (let profile in currentSettings.profiles.profiles) {
+        profileItems[`profile_${profile}`] = {};
+        profileItems[`profile_${profile}`].name = profile;
+    }
+    return profileItems;
+}
+
 // Context menu whenever someone rightclicks any UI component
 function loadContextMenu() {
     $(":root").contextMenu({
@@ -1119,6 +790,10 @@ function loadContextMenu() {
                     break;
                 }
             }
+            if (key.includes("profile_")) {
+                let profile = key.split("_")[1];
+                loadProfile(profile);
+            }
         },
         items: {
             lock: {
@@ -1136,6 +811,11 @@ function loadContextMenu() {
             settings: {
                 name: language.find((x) => x.id === "settings").string,
                 icon: "fas fa-cog",
+            },
+            profiles: {
+                name: language.find((x) => x.id === "profiles").string,
+                icon: "fas fa-user",
+                items: generateProfileItems(),
             },
             fold1: {
                 name: language.find((x) => x.id === "language").string,
@@ -1167,13 +847,33 @@ function setUILanguageAndReload(language) {
     location.reload();
 }
 
+// Loads profile
+function loadProfile(profileName) {
+    saveSettings();
+    currentSettings.profiles.currentprofile = profileName;
+
+    let settings = JSON.parse(
+        JSON.stringify(currentSettings.profiles.profiles[profileName]),
+    );
+
+    settings.profiles = currentSettings.profiles;
+    currentSettings = JSON.parse(JSON.stringify(settings));
+
+    setLoadedElements();
+    reloadCooldownModules();
+    saveSettings();
+    //location.reload();
+}
+
 // Opens the settings window and tries to keep track to see if it's opened, also takes OVERLAY_WS parameters into account.
 function openSettingsWindow() {
     let parameters = new URLSearchParams(window.location.search);
     let settingsUrl = parameters.has("OVERLAY_WS")
         ? `settings.html?OVERLAY_WS=${parameters.get("OVERLAY_WS")}`
         : "settings.html";
-    ui.activeSettingsWindow = window.open(settingsUrl, "settings");
+    ui.activeSettingsWindow = window.open(settingsUrl, "zeffui_settings");
+    ui.activeSettingsWindow.onbeforeunload = onSettingsWindowClose;
+    /*
     ui.activeSettingsWindow.onload = function () {
         this.onbeforeunload = function () {
             loadSettings().then(() => {
@@ -1185,6 +885,12 @@ function openSettingsWindow() {
             });
         };
     };
+    */
+}
+
+function onSettingsWindowClose() {
+    ui.activeSettingsWindow = null;
+    location.reload();
 }
 
 // Draws a grid over the whole area for easier placement. It would be better if we could make all lines consistent and not depend on placement of Overlay in OverlayPlugin
@@ -1264,27 +970,7 @@ function toggleLock() {
                 "block";
         }
 
-        let tickerTypes = ["mp", "dot", "hot"];
-        for (let tickerType of tickerTypes) {
-            let ticker = document.getElementById(`${tickerType}-ticker-bar`);
-            if (!currentSettings[`${tickerType}ticker`].enabled)
-                ticker.style.display = "block";
-            if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
-                if (gameState.player) {
-                    if (
-                        !currentSettings[
-                            `${tickerType}ticker`
-                        ].specificjobs.includes(gameState.player.job)
-                    )
-                        ticker.style.display = "block";
-                }
-            }
-
-            ticker.setAttribute(
-                "data-label",
-                language.find((x) => x.id === `${tickerType}ticker`).string,
-            );
-        }
+        setAndCheckTickers(true);
 
         let timerbar = document.getElementById("timer-bar");
         timerbar.style.display = "block";
@@ -1352,23 +1038,8 @@ function toggleLock() {
         ui.locked = false;
         document.documentElement.style.border = "solid";
     } else {
-        let tickerTypes = ["mp", "dot", "hot"];
-        for (let tickerType of tickerTypes) {
-            let ticker = document.getElementById(`${tickerType}-ticker-bar`);
-            if (!currentSettings[`${tickerType}ticker`].enabled)
-                ticker.style.display = "none";
-            if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
-                if (gameState.player) {
-                    if (
-                        !currentSettings[
-                            `${tickerType}ticker`
-                        ].specificjobs.includes(gameState.player.job)
-                    )
-                        ticker.style.display = "none";
-                }
-            }
-            ticker.setAttribute("data-label", "");
-        }
+        setAndCheckTickers();
+
         document.getElementById("timer-bar").style.display = "none";
         document.getElementById("dot-timer-bar").style.display = "none";
         document.getElementById("buff-timer-bar").style.display = "none";
@@ -1456,27 +1127,6 @@ function getSelectorProperties(selector) {
     }
 
     return object;
-}
-
-// Gets the set language in FFXIV Plugin Settings
-async function getACTLocale() {
-    let lang = await callOverlayHandler({ call: "getLanguage" });
-    switch (lang.language) {
-        case "English":
-            return "en";
-        case "German":
-            return "de";
-        case "French":
-            return "fr";
-        case "Japanese":
-            return "jp";
-        case "Chinese":
-            return "cn";
-        case "Korean":
-            return "kr";
-        case "default":
-            return "en";
-    }
 }
 
 // Handles showing/hiding of component based on player settings and if he's in combat
@@ -1629,6 +1279,39 @@ function generateJobStacks() {
     stacks.appendChild(stackfragment);
 }
 
+// Check ticker settings and set the correct properties
+function setAndCheckTickers(setAnchor = false) {
+    let tickerTypes = ["mp", "dot", "hot"];
+    for (let tickerType of tickerTypes) {
+        let tickerBar = document.getElementById(`${tickerType}-ticker-bar`);
+
+        if (setAnchor) {
+            tickerBar.style.display = "block";
+            tickerBar.setAttribute(
+                "data-label",
+                language.find((x) => x.id === `${tickerType}ticker`).string,
+            );
+        } else {
+            tickerBar.style.display = "none";
+            tickerBar.setAttribute("data-label", "");
+        }
+
+        if (currentSettings[`${tickerType}ticker`].enabled) {
+            if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
+                if (
+                    currentSettings[
+                        `${tickerType}ticker`
+                    ].specificjobs.includes(gameState.player.job)
+                ) {
+                    tickerBar.style.display = "block";
+                } else {
+                    tickerBar.style.display = "none";
+                }
+            }
+        }
+    }
+}
+
 // Handles reloading all the modules (after for example changing settings or coming into a battle live)
 function reloadCooldownModules() {
     toLog([
@@ -1663,10 +1346,13 @@ function generateCustomCooldowns() {
         (x) => x.type === "CustomCooldown" && x.level <= gameState.player.level,
     )) {
         let pushAbility = false;
+        let base = "";
+        if (currentJob.base) base = currentJob.base;
         if (
             ability.job === currentJob.name ||
             ability.job === currentJob.type ||
-            ability.job === currentJob.position_type
+            ability.job === currentJob.position_type ||
+            ability.job === base
         ) {
             if (ability.extra.hide !== true) pushAbility = true;
         }
@@ -1716,9 +1402,12 @@ function generateMitigation() {
             );
         }
         let pushAbility = false;
+        let base = "";
+        if (currentJob.base) base = currentJob.base;
         if (
             ability.job === currentJob.name ||
-            ability.job === currentJob.type
+            ability.job === currentJob.type ||
+            ability.job === base
         ) {
             pushAbility = true;
         }
@@ -1758,12 +1447,15 @@ function generatePartyCooldowns() {
     );
 
     for (let partyMember of gameState.partyList) {
+        let base = "";
+        if (partyMember.base) base = partyMember.base;
         for (let ability of mergedAbilityList.filter(
             (x) =>
                 x.type === "Party" &&
                 (x.job === partyMember.job.name ||
                     x.job === partyMember.job.type ||
-                    x.job === partyMember.job.position_type) &&
+                    x.job === partyMember.job.position_type ||
+                    x.job === base) &&
                 x.level <= gameState.player.level,
         )) {
             if (
@@ -1807,12 +1499,15 @@ function generateRaidBuffs() {
     );
 
     for (let partyMember of gameState.partyList) {
+        let base = "";
+        if (partyMember.base) base = partyMember.base;
         for (let ability of mergedAbilityList.filter(
             (x) =>
                 x.type === "RaidBuff" &&
                 (x.job === partyMember.job.name ||
                     x.job === partyMember.job.type ||
-                    x.job === partyMember.job.position_type) &&
+                    x.job === partyMember.job.position_type ||
+                    x.job === base) &&
                 x.level <= gameState.player.level,
         )) {
             if (
@@ -2167,7 +1862,7 @@ function generatePartyList(party) {
     let currentPlayerElement = gameState.partyList.find(
         (x) => x.name === gameState.player.name,
     );
-    gameState.partyList.sort((a, b) => a.id - b.id);
+    gameState.partyList.sort((a, b) => b.id - a.id);
     gameState.partyList.sort(
         (a, b) => jobOrder.indexOf(a.job.name) - jobOrder.indexOf(b.job.name),
     );
@@ -2887,6 +2582,7 @@ function handleAbilityTTS(ability, selector, onYou = true) {
     }
 }
 
+// Replace icon based on settings
 function processIconUrl(icon) {
     if (
         currentSettings.general.usehdicons &&
@@ -2908,11 +2604,6 @@ function setWebTTS(text) {
     iframe.style.display = "none";
     document.body.appendChild(iframe);
     let encText = encodeURIComponent(text);
-
-    /*
-    let ttsLang = currentSettings.language;
-    if (currentSettings.language == "jp") ttsLang = "ja";
-    */
 
     // For CN User
     // https://fanyi.baidu.com/gettts?lan=zh&spd=5&source=web&text=
@@ -3052,27 +2743,15 @@ function onJobChange(job) {
     gameState.playerTags.job = language.find(
         (x) => x.id === job.toLowerCase(),
     ).string;
-    let tickerTypes = ["mp", "dot", "hot"];
-    for (let tickerType of tickerTypes) {
-        let tickerBar = document.getElementById(`${tickerType}-ticker-bar`);
-        if (currentSettings[`${tickerType}ticker`].enabled) {
-            if (currentSettings[`${tickerType}ticker`].specificjobsenabled) {
-                if (
-                    currentSettings[
-                        `${tickerType}ticker`
-                    ].specificjobs.includes(job)
-                ) {
-                    tickerBar.style.display = "block";
-                } else {
-                    tickerBar.style.display = "none";
-                }
-            } else {
-                tickerBar.style.display = "none";
-            }
-        } else {
-            tickerBar.style.display = "none";
-        }
+    if (
+        Object.prototype.hasOwnProperty.call(
+            currentSettings.profiles.jobprofiles,
+            job.toLowerCase(),
+        )
+    ) {
+        loadProfile(currentSettings.profiles.jobprofiles[job.toLowerCase()]);
     }
+    setAndCheckTickers();
 
     if (job === "SMN") {
         initializeSmn();
@@ -3122,25 +2801,7 @@ function onPlayerChangedEvent(e) {
         setCurrentRole();
     }
     if (gameState.partyList.length === 0) {
-        let tickerTypes = ["mp", "dot", "hot"];
-        for (let tickerType of tickerTypes) {
-            let tickerBar = document.getElementById(`${tickerType}-ticker-bar`);
-            if (currentSettings[`${tickerType}ticker`].enabled) {
-                if (
-                    currentSettings[`${tickerType}ticker`].specificjobsenabled
-                ) {
-                    if (
-                        currentSettings[
-                            `${tickerType}ticker`
-                        ].specificjobs.includes(e.detail.job)
-                    ) {
-                        tickerBar.style.display = "block";
-                    } else {
-                        tickerBar.style.display = "none";
-                    }
-                }
-            }
-        }
+        setAndCheckTickers();
         window
             .callOverlayHandler({ call: "getCombatants" })
             .then((e) => checkForParty(e));

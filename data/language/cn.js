@@ -54,6 +54,7 @@ var language = [
 	{ id: "overridedescription", string: "在此处自定义任何能力技监控的特殊设定。" },
 	{ id: "importexportdescription", string: "在此处导入或导出设置。" },
 	{ id: "debugdescription", string: "在此处修改ZeffUI的调试选项。" },
+	{ id: "profiledescription", string: "Here you can find profile options for ZeffUI." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "X轴位置" },
 	{ id: "posy", string: "Y轴位置" },
@@ -134,6 +135,14 @@ var language = [
 	{ id: "setjob", string: "设置职业" },
 	{ id: "customfonts", string: "自定义字体" },
 	{ id: "customcss", string: "自定CSS" },
+	{ id: "profiles", string: "Profiles" },
+	{ id: "load", string: "Load" },
+	{ id: "profilename", string: "Profile Name" },
+	{ id: "job", string: "Job" },
+	{ id: "linkjob", string: "Link to job" },
+	{ id: "linkall", string: "Link to all" },
+	{ id: "unlink", string: "Unlink" },
+	{ id: "includeprofiles", string: "Include profiles" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },
@@ -217,5 +226,7 @@ var language = [
 	{ id: "currentsettingscopied", string: "你当前的设置已被复制到剪贴板中。" },
 	{ id: "importsettingsoverwrite", string: "你确定要导入这些设置吗？这将完全覆盖你以前的设置！" },
 	{ id: "invalidsettingsstring", string: "设置字符串无效，请仔细检查你所粘贴的内容。" },
-	{ id: "lockoverlay", string: "必须锁定悬浮窗才能移动UI锚点。" },	
+	{ id: "lockoverlay", string: "必须锁定悬浮窗才能移动UI锚点。" },
+	{ id: "deleteprofile", string: "Are you sure you want to delete this profile?" },
+	{ id: "experimentalsavesettings", string: "Experimental, this might cause issues. Export and save your settings." },
 ];

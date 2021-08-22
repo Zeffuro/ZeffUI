@@ -73,8 +73,8 @@ var jobList = [
     {
         id: 10,
         name: "ARM",
-        type: "Crafter",
         fullname: "Armorer",
+        type: "Crafter",
         position_type: "None",
     },
     {
@@ -139,6 +139,7 @@ var jobList = [
         fullname: "Paladin",
         type: "Tank",
         position_type: "Melee",
+        base: "GLA",
     },
     {
         id: 20,
@@ -146,6 +147,7 @@ var jobList = [
         fullname: "Monk",
         type: "MeleeDPS",
         position_type: "Melee",
+        base: "PUG",
     },
     {
         id: 21,
@@ -153,6 +155,7 @@ var jobList = [
         fullname: "Warrior",
         type: "Tank",
         position_type: "Melee",
+        base: "MRD",
     },
     {
         id: 22,
@@ -160,6 +163,7 @@ var jobList = [
         fullname: "Dragoon",
         type: "MeleeDPS",
         position_type: "Melee",
+        base: "LNC",
     },
     {
         id: 23,
@@ -167,6 +171,7 @@ var jobList = [
         fullname: "Bard",
         type: "RangedDPS",
         position_type: "Ranged",
+        base: "ARC",
     },
     {
         id: 24,
@@ -174,6 +179,7 @@ var jobList = [
         fullname: "White Mage",
         type: "Healer",
         position_type: "Caster",
+        base: "CNJ",
     },
     {
         id: 25,
@@ -181,6 +187,7 @@ var jobList = [
         fullname: "Black Mage",
         type: "CasterDPS",
         position_type: "Caster",
+        base: "THM",
     },
     {
         id: 26,
@@ -195,6 +202,7 @@ var jobList = [
         fullname: "Summoner",
         type: "CasterDPS",
         position_type: "Caster",
+        base: "ACN",
     },
     {
         id: 28,
@@ -202,6 +210,7 @@ var jobList = [
         fullname: "Scholar",
         type: "Healer",
         position_type: "Caster",
+        base: "ACN",
     },
     {
         id: 29,
@@ -216,6 +225,7 @@ var jobList = [
         fullname: "Ninja",
         type: "MeleeDPS",
         position_type: "Melee",
+        base: "ROG",
     },
     {
         id: 31,

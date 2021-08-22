@@ -15,8 +15,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.4.0/js/bootstrap-colorpicker.min.js"></script>
 		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
 		<script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
+		<script src="scripts/default_settings.js"></script>
 		<script src="scripts/settings.js"></script>
 		<script src="data/abilities.js"></script>
+		<script src="data/jobs.js"></script>
 		<title>ZeffUI Settings</title>
 	</head>
 	<body>
@@ -67,10 +69,13 @@
 							<a class="nav-link" href="#anchor_override" id="lang_overrideoptions_2">Override Options</a>
 						</li>
 						<li class="nav-item">
+							<a class="nav-link" href="#anchor_profiles" id="lang_profiles_2">Profiles</a>
+						</li>
+						<li class="nav-item">
 							<a class="nav-link" href="#anchor_importexport" id="lang_importexport_2">Import / Export</a>
 						</li>
 						<li>
-							<a class="nav-link" id="lang_savesettings_2" onclick="saveSettings(true, true)">Save Settings</a>
+							<a class="nav-link" id="lang_savesettings_2" onclick="saveSettingsAndProfile(true, true)">Save Settings</a>
 						</li>
 					</ul>
 			  	</div>
@@ -135,14 +140,14 @@
 										
 									</select>                                    
 								</div>
-								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="removeCustomFont()" id="customcdDeleteButton"><span id="lang_delete_1">Delete</span></button></div>
+								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="removeCustomFont()" id="customFontDeleteButton"><span id="lang_delete_1">Delete</span></button></div>
 							</div>
 							<div class="form-group row text-right">
 								<label class="control-label col-sm-4"></label>
 								<div class="col-sm-6">
 									<input type="text" class="form-control form-control-sm" placeholder="" id="customFontText">
 								</div>
-								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="addCustomFont()" id="customcdSaveButton"><span id="lang_add_1">Add</span></button></div>
+								<div class="col-sm-2"><button class="btn btn-primary btn-sm" onclick="addCustomFont()" id="customFontSaveButton"><span id="lang_add_1">Add</span></button></div>
 							</div>
 							<br />
 							<div class="form-group">
@@ -195,17 +200,118 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-6" id="anchor_profiles">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
-						<div class="card-header">
-							<div class="form-check form-switch">
-								<input type="checkbox" class="form-check-input" id="debugEnabled">
-								<label id="lang_debug" class="custom-control-label" for="debugEnabled">Debug</label>
-							</div>
+						<div id="lang_profiles" class="card-header">
+							Profiles
 						</div>
 						<div class="card-body">
-							<p id="lang_debugdescription" class="card-text">Here you can find debug options for ZeffUI.</p>
+							<div class="alert alert-dismissible alert-warning">
+								<p class="mb-0" id="lang_experimentalsavesettings">Experimental, this might cause issues. Export and save your settings.</p>
+							</div>
+							<p id="lang_profiledescription" class="card-text">Here you can find profile options for ZeffUI.</p>
+							<div class="form-group row text-right">
+								<label id="lang_profiles_1" class="control-label col-sm-4" for="profileSelect">Profile</label>
+								<div class="col-sm-6">
+									<select class="form-select form-select-sm" id="profileSelect">
+									</select>
+								</div>
+							</div>
+							<div class="form-group text-right">
+								<div class="form-group row text-right">
+									<label class="control-label col-sm-4" for="customcdSaveButton"></label>
+									<div class="col-sm-6" style="text-align: left;">
+										<button class="btn btn-primary btn-sm" onclick="loadProfile()" id="loadProfile"><span id="lang_load">Load</span></button>
+										<button class="btn btn-primary btn-sm" onclick="deleteProfile()" id="deleteProfile"><span id="lang_delete_2">Delete</span></button>
+									</div>
+								</div>
+							</div>
+							<div>
+								<br />
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_profilename" class="control-label col-sm-4" for="profileName">Profile Name</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control form-control-sm" placeholder="" id="profileName">
+								</div>
+							</div>
+							<div class="form-group text-right">
+								<div class="form-group row text-right">
+									<label class="control-label col-sm-4" for="customcdSaveButton"></label>
+									<div class="col-sm-6" style="text-align: left;">
+										<button class="btn btn-primary btn-sm" onclick="saveProfile(false, false, false, true)" id="saveProfile"><span id="lang_save">Save</span></button>
+									</div>
+								</div>
+							</div>
+							<div>
+								<br />
+							</div>
+							<div class="form-group row text-right">
+								<label id="lang_job" class="control-label col-sm-4" for="jobProfileSelect">Job</label>
+								<div class="col-sm-6">									
+									<select class="form-select form-select-sm" id="jobProfileSelect">
+									</select>
+								</div>
+							</div>
+							<div class="form-group text-right">
+								<div class="form-group row text-right">
+									<label class="control-label col-sm-4" for="customcdSaveButton"></label>
+									<div class="col-sm-6" style="text-align: left;">
+										<button class="btn btn-primary btn-sm" onclick="saveJobProfile()" id="saveJobProfile"><span id="lang_linkjob">Link to job</span></button>
+										<button class="btn btn-primary btn-sm" onclick="saveAllJobProfile()" id="saveAllJobProfile"><span id="lang_linkall">Link to all</span></button>
+										<button class="btn btn-primary btn-sm" onclick="deleteJobProfile()" id="deleteJobProfile"><span id="lang_unlink">Unlink</span></button>
+									</div>
+								</div>
+							</div>
 						</div>
+						
+						<div id="anchor_importexport">
+						</div>
+					</div>	
+					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
+						<div id="lang_importexport" class="card-header">
+							Import / Export
+						</div>
+						<div class="card-body">
+							<p id="lang_importexportdescription" class="card-text">Here you can import or export your settings.</p>
+							<textarea id="settingsText" class="form-control" rows="3"></textarea>
+							<br />
+							<div class="row">
+								<div class="form-group">
+									<div class="form-check form-switch">
+										<label id="lang_includeprofiles" class="custom-control-label" for="includeProfiles">Include profiles</label>
+										<input type="checkbox" class="form-check-input" id="includeProfiles">
+									</div>
+								</div>
+								<div><br /></div>
+								<div class="col-lg-4">
+									<button id="lang_exportsettings" type="button" class="btn btn-primary" onclick="exportSettings()">Export Settings</button>
+								</div>
+								<div class="col-lg-4">
+									<button id="lang_importsettings" type="button" class="btn btn-primary" onclick="importSettings()">Import Settings</button>
+								</div>
+								<div class="col-lg-4">
+									<button id="lang_deletesettings" type="button" class="btn btn-primary" onclick="deleteSettings()">Delete All Settings</button>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="alert alert-dismissible alert-warning">
+										<h4 class="alert-heading" id="lang_warning">Warning!</h4>
+										<p class="mb-0" id="lang_jsonwarning">Only import/export as JSON if you know what you're doing!</p>
+									</div>
+								</div>								
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+									<button id="lang_exportsettingsjson" type="button" class="btn btn-primary" onclick="exportSettingsJson()">Export JSON</button>
+								</div>
+								<div class="col-lg-4">
+									<button id="lang_importsettingsjson" type="button" class="btn btn-primary" onclick="importSettingsJson()">Import JSON</button>
+								</div>
+							</div>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -1907,41 +2013,41 @@
 									<label id="lang_jobrole" class="control-label col-sm-4" for="customcdAbilityJob">Job / Role</label>
 									<div class="col-sm-6">
 										<select class="form-select form-select-sm" id="customcdAbilityJob">
-											<option id="lang_tank" value="Tank">Tank</option>
-											<option id="lang_healer" value="Healer">Healer</option>
+											<option id="lang_tank_1" value="Tank">Tank</option>
+											<option id="lang_healer_1" value="Healer">Healer</option>
 											<option id="lang_meleedps" value="MeleeDPS">Melee DPS</option>
 											<option id="lang_rangeddps" value="RangedDPS">Physical Ranged DPS</option>
 											<option id="lang_casterdps" value="CasterDPS">Magic Ranged DPS</option>
 											<option id="lang_melee" value="Melee">Melee</option>
 											<option id="lang_ranged" value="Ranged">Ranged</option>
 											<option id="lang_caster" value="Caster">Caster</option>
-											<option id="lang_acn" value="ACN">ACN</option>
-											<option id="lang_arc" value="ARC">ARC</option>
-											<option id="lang_ast" value="AST">AST</option>
-											<option id="lang_blm" value="BLM">BLM</option>
-											<option id="lang_blu" value="BLU">BLU</option>
-											<option id="lang_brd" value="BRD">BRD</option>
-											<option id="lang_cnj" value="CNJ">CNJ</option>
-											<option id="lang_dnc" value="DNC">DNC</option>
-											<option id="lang_drg" value="DRG">DRG</option>
-											<option id="lang_drk" value="DRK">DRK</option>
-											<option id="lang_gla" value="GLA">GLA</option>
-											<option id="lang_gnb" value="GNB">GNB</option>
-											<option id="lang_lnc" value="LNC">LNC</option>
-											<option id="lang_mch" value="MCH">MCH</option>
-											<option id="lang_mnk" value="MNK">MNK</option>
-											<option id="lang_mrd" value="MRD">MRD</option>
-											<option id="lang_nin" value="NIN">NIN</option>
-											<option id="lang_pgl" value="PGL">PGL</option>
-											<option id="lang_pld" value="PLD">PLD</option>
-											<option id="lang_rdm" value="RDM">RDM</option>
-											<option id="lang_rog" value="ROG">ROG</option>
-											<option id="lang_sam" value="SAM">SAM</option>
-											<option id="lang_sch" value="SCH">SCH</option>
-											<option id="lang_smn" value="SMN">SMN</option>
-											<option id="lang_thm" value="THM">THM</option>
-											<option id="lang_war" value="WAR">WAR</option>
-											<option id="lang_whm" value="WHM">WHM</option>
+											<option id="lang_acn_1" value="ACN">ACN</option>
+											<option id="lang_arc_1" value="ARC">ARC</option>
+											<option id="lang_ast_1" value="AST">AST</option>
+											<option id="lang_blm_1" value="BLM">BLM</option>
+											<option id="lang_blu_1" value="BLU">BLU</option>
+											<option id="lang_brd_1" value="BRD">BRD</option>
+											<option id="lang_cnj_1" value="CNJ">CNJ</option>
+											<option id="lang_dnc_1" value="DNC">DNC</option>
+											<option id="lang_drg_1" value="DRG">DRG</option>
+											<option id="lang_drk_1" value="DRK">DRK</option>
+											<option id="lang_gla_1" value="GLA">GLA</option>
+											<option id="lang_gnb_1" value="GNB">GNB</option>
+											<option id="lang_lnc_1" value="LNC">LNC</option>
+											<option id="lang_mch_1" value="MCH">MCH</option>
+											<option id="lang_mnk_1" value="MNK">MNK</option>
+											<option id="lang_mrd_1" value="MRD">MRD</option>
+											<option id="lang_nin_1" value="NIN">NIN</option>
+											<option id="lang_pgl_1" value="PGL">PGL</option>
+											<option id="lang_pld_1" value="PLD">PLD</option>
+											<option id="lang_rdm_1" value="RDM">RDM</option>
+											<option id="lang_rog_1" value="ROG">ROG</option>
+											<option id="lang_sam_1" value="SAM">SAM</option>
+											<option id="lang_sch_1" value="SCH">SCH</option>
+											<option id="lang_smn_1" value="SMN">SMN</option>
+											<option id="lang_thm_1" value="THM">THM</option>
+											<option id="lang_war_1" value="WAR">WAR</option>
+											<option id="lang_whm_1" value="WHM">WHM</option>
 										</select>
 									</div>
 								</div>
@@ -1993,13 +2099,13 @@
 								<div id="customcdAddButtonDiv" class="form-group row text-right">
 									<label class="control-label col-sm-4" for="customcdAddButton"></label>
 									<div class="col-sm-6" style="text-align: left;">
-										<button class="btn btn-primary btn-sm" onclick="addCustomAbility()" id="customcdAddButton"><span id="lang_add_1">Add</span></button>
+										<button class="btn btn-primary btn-sm" onclick="addCustomAbility()" id="customcdAddButton"><span id="lang_add_2">Add</span></button>
 									</div>
 								</div>
 								<div id="customcdSaveButtonDiv" class="form-group row text-right">
 									<label class="control-label col-sm-4" for="customcdSaveButton"></label>
 									<div class="col-sm-6" style="text-align: left;">
-										<button class="btn btn-primary btn-sm" onclick="saveCustomAbility()" id="customcdSaveButton"><span id="lang_save">Save</span></button>
+										<button class="btn btn-primary btn-sm" onclick="saveCustomAbility()" id="customcdSaveButton"><span id="lang_save_1">Save</span></button>
 										<button class="btn btn-primary btn-sm" onclick="deleteCustomAbility()" id="customcdDeleteButton"><span id="lang_delete">Delete</span></button>
 									</div>
 								</div>
@@ -2008,55 +2114,20 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-6 anchor" id="anchor_importexport">
+			<div class="row">			
+				<div class="col-lg-6">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
-						<div id="lang_importexport" class="card-header">
-							Import / Export
+						<div class="card-header">
+							<div class="form-check form-switch">
+								<input type="checkbox" class="form-check-input" id="debugEnabled">
+								<label id="lang_debug" class="custom-control-label" for="debugEnabled">Debug</label>
+							</div>
 						</div>
 						<div class="card-body">
-							<p id="lang_importexportdescription" class="card-text">Here you can import or export your settings.</p>
-							<textarea id="settingsText" class="form-control" rows="3"></textarea>
-							<br />
-							<div class="row">
-								<div class="col-lg-4">
-									<button id="lang_exportsettings" type="button" class="btn btn-primary" onclick="exportSettings()">Export Settings</button>
-								</div>
-								<div class="col-lg-4">
-									<button id="lang_importsettings" type="button" class="btn btn-primary" onclick="importSettings()">Import Settings</button>
-								</div>
-							</div>
-							<br />
-							<div class="row">
-								<div class="col-lg-12">
-									<div class="alert alert-dismissible alert-warning">
-										<h4 class="alert-heading" id="lang_warning">Warning!</h4>
-										<p class="mb-0" id="lang_jsonwarning">Only import/export as JSON if you know what you're doing!</p>
-									</div>
-								</div>								
-							</div>
-							<div class="row">
-								<div class="col-lg-4">
-									<button id="lang_exportsettingsjson" type="button" class="btn btn-primary" onclick="exportSettingsJson()">Export JSON</button>
-								</div>
-								<div class="col-lg-4">
-									<button id="lang_importsettingsjson" type="button" class="btn btn-primary" onclick="importSettingsJson()">Import JSON</button>
-								</div>
-							</div>
+							<p id="lang_debugdescription" class="card-text">Here you can find debug options for ZeffUI.</p>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-2">
-					<button id="lang_savesettings" type="button" class="btn btn-primary btn-lg" onclick="saveSettings()">Save Settings</button>
-				</div>
-				<div class="col-lg-3">
-					<button id="lang_deletesettings" type="button" class="btn btn-primary btn-lg" onclick="deleteSettings()">Delete All Settings</button>
-				</div>
-			</div>
-			<div class="row">
-				<br />
 			</div>
 		</div>
 	</body>

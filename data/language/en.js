@@ -54,6 +54,7 @@ var language = [
 	{ id: "overridedescription", string: "Here you can change specific default settings for all abilities." },
 	{ id: "importexportdescription", string: "Here you can import or export your settings." },
 	{ id: "debugdescription", string: "Here you can find debug options for ZeffUI." },
+	{ id: "profiledescription", string: "Here you can find profile options for ZeffUI." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "Position X" },
 	{ id: "posy", string: "Position Y" },
@@ -134,6 +135,14 @@ var language = [
 	{ id: "setjob", string: "SET JOB" },
 	{ id: "customfonts", string: "Custom Fonts" },
 	{ id: "customcss", string: "Custom CSS" },
+	{ id: "profiles", string: "Profiles" },
+	{ id: "load", string: "Load" },
+	{ id: "profilename", string: "Profile Name" },
+	{ id: "job", string: "Job" },
+	{ id: "linkjob", string: "Link to job" },
+	{ id: "linkall", string: "Link to all" },
+	{ id: "unlink", string: "Unlink" },
+	{ id: "includeprofiles", string: "Include profiles" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
@@ -217,5 +226,7 @@ var language = [
 	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
 	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
 	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
-	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },	
+	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },
+	{ id: "deleteprofile", string: "Are you sure you want to delete this profile?" },
+	{ id: "experimentalsavesettings", string: "Experimental, this might cause issues. Export and save your settings." },
 ];

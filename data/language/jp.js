@@ -54,6 +54,7 @@ var language = [
 	{ id: "overridedescription", string: "アビリティ毎の詳細設定の上書き設定。" },
 	{ id: "importexportdescription", string: "設定のインポートやエキスポート。" },
 	{ id: "debugdescription", string: "ZeffUIのデバッグ設定。" },
+	{ id: "profiledescription", string: "Here you can find profile options for ZeffUI." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "X軸の位置" },
 	{ id: "posy", string: "Y軸の位置" },
@@ -134,6 +135,14 @@ var language = [
 	{ id: "setjob", string: "SET JOB" },
 	{ id: "customfonts", string: "Custom Fonts" },
 	{ id: "customcss", string: "Custom CSS" },
+	{ id: "profiles", string: "Profiles" },
+	{ id: "load", string: "Load" },
+	{ id: "profilename", string: "Profile Name" },
+	{ id: "job", string: "Job" },
+	{ id: "linkjob", string: "Link to job" },
+	{ id: "linkall", string: "Link to all" },
+	{ id: "unlink", string: "Unlink" },
+	{ id: "includeprofiles", string: "Include profiles" },
 	// SKINS
 	{ id: "skindefault", string: "Default (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
@@ -217,5 +226,7 @@ var language = [
 	{ id: "currentsettingscopied", string: "Your current settings have been copied to your clipboard." },
 	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
 	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
-	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },	
+	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },
+	{ id: "deleteprofile", string: "Are you sure you want to delete this profile?" },
+	{ id: "experimentalsavesettings", string: "Experimental, this might cause issues. Export and save your settings." },
 ];

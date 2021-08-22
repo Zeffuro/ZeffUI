@@ -54,6 +54,7 @@ var language = [
 	{ id: "overridedescription", string: "Hier kannst du Standard-Einstellungen von bestimmten Fähigkeiten überschreiben." },
 	{ id: "importexportdescription", string: "Hier kannst du Einstellungen Exportieren oder Importieren." },
 	{ id: "debugdescription", string: "Hier findest du die Debug-Optionen für ZeffUI." },
+	{ id: "profiledescription", string: "Here you can find profile options for ZeffUI." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "Position X" },
 	{ id: "posy", string: "Position Y" },
@@ -134,6 +135,14 @@ var language = [
 	{ id: "setjob", string: "WÄHLE JOB" },
 	{ id: "customfonts", string: "Benutzerdefinierte Schriftart" },
 	{ id: "customcss", string: "Benutzerdefiniertes CSS" },
+	{ id: "profiles", string: "Profiles" },
+	{ id: "load", string: "Load" },
+	{ id: "profilename", string: "Profile Name" },
+	{ id: "job", string: "Job" },
+	{ id: "linkjob", string: "Link to job" },
+	{ id: "linkall", string: "Link to all" },
+	{ id: "unlink", string: "Unlink" },
+	{ id: "includeprofiles", string: "Include profiles" },
 	// SKINS
 	{ id: "skindefault", string: "Standard (von Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (von skotlex)" },
@@ -217,5 +226,7 @@ var language = [
 	{ id: "currentsettingscopied", string: "Deine aktuellen Einstellungen wurden in deine Zwischenablage kopiert." },
 	{ id: "importsettingsoverwrite", string: "Bist du sicher, dass du diese Einstellungen importieren möchtest? Dies wird alle deine vorherigen Einstellungen überschreiben" },
 	{ id: "invalidsettingsstring", string: "Fehlerhafter settings string, bitte überprüfe deine Eingabe." },
-	{ id: "lockoverlay", string: "BITTE SPERRT DAS OVERLAY IN ACT UM DIE ANKER BEWEGEN ZU KÖNNEN!" },	
+	{ id: "lockoverlay", string: "BITTE SPERRT DAS OVERLAY IN ACT UM DIE ANKER BEWEGEN ZU KÖNNEN!" },
+	{ id: "deleteprofile", string: "Are you sure you want to delete this profile?" },
+	{ id: "experimentalsavesettings", string: "Experimental, this might cause issues. Export and save your settings." },
 ];

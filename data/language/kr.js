@@ -54,6 +54,7 @@ var language = [
 	{ id: "overridedescription", string: "적용되는 기술/능력에 대한 개별 설정을 바꿀 수 있습니다." },
 	{ id: "importexportdescription", string: "현재 설정을 추출하거나 불러올 수 있습니다." },
 	{ id: "debugdescription", string: "Here you can find debug options for ZeffUI." },
+	{ id: "profiledescription", string: "Here you can find profile options for ZeffUI." },
 	// COMPONENT PROPERTIES
 	{ id: "posx", string: "X 위치값" },
 	{ id: "posy", string: "Y 위치값" },
@@ -134,6 +135,14 @@ var language = [
 	{ id: "setjob", string: "SET JOB" },
 	{ id: "customfonts", string: "Custom Fonts" },
 	{ id: "customcss", string: "Custom CSS" },
+	{ id: "profiles", string: "Profiles" },
+	{ id: "load", string: "Load" },
+	{ id: "profilename", string: "Profile Name" },
+	{ id: "job", string: "Job" },
+	{ id: "linkjob", string: "Link to job" },
+	{ id: "linkall", string: "Link to all" },
+	{ id: "unlink", string: "Unlink" },
+	{ id: "includeprofiles", string: "Include profiles" },
 	// SKINS
 	{ id: "skindefault", string: "기본 (by Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (by skotlex)" },
@@ -218,4 +227,6 @@ var language = [
 	{ id: "importsettingsoverwrite", string: "Are you sure you want to import these settings? This will completely overwrite your previous settings!" },
 	{ id: "invalidsettingsstring", string: "Invalid settings string, please doublecheck what you have pasted in." },
 	{ id: "lockoverlay", string: "PLEASE LOCK THE OVERLAY IN ACT TO BE ABLE TO MOVE THE ANCHORS!" },
+	{ id: "deleteprofile", string: "Are you sure you want to delete this profile?" },
+	{ id: "experimentalsavesettings", string: "Experimental, this might cause issues. Export and save your settings." },
 ];

@@ -1,5 +1,5 @@
 // ZeffUI globals
-/* global abilityList, language, Base64 */
+/* global abilityList, jobList, language, Base64, checkAndInitializeDefaultSettingsObject */
 
 // External Globals
 /* global startOverlayEvents, callOverlayHandler, sortable */
@@ -130,8 +130,143 @@ function setExampleColor(element) {
     }
 }
 
+/* exported loadProfile */
+function loadProfile() {
+    let profileName = $("#profileSelect").val();
+    if (profileName) {
+        currentSettings.profiles.currentprofile = profileName;
+        saveSettings(false);
+    }
+}
+
+/* exported saveProfile */
+function saveProfile(
+    currentProfile = false,
+    closeWindow = false,
+    showPopup = false,
+    dontReload = false,
+    dontUseForms = false,
+) {
+    if (!dontUseForms) saveAllSettings();
+
+    let profileName = currentProfile
+        ? currentSettings.profiles.currentprofile
+        : $("#profileName").val();
+    if (profileName) {
+        if (
+            Object.prototype.hasOwnProperty.call(
+                currentSettings.profiles.profiles,
+                profileName && currentProfile,
+            )
+        ) {
+            return;
+        }
+
+        let profileSettings = JSON.parse(JSON.stringify(currentSettings));
+        delete profileSettings.profiles;
+        currentSettings.profiles.profiles[profileName] = JSON.parse(
+            JSON.stringify(profileSettings),
+        );
+        currentSettings.profiles.currentprofile = profileName;
+        saveSettings(closeWindow, showPopup, dontReload, dontUseForms);
+        createProfileSelects();
+    }
+}
+
+/* exported saveJobProfile */
+function saveJobProfile() {
+    let profileName = $("#profileSelect").val();
+    let job = $("#jobProfileSelect").val();
+    if (profileName) {
+        currentSettings.profiles.jobprofiles[job] = profileName;
+        let jobName = language.find((x) => x.id === job).string;
+        $(`#jobProfileSelect option[value=${job}]`).html(
+            `[${jobName}] ${profileName}`,
+        );
+    }
+    saveAllSettings();
+}
+
+/* exported saveAllJobProfile */
+function saveAllJobProfile() {
+    let profileName = $("#profileSelect").val();
+    if (profileName) {
+        let list = jobList.filter(
+            (x) => x.id != 0 && x.type != "Gatherer" && x.type != "Crafter",
+        );
+        list.sort(function (a, b) {
+            if (a.name > b.name) return 1;
+            if (a.name < b.name) return -1;
+            return 0;
+        });
+
+        for (let i in list) {
+            let job = list[i].name.toLocaleLowerCase();
+            currentSettings.profiles.jobprofiles[job] = profileName;
+
+            let jobName = language.find((x) => x.id === job).string;
+            $(`#jobProfileSelect option[value=${job}]`).html(
+                `[${jobName}] ${profileName}`,
+            );
+        }
+    }
+    saveAllSettings();
+}
+
+/* exported deleteJobProfile */
+function deleteJobProfile() {
+    let profileName = $("#profileSelect").val();
+    let job = $("#jobProfileSelect").val();
+    if (profileName) {
+        delete currentSettings.profiles.jobprofiles[job];
+        let jobName = language.find((x) => x.id === job).string;
+        $(`#jobProfileSelect option[value=${job}]`).html(`[${jobName}]`);
+    }
+    saveAllSettings();
+}
+
+/* exported deleteProfile */
+function deleteProfile() {
+    let profileName = $("#profileSelect").val();
+    if (
+        Object.prototype.hasOwnProperty.call(
+            currentSettings.profiles.profiles,
+            profileName,
+        )
+    ) {
+        if (
+            confirm(
+                `${
+                    language.find((x) => x.id === "deleteprofile").string
+                }\n\n${profileName}`,
+            )
+        ) {
+            for (let [job, profile] of Object.entries(
+                currentSettings.profiles.jobprofiles,
+            )) {
+                if (profile == profileName) {
+                    delete currentSettings.profiles.jobprofiles[job];
+                }
+            }
+            delete currentSettings.profiles.profiles[profileName];
+            if (currentSettings.profiles.currentprofile == profileName) {
+                let profileList = Object.keys(
+                    currentSettings.profiles.profiles,
+                );
+                if (profileList.length > 0) {
+                    currentSettings.profiles.currentprofile = profileList[0];
+                } else {
+                    currentSettings.profiles.currentprofile = "";
+                }
+            }
+            saveSettings(false, false, true);
+            createProfileSelects();
+            createJobProfileSelect();
+        }
+    }
+}
+
 function saveCurrentPartyRoleOrder() {
-    console.log("Saving Order", currentPartyRole);
     currentSettings.rolepartyorder[currentPartyRole] = sortable(
         "#partyOrder",
         "serialize",
@@ -169,6 +304,16 @@ function titleCase(string) {
             return word.replace(word[0], word[0].toUpperCase());
         })
         .join(" ");
+}
+
+function createProfileSelects() {
+    $("#profileSelect").empty();
+    for (let profile in currentSettings.profiles.profiles) {
+        $("#profileSelect").append(
+            `<option value="${profile}">${profile}</option>`,
+        );
+    }
+    $("#profileSelect").val(currentSettings.profiles.currentprofile);
 }
 
 function createColorSelects() {
@@ -314,6 +459,34 @@ function createFontSelects() {
         $("#partyFont").val(currentFont.party);
         $("#customcdFont").val(currentFont.customcd);
     })();
+}
+
+function createJobProfileSelect() {
+    $("#jobProfileSelect").empty();
+    let list = jobList.filter(
+        (x) => x.id != 0 && x.type != "Gatherer" && x.type != "Crafter",
+    );
+    list.sort(function (a, b) {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+    });
+    for (let i in list) {
+        let job = list[i].name.toLowerCase();
+        let jobName = language.find((x) => x.id === job).string;
+        let jobString = `[${jobName}]`;
+        if (
+            Object.prototype.hasOwnProperty.call(
+                currentSettings.profiles.jobprofiles,
+                job,
+            )
+        ) {
+            jobString = `[${jobName}] ${currentSettings.profiles.jobprofiles[job]}`;
+        }
+        $("#jobProfileSelect").append(
+            `<option value="${job}">${jobString}</option>`,
+        );
+    }
 }
 
 function createSpecificJobs(selector, enabledJobs) {
@@ -539,6 +712,7 @@ function switchCustomcdMode() {
             $("#customcdDeleteButtonDiv").show();
             break;
         case "1":
+            $("#customcdIconPreview").attr("src", "");
             $("#customcdSearchDiv").show();
             $("#customcdSearchButtonDiv").show();
             $("#customcdAbilitySelectDiv").hide();
@@ -593,8 +767,8 @@ function loadCustomCdAbility() {
             $("#customcdAbilityJob").val(ability.job);
             $("#customcdAbilityDuration").val(ability.duration);
             $("#customcdAbilityCooldown").val(ability.cooldown);
-            if (ability.charges) {
-                $("#customcdAbilityCharges").val(ability.charges);
+            if (ability.extra.charges) {
+                $("#customcdAbilityCharges").val(ability.extra.charges);
             } else {
                 $("#customcdAbilityCharges").val(0);
             }
@@ -666,7 +840,7 @@ function addCustomAbility() {
                 return;
             ability = foundAbilities.find((x) => x.ID == id);
             addAbility = {
-                id: $("#customcdAbilityId").val(),
+                id: parseInt($("#customcdAbilityId").val()),
                 name: ability.Name_en,
                 name_cn: ability.Name_cn,
                 name_de: ability.Name_de,
@@ -703,10 +877,8 @@ function saveCustomAbility() {
 }
 
 function deleteCustomAbility(removeFromSelect = true) {
-    let id = $("#customcdAbilitySelect").val();
-    removedAbility = currentSettings.customcd.abilities.find(
-        (x) => x.id === id,
-    );
+    let id = parseInt($("#customcdAbilitySelect").val());
+    removedAbility = currentSettings.customcd.abilities.find((x) => x.id == id);
     currentSettings.customcd.abilities = currentSettings.customcd.abilities.filter(
         (x) => x.id != id,
     );
@@ -857,7 +1029,9 @@ function loadFont(type) {
 
 /* exported loadLanguage */
 async function loadLanguage() {
-    $("#language").attr("src", `data/language/${$("#langSelect").val()}.js`);
+    let lang = $("#langSelect").val();
+    $("#language").attr("src", `data/language/${lang}.js`);
+    setOption("language", lang);
     await saveSettings(false);
 }
 
@@ -906,7 +1080,11 @@ async function exportSettings() {
     if (currentSettings == null) {
         await saveSettings();
     }
-    $("#settingsText").val(Base64.encodeURI(JSON.stringify(currentSettings)));
+    let exportSettings = JSON.parse(JSON.stringify(currentSettings));
+    if (!$("#includeProfiles").prop("checked")) {
+        delete exportSettings.profiles;
+    }
+    $("#settingsText").val(Base64.encodeURI(JSON.stringify(exportSettings)));
     $("#settingsText").select();
     document.execCommand("copy");
     alert(language.find((x) => x.id === "currentsettingscopied").string);
@@ -917,7 +1095,12 @@ async function exportSettingsJson() {
     if (currentSettings == null) {
         await saveSettings();
     }
-    $("#settingsText").val(JSON.stringify(currentSettings, null, 2));
+    let exportSettings = JSON.parse(JSON.stringify(currentSettings));
+    if (!$("#includeProfiles").prop("checked")) {
+        let exportSettings = JSON.parse(JSON.stringify(currentSettings));
+        delete exportSettings.profiles;
+    }
+    $("#settingsText").val(JSON.stringify(exportSettings, null, 2));
     $("#settingsText").select();
     document.execCommand("copy");
     alert(language.find((x) => x.id === "currentsettingscopied").string);
@@ -928,6 +1111,9 @@ async function importSettings() {
     try {
         let decoded = Base64.decode($("#settingsText").val());
         let settings = JSON.parse(decoded);
+        if (!$("#includeProfiles").prop("checked")) {
+            delete settings.profiles;
+        }
         if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
             if (
                 confirm(
@@ -936,6 +1122,15 @@ async function importSettings() {
                 )
             ) {
                 let saveSettings = { ...currentSettings, ...settings };
+                if (currentSettings.profiles.currentprofile) {
+                    let profileSettings = JSON.parse(
+                        JSON.stringify(saveSettings),
+                    );
+                    delete profileSettings.profiles;
+                    saveSettings.profiles.profiles[
+                        currentSettings.profiles.currentprofile
+                    ] = profileSettings;
+                }
                 await callCurrentOverlayHandler({
                     call: "saveData",
                     key: "zeffUI",
@@ -961,6 +1156,9 @@ async function importSettingsJson() {
     try {
         let decoded = $("#settingsText").val();
         let settings = JSON.parse(decoded);
+        if (!$("#includeProfiles").prop("checked")) {
+            delete settings.profiles;
+        }
         if (Object.prototype.hasOwnProperty.call(settings, "healthbar")) {
             if (
                 confirm(
@@ -996,6 +1194,20 @@ async function loadSettings() {
     });
     if (settings.data !== undefined) {
         settings = settings.data;
+
+        console.log(settings);
+
+        // Check and load profiles
+        if (settings.profiles.profiles.length !== 0) {
+            let profiles = settings.profiles;
+            if (profiles.currentprofile) {
+                settings = JSON.parse(
+                    JSON.stringify(profiles.profiles[profiles.currentprofile]),
+                );
+                settings.profiles = profiles;
+            }
+        }
+
         currentSettings = settings;
 
         currentFont.default = settings.font;
@@ -1024,6 +1236,8 @@ async function loadSettings() {
             // eslint-disable-next-line no-useless-escape
             $.getScript(`data/language/${settings.language}.js`, function () {
                 processLanguage();
+                createProfileSelects();
+                createJobProfileSelect();
                 createColorSelects();
                 createSkinSelects();
                 createFontSelects();
@@ -1673,15 +1887,26 @@ async function loadSettings() {
     }
 }
 
-async function saveSettings(closeWindow = true, showPopup = false) {
+function setOption(option, value) {
+    if (currentSettings.profiles.currentprofile) {
+        currentSettings.profiles.profiles[
+            currentSettings.profiles.currentprofile
+        ][option] = value;
+    }
+    currentSettings[option] = value;
+}
+
+function saveAllSettings() {
     saveCurrentPartyRoleOrder();
+
     let settings = {
+        profiles: JSON.parse(JSON.stringify(currentSettings.profiles)),
         skin: $("#skinSelect").val(),
         language: $("#langSelect").val(),
         font: $("#defaultFont").val(),
         customfonts: currentSettings.customfonts,
         includealliance: $("#includeAlliance").is(":checked"),
-        partyorder: await sortable("#partyOrder", "serialize")[0].items,
+        partyorder: sortable("#partyOrder", "serialize")[0].items,
         rolepartyorder: currentSettings.rolepartyorder,
         override: currentSettings.override,
         debug: {
@@ -1711,6 +1936,9 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             fontsize: parseInt($("#healthFontSize").val()),
         },
         manabar: {
+            BLM: currentSettings.manabar.BLM,
+            DRK: currentSettings.manabar.DRK,
+            PLD: currentSettings.manabar.PLD,
             enabled: $("#manaBarEnabled").is(":checked"),
             hideoutofcombat: $("#manaHideOutOfCombat").is(":checked"),
             textenabled: $("#manaTextEnabled").is(":checked"),
@@ -1952,7 +2180,31 @@ async function saveSettings(closeWindow = true, showPopup = false) {
         },
     };
 
-    console.log(settings);
+    currentSettings = settings;
+}
+
+/* exported saveSettingsAndProfile */
+function saveSettingsAndProfile(
+    closeWindow = true,
+    showPopup = false,
+    dontUseForms = false,
+) {
+    if (currentSettings.profiles.currentprofile) {
+        saveProfile(true, closeWindow, showPopup, false, dontUseForms);
+    } else {
+        saveSettings(closeWindow, showPopup, false, dontUseForms);
+    }
+}
+
+async function saveSettings(
+    closeWindow = true,
+    showPopup = false,
+    dontReload = false,
+    dontUseForms = false,
+) {
+    if (!dontUseForms) saveAllSettings();
+
+    let settings = JSON.parse(JSON.stringify(currentSettings));
 
     await callCurrentOverlayHandler({
         call: "saveData",
@@ -1971,19 +2223,27 @@ async function saveSettings(closeWindow = true, showPopup = false) {
             }
         }
         window.close();
-    } else location.reload();
+    } else {
+        if (!dontReload) location.reload();
+    }
 }
 
 /* exported deleteSettings */
 async function deleteSettings() {
     if (confirm(language.find((x) => x.id === "deleteallsettings").string)) {
-        localStorage.clear();
-        await callCurrentOverlayHandler({
-            call: "saveData",
-            key: "zeffUI",
-            data: {},
-        });
-        alert(language.find((x) => x.id === "reloadoverlay").string);
-        window.close();
+        let lang = currentSettings.language;
+        let profiles = JSON.parse(JSON.stringify(currentSettings.profiles));
+        let newSettings = await checkAndInitializeDefaultSettingsObject(
+            {},
+            lang,
+        );
+        let includeProfiles = $("#includeProfiles").prop("checked");
+        currentSettings = newSettings;
+
+        if (!includeProfiles) {
+            currentSettings.profiles = profiles;
+        }
+
+        saveSettingsAndProfile(true, true, true);
     }
 }
