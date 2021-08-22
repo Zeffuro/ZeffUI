@@ -171,7 +171,7 @@ var language = [
 	{ id: "war", string: "Warrior" },
 	{ id: "mrd", string: "Marauder" },
 	{ id: "drk", string: "Dark Knight" },
-	{ id: "gnb", string: "Gunblade" },
+	{ id: "gnb", string: "Gunbreaker" },
 	{ id: "whm", string: "White Mage" },
 	{ id: "cnj", string: "Conjurer" },
 	{ id: "sch", string: "Scholar" },

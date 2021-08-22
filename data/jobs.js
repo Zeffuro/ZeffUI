@@ -272,7 +272,7 @@ var jobList = [
     {
         id: 37,
         name: "GNB",
-        fullname: "Gunblade",
+        fullname: "Gunbreaker",
         type: "Tank",
         position_type: "Melee",
     },
