@@ -2977,17 +2977,47 @@ function updateManaTags() {
     gameState.playerTags.currentMaxMP = `${gameState.player.currentMP} / ${gameState.player.maxMP}`;
 }
 
+function abbreviateNumber(num) {
+    return Math.abs(num) > 999
+        ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + "k"
+        : Math.sign(num) * Math.abs(num);
+}
+
 // Loop through all possible tags and returns text
 function processTextFormat(text) {
     let tagMap = {
         "[health:current]": gameState.player.currentHP,
+        "[health:current-short]": abbreviateNumber(gameState.player.currentHP),
+        "[health:current-percent]":
+            gameState.player.currentHP === gameState.player.maxHP
+                ? `${gameState.player.currentHP}`
+                : `${gameState.player.currentHP} - ${gameState.playerTags.percentHP}%`,
+        "[health:current-percent-short]":
+            gameState.player.currentHP === gameState.player.maxHP
+                ? `${abbreviateNumber(gameState.player.currentHP)}`
+                : `${abbreviateNumber(gameState.player.currentHP)} - ${
+                      gameState.playerTags.percentHP
+                  }%`,
         "[health:current-max]": gameState.playerTags.currentMaxHP,
         "[health:max]": gameState.player.maxHP,
+        "[health:max-short]": abbreviateNumber(gameState.player.maxHP),
         "[health:percent]": gameState.playerTags.percentHP,
         "[health:deficit]": gameState.playerTags.deficitHP,
         "[mana:current]": gameState.player.currentMP,
+        "[mana:current-short]": abbreviateNumber(gameState.player.currentMP),
+        "[mana:current-percent]":
+            gameState.player.currentMP === gameState.player.maxMP
+                ? `${gameState.player.currentMP}`
+                : `${gameState.player.currentMP} - ${gameState.playerTags.percentMP}%`,
+        "[mana:current-percent-short]":
+            gameState.player.currentMP === gameState.player.maxMP
+                ? `${abbreviateNumber(gameState.player.currentMP)}`
+                : `${abbreviateNumber(gameState.player.currentMP)} - ${
+                      gameState.playerTags.percentMP
+                  }%`,
         "[mana:current-max]": gameState.playerTags.currentMaxMP,
         "[mana:max]": gameState.player.maxMP,
+        "[mana:max-short]": abbreviateNumber(gameState.player.maxMP),
         "[mana:percent]": gameState.playerTags.percentMP,
         "[mana:deficit]": gameState.playerTags.deficitMP,
         "[name]": gameState.player.name,
