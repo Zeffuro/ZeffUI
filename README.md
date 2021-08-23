@@ -208,7 +208,7 @@ If you need any help either raise an issue or join the [DelvUI Discord](https://
 
 ## Licensing, Trademarks, Copyright
 
-ZeffUI is open source under the [Apache License, Version 2.0](LICENSE).
+ZeffUI is open source under the [GNU AFFERO GENERAL PUBLIC LICENSE](LICENSE).
 
 FINAL FANTASY is a registered trademark of Square Enix Holdings Co., Ltd.
 
