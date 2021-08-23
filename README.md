@@ -1,13 +1,15 @@
 # ZeffUI
+
 A FFXIV Overlay for OverlayPlugin using HTML and JS
 
 1. [About](#about)
 1. [Installing](#installing)
 1. [Customization](#customization)
+1. [Contacting](#contacting)
 
 ## About
 
-ZeffUI is an ACT overlay that provides  for [Final Fantasy XIV](http://www.finalfantasyxiv.com/). This project uses [cactbot](https://github.com/quisquous/cactbot/) and [ngld's OverlayPlugin](https://github.com/ngld/OverlayPlugin)
+ZeffUI is an ACT overlay that provides for [Final Fantasy XIV](http://www.finalfantasyxiv.com/). This project uses [cactbot](https://github.com/quisquous/cactbot/) and [ngld's OverlayPlugin](https://github.com/ngld/OverlayPlugin)
 which are plugins for
 [Advanced Combat Tracker](http://advancedcombattracker.com/).
 
@@ -17,45 +19,45 @@ ZeffUI is currently pretty customizeable and I'm hoping it's only going to get b
 
 ![settings screenshot](screenshots/settings.png)
 
-ZeffUI currently has these modules built in: 
+ZeffUI currently has these modules built in:
 
-* Health and Manabars
+-   Health and Manabars
 
 ![healthmana screenshot](screenshots/healthmana.png)
 
-* MP Ticker
+-   MP Ticker
 
 ![mpticker gif](screenshots/mpticker.gif)
 
-* Pulltimer
+-   Pulltimer
 
 ![pulltimer screenshot](screenshots/pulltimer.png)
 
-* DoT Timers
+-   DoT Timers
 
 ![dotbars screenshot](screenshots/dotbars.png)
 
-* Buff Timers
+-   Buff Timers
 
 ![buffbars screenshot](screenshots/buffbars.png)
 
-* Raidbuff Cooldowns
+-   Raidbuff Cooldowns
 
 ![raidbuffs screenshot](screenshots/raidbuffs.png)
 
-* Mitigation Cooldowns for Tanks
+-   Mitigation Cooldowns for Tanks
 
 ![mitigation screenshot](screenshots/mitigation.png)
 
-* Party Cooldowns
+-   Party Cooldowns
 
 ![partycooldowns screenshot](screenshots/partycooldowns.png)
 
-* Custom Cooldowns
+-   Custom Cooldowns
 
 ![customcooldowns gif](screenshots/customcd.gif)
 
-* Stacks for certain classes (like Ruin IV stacks for SMN)
+-   Stacks for certain classes (like Ruin IV stacks for SMN)
 
 ![stacks screenshot](screenshots/stacks.png)
 
@@ -91,8 +93,8 @@ This is under `Plugins` ->`FFXIV Settings` -> `Options`.
 
 Alternative FFXIV Plugin Guides:
 
-* [fflogs video guide](https://www.fflogs.com/help/start/)
-* [TomRichter guide](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9#installing-act--ffxiv-plugin)
+-   [fflogs video guide](https://www.fflogs.com/help/start/)
+-   [TomRichter guide](https://gist.github.com/TomRichter/e044a3dff5c50024cf514ffb20a201a9#installing-act--ffxiv-plugin)
 
 ### Install ngld OverlayPlugin
 
@@ -145,50 +147,51 @@ Finally, restart ACT.
 
 Here's how you finally add ZeffUI
 
-1. Open ACT.
-1. Make sure you've restarted ACT after adding the cactbot plugin.
-1. Navigate to the `Plugins` tab of ACT and then the `OverlayPlugin.dll` tab inside it.
-1. Click the "New" button and then pick `ZeffUI` in the Preset list.
+1.  Open ACT.
+1.  Make sure you've restarted ACT after adding the cactbot plugin.
+1.  Navigate to the `Plugins` tab of ACT and then the `OverlayPlugin.dll` tab inside it.
+1.  Click the "New" button and then pick `ZeffUI` in the Preset list.
 
     ![new overlay plugin screenshot](screenshots/overlay_plugin_new.png)
 
-1. At this point you'll see health and manabars
-and a blue background to help with resizing and placing overlays on screen.
-The blue background will go away when the overlay is locked in the config panel for the overlay.
-You should always lock your overlay once you are done resizing and placing it.
+1.  At this point you'll see health and manabars
+    and a blue background to help with resizing and placing overlays on screen.
+    The blue background will go away when the overlay is locked in the config panel for the overlay.
+    You should always lock your overlay once you are done resizing and placing it.
 
-    ![zeffui plugin unlocked](screenshots/overlay_plugin_new_zeffui_unlocked.png)
+        ![zeffui plugin unlocked](screenshots/overlay_plugin_new_zeffui_unlocked.png)
 
-1. Type in any name you'd like as the name of this overlay, e.g. `ZeffUI`.
-1. Click the `OK` button to add this as an Overlay.
-It will now appear in the list of overlays in the `Plugins` -> `OverlayPlugin.dll` tab.
+1.  Type in any name you'd like as the name of this overlay, e.g. `ZeffUI`.
+1.  Click the `OK` button to add this as an Overlay.
+    It will now appear in the list of overlays in the `Plugins` -> `OverlayPlugin.dll` tab.
 
 1.  If for some reason the UI doesn't show up confirm that the following URL is populating the URL field: https://zeffuro.github.io/ZeffUI/
 
-1. Drag and resize the overlay to the location that you want it in.
+1.  Drag and resize the overlay to the location that you want it in.
 
-1. In the `General` tab of the `ZeffUI` overlay, click the `Lock Overlay` checkbox.
-The blue background will disappear once the overlay has been locked.
+1.  In the `General` tab of the `ZeffUI` overlay, click the `Lock Overlay` checkbox.
+    The blue background will disappear once the overlay has been locked.
 
-1. Rightclick either the Healthbar or Manabar element.
+1.  Rightclick either the Healthbar or Manabar element.
 
     ![zeffui plugin unlock bars](screenshots/zeffui_unlock_bars.png)
 
-1. If you want you can also toggle the grid to give you an easier time aligning objects.
+1.  If you want you can also toggle the grid to give you an easier time aligning objects.
 
-1. Start moving elements to where you want, note that the anchors for Raidbuffs and Mitigation will only show up on the appropriate classes.
+1.  Start moving elements to where you want, note that the anchors for Raidbuffs and Mitigation will only show up on the appropriate classes.
 
     ![zeffui plugin move elements](screenshots/zeffui_move_elements.png)
 
-1. After that either lock the bars again or head over to settings to customize your setup.
+1.  After that either lock the bars again or head over to settings to customize your setup.
 
     ![zeffui plugin unlock bars](screenshots/zeffui_unlock_bars.png)
-    
-1. After that your setup should be complete.
+
+1.  After that your setup should be complete.
 
 If you need any help either raise an issue or find me on the ACT/Triggernometry Discord servers or DM me directly on Zeffuro#3033
 
 ## Customization
+
 You can customize ZeffUI further by using custom CSS and text format tags
 
 ![image](https://user-images.githubusercontent.com/4972345/130093739-9993b2a6-33a9-4964-8a5e-6034775c23fc.png)
@@ -198,6 +201,10 @@ You can customize ZeffUI further by using custom CSS and text format tags
 [Text Format List](TEXTFORMAT.md)
 
 [UI Exports](UIEXPORTS.md)
+
+## Contacting
+
+If you need any help either raise an issue or join the [DelvUI Discord](https://discord.gg/JDVsJCGkk7) (or find me on ACT/Triggernometry/goat Discord or DM me Zeffuro#3033)
 
 ## Licensing, Trademarks, Copyright
 
