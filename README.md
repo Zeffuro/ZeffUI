@@ -216,3 +216,4 @@ Final Fantasy art and icons reused non-commercially under the
 [FINAL FANTASY® XIV Materials Usage License](https://support.na.square-enix.com/rule.php?id=5382).
 
 See the [LICENSE](LICENSE) file for more details about other bundled projects.
+
