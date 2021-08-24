@@ -2300,6 +2300,13 @@ function startAbilityTimer(
     activeElements.countdowns.set(selector, countdownTimer);
 }
 
+function toggleTimerBarDisplay(selector, display) {
+    let bar = document.getElementById(selector);
+    let image = document.getElementById(selector.replace("timer", "image"));
+    if (bar) bar.style.display = display ? "block" : "none";
+    if (image) image.style.display = display ? "block" : "none";
+}
+
 // Start and handle actual timer for bars/effects
 function startBarTimer(
     duration,
@@ -2318,7 +2325,7 @@ function startBarTimer(
     if (!selector.endsWith("ticker-bar"))
         barElement.setAttribute("data-label", timems);
 
-    if (hideTimer) barElement.style.display = "block";
+    if (hideTimer) toggleTimerBarDisplay(selector, true);
 
     let timeLeft = timems;
     let maxTime = timems;
@@ -2342,7 +2349,7 @@ function startBarTimer(
                     if (selector !== "timer-bar") {
                         removeTimerBar(selector);
                     } else {
-                        barElement.style.display = "none";
+                        toggleTimerBarDisplay(selector, false);
                     }
                 }
             }, UPDATE_INTERVAL);
@@ -2421,9 +2428,12 @@ function stopAbilityTimer(selector, previousIcon = null, abilityIndex = null) {
     }
 }
 
-function stopBarTimer(selector) {
-    document.getElementById(selector).value = 0;
-    document.getElementById(selector).setAttribute("data-label", "");
+function stopBarTimer(selector, hideTimer) {
+    if (document.getElementById(selector)) {
+        document.getElementById(selector).value = 0;
+        document.getElementById(selector).setAttribute("data-label", "");
+        if (hideTimer) toggleTimerBarDisplay(selector, false);
+    }
 }
 
 // Stop all active timers for certain player in your party (when he for example dies)
@@ -3454,7 +3464,8 @@ function handleLoseEffect(parameters) {
             clearInterval(
                 activeElements.countdowns.get(`${ability.id}-buff-timer`),
             );
-            stopBarTimer(`${ability.id}-buff-timer`);
+            let hideTimer = selectorProperties.settings.hidewhendroppedoff;
+            stopBarTimer(`${ability.id}-buff-timer`, hideTimer);
         }
     }
 }
