@@ -2750,9 +2750,11 @@ document.addEventListener("onOverlayStateUpdate", function (e) {
 
 // When user switches jobs
 function onJobChange(job) {
-    gameState.playerTags.job = language.find(
-        (x) => x.id === job.toLowerCase(),
-    ).string;
+    if (language.find((x) => x.id === job.toLowerCase())) {
+        gameState.playerTags.job = language.find(
+            (x) => x.id === job.toLowerCase(),
+        ).string;
+    }
     if (
         Object.prototype.hasOwnProperty.call(
             currentSettings.profiles.jobprofiles,
@@ -2815,6 +2817,16 @@ function onPlayerChangedEvent(e) {
         window
             .callOverlayHandler({ call: "getCombatants" })
             .then((e) => checkForParty(e));
+    }
+
+    // Check for CP/GP
+    if (gameState.player.maxGP) {
+        gameState.player.currentMP = gameState.player.currentGP;
+        gameState.player.maxMP = gameState.player.maxGP;
+    }
+    if (gameState.player.maxCP) {
+        gameState.player.currentMP = gameState.player.currentCP;
+        gameState.player.maxMP = gameState.player.maxCP;
     }
 
     handleHealthUpdate(gameState.player.currentHP, gameState.player.maxHP);
