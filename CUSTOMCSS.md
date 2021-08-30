@@ -70,3 +70,17 @@ Adjust Party Buff Rows per party member (adjust the numbers in each translate to
         position: absolute;
         transform: translate(400px, 500px);
     }
+
+
+If you want any of the custom positioned Party Rows to grow from right to left, you need to add these to the #party-row-number css:
+
+    right: 0px;
+    bottom: 0px;
+    
+And on flex-direction on the boxes:
+    
+    #party-row-1-box {
+        flex-direction: row-reverse;
+    }
+    
+    
