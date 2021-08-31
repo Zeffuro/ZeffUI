@@ -204,7 +204,7 @@ You can customize ZeffUI further by using custom CSS and text format tags
 
 ## Contacting
 
-If you need any help either raise an issue or join the [DelvUI Discord](https://discord.gg/JDVsJCGkk7) (or find me on ACT/Triggernometry/goat Discord or DM me Zeffuro#3033)
+If you need any help either raise an issue or join the [DelvUI Discord](https://discord.gg/delvui) (or find me on ACT/Triggernometry/goat Discord or DM me Zeffuro#3033)
 
 ## Licensing, Trademarks, Copyright
 
