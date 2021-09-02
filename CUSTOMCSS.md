@@ -34,3 +34,53 @@ HP/MP Text Color
     #health-bar:after, #mana-bar:after {
       color: red !important;
     }
+
+
+Adjust Party Buff Rows per party member (adjust the numbers in each translate to the correct location). If you use Grow to the left you need negative values.
+
+    #party-row-1 {
+        position: absolute;
+        transform: translate(200px, 200px);
+    }
+    #party-row-2 {
+        position: absolute;
+        transform: translate(200px, 300px);
+    }
+    #party-row-3 {
+        position: absolute;
+        transform: translate(200px, 400px);
+    }
+    #party-row-4 {
+        position: absolute;
+        transform: translate(200px, 500px);
+    }
+    #party-row-5 {
+        position: absolute;
+        transform: translate(400px, 200px);
+    }
+    #party-row-6 {
+        position: absolute;
+        transform: translate(400px, 300px);
+    }
+    #party-row-7 {
+        position: absolute;
+        transform: translate(400px, 400px);
+    }
+    #party-row-8 {
+        position: absolute;
+        transform: translate(400px, 500px);
+    }
+
+
+If you want any of the custom positioned Party Rows to grow from right to left, you need to add these to the #party-row-number css:
+
+    right: 0px;
+    bottom: 0px;
+    
+And on flex-direction on the boxes:
+    
+    #party-row-1-box {
+        flex-direction: row-reverse;
+    }
+    
+    
