@@ -727,6 +727,24 @@ function generateProfileItems() {
     return profileItems;
 }
 
+// Opens settings
+function handleSettings() {
+    // This way of opening the settings window and propegate the made changes to the settings is a bit scuffed but currently can't think of a better way.
+    if (ui.activeSettingsWindow === null) {
+        openSettingsWindow();
+    } else {
+        if (
+            confirm(
+                language.find((x) => x.id === "activesettingswindow").string,
+            )
+        ) {
+            ui.activeSettingsWindow.close();
+            ui.activeSettingsWindow = null;
+            openSettingsWindow();
+        }
+    }
+}
+
 // Context menu whenever someone rightclicks any UI component
 function loadContextMenu() {
     $(":root").contextMenu({
@@ -746,23 +764,7 @@ function loadContextMenu() {
                     break;
                 }
                 case "settings": {
-                    // This way of opening the settings window and propegate the made changes to the settings is a bit scuffed but currently can't think of a better way.
-                    if (ui.activeSettingsWindow === null) {
-                        openSettingsWindow();
-                    } else {
-                        if (
-                            confirm(
-                                language.find(
-                                    (x) => x.id === "activesettingswindow",
-                                ).string,
-                            )
-                        ) {
-                            ui.activeSettingsWindow.close();
-                            ui.activeSettingsWindow = null;
-                            openSettingsWindow();
-                        }
-                    }
-
+                    handleSettings();
                     break;
                 }
                 case "en": {

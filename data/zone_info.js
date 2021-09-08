@@ -7360,4 +7360,32 @@ var zone_info = {
         sizeFactor: 400,
         weatherRate: 38,
     },
+    975: {
+        contentType: 29,
+        exVersion: 3,
+        name: {
+            de: "Zadnor-Hochebene",
+            en: "Zadnor",
+            fr: "Hauts plateaux de Zadnor",
+            ja: "ザトゥノル高原",
+        },
+        offsetX: 0,
+        offsetY: 0,
+        sizeFactor: 100,
+        weatherRate: 130,
+    },
+    977: {
+        contentType: 7,
+        exVersion: 3,
+        name: {
+            de: "Kampf im Morgengrauen",
+            en: "Death Unto Dawn",
+            fr: "Aube meurtrière",
+            ja: "黎明の死闘",
+        },
+        offsetX: 0,
+        offsetY: 0,
+        sizeFactor: 100,
+        weatherRate: 114,
+    },
 };

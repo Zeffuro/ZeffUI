@@ -81,6 +81,11 @@ var regexList = {
                 regex: /.* 공략을 종료했습니다./,
                 function: "onInstanceEnd",
             },
+            // COMMAND
+            {
+                regex: /\/zeffui/,
+                function: "handleSettings",
+            },
         ],
     },
     "03": {
