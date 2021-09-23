@@ -32,6 +32,136 @@ body {
 }
 </details>
 
+## Zeffuro's Kagerou (23th of September 2021)
+
+Based on Vond's Kagerou Export (see our Discord for that).
+![ffxiv_dx11_2021-09-23_16-33-33](https://user-images.githubusercontent.com/4972345/134527686-059ca844-557d-4e80-b242-c2e6c5357b4f.png)
+
+<details>  eyJkIjp7InN0eWxlIjp7ImJvZHktZm9udCI6IlZlcmRhbmEiLCJoZWFkZXItYmciOiJyZ2JhKDAsIDAsIDAsIDAuOCkiLCJjb250ZW50LWJnIjoicmdiYSgwLCAwLCAwLCAwLjgpIiwiY29udGVudC1iZy1jb2xvciI6InJnYmEoMCwgMCwgMCwgMCkiLCJjZWxsLWJnIjoicmdiYSgyNTUsIDI1NSwgMjU1LCAwLjMpIiwibXktcm93LWZnIjoicmdiYSgyNTUsIDI1NSwgMjU1LCAxKSIsImNvbnRlbnQtYWxpZ24iOiJyaWdodCIsInNoYWRvdy1jYXJkIjoiMXB4IDFweCAwICMwMDAsIC0xcHggLTFweCAwICMwMDAsIDFweCAtMXB4IDAgIzAwMCwgLTFweCAxcHggMCAjMDAwLCAxcHggMXB4IDAgIzAwMCIsInNoYWRvdy10ZXh0IjoiIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCwgIzAwMCAwcHggMHB4IDFweCIsImdhdWdlLWhlaWdodCI6IjEwMCUiLCJncmFwaC1oZWlnaHQiOiIxLjI1cmVtIn0sImNvbG9yIjp7ImdhdWdlLWRlZmF1bHQiOiJsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsIHJnYmEoMCwgMCwgMCwwLjgpLCByZ2JhKDAsIDAsIDAsMC41KSkiLCJwbGQiOiJyZ2IoMTY4LCAyMTAsIDIzMCkiLCJ3YXIiOiJyZ2IoMjA3LCAzOCwgMzMpIiwiZHJrIjoicmdiKDIwOSwgMzgsIDIwNCkiLCJnbmIiOiJyZ2IoMTIxLCAxMDksIDQ4KSIsIm1uayI6InJnYigyMTQsIDE1NiwgMCkiLCJkcmciOiJyZ2IoNjUsIDEwMCwgMjA1KSIsImJyZCI6InJnYigxNDUsIDE4NiwgOTQpIiwibmluIjoicmdiKDE3NSwgMjUsIDEwMCkiLCJzbW4iOiJyZ2IoNDUsIDE1NSwgMTIwKSIsImJsbSI6InJnYigxNjUsIDEyMSwgMjE0KSIsIm1jaCI6InJnYigxMTAsIDIyNSwgMjE0KSIsInJkbSI6InJnYigyMzIsIDEyMywgMTIzKSIsImJsdSI6ImxpbmVhci1ncmFkaWVudCh0byByaWdodCwgcmdiYSgwLCAxMDQsIDE3OSwwLjgpLCByZ2JhKDAsIDEwNCwgMTc5LDAuNSkpIiwiZG5jIjoicmdiKDIyNiwgMTc2LCAxNzUpIiwic2FtIjoicmdiKDIyOCwgMTA5LCA0KSIsIndobSI6InJnYigyNTUsIDI0MCwgMjIwKSIsInNjaCI6InJnYigxMzQsIDg3LCAyNTUpIiwiYXN0IjoicmdiKDI1NSwgMjMxLCA3NCkiLCJzbW4tcGV0IjoibGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCByZ2JhKDAsIDg0LCA1NSwwLjgpLCByZ2JhKDAsIDg0LCA1NSwwLjUpKSIsInNjaC1wZXQiOiJsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsIHJnYmEoMjQsIDE2LCAxMTIsMC44KSwgcmdiYSgyNCwgMTYsIDExMiwwLjUpKSIsIm1jaC1wZXQiOiJsaW5lYXItZ3JhZGllbnQodG8gcmlnaHQsIHJnYmEoNTMsIDI0MCwgMjQwLDAuOCksIHJnYmEoNTMsIDI0MCwgMjQwLDAuNSkpIiwiY2hvY29ibyI6ImxpbmVhci1ncmFkaWVudCh0byByaWdodCwgcmdiYSgwLCAwLCAwLDAuOCksIHJnYmEoMCwgMCwgMCwwLjUpKSIsImxpbWl0LWJyZWFrIjoibGluZWFyLWdyYWRpZW50KHRvIHJpZ2h0LCByZ2JhKDAsIDAsIDAsMC44KSwgcmdiYSgwLCAwLCAwLDAuNSkpIn0sImNvbHdpZHRoIjp7Il9pLWNsYXNzIjoiMyIsIl9kZWFsLXRvdGFsIjoiNCIsIl9kZWFsLW1heGhpdCI6IjYiLCJfdGFuay1kYW1hZ2UiOiIzLjUiLCJfdGFuay1oZWFsIjoiMy41IiwiX2hlYWwtcGVyX3NlY29uZCI6IjMuNSIsIl9oZWFsLW1heGhpdCI6IjYifSwidGFicyI6eyIwIjp7ImlkIjoiMTYzMDYyNTgxNTQyNiIsImxhYmVsIjoiRFBTIiwid2lkdGgiOiIxIiwic29ydCI6ImRlYWwudG90YWwiLCJjb2wiOlsiaS5pY29uIiwiaS5uYW1lIiwiZGVhbC5wZXJfc2Vjb25kIl19LCIxIjp7ImlkIjoiMTYzMjQwNjg3ODgwMyIsImxhYmVsIjoiSGVhbCIsIndpZHRoIjoiMSIsInNvcnQiOiJoZWFsLnBlcl9zZWNvbmQiLCJjb2wiOlsiaS5pY29uIiwiaS5uYW1lIiwiaGVhbC5wZXJfc2Vjb25kIiwiaGVhbC5vdmVyIl19fX0sImgiOiJzdHlsZSxjb2xvcixjb2x3aWR0aCx0YWJzfDE2MzI0MDc5MTAzNDgifQ==
+</details>
+
+##### Kagerou Custom CSS
+
+<details>
+  li#header { 
+  background-color: rgba(61, 61, 61, 0.6) !important;
+}
+
+#header .flex-column {
+  border-top: none;
+}
+
+#header .flex-column-i-icon {
+  border: none;
+}
+
+#header .flex-column-deal-per-second {
+  border-top: none;
+}
+
+.container {
+  height: 25px !important;
+}
+
+span.flex-column { 
+  padding: 0 5px;
+  border-top: 0.1em solid #000;
+}
+
+.flex-column-i-icon {
+  background-color: rgba(8,8,8,0.85);
+  border-right: 0.1em solid #000; 
+} 
+
+body { 
+  transition: all .5s ease-in-out; 
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004); 
+  text-rendering: optimizeLegibility; 
+}
+
+nav {
+  height: 26px !important;
+  font-size: 11px !important;
+  line-height: normal !important;
+  background-color: rgba(61, 61, 61, 0.6) !important;
+}
+
+footer {
+  font-size: 12px !important;
+  background-color: rgba(61, 61, 61, 0.6) !important;
+  border-top: 0.1em solid #000;
+}
+
+.history {
+  position: relative;
+  align-items: center !important;
+  line-height: 25px !important;
+  overflow: hidden;
+}
+
+.history > .icon-container {
+  display: flex !important;
+  align-items: center;
+}
+
+#history-icon svg {
+  display: none;
+}
+
+#history-time {
+  margin-left: 4px;
+  font-size: 14px;
+}
+
+#history-mob {
+  margin-left: 4px;
+  height: 100%;
+  font-size: 14px;
+}
+
+#history-region {
+  display: none;
+}
+
+li#init-menu {
+  display: none !important;
+}
+
+#patchnote {
+  overflow: visible;
+}
+
+#patchnote:before {
+  content: '';
+  position: relative;
+  top: 8px;
+  font-size: 1.1em;
+}
+
+#patchnote > *{
+  display: none;
+}
+
+#background {
+  background-color: rgba(8, 8, 8, 0.6) !important;
+} 
+
+.flex-column.flex-column-i-name {
+  width: auto;
+  flex-grow: 1;
+  min-width: 0;
+  align-self: stretch;
+}
+.flex-column.flex-column-deal-accuracy {
+  width: 3.5rem;
+}
+
+.flex-column.flex-column-heal-over,
+.flex-column.flex-column-etc-death {
+  width: 2.5rem;
+}
+</details>
+
 ## Maximum-like UI (20th of August 2021)
 
 ![image](https://user-images.githubusercontent.com/4972345/130202549-57dd5499-f4b0-4f56-8b28-aa273136a571.png)
