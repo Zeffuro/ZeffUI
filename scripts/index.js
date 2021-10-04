@@ -2629,9 +2629,11 @@ function setWebTTS(text) {
 }
 
 // Sets Party Role based on current job
-function setCurrentRole() {
+function setCurrentRole(job) {
+    if (job === null) return;
+    console.log(job);
     gameState.currentrole = jobList
-        .find((x) => x.name === gameState.player.job)
+        .find((x) => x.name === job)
         .type.toLowerCase();
     if (gameState.currentrole.includes("dps")) gameState.currentrole = "dps";
     if (
@@ -2804,7 +2806,7 @@ function onPartyWipe() {
 function onPlayerChangedEvent(e) {
     if (gameState.player !== null && gameState.player.job !== e.detail.job) {
         onJobChange(e.detail.job);
-        setCurrentRole();
+        setCurrentRole(e.detail.job);
     }
     gameState.playerPrevious = gameState.playerPrevious
         ? gameState.player
@@ -2812,7 +2814,7 @@ function onPlayerChangedEvent(e) {
     gameState.player = e.detail;
     if (gameState.currentrole === null) {
         onJobChange(e.detail.job);
-        setCurrentRole();
+        setCurrentRole(e.detail.job);
     }
     if (gameState.partyList.length === 0) {
         setAndCheckTickers();
