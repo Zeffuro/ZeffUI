@@ -2631,7 +2631,6 @@ function setWebTTS(text) {
 // Sets Party Role based on current job
 function setCurrentRole(job) {
     if (job === null) return;
-    console.log(job);
     gameState.currentrole = jobList
         .find((x) => x.name === job)
         .type.toLowerCase();
