@@ -1998,10 +1998,16 @@ function startAbilityIconTimers(
                 `${selector}-overlay`,
             ).src = `skins/${currentSettings.skin}/images/icon-overlay.png`;
 
-        document.getElementById(`${selector}-active`).style.display = "block";
-        document.getElementById(`${selector}-duration`).style.display = "block";
-        document.getElementById(`${selector}-duration`).textContent =
-            ability.duration;
+        if (document.getElementById(`${selector}-active`))
+            document.getElementById(`${selector}-active`).style.display =
+                "block";
+        if (document.getElementById(`${selector}-duration`)) {
+            document.getElementById(`${selector}-duration`).style.display =
+                "block";
+            document.getElementById(`${selector}-duration`).textContent =
+                ability.duration;
+        }
+
         if (document.getElementById(`${selector}-cooldown`))
             document.getElementById(`${selector}-cooldown`).style.display =
                 "none";
