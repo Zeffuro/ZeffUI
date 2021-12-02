@@ -162,6 +162,7 @@ async function loadSettings() {
             settings = JSON.parse(
                 JSON.stringify(profiles.profiles[profiles.currentprofile]),
             );
+            settings = await checkAndInitializeDefaultSettingsObject(settings);
             settings.profiles = profiles;
         }
     }
