@@ -2015,7 +2015,9 @@ function startAbilityIconTimers(
 
         if (usingAbilityHolder) {
             let previousIcon = `${abilityHolder.icon}`;
-            document.getElementById(`${selector}-image`).src = ability.icon;
+            if (document.getElementById(`${selector}-image`)) {
+                document.getElementById(`${selector}-image`).src = ability.icon;
+            }
             startAbilityTimer(
                 ability.duration,
                 `${selector}-duration`,
