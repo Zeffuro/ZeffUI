@@ -16,9 +16,9 @@ var defaultJobOrder = [
 	// Tanks
 	"PLD", "GLA", "WAR", "MRD", "DRK", "GNB",
 	// Healers
-	"WHM", "CNJ", "SCH", "AST",
+	"WHM", "CNJ", "SCH", "AST", "SGE",
 	// Melee DPS
-	"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM",
+	"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", "RPR",
 	// Physical Ranged DPS
 	"BRD", "ARC", "MCH", "DNC",
 	// Caster DPS
