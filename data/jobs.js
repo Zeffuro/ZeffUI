@@ -285,16 +285,16 @@ var jobList = [
     },
     {
         id: 39,
-        name: "SGE",
-        fullname: "Sage",
-        type: "Healer",
-        position_type: "Ranged",
-    },
-    {
-        id: 40,
         name: "RPR",
         fullname: "Reaper",
         type: "MeleeDPS",
         position_type: "Melee",
+    },
+    {
+        id: 40,
+        name: "SGE",
+        fullname: "Sage",
+        type: "Healer",
+        position_type: "Ranged",
     },
 ];
