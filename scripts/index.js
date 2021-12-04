@@ -23,6 +23,7 @@ let gameState = {
     player: null,
     playerPrevious: null,
     playerTags: {},
+    playerPets: [],
     currentrole: null,
     zone: {},
     partyList: [],
@@ -1837,6 +1838,20 @@ function generateRawPartyList(fromCombatants, combatants = null) {
     ];
 }
 
+function extractPlayerPets(combatants) {
+    gameState.playerPets = [];
+    for (let combatant of combatants) {
+        let ownerId = parseInt(combatant.OwnerID).toString(16).toUpperCase();
+        if (gameState.partyList.filter((x) => x.id == ownerId).length > 0) {
+            addPlayerPet({
+                name: combatant.Name,
+                id: parseInt(combatant.ID).toString(16).toUpperCase(),
+                ownerId: ownerId,
+            });
+        }
+    }
+}
+
 // Generate partylist with extra metadata (for example player jobs and what type the job is)
 function generatePartyList(party) {
     toLog(["[GeneratePartyList] RawPartyList:", party]);
@@ -1887,6 +1902,7 @@ function checkForParty(e) {
     let player = combatants.find((x) => x.ID === gameState.player.id);
     let partyList = generateRawPartyList(player.PartyType !== 0, combatants);
     generatePartyList(partyList);
+    extractPlayerPets(combatants);
     reloadCooldownModules();
 }
 
@@ -2871,10 +2887,28 @@ function checkAndSetZoneInfo(zoneId) {
     }
 }
 
+function addPlayerPet(pet) {
+    gameState.playerPets.push({
+        name: pet.name,
+        id: pet.id,
+        ownerId: pet.ownerId,
+    });
+}
+
 /* exported handleAddNewCombatant */
 function handleAddNewCombatant(parameters) {
-    if (gameState.partyList.filter((x) => x.id == parameters.id).length == 0)
+    if (
+        gameState.partyList.filter((x) => x.id == parameters.ownerId).length > 0
+    ) {
+        addPlayerPet({
+            name: parameters.name,
+            id: parameters.id,
+            ownerId: parameters.ownerId,
+        });
+    }
+    if (gameState.partyList.filter((x) => x.id == parameters.id).length == 0) {
         return;
+    }
     let job = jobList.find((x) => x.name === parameters.job.toUpperCase());
     let player = gameState.partyList.find((x) => x.id == parameters.id);
     let reload = false;
@@ -2895,6 +2929,14 @@ function handleAddNewCombatant(parameters) {
         );
     }
     if (reload) reloadCooldownModules();
+}
+
+/* exported handleRemoveCombatant */
+function handleRemoveCombatant(parameters) {
+    let filter = gameState.playerPets.filter((x) => x.id == parameters.id);
+    if (filter.length == 1) {
+        gameState.playerPets.splice(gameState.playerPets.indexOf(filter[0]), 1);
+    }
 }
 
 // When user uses /countdown or /cd
@@ -3342,6 +3384,7 @@ function handleGainEffect(parameters) {
     let playerIndex = gameState.partyList.findIndex(
         (x) => x.name === parameters.player,
     );
+    //console.log(parameters.target, gameState.player.name, playerIndex);
     let ability = undefined;
 
     let mergedAbilityList = abilityList.concat(
@@ -3372,6 +3415,18 @@ function handleGainEffect(parameters) {
             )
                 continue;
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
+                if (ability.extra.isPetAbility) {
+                    let pet = gameState.playerPets.find(
+                        // This might change
+                        (x) => x.id == parameters.playerId,
+                    );
+                    if (pet) {
+                        playerIndex = gameState.partyList.findIndex(
+                            (x) => x.id == pet.ownerId,
+                        );
+                        startAbilityIconTimers(playerIndex, ability, true);
+                    }
+                }
                 if (ability.extra.is_card) continue;
                 if (ability.extra.is_song) {
                     let abilityHolder = mergedAbilityList.find(
