@@ -98,12 +98,22 @@ var regexList = {
             },
         ],
     },
+    "04": {
+        regex: /] RemoveCombatant 04:/,
+        matches: [
+            {
+                //regex: /(?<id>(?:[0-9A-F]{8})):Added new combatant (?<name>(?:[^:]*?))\. {2}Job: (?<job>(?:[^:]*?)) Level: (?<level>(?:[^:]*?)) Max HP: (?<hp>(?:[0-9]+))..*?Pos: \((?<x>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<y>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<z>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?))\)(?: \((?<npcId>(?:.*?))\))?\./,
+                regex: /RemoveCombatant (?<type>04):(?<id>(?:[^:]*)):(?<name>(?:[^:]*)):(?<job>(?:[^:]*)):(?<level>(?:[^:]*)):(?<owner>(?:[^:]*)):[^:]*:(?<world>(?:[^:]*)):(?<npcNameId>(?:[^:]*)):(?<npcBaseId>(?:[^:]*)):[^:]*:(?<hp>(?:[^:]*))(?::[^:]*){4}:(?<x>(?:[^:]*)):(?<y>(?:[^:]*)):(?<z>(?:[^:]*)):(?<heading>(?:[^:]*))(?:$|:)/,
+                function: "handleRemoveCombatant",
+            },
+        ],
+    },
     "0C": {
         regex: /] PlayerStats 0C:/,
         matches: [
             {
                 //regex: /PlayerStats 0C: [0-9]{2}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:(?<sks>[0-9]{1,4}):(?<sps>[0-9]{1,4}):0:[0-9]{1,4}/,
-                regex: /PlayerStats (?<type>0c):(?<job>(?:[^:]*)):(?<strength>(?:[^:]*)):(?<dexterity>(?:[^:]*)):(?<vitality>(?:[^:]*)):(?<intelligence>(?:[^:]*)):(?<mind>(?:[^:]*)):(?<piety>(?:[^:]*)):(?<attackPower>(?:[^:]*)):(?<directHit>(?:[^:]*)):(?<criticalHit>(?:[^:]*)):(?<attackMagicPotency>(?:[^:]*)):(?<healMagicPotency>(?:[^:]*)):(?<determination>(?:[^:]*)):(?<sks>(?:[^:]*)):(?<sps>(?:[^:]*)):[^:]*:(?<tenacity>(?:[^:]*)):(?<localContentId>(?:[^:]*))(?:$|:)/,
+                regex: /PlayerStats (?<type>0C):(?<job>(?:[^:]*)):(?<strength>(?:[^:]*)):(?<dexterity>(?:[^:]*)):(?<vitality>(?:[^:]*)):(?<intelligence>(?:[^:]*)):(?<mind>(?:[^:]*)):(?<piety>(?:[^:]*)):(?<attackPower>(?:[^:]*)):(?<directHit>(?:[^:]*)):(?<criticalHit>(?:[^:]*)):(?<attackMagicPotency>(?:[^:]*)):(?<healMagicPotency>(?:[^:]*)):(?<determination>(?:[^:]*)):(?<sks>(?:[^:]*)):(?<sps>(?:[^:]*)):[^:]*:(?<tenacity>(?:[^:]*)):(?<localContentId>(?:[^:]*))(?:$|:)/,
                 function: "handlePlayerStats",
             },
         ],
@@ -113,7 +123,7 @@ var regexList = {
         matches: [
             {
                 //regex: /(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[^)]*) for (?<duration>\d{1,4}\.?(\d{1,2})?) Seconds\./,
-                regex: /StatusAdd (?<type>1a):(?<effectId>(?:[^:]*)):(?<effect>(?:(?:[^:]|: )*?)):(?<duration>(?:[^:]*)):(?<playerId>(?:[^:]*)):(?<player>(?:[^:]*)):(?<targetId>(?:[^:]*)):(?<target>(?:[^:]*)):(?<count>(?:[^:]*)):(?<targetMaxHp>(?:[^:]*)):(?<sourceMaxHp>(?:[^:]*))(?:$|:)/,
+                regex: /StatusAdd (?<type>1A):(?<effectId>(?:[^:]*)):(?<effect>(?:(?:[^:]|: )*?)):(?<duration>(?:[^:]*)):(?<playerId>(?:[^:]*)):(?<player>(?:[^:]*)):(?<targetId>(?:[^:]*)):(?<target>(?:[^:]*)):(?<count>(?:[^:]*)):(?<targetMaxHp>(?:[^:]*)):(?<sourceMaxHp>(?:[^:]*))(?:$|:)/,
                 function: "handleGainEffect",
             },
         ],
@@ -123,7 +133,7 @@ var regexList = {
         matches: [
             {
                 //regex: /(?<targetid>[A-F0-9]{8}):(?<target>.*) loses the effect of (?<effect>.*) from (?<player>[^)]*)\./,
-                regex: /StatusRemove (?<type>1e):(?<effectId>(?:[^:]*)):(?<effect>(?:(?:[^:]|: )*?)):[^:]*:(?<playerId>(?:[^:]*)):(?<player>(?:[^:]*)):(?<targetId>(?:[^:]*)):(?<target>(?:[^:]*)):(?<count>(?:[^:]*))(?:$|:)/,
+                regex: /StatusRemove (?<type>1E):(?<effectId>(?:[^:]*)):(?<effect>(?:(?:[^:]|: )*?)):[^:]*:(?<playerId>(?:[^:]*)):(?<player>(?:[^:]*)):(?<targetId>(?:[^:]*)):(?<target>(?:[^:]*)):(?<count>(?:[^:]*))(?:$|:)/,
                 function: "handleLoseEffect",
             },
         ],

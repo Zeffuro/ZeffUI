@@ -864,7 +864,7 @@ var abilityList = [
         ttstype: 0,
         job: "BRD",
         level: 52,
-        duration: 30,
+        duration: 45,
         cooldown: 0,
         type: "RaidBuff",
         icon: "https://xivapi.com/i/002000/002607.png",
@@ -888,7 +888,7 @@ var abilityList = [
         ttstype: 0,
         job: "BRD",
         level: 30,
-        duration: 30,
+        duration: 45,
         cooldown: 0,
         type: "RaidBuff",
         icon: "https://xivapi.com/i/002000/002602.png",
@@ -912,7 +912,7 @@ var abilityList = [
         ttstype: 0,
         job: "BRD",
         level: 40,
-        duration: 30,
+        duration: 45,
         cooldown: 0,
         type: "RaidBuff",
         icon: "https://xivapi.com/i/002000/002603.png",
@@ -2535,7 +2535,30 @@ var abilityList = [
     },
     // SMN
     // Raid Buffs
-    // Need to add new SMN raidbuffs here
+    {
+        id: 2703,
+        name: "Searing Light",
+        name_cn: "Searing Light",
+        name_de: "Gleißender Schein",
+        name_en: "Searing Light",
+        name_fr: "Éclat ardent",
+        name_jp: "シアリングライト",
+        name_kr: "Searing Light",
+        enabled: true,
+        tts: true,
+        ttstype: 2,
+        job: "SMN",
+        level: 66,
+        duration: 30,
+        cooldown: 120,
+        type: "RaidBuff",
+        icon: "https://xivapi.com/i/002000/002776.png",
+        color: "--filter-light-blue",
+        order: 0,
+        extra: {
+            isPetAbility: true,
+        },
+    },
     // WAR
     // Buffs
     {
