@@ -2311,12 +2311,13 @@ function startAbilityTimer(
     let timems = duration * 1000;
 
     let abilityElement = document.getElementById(selector);
-    abilityElement.textContent = duration;
+    if (abilityElement) abilityElement.textContent = duration;
 
     let timeLeft = timems;
     let countdownTimer = setInterval(function () {
         timeLeft -= UPDATE_INTERVAL;
-        abilityElement.textContent = (timeLeft / 1000).toFixed(0);
+        if (abilityElement)
+            abilityElement.textContent = (timeLeft / 1000).toFixed(0);
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
             setTimeout(function () {
