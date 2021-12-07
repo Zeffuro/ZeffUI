@@ -2311,12 +2311,13 @@ function startAbilityTimer(
     let timems = duration * 1000;
 
     let abilityElement = document.getElementById(selector);
-    abilityElement.textContent = duration;
+    if (abilityElement) abilityElement.textContent = duration;
 
     let timeLeft = timems;
     let countdownTimer = setInterval(function () {
         timeLeft -= UPDATE_INTERVAL;
-        abilityElement.textContent = (timeLeft / 1000).toFixed(0);
+        if (abilityElement)
+            abilityElement.textContent = (timeLeft / 1000).toFixed(0);
         if (timeLeft <= 0) {
             clearInterval(countdownTimer);
             setTimeout(function () {
@@ -2909,7 +2910,7 @@ function handleAddNewCombatant(parameters) {
     if (gameState.partyList.filter((x) => x.id == parameters.id).length == 0) {
         return;
     }
-    let job = jobList.find((x) => x.name === parameters.job.toUpperCase());
+    let job = jobList.find((x) => x.id === parseInt(parameters.job, 16));
     let player = gameState.partyList.find((x) => x.id == parameters.id);
     let reload = false;
     if (player.job != job) {
@@ -2920,12 +2921,12 @@ function handleAddNewCombatant(parameters) {
             job,
         );
     }
-    if (player.level != parseInt(parameters.level)) {
-        player.level = parseInt(parameters.level);
+    if (player.level != parseInt(parameters.level, 16)) {
+        player.level = parseInt(parameters.level, 16);
         reload = true;
         toLog(
             "[handleAddNewCombatant] Party Member Level Changed, cooldowns will be reloaded",
-            parseInt(parameters.level),
+            parseInt(parameters.level, 16),
         );
     }
     if (reload) reloadCooldownModules();
