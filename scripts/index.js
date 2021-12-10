@@ -2554,9 +2554,9 @@ function startTTSTimer(
 
 // Set up event for when TTS needs to occur for certain abilities
 function handleAbilityTTS(ability, selector, onYou = true) {
-    toLog(
+    toLog([
         `[HandleAbilityTTS] Ability: ${ability} Selector: ${selector} OnYou: ${onYou}`,
-    );
+    ]);
     if (activeElements.tts.has(selector))
         clearInterval(activeElements.tts.get(selector));
     switch (ability.type) {
@@ -3512,6 +3512,7 @@ function handleGainEffect(parameters) {
             (ability.type === "DoT" && byYou) ||
             (ability.type === "Buff" && byYou)
         ) {
+            ability.duration = parameters.duration;
             if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
                 if (ability.extra.shares_cooldown) {
                     startAbilityBarTimer(
