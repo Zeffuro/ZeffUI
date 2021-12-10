@@ -1,7 +1,7 @@
 /* exported regexList */
 var regexList = {
     "00": {
-        regex: /] ChatLog 00:/,
+        regex: /^\[[^\]]+\] ChatLog 00:/,
         matches: [
             // CHINESE
             {
@@ -89,7 +89,7 @@ var regexList = {
         ],
     },
     "03": {
-        regex: /] AddCombatant 03:/,
+        regex: /^\[[^\]]+\] AddCombatant 03:/,
         matches: [
             {
                 //regex: /(?<id>(?:[0-9A-F]{8})):Added new combatant (?<name>(?:[^:]*?))\. {2}Job: (?<job>(?:[^:]*?)) Level: (?<level>(?:[^:]*?)) Max HP: (?<hp>(?:[0-9]+))..*?Pos: \((?<x>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<y>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<z>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?))\)(?: \((?<npcId>(?:.*?))\))?\./,
@@ -99,7 +99,7 @@ var regexList = {
         ],
     },
     "04": {
-        regex: /] RemoveCombatant 04:/,
+        regex: /^\[[^\]]+\] RemoveCombatant 04:/,
         matches: [
             {
                 //regex: /(?<id>(?:[0-9A-F]{8})):Added new combatant (?<name>(?:[^:]*?))\. {2}Job: (?<job>(?:[^:]*?)) Level: (?<level>(?:[^:]*?)) Max HP: (?<hp>(?:[0-9]+))..*?Pos: \((?<x>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<y>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?)),(?<z>(?:-?[0-9]+(?:[.,][0-9]+)?(?:E-?[0-9]+)?))\)(?: \((?<npcId>(?:.*?))\))?\./,
@@ -109,7 +109,7 @@ var regexList = {
         ],
     },
     "0C": {
-        regex: /] PlayerStats 0C:/,
+        regex: /^\[[^\]]+\] PlayerStats 0C:/,
         matches: [
             {
                 //regex: /PlayerStats 0C: [0-9]{2}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:[0-9]{1,4}:(?<sks>[0-9]{1,4}):(?<sps>[0-9]{1,4}):0:[0-9]{1,4}/,
@@ -119,7 +119,7 @@ var regexList = {
         ],
     },
     "1A": {
-        regex: /] StatusAdd 1A:/,
+        regex: /^\[[^\]]+\] StatusAdd 1A:/,
         matches: [
             {
                 //regex: /(?<targetid>[A-F0-9]{8}):(?<target>.*) gains the effect of (?<effect>.*) from (?<player>[^)]*) for (?<duration>\d{1,4}\.?(\d{1,2})?) Seconds\./,
@@ -129,7 +129,7 @@ var regexList = {
         ],
     },
     "1E": {
-        regex: /] StatusRemove 1E:/,
+        regex: /^\[[^\]]+\] StatusRemove 1E:/,
         matches: [
             {
                 //regex: /(?<targetid>[A-F0-9]{8}):(?<target>.*) loses the effect of (?<effect>.*) from (?<player>[^)]*)\./,
@@ -139,7 +139,7 @@ var regexList = {
         ],
     },
     15: {
-        regex: /] ActionEffect 15:/,
+        regex: /^\[[^\]]+\] ActionEffect 15:/,
         matches: [
             {
                 //regex: /(?<playerid>[A-F0-9]{8}):(?<player>[^:]*):(?<skillid>[A-F0-9]{2,4}):(?<skillname>.*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\d)?[^:]+(?::[^:]*){37}$/,
@@ -149,7 +149,7 @@ var regexList = {
         ],
     },
     16: {
-        regex: /] AOEActionEffect 16:/,
+        regex: /^\[[^\]]+\] AOEActionEffect 16:/,
         matches: [
             {
                 //regex: /(?<playerid>[A-F0-9]{8}):(?<player>[^:]*):(?<skillid>[A-F0-9]{2,4}):(?<skillname>.*):(?<targetid>[A-F0-9]{8})?:(?<target>[^:]*)?:(?<power>\d)?[^:]+(?::[^:]*){37}$/,
@@ -159,7 +159,7 @@ var regexList = {
         ],
     },
     18: {
-        regex: /] DoTHoT 18:/,
+        regex: /^\[[^\]]+\] DoTHoT 18:/,
         matches: [
             {
                 //regex: /18:(?<ability>.*)?(?<effect>DoT|HoT) Tick on (?<target>.*) for (?<value>\d{1,6}) damage\./,
@@ -169,7 +169,7 @@ var regexList = {
         ],
     },
     19: {
-        regex: /] Death 19:/,
+        regex: /^\[[^\]]+\] Death 19:/,
         matches: [
             {
                 //regex: /19:(?<target>.*) was defeated by (?<killer>.*)\./,
