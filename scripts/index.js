@@ -2554,6 +2554,9 @@ function startTTSTimer(
 
 // Set up event for when TTS needs to occur for certain abilities
 function handleAbilityTTS(ability, selector, onYou = true) {
+    toLog(
+        `[HandleAbilityTTS] Ability: ${ability} Selector: ${selector} OnYou: ${onYou}`,
+    );
     if (activeElements.tts.has(selector))
         clearInterval(activeElements.tts.get(selector));
     switch (ability.type) {
@@ -2578,7 +2581,6 @@ function handleAbilityTTS(ability, selector, onYou = true) {
         default:
             break;
     }
-
     let name = ability.name;
     switch (currentSettings.language) {
         case "en":
@@ -2603,7 +2605,7 @@ function handleAbilityTTS(ability, selector, onYou = true) {
             break;
     }
     if (ability.tts) {
-        switch (ability.ttstype) {
+        switch (parseInt(ability.ttstype)) {
             case 0:
                 startTTSTimer(ability.cooldown, selector, name);
                 break;
@@ -3385,7 +3387,7 @@ function handleGainEffect(parameters) {
     let playerIndex = gameState.partyList.findIndex(
         (x) => x.name === parameters.player,
     );
-    //console.log(parameters.target, gameState.player.name, playerIndex);
+
     let ability = undefined;
 
     let mergedAbilityList = abilityList.concat(
