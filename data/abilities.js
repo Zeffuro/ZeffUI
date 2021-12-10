@@ -1315,7 +1315,7 @@ var abilityList = [
         cooldown: 120,
         type: "Party",
         icon: "https://xivapi.com/i/003000/003469.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     // DRG
@@ -1335,7 +1335,7 @@ var abilityList = [
         job: "DRG",
         type: "DoT",
         icon: "https://xivapi.com/i/010000/010307.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     // Self-Buffs
@@ -1946,7 +1946,7 @@ var abilityList = [
         job: "MNK",
         type: "DoT",
         icon: "https://xivapi.com/i/010000/010218.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     // Buffs
@@ -2141,7 +2141,7 @@ var abilityList = [
         job: "PLD",
         type: "Buff",
         icon: "https://xivapi.com/i/010000/010155.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     {
@@ -2573,7 +2573,7 @@ var abilityList = [
         job: "SGE",
         type: "DoT",
         icon: "https://xivapi.com/i/012000/012960.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     {
@@ -2591,7 +2591,7 @@ var abilityList = [
         job: "SGE",
         type: "DoT",
         icon: "https://xivapi.com/i/012000/012961.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     {
@@ -2609,7 +2609,7 @@ var abilityList = [
         job: "SGE",
         type: "DoT",
         icon: "https://xivapi.com/i/012000/012962.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 0,
     },
     // Party Cooldowns
@@ -2713,7 +2713,7 @@ var abilityList = [
         job: "WAR",
         type: "Buff",
         icon: "https://xivapi.com/i/012000/012561.png",
-        color: "--filter-light-purple",
+        color: "--filter-purple",
         order: 2,
     },
     // Mitigation

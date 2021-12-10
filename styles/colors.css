@@ -9,7 +9,6 @@
 	--filter-dark-blue: brightness(10%) sepia(100) saturate(100) hue-rotate(250deg);
 	--filter-dark-green: brightness(80%) sepia(0.2) saturate(20) hue-rotate(70deg);
 	--filter-jungle-green: brightness(100%) sepia(0.2) saturate(20) hue-rotate(30deg);
-	--filter-light-purple: brightness(10%) sepia(100) saturate(100) hue-rotate(280deg);
 	--filter-purple: brightness(10%) sepia(100) saturate(100) hue-rotate(280deg);
 	--filter-fuchsia: brightness(50%) sepia(100) saturate(10) hue-rotate(260deg);
 	--filter-light-pink: brightness(90%) sepia(10) hue-rotate(270deg);
