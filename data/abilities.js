@@ -943,6 +943,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/002000/002612.png",
         color: "--filter-dark-red",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // DNC
     // Self-Buffs
@@ -1317,6 +1320,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/003000/003469.png",
         color: "--filter-purple",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // DRG
     // DoTs
@@ -1928,6 +1934,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/003000/003040.png",
         color: "--filter-orange",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // MNK
     // DoTs

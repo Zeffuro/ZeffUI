@@ -3222,6 +3222,21 @@ function handleSkill(parameters) {
             );
         }
         if (!ability.enabled) continue;
+        if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    ability.extra,
+                    "is_trait_enhanced",
+                )
+            ) {
+                if (
+                    gameState.partyList[playerIndex].level ==
+                    ability.extra.is_trait_enhanced[0]
+                ) {
+                    ability.cooldown = ability.extra.is_trait_enhanced[1];
+                }
+            }
+        }
         if (ability.name === "Shoha" && byYou) {
             adjustJobStacks(0, gameState.stats.maxStacks);
         }
@@ -3410,6 +3425,21 @@ function handleGainEffect(parameters) {
             );
         }
         if (!ability.enabled) continue;
+        if (Object.prototype.hasOwnProperty.call(ability, "extra")) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    ability.extra,
+                    "is_trait_enhanced",
+                )
+            ) {
+                if (
+                    gameState.partyList[playerIndex].level ==
+                    ability.extra.is_trait_enhanced[0]
+                ) {
+                    ability.cooldown = ability.extra.is_trait_enhanced[1];
+                }
+            }
+        }
         if (ability.type === "RaidBuff") {
             if (
                 ability.name === "Standard Step" ||
