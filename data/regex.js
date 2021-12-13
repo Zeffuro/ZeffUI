@@ -70,7 +70,7 @@ var regexList = {
             },
             // KOREAN
             {
-                regex: /\/전투 시작 (?<seconds>[0-9]{1,2})초 전! （[a-zA-Z-' ]{2,31}）/,
+                regex: /전투 시작 (?<seconds>[0-9]{1,2})초 전! \(.{1,12}\)/,
                 function: "handleCountdownTimer",
             },
             {
