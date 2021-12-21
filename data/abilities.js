@@ -943,6 +943,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/002000/002612.png",
         color: "--filter-dark-red",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // DNC
     // Self-Buffs
@@ -1317,6 +1320,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/003000/003469.png",
         color: "--filter-purple",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // DRG
     // DoTs
@@ -1928,6 +1934,9 @@ var abilityList = [
         icon: "https://xivapi.com/i/003000/003040.png",
         color: "--filter-orange",
         order: 0,
+        extra: {
+            is_trait_enhanced: [88, 90],
+        },
     },
     // MNK
     // DoTs
@@ -2356,7 +2365,7 @@ var abilityList = [
     // RDM
     // Raid Buffs
     {
-        id: 7520,
+        id: 26225,
         name: "Embolden",
         name_cn: "鼓励",
         name_de: "Ermutigen",
@@ -2372,7 +2381,7 @@ var abilityList = [
         duration: 20,
         cooldown: 120,
         type: "RaidBuff",
-        icon: "https://xivapi.com/i/003000/003218.png",
+        icon: "https://xivapi.com/i/064000/064867.png",
         color: "--filter-dark-red",
         order: 0,
     },
