@@ -2365,7 +2365,7 @@ var abilityList = [
     // RDM
     // Raid Buffs
     {
-        id: 7520,
+        id: 26225,
         name: "Embolden",
         name_cn: "鼓励",
         name_de: "Ermutigen",
@@ -2381,7 +2381,7 @@ var abilityList = [
         duration: 20,
         cooldown: 120,
         type: "RaidBuff",
-        icon: "https://xivapi.com/i/003000/003218.png",
+        icon: "https://xivapi.com/i/064000/064867.png",
         color: "--filter-dark-red",
         order: 0,
     },
