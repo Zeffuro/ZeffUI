@@ -1900,7 +1900,11 @@ function checkForParty(e) {
     let combatants = e.combatants;
     if (combatants === undefined || gameState.player === undefined) return;
     let player = combatants.find((x) => x.ID === gameState.player.id);
-    let partyList = generateRawPartyList(player.PartyType !== 0, combatants);
+    let hasCombatants = false;
+    if (Object.prototype.hasOwnProperty.call(player, "PartyType")) {
+        hasCombatants = player.PartyType !== 0;
+    }
+    let partyList = generateRawPartyList(hasCombatants, combatants);
     generatePartyList(partyList);
     extractPlayerPets(combatants);
     reloadCooldownModules();
