@@ -101,6 +101,14 @@ async function startZeffUI() {
     await loadSettings();
     generateJobStacks();
     toggleHideOutOfCombatElements();
+    waitFor("language", function () {
+        if (gameState.player === null) {
+            window
+                .callOverlayHandler({ call: "getCombatants" })
+                .then((e) => getPlayerChangedEventFromCombatants(e));
+        }
+    });
+
     console.log("ZeffUI fully loaded.");
 }
 
@@ -921,6 +929,15 @@ function drawGrid() {
 
     canvasContext.strokeStyle = "black";
     canvasContext.stroke();
+}
+
+function waitFor(variable, callback) {
+    var interval = setInterval(function () {
+        if (window[variable]) {
+            clearInterval(interval);
+            callback();
+        }
+    }, 200);
 }
 
 function clearGrid() {
@@ -2833,8 +2850,43 @@ function onPartyWipe() {
     reloadCooldownModules();
 }
 
+function getPlayerChangedEventFromCombatants(details) {
+    if (details.length === 0) return;
+    if (details.combatants.length === 0) return;
+
+    let player = details.combatants[0];
+    let job = jobList.find((x) => x.id === player.Job).name;
+    let e = {
+        detail: {
+            currentCP: player.CurrentMP,
+            currentGP: player.CurrentMP,
+            currentHP: player.CurrentHP,
+            currentMP: player.CurrentMP,
+            currentShield: 0,
+            currentTP: 0,
+            debugJob: null,
+            id: player.ID,
+            job: job,
+            jobDetail: null,
+            level: player.Level,
+            maxCP: player.MaxMP,
+            maxGP: player.MaxMP,
+            maxHP: player.MaxHP,
+            maxMP: player.MaxMP,
+            name: player.Name,
+            pos: {
+                x: player.PosX,
+                y: player.PosY,
+                z: player.PosZ,
+            },
+        },
+    };
+    onPlayerChangedEvent(e);
+}
+
 // When any change occurs to the player/players resources, mostly used for HP/MP and detecting job changes
 function onPlayerChangedEvent(e) {
+    if (!window["language"]) return;
     if (gameState.player !== null && gameState.player.job !== e.detail.job) {
         onJobChange(e.detail.job);
         setCurrentRole(e.detail.job);
