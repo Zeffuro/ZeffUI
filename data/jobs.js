@@ -295,6 +295,6 @@ var jobList = [
         name: "SGE",
         fullname: "Sage",
         type: "Healer",
-        position_type: "Ranged",
+        position_type: "Caster",
     },
 ];
