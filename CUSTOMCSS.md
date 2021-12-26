@@ -205,7 +205,7 @@ And on flex-direction on the boxes:
 
 ## Miniguide by rhopland:
 
-Do you want to see the structure as you change it? Remove the /_ ... _/ from all "border" elements.
+Do you want to see the structure as you change it? Remove the /* ... */ from all "border" elements.
 This will let you see the outline.
 
 Change width between left and right side of cooldown tracker:
