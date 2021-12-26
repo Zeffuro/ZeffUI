@@ -90,14 +90,18 @@ If you use Grow to the left you need negative values.
 
 If you want any of the custom positioned Party Rows to grow from right to left, you need to add these to the #party-row-number css:
 
+```css
     right: 0px;
     bottom: 0px;
+```
 
 And on flex-direction on the boxes:
 
+```css
     #party-row-1-box {
         flex-direction: row-reverse;
     }
+```
 
 <br />
     
