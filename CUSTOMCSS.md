@@ -105,10 +105,9 @@ Change height of the icon space (for party frames taller or shorter than 80px):
 3. Find `#party-row-X-box`, where X is 1 to 8. There should be a comma between each.
 4. Change `height` to either the same as or 1 px smaller than the value you changed above.
 
-5. (Optional) If you icons now seem small or overlap, go in ZeffUI settings and go to party frames options.
-Change the `scale` value as desired.
+5. (Optional) If you icons now seem small or overlap, go in ZeffUI settings and go to party frames options.  Change the `scale` value as desired.
 
-
+```
     #party-row-1 { 
         grid-area: party-1;
         /*border: 2px solid red; */
@@ -163,7 +162,7 @@ Change the `scale` value as desired.
         justify-content: right;
         flex-direction: row-reverse;
     }
-    
+```
     
 Nicer looking pulltimer by rhopland
 
