@@ -92,21 +92,22 @@ Do you want to see the structure as you change it? Remove the /* ... */ from all
 This will let you see the outline.
 
 Change width between left and right side of cooldown tracker:
-1. Find "#party-bar"
-2. Within the brackets {} after #party-bar, find "grid-template-columns". Edit the center px value.
+1. Find `#party-bar`
+2. Within the brackets {} after #party-bar, find `grid-template-columns`. Edit the center px value.
 
 Change how many icons show before you break to next line:
-1. Find "#party-row-X-box", where X is 1 to 8. There should be a comma between each.
+1. Find `#party-row-X-box`, where X is 1 to 8. There should be a comma between each.
 2. Within the brackets {}, find width. Make it smaller for fewer icons, or bigger for more. 
 
 Change height of the icon space (for party frames taller or shorter than 80px):
-1. Find "#party-bar"
-2. Within the brackets {}, find "grid-template-rows: repeat(4, 80px)" Change the pixel value to desired height.
-3. Find "#party-row-X-box", where X is 1 to 8. There should be a comma between each.
-4. Change ""height" to either the same as or 1 px smaller than the value you changed above.
+1. Find `#party-bar`
+2. Within the brackets {}, find `grid-template-rows: repeat(4, 80px)` Change the pixel value to desired height.
+3. Find `#party-row-X-box`, where X is 1 to 8. There should be a comma between each.
+4. Change `height` to either the same as or 1 px smaller than the value you changed above.
 
 5. (Optional) If you icons now seem small or overlap, go in ZeffUI settings and go to party frames options.
-Change the "scale" value as desired.
+Change the `scale` value as desired.
+
 
     #party-row-1 { 
         grid-area: party-1;
