@@ -419,7 +419,6 @@ function setLoadedElements() {
 
     // STACKBAR SETTINGS
     let stacksbar = document.getElementById("stacks-bar");
-    stacksbar.style.display = settings.stacksbar.enabled ? "block" : "none";
 
     stacksbar.style.width = settings.stacksbar.scale * (4 * 25);
     stacksbar.style.height = settings.stacksbar.scale * 21;
@@ -441,6 +440,10 @@ function setLoadedElements() {
 
     stacksbar.classList.add("ltr");
     stacksbar.style.transform = `translate(${settings.stacksbar.x}px, ${settings.stacksbar.y}px) scale(${settings.stacksbar.scale})`;
+
+    stacksbar.style.display = settings.stacksbar.enabled
+        ? "block !important"
+        : "none !important";
 
     // RAIDBUFF SETTINGS
     let raidbuffs = document.getElementById("raid-buffs-bar");
@@ -2820,9 +2823,17 @@ function onJobChange(job) {
     if (job === "SMN") {
         initializeSmn();
         adjustJobStacks(gameState.stats.stacks, gameState.stats.maxStacks);
-        document.getElementById("stacks-bar").style.display = "block";
+        if (currentSettings.stacksbar.enabled) {
+            document.getElementById("stacks-bar").style.display = "block";
+        } else {
+            document.getElementById("stacks-bar").style.display = "none";
+        }
     } else {
-        document.getElementById("stacks-bar").style.display = "none";
+        if (currentSettings.stacksbar.enabled) {
+            document.getElementById("stacks-bar").style.display = "none";
+        } else {
+            document.getElementById("stacks-bar").style.display = "block";
+        }
     }
     resetTimers();
     if (gameState.partyList.length === 1) {
