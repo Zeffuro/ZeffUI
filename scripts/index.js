@@ -1886,6 +1886,8 @@ function generatePartyList(party) {
                 partyMember.name !== gameState.player.name
             )
         ) {
+            if (partyMember.level == undefined)
+                partyMember.level = gameState.player.level;
             gameState.partyList.push({
                 id: partyMember.id,
                 inParty: partyMember.inParty,
