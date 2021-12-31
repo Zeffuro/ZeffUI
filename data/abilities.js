@@ -2407,6 +2407,25 @@ var abilityList = [
         order: 0,
     },
     // RPR
+    // Debuffs
+    {
+        id: 2586,
+        name: "Death's Design",
+        name_cn: "Death's Design",
+        name_de: "Architekt des Todes",
+        name_en: "Death's Design",
+        name_fr: "Dessein de la Camarde",
+        name_jp: "デスデザイン",
+        name_kr: "Death's Design",
+        enabled: true,
+        tts: true,
+        ttstype: 1,
+        job: "RPR",
+        type: "DoT",
+        icon: "https://xivapi.com/i/012000/012926.png",
+        color: "--filter-purple",
+        order: 0,
+    },
     // Raid Buffs
     {
         id: 2599,
