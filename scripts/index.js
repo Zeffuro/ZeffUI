@@ -2846,9 +2846,9 @@ function onJobChange(job) {
         }
     } else {
         if (currentSettings.stacksbar.enabled) {
-            document.getElementById("stacks-bar").style.display = "none";
-        } else {
             document.getElementById("stacks-bar").style.display = "block";
+        } else {
+            document.getElementById("stacks-bar").style.display = "none";
         }
     }
     resetTimers();
