@@ -51,6 +51,7 @@ async function checkAndInitializeDefaultSettingsObject(settings, lang = null) {
     checkAndInitializeSetting(settings, "general", {});
     checkAndInitializeSetting(settings.general, "usewebtts", false);
     checkAndInitializeSetting(settings.general, "ttsearly", 5);
+    checkAndInitializeSetting(settings.general, "preventdoubletts", true);
     checkAndInitializeSetting(settings.general, "usehdicons", false);
     checkAndInitializeSetting(settings.general, "customcss", "");
 

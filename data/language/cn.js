@@ -143,6 +143,7 @@ var language = [
 	{ id: "linkall", string: "绑定到全部职业" },
 	{ id: "unlink", string: "解绑" },
 	{ id: "includeprofiles", string: "导出包含档案的设置" },
+	{ id: "preventdoubletts", string: "Prevent Double TTS Callouts" },
 	// SKINS
 	{ id: "skindefault", string: "默认（SE风格）" },
 	{ id: "skinmaterialdark", string: "Material Dark（由skotlex设计）" },

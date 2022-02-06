@@ -143,6 +143,7 @@ var language = [
 	{ id: "linkall", string: "Mit allen verknüpfen" },
 	{ id: "unlink", string: "Trennen" },
 	{ id: "includeprofiles", string: "Profil mit Exportieren/Importieren/Löschen" },
+	{ id: "preventdoubletts", string: "Prevent Double TTS Callouts" },
 	// SKINS
 	{ id: "skindefault", string: "Standard (von Square Enix)" },
 	{ id: "skinmaterialdark", string: "Material Dark (von skotlex)" },

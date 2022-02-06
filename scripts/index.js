@@ -49,6 +49,7 @@ let activeElements = {
     currentCharges: new Map(),
     tts: new Map(),
     ttsElements: new Map(),
+    ttsLastCalled: new Map(),
 };
 
 /* prettier-ignore */
@@ -2569,6 +2570,18 @@ function startTTSTimer(
     let ttsTimer = setInterval(function () {
         timeLeft -= UPDATE_INTERVAL;
         if (timeLeft <= timeWhen) {
+            if (currentSettings.general.preventdoubletts) {
+                if (activeElements.ttsLastCalled.has(selector)) {
+                    if (
+                        Date.now() <
+                        activeElements.ttsLastCalled.get(selector) + 2000
+                    ) {
+                        clearInterval(ttsTimer);
+                        return;
+                    }
+                }
+            }
+            activeElements.ttsLastCalled.set(selector, Date.now());
             currentSettings.general.usewebtts
                 ? activeElements.ttsElements[selector].play()
                 : callOverlayHandler({ call: "cactbotSay", text: text });
