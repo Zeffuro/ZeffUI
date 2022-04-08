@@ -832,7 +832,7 @@ var abilityList = [
     {
         id: 25785,
         name: "Radiant Finale",
-        name_cn: "Radiant Finale",
+        name_cn: "光明神的最终乐章",
         name_de: "Luminöses Finale",
         name_en: "Radiant Finale",
         name_fr: "Final radieux",
@@ -2411,7 +2411,7 @@ var abilityList = [
     {
         id: 2586,
         name: "Death's Design",
-        name_cn: "Death's Design",
+        name_cn: "死亡烙印",
         name_de: "Architekt des Todes",
         name_en: "Death's Design",
         name_fr: "Dessein de la Camarde",
@@ -2430,7 +2430,7 @@ var abilityList = [
     {
         id: 2599,
         name: "Arcane Circle",
-        name_cn: "Arcane Circle",
+        name_cn: "神秘环",
         name_de: "Arkaner Kreis",
         name_en: "Arcane Circle",
         name_fr: "Cercle arcanique",
@@ -2610,7 +2610,7 @@ var abilityList = [
     {
         id: 2614,
         name: "Eukrasian Dosis",
-        name_cn: "Eukrasian Dosis",
+        name_cn: "均衡注药",
         name_de: "Eukratische Dosis",
         name_en: "Eukrasian Dosis",
         name_fr: "Dosis eucrasique",
@@ -2628,7 +2628,7 @@ var abilityList = [
     {
         id: 2615,
         name: "Eukrasian Dosis II",
-        name_cn: "Eukrasian Dosis II",
+        name_cn: "均衡注药II",
         name_de: "Eukratische Dosis II",
         name_en: "Eukrasian Dosis II",
         name_fr: "Dosis eucrasique II",
@@ -2646,7 +2646,7 @@ var abilityList = [
     {
         id: 2616,
         name: "Eukrasian Dosis III",
-        name_cn: "Eukrasian Dosis III",
+        name_cn: "均衡注药III",
         name_de: "Eukratische Dosis III",
         name_en: "Eukrasian Dosis III",
         name_fr: "Dosis eucrasique III",
@@ -2665,7 +2665,7 @@ var abilityList = [
     {
         id: 24298,
         name: "Kerachole",
-        name_cn: "Kerachole",
+        name_cn: "坚角清汁",
         name_de: "Kerachole",
         name_en: "Kerachole",
         name_fr: "Kerachole",
@@ -2688,7 +2688,7 @@ var abilityList = [
     {
         id: 2703,
         name: "Searing Light",
-        name_cn: "Searing Light",
+        name_cn: "灼热之光",
         name_de: "Gleißender Schein",
         name_en: "Searing Light",
         name_fr: "Éclat ardent",
@@ -2750,7 +2750,7 @@ var abilityList = [
     {
         id: 2677,
         name: "Surging Tempest", // Used to be Storm's Eye
-        name_cn: "???",
+        name_cn: "战场风暴",
         name_de: "Tosender Sturm",
         name_en: "Surging Tempest",
         name_fr: "Vent de tempête",
