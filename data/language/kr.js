@@ -116,7 +116,7 @@ var language = [
 	{ id: "jobrole", string: "직업 / 역할" },
 	{ id: "pvp", string: "PvP" },
 	{ id: "usewebtts", string: "바이두 TTS 사용" },
-	{ id: "jobthresholds", string: "Job Thresholds" },
+	{ id: "jobthresholds", string: "직업별 임계값" },
 	{ id: "lowcolor", string: "낮을 때 색" },
 	{ id: "medcolor", string: "중간일 때 색" },
 	{ id: "specificjobsonly", string: "특정 직업 한정" },
