@@ -173,7 +173,7 @@ var language = [
 	{ id: "mrd", string: "도끼술사" },
 	{ id: "drk", string: "암흑기사" },
 	{ id: "gnb", string: "건브레이커" },
-	{ id: "whm", string: "백마도스" },
+	{ id: "whm", string: "백마도사" },
 	{ id: "cnj", string: "환술사" },
 	{ id: "sch", string: "학자" },
 	{ id: "ast", string: "점성술사" },

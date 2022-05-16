@@ -903,7 +903,7 @@ var abilityList = [
         name_en: "Mage's Ballad",
         name_fr: "Ballade du mage",
         name_jp: "賢人のバラード",
-        name_kr: "현자의 담시곡",
+        name_kr: "현인의 담시곡",
         enabled: true,
         tts: false,
         ttstype: 0,
