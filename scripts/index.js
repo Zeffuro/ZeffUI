@@ -3313,7 +3313,7 @@ function handleSkill(parameters) {
                 )
             ) {
                 if (
-                    gameState.partyList[playerIndex].level ==
+                    gameState.partyList[playerIndex].level >=
                     ability.extra.is_trait_enhanced[0]
                 ) {
                     ability.cooldown = ability.extra.is_trait_enhanced[1];
@@ -3516,7 +3516,7 @@ function handleGainEffect(parameters) {
                 )
             ) {
                 if (
-                    gameState.partyList[playerIndex].level ==
+                    gameState.partyList[playerIndex].level >=
                     ability.extra.is_trait_enhanced[0]
                 ) {
                     ability.cooldown = ability.extra.is_trait_enhanced[1];
