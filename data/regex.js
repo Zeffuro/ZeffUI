@@ -178,4 +178,13 @@ var regexList = {
             },
         ],
     },
+    21: {
+        regex: /^\[[^\]]+\] Director 21:/,
+        matches: [
+            {
+                regex: /^\[[^\]]+\] Director 21:(?:[^:]*):(?<command>(?:400000(?:03|10)))/,
+                function: "onPartyWipe",
+            },
+        ],
+    },
 };
