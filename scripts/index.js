@@ -88,7 +88,6 @@ const UPDATE_INTERVAL = 10;
 // Cactbot Events: https://github.com/quisquous/cactbot/blob/8615b69424360f69892bf81907d9cbdf3e752592/plugin/CactbotEventSource/CactbotEventSource.cs
 addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
-addOverlayListener("onPartyWipe", () => onPartyWipe());
 addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
 addOverlayListener("ChangeZone", (e) => onChangeZone(e));
 addOverlayListener("PartyChanged", (e) => onPartyChanged(e));
