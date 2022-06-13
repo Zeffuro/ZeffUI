@@ -3631,7 +3631,7 @@ function handleGainEffect(parameters) {
 function handleLoseEffect(parameters) {
     if (gameState.player === null) return;
     //let byYou = (parameters.player === currentPlayer.name);
-    //let onYou = (parameters.target === currentPlayer.name);
+    let onYou = parameters.target === gameState.player.name;
     let playerIndex = gameState.partyList.findIndex(
         (x) => x.name === parameters.player,
     );
@@ -3646,6 +3646,7 @@ function handleLoseEffect(parameters) {
     )) {
         if (ability.name == "Standard Step") return;
         if (ability.name == "Technical Step") return;
+        if (ability.type == "RaidBuff" && !onYou) return;
         let selectorProperties = getSelectorProperties(ability.type);
         let barSelector = selectorProperties.id;
         let abilitySelector = `${barSelector}-${playerIndex}-${ability.id}`;
