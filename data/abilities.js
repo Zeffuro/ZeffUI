@@ -1331,7 +1331,7 @@ var abilityList = [
         ttstype: 1,
         job: "DRG",
         type: "DoT",
-        icon: "https://xivapi.com/i/010000/012586.png",
+        icon: "https://xivapi.com/i/012000/012586.png",
         color: "--filter-purple",
         order: 0,
     },
