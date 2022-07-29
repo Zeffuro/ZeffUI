@@ -238,7 +238,7 @@ https://user-images.githubusercontent.com/4972345/181855537-8468c6bc-5d43-41c2-a
 
 ```
 #customcd-bar .icon-active {
-    content: url("[https://i.imgur.com/1UiMrZ3.gif](https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFRed.gif)")
+    content: url("https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFRed.gif")
 }
 ```
 
