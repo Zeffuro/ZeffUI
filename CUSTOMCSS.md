@@ -230,3 +230,20 @@ Change height of the icon space (for party frames taller or shorter than 80px):
 4. Change `height` to either the same as or 1 px smaller than the value you changed above.
 
 5. (Optional) If you icons now seem small or overlap, go in ZeffUI settings and go to party frames options. Change the `scale` value as desired.
+
+
+## Change color of the active cooldowns/buffs
+
+https://user-images.githubusercontent.com/4972345/181855537-8468c6bc-5d43-41c2-a0bf-893bbe9bd657.mp4
+
+```
+#customcd-bar .icon-active {
+    content: url("https://i.imgur.com/1UiMrZ3.gif")
+}
+
+Change `#customcd-bar` to anything you want it applied to or simply make it only use `.icon-active` for all of them.
+```
+
+
+
+
