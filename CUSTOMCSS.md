@@ -242,9 +242,10 @@ https://user-images.githubusercontent.com/4972345/181855537-8468c6bc-5d43-41c2-a
 }
 ```
 
-GIF Colors (Thank you Dansa for these)
-Red: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFRed.gif
-Blue: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFblue.gif
-Green: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFgreen.gif
+GIF Colors (Thank you Dansa for these)  
+
+Red: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFRed.gif  
+Blue: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFblue.gif  
+Green: https://github.com/dansa/FFXIV-Trigg/raw/master/Resources/ComboGIFgreen.gif  
 
 Change `#customcd-bar` to anything you want it applied to or simply make it only use `.icon-active` for all of them.
