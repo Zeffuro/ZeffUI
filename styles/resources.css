@@ -41,6 +41,9 @@
     position: relative;
     image-rendering: pixelated;
 }
+.icon-active {
+    z-index: 1;
+}
 .ability-image,
 .icon-active,
 .icon-overlay {
