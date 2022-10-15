@@ -9,6 +9,10 @@ var regexList = {
                 function: "handleCountdownTimer",
             },
             {
+                regex: /.{1,12}取消了战斗开始倒计时。/,
+                function: "stopCountdownTimer",
+            },
+            {
                 regex: /“.*”任务开始。/,
                 function: "onInstanceStart",
             },
@@ -20,6 +24,10 @@ var regexList = {
             {
                 regex: /Battle commencing in (?<seconds>[0-9]{1,2}) seconds! \([a-zA-Z-' ]{2,31}\)/,
                 function: "handleCountdownTimer",
+            },
+            {
+                regex: /Countdown canceled by [a-zA-Z-' ]{2,31}/,
+                function: "stopCountdownTimer",
             },
             {
                 regex: /[\w-'èéêîïôàæûç,:\-() ]{1,99} has begun\./,
@@ -35,6 +43,10 @@ var regexList = {
                 function: "handleCountdownTimer",
             },
             {
+                regex: /Le compte à rebours a été interrompu par \([a-zA-Z-w' ]{2,31}\)/,
+                function: "stopCountdownTimer",
+            },
+            {
                 regex: /La mission “.*” commence\./,
                 function: "onInstanceStart",
             },
@@ -46,6 +58,10 @@ var regexList = {
             {
                 regex: /Noch (?<seconds>[0-9]{1,2}) Sekunden bis Kampfbeginn! \([a-zA-Z-' ]{2,31}\)/,
                 function: "handleCountdownTimer",
+            },
+            {
+                regex: /[a-zA-Z-' ]{2,31} hat den Countdown abgebrochen/,
+                function: "stopCountdownTimer",
             },
             {
                 regex: /„.*“ hat begonnen\./,
@@ -61,6 +77,10 @@ var regexList = {
                 function: "handleCountdownTimer",
             },
             {
+                regex: /[a-zA-Z-' ]{2,31}により、戦闘開始カウントがキャンセルされました。/,
+                function: "stopCountdownTimer",
+            },
+            {
                 regex: /「.*」の攻略を開始した。/,
                 function: "onInstanceStart",
             },
@@ -72,6 +92,10 @@ var regexList = {
             {
                 regex: /전투 시작 (?<seconds>[0-9]{1,2})초 전! \(.{1,12}\)/,
                 function: "handleCountdownTimer",
+            },
+            {
+                regex: /.{1,12} 님이 초읽기를 취소했습니다\\./,
+                function: "stopCountdownTimer",
             },
             {
                 regex: /.* 공략을 시작합니다./,

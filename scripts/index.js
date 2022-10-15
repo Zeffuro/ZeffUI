@@ -3031,6 +3031,14 @@ function handleCountdownTimer(parameters) {
     startBarTimer(parameters.seconds, "timer-bar", true);
 }
 
+// When user cancels active countdown
+/* exported stopCountdownTimer */
+function stopCountdownTimer() {
+    if (!currentSettings.timerbar.enabled) return;
+    clearInterval(activeElements.countdowns.get(`timer-bar`));
+    stopBarTimer("timer-bar", true);
+}
+
 // Whenever any DoT/HoT ticks
 /* exported handleEffectTick */
 function handleEffectTick(parameters) {
