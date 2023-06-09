@@ -1929,6 +1929,27 @@ var abilityList = [
             is_trait_enhanced: [88, 90],
         },
     },
+    {
+        id: 2887,
+        name: "Dismantle",
+        name_cn: "武装解除",
+        name_de: "Zerlegen",
+        name_en: "Dismantle",
+        name_fr: "Brise-arme",
+        name_jp: "ウェポンブレイク",
+        name_kr: "무기 파괴",
+        enabled: true,
+        tts: true,
+        ttstype: 0,
+        job: "MCH",
+        level: 62,
+        duration: 10,
+        cooldown: 120,
+        type: "Party",
+        icon: "https://xivapi.com/i/003000/003011.png",
+        color: "--filter-orange",
+        order: 1,
+    },
     // MNK
     // DoTs
     {
