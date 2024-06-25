@@ -65,7 +65,8 @@ const GAME_DATA = {
 		umbral_3: 0.60,
 		tick: 3.0
 	},
-    // Comes from https://www.akhmorning.com/allagan-studies/stats/speed/, will need to be updated when Endwalker comes out
+    // Comes from https://www.akhmorning.com/allagan-studies/stats/speed/
+    // TODO: Will need to be updated when Dawntrail comes out
 	SPEED_LOOKUP: new Map(
 		[
 			[1, 56], [2, 57],  [3, 60], [4, 62], [5, 65], [6, 68], [7, 70], [8, 73], [9, 76], [10, 78], 
@@ -2668,9 +2669,11 @@ function processIconUrl(icon) {
         !icon.includes("_hr1.png") &&
         currentSettings.language != "cn"
     )
-        icon = icon.replace(".png", "_hr1.png");
+        icon = icon.replace(".tex", "_hr1.tex");
     if (currentSettings.language == "cn") {
-        icon = icon.replace("xivapi", "cafemaker.wakingsands");
+        //icon = icon.replace("xivapi", "cafemaker.wakingsands");
+        icon = icon.replace("beta.xivapi.com/api/1/asset/ui/icon", "cafemaker.wakingsands.com/i");
+        icon = icon.replace(".tex?format=png", ".png");
     }
 
     return icon;
