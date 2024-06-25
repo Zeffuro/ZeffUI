@@ -297,4 +297,18 @@ var jobList = [
         type: "Healer",
         position_type: "Caster",
     },
+    {
+        id: 41,
+        name: "PCT",
+        fullname: "Pictomancer",
+        type: "CasterDPS",
+        position_type: "Caster",
+    },
+    {
+        id: 42,
+        name: "VPR",
+        fullname: "Viper",
+        type: "MeleeDPS",
+        position_type: "Melee",
+    },
 ];
