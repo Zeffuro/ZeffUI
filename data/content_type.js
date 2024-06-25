@@ -1,6 +1,5 @@
 // Content manually placed over from https://github.com/quisquous/cactbot/blob/main/resources/content_type.ts because this project doesn't support typescript
 var content_type = {
-    BeastTribeQuests: 13,
     Companions: 12,
     CustomDeliveries: 25,
     DeepDungeons: 21,
@@ -14,6 +13,7 @@ var content_type = {
     GrandCompany: 11,
     Guildhests: 3,
     Levequests: 10,
+    MaskedCarnivale: 27,
     OverallCompletion: 14,
     PlayerCommendation: 15,
     Pvp: 6,
@@ -22,6 +22,8 @@ var content_type = {
     RetainerVentures: 18,
     TreasureHunt: 9,
     Trials: 4,
+    TribalQuests: 13,
     UltimateRaids: 28,
-    WondrousTails: 24,
+    VCDungeonFinder: 30,
+    WondrousTails: 24
 };
