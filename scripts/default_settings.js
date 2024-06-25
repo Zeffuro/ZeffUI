@@ -75,11 +75,11 @@ async function checkAndInitializeDefaultSettingsObject(settings, lang = null) {
 			// Healers
 			"WHM", "CNJ", "SCH", "AST", "SGE",
 			// Melee DPS
-			"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", "RPR", 
+			"MNK", "PGL", "DRG", "LNC", "NIN", "ROG", "SAM", "RPR", "VPR",
 			// Physical Ranged DPS
 			"BRD", "ARC", "MCH", "DNC",
 			// Caster DPS
-			"BLM", "THM", "SMN", "ACN", "RDM", "BLU"]
+			"BLM", "THM", "SMN", "ACN", "RDM", "PCT", "BLU"]
 	);
 
     checkAndInitializeSetting(settings, "rolepartyorder", {});
