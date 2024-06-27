@@ -2009,6 +2009,28 @@ var abilityList = [
         color: "--filter-baby-blue",
         order: 0,
     },
+    // Raid Buffs
+    {
+        id: 2248,
+        name: "Mug",
+        name_cn: "夺取",
+        name_de: "Ausrauben",
+        name_en: "Mug",
+        name_fr: "Rapine",
+        name_jp: "ぶんどる",
+        name_kr: "약탈",
+        enabled: true,
+        tts: true,
+        ttstype: 2,
+        job: "NIN",
+        level: 15,
+        duration: 20,
+        cooldown: 120,
+        type: "RaidBuff",
+        icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000613.tex?format=png",
+        color: "--filter-dark-red",
+        order: 0,
+    },
     // Buffs
     {
         id: 500,
