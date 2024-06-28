@@ -1953,11 +1953,11 @@ function startAbilityIconTimers(
 
     if (
         currentSettings.general.usehdicons &&
-        !ability.icon.includes("_hr1.png")
+        !ability.icon.includes("_hr1.tex")
     ) {
-        ability.icon = ability.icon.replace(".png", "_hr1.png");
-        if (usingAbilityHolder && !abilityHolder.icon.includes("_hr1.png"))
-            abilityHolder.icon = abilityHolder.icon.replace(".png", "_hr1.png");
+        ability.icon = ability.icon.replace(".tex", "_hr1.tex");
+        if (usingAbilityHolder && !abilityHolder.icon.includes("_hr1.tex"))
+            abilityHolder.icon = abilityHolder.icon.replace(".tex", "_hr1.tex");
     }
     if (usingAbilityHolder) {
         abilityHolder.icon = processIconUrl(abilityHolder.icon);
@@ -2666,7 +2666,7 @@ function handleAbilityTTS(ability, selector, onYou = true) {
 function processIconUrl(icon) {
     if (
         currentSettings.general.usehdicons &&
-        !icon.includes("_hr1.png") &&
+        !icon.includes("_hr1.tex") &&
         currentSettings.language != "cn"
     )
         icon = icon.replace(".tex", "_hr1.tex");
