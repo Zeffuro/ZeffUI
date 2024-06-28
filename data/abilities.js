@@ -2069,7 +2069,7 @@ var abilityList = [
         duration: 20,
         cooldown: 120,
         type: "RaidBuff",
-        icon: "https://beta.xivapi.com/api/1/asset/ui/icon/013000/013808.tex?format=png",
+        icon: "https://beta.xivapi.com/api/1/asset/ui/icon/003000/003826.tex?format=png",
         color: "--filter-fuchsia",
         order: 0,
     },
