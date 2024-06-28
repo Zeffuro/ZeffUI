@@ -1366,7 +1366,7 @@ function generateCustomCooldowns() {
     range.deleteContents();
 
     let playerIndex = 0;
-    let currentJob = jobList.find((x) => x.name === gameState.player.job);
+    let currentJob = parsePlayerJob(gameState.player.job);
     if (currentSettings.customcd.abilities.length === 0) return;
     for (let ability of currentSettings.customcd.abilities.filter(
         (x) => x.type === "CustomCooldown" && x.level <= gameState.player.level,
@@ -1414,7 +1414,7 @@ function generateMitigation() {
         currentSettings.customcd.abilities,
     );
 
-    let currentJob = jobList.find((x) => x.name === gameState.player.job);
+    let currentJob = parsePlayerJob(gameState.player.job);
     for (let ability of mergedAbilityList.filter(
         (x) => x.type === "Mitigation" && x.level <= gameState.player.level,
     )) {
@@ -1852,12 +1852,23 @@ function generateRawPartyList(fromCombatants, combatants = null) {
         {
             id: parseInt(gameState.player.id).toString(16).toUpperCase(),
             inParty: false,
-            job: jobList.find((x) => x.name === gameState.player.job).id,
+            job: parsePlayerJob(gameState.player.job).id,
             level: gameState.player.level,
             name: gameState.player.name,
             worldId: null,
         },
     ];
+}
+
+function parsePlayerJob(job) {
+    if (job === null) return;
+    if (!isNaN(job)) {
+        return jobList
+        .find((x) => x.id === parseInt(job));
+    }else{
+        return jobList
+        .find((x) => x.name === job);
+    }
 }
 
 function extractPlayerPets(combatants) {
@@ -1892,7 +1903,7 @@ function generatePartyList(party) {
             gameState.partyList.push({
                 id: partyMember.id,
                 inParty: partyMember.inParty,
-                job: jobList.find((x) => x.id === partyMember.job),
+                job: parsePlayerJob(partyMember.job),
                 level: partyMember.level,
                 name: partyMember.name,
                 worldId: partyMember.worldId,
@@ -2701,9 +2712,9 @@ function setWebTTS(text) {
 // Sets Party Role based on current job
 function setCurrentRole(job) {
     if (job === null) return;
-    gameState.currentrole = jobList
-        .find((x) => x.name === job)
-        .type.toLowerCase();
+
+    gameState.currentrole = parsePlayerJob(job).type.toLowerCase();
+    
     if (gameState.currentrole.includes("dps")) gameState.currentrole = "dps";
     if (
         gameState.currentrole != "tank" &&
@@ -2884,7 +2895,7 @@ function getPlayerChangedEventFromCombatants(details) {
     if (details.combatants.length === 0) return;
 
     let player = details.combatants[0];
-    let job = jobList.find((x) => x.id === player.Job).name;
+    let job = parsePlayerJob(player.Job).name;
     let e = {
         detail: {
             currentCP: player.CurrentMP,
@@ -2997,7 +3008,7 @@ function handleAddNewCombatant(parameters) {
     if (gameState.partyList.filter((x) => x.id == parameters.id).length == 0) {
         return;
     }
-    let job = jobList.find((x) => x.id === parseInt(parameters.job, 16));
+    let job = parsePlayerJob(parseInt(parameters.job, 16));
     let player = gameState.partyList.find((x) => x.id == parameters.id);
     let reload = false;
     if (player.job != job) {
