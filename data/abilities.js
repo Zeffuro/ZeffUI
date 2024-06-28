@@ -2724,7 +2724,7 @@ var abilityList = [
         ttstype: 0,
         job: "VPR",
         type: "Buff",
-        icon: "https://beta.xivapi.com/api/1/asset/ui/icon/013000/013773.tex?format=png",
+        icon: "https://beta.xivapi.com/api/1/asset/ui/icon/013000/013774.tex?format=png",
         color: "--filter-toxic-green",
         order: 0,
     },
@@ -2744,7 +2744,7 @@ var abilityList = [
         type: "Buff",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/013000/013775.tex?format=png",
         color: "--filter-light-gold",
-        order: 0,
+        order: 1,
     },
     // Debuffs
     {
