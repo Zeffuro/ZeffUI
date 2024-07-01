@@ -91,7 +91,7 @@ addOverlayListener("onPlayerChangedEvent", (e) => onPlayerChangedEvent(e));
 addOverlayListener("onLogEvent", (e) => onLogEvent(e));
 addOverlayListener("onInCombatChangedEvent", (e) => onInCombatChangedEvent(e));
 addOverlayListener("ChangeZone", (e) => onChangeZone(e));
-//addOverlayListener("PartyChanged", (e) => onPartyChanged(e)); // Disabled until struct is updated in OverlayPlugin
+addOverlayListener("PartyChanged", (e) => onPartyChanged(e)); // Disabled until struct is updated in OverlayPlugin
 
 $(document).ready(() => {
     startZeffUI();
