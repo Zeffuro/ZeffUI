@@ -450,4 +450,15 @@ function checkAndInsertMissingJobs(settingsObject) {
         // Add missing RPR job
         settingsObject.splice(settingsObject.indexOf("SAM") + 1, 0, "RPR");
     }
+
+    if (!settingsObject.includes("PCT")) {
+        // Add missing RPR job
+        settingsObject.splice(settingsObject.indexOf("RDM") + 1, 0, "PCT");
+    }
+
+    if (!settingsObject.includes("VPR")) {
+        // Add missing RPR job
+        settingsObject.splice(settingsObject.indexOf("RPR") + 1, 0, "VPR");
+    }
+
 }
