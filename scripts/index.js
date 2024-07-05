@@ -3330,14 +3330,27 @@ function handleSkill(parameters) {
             if (
                 Object.prototype.hasOwnProperty.call(
                     ability.extra,
-                    "is_trait_enhanced",
+                    "is_trait_enhanced_cd",
                 )
             ) {
                 if (
                     gameState.partyList[playerIndex].level >=
-                    ability.extra.is_trait_enhanced[0]
+                    ability.extra.is_trait_enhanced_cd[0]
                 ) {
-                    ability.cooldown = ability.extra.is_trait_enhanced[1];
+                    ability.cooldown = ability.extra.is_trait_enhanced_cd[1];
+                }
+            }
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    ability.extra,
+                    "is_trait_enhanced_dur",
+                )
+            ) {                
+                if (
+                    gameState.partyList[playerIndex].level >=
+                    ability.extra.is_trait_enhanced_dur[0]
+                ) {
+                    ability.duration = ability.extra.is_trait_enhanced_dur[1];
                 }
             }
         }
@@ -3533,14 +3546,29 @@ function handleGainEffect(parameters) {
             if (
                 Object.prototype.hasOwnProperty.call(
                     ability.extra,
-                    "is_trait_enhanced",
+                    "is_trait_enhanced_cd",
                 )
             ) {
                 if (
                     gameState.partyList[playerIndex].level >=
-                    ability.extra.is_trait_enhanced[0]
+                    ability.extra.is_trait_enhanced_cd[0]
                 ) {
-                    ability.cooldown = ability.extra.is_trait_enhanced[1];
+                    ability.cooldown = ability.extra.is_trait_enhanced_cd[1];
+                }
+            }
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    ability.extra,
+                    "is_trait_enhanced_dur",
+                )
+            ) {
+                if (
+                    gameState.partyList[playerIndex].level >=
+                    ability.extra.is_trait_enhanced_dur[0]
+                ) {
+                    if(Object.prototype.hasOwnProperty.call(ability, "duration")){
+                        ability.duration = ability.extra.is_trait_enhanced_dur[1];
+                    }
                 }
             }
         }

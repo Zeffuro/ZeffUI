@@ -58,12 +58,15 @@ var abilityList = [
         ttstype: 0,
         job: "Tank",
         level: 22,
-        duration: 15,
+        duration: 10,
         cooldown: 60,
         type: "Mitigation",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000806.tex?format=png",
         color: "--filter-light-blue",
         order: 2,
+        extra: {
+            is_trait_enhanced_dur: [98, 15],
+        },
     },
     {
         id: 7535,
@@ -79,12 +82,15 @@ var abilityList = [
         ttstype: 0,
         job: "Tank",
         level: 22,
-        duration: 15,
+        duration: 10,
         cooldown: 60,
         type: "Party",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000806.tex?format=png",
         color: "--filter-light-blue",
         order: 2,
+        extra: {
+            is_trait_enhanced_dur: [98, 15],
+        },
     },
     // Caster
     {
@@ -102,11 +108,14 @@ var abilityList = [
         job: "Caster",
         level: 18,
         duration: 10,
-        cooldown: 40,
+        cooldown: 60,
         type: "Party",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000866.tex?format=png",
         color: "--filter-light-blue",
         order: 0,
+        extra: {
+            is_trait_enhanced_cd: [94, 40],
+        },
     },
     {
         id: 7560,
@@ -122,12 +131,15 @@ var abilityList = [
         ttstype: 0,
         job: "CasterDPS",
         level: 8,
-        duration: 15,
+        duration: 10,
         cooldown: 90,
         type: "Party",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000861.tex?format=png",
         color: "--filter-light-blue",
         order: 1,
+        extra: {
+            is_trait_enhanced_dur: [98, 15],
+        },
     },
     // Melee DPS
     {
@@ -144,12 +156,15 @@ var abilityList = [
         ttstype: 0,
         job: "MeleeDPS",
         level: 22,
-        duration: 15,
+        duration: 10,
         cooldown: 90,
         type: "Party",
         icon: "https://beta.xivapi.com/api/1/asset/ui/icon/000000/000828.tex?format=png",
         color: "--filter-light-blue",
         order: 0,
+        extra: {
+            is_trait_enhanced_dur: [98, 15],
+        },
     },
     // AST
     // DoTs
@@ -917,7 +932,7 @@ var abilityList = [
         color: "--filter-dark-red",
         order: 0,
         extra: {
-            is_trait_enhanced: [88, 90],
+            is_trait_enhanced_cd: [88, 90],
         },
     },
     // DNC
@@ -1294,7 +1309,7 @@ var abilityList = [
         color: "--filter-purple",
         order: 0,
         extra: {
-            is_trait_enhanced: [88, 90],
+            is_trait_enhanced_cd: [88, 90],
         },
     },
     // DRG
@@ -1887,7 +1902,7 @@ var abilityList = [
         color: "--filter-orange",
         order: 0,
         extra: {
-            is_trait_enhanced: [88, 90],
+            is_trait_enhanced_cd: [88, 90],
         },
     },
     {
