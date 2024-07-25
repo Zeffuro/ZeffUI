@@ -668,7 +668,7 @@ function searchCustomAbility() {
     $("#customcdIconPreviewDiv").append(
         '<div id="customcdLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>',
     );
-    let url = `https://fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`;
+    let url = `https://www.fakegaming.eu/ffxiv/spellname/index.php?name=${query}&type=action&lang=${currentSettings.language}`;
     if (currentSettings.language == "cn")
         url = `https://act.diemoe.net/FFXIVSpellNamesXIVAPI/index.php?name=${query}&type=action&lang=${currentSettings.language}`;
     $.getJSON(url, function (data) {
