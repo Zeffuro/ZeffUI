@@ -1492,6 +1492,9 @@ function generatePartyCooldowns() {
                 ability = currentSettings.override.abilities.find(
                     (x) => x.name === ability.name && x.type == ability.type,
                 );
+            }            
+            if (ability.extra && Object.prototype.hasOwnProperty.call(ability.extra, "hide_at_level") && partyMember.level >= ability.extra.hide_at_level) {
+                pushAbility = false;
             }
             let pushAbility = true;
             if (pushAbility && ability.enabled) {
@@ -1562,6 +1565,9 @@ function generateRaidBuffs() {
                     ) ||
                     Object.prototype.hasOwnProperty.call(ability.extra, "is_ts")
                 ) {
+                    pushAbility = false;
+                }
+                if (ability.extra && Object.prototype.hasOwnProperty.call(ability.extra, "hide_at_level") && partyMember.level >= ability.extra.hide_at_level) {
                     pushAbility = false;
                 }
             }
