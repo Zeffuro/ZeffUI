@@ -572,7 +572,7 @@ var abilityList = [
     {
         id: 3871,
         name: "High Thunder",
-        name_cn: "High Thunder",
+        name_cn: "高闪雷",
         name_de: "Hoher Blitz",
         name_en: "High Thunder",
         name_fr: "Foudre majeure",
@@ -593,7 +593,7 @@ var abilityList = [
     {
         id: 3872,
         name: "High Thunder II",
-        name_cn: "High Thunder II",
+        name_cn: "高震雷",
         name_de: "Hohes Blitzra",
         name_en: "High Thunder",
         name_fr: "Extra Foudre majeure",
@@ -2079,7 +2079,7 @@ var abilityList = [
     {
         id: 36957,
         name: "Dokumori",
-        name_cn: "Dokumori",
+        name_cn: "介毒之术",
         name_de: "Dokumori",
         name_en: "Dokumori",
         name_fr: "Dokumori",
@@ -2121,7 +2121,7 @@ var abilityList = [
     {
         id: 3685,
         name: "Starry Muse",
-        name_cn: "Starry Muse",
+        name_cn: "星空构想",
         name_de: "Sternenmuse",
         name_en: "Starry Muse",
         name_fr: "Imagi Ciel",
@@ -2779,7 +2779,7 @@ var abilityList = [
     {
         id: 3668,
         name: "Hunter's Instinct",
-        name_cn: "Hunter's Instinct",
+        name_cn: "猛袭",
         name_de: "Vipernblut",
         name_en: "Hunter's Instinct",
         name_fr: "Prédation",
@@ -2797,7 +2797,7 @@ var abilityList = [
     {
         id: 3669,
         name: "Swiftscaled",
-        name_cn: "Swiftscaled",
+        name_cn: "疾速",
         name_de: "Vipernhatz",
         name_en: "Swiftscaled",
         name_fr: "Vélocité",
