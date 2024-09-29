@@ -4,6 +4,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "踏破风雪",
             de: "Ein frostiger Empfang",
             en: "A Frosty Reception",
             fr: "Un accueil glacial",
@@ -18,6 +19,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "无尽寒夜",
             de: "In fremder Haut",
             en: "In from the Cold",
             fr: "Le voleur de corps",
@@ -32,6 +34,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "扩散的末日",
             de: "Rote Himmel, roter Schnee",
             en: "As the Heavens Burn",
             fr: "L'arène des neiges",
@@ -46,6 +49,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "晓月之终途",
             de: "Das Ende der Morgenröte",
             en: "Endwalker",
             fr: "Arpenteur des finitudes",
@@ -60,6 +64,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "上一任阿谢姆的教导",
             de: " Es reimt sich auf Gebell",
             en: "Worthy of His Back",
             fr: "Le défi de l'ancienne Azem",
@@ -74,6 +79,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "未来之路",
             de: "Offen für neue Wege",
             en: "A Path Unveiled",
             fr: "Des esprits et des hommes",
@@ -88,6 +94,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "驶向融合的巨轮",
             de: "Im Hafen des Friedens",
             en: "To Calmer Seas",
             fr: "Cap sur la paix",
@@ -102,6 +109,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "英魂安息",
             de: "Domanisches Begräbnis",
             en: "Laid to Rest",
             fr: "Des adieux domiens",
@@ -116,6 +124,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "仰望苍穹，不断迈进",
             de: "Der Weg zur Erneuerung",
             en: "Ever March Heavensward",
             fr: "La voie du renouveau",
@@ -130,6 +139,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "目送生者前行",
             de: "Trauer und Hoffnung",
             en: "The Gift of Mercy",
             fr: "Acceptation",
@@ -144,6 +154,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "大镰的意义",
             de: "Die Bedeutung der Sense",
             en: "The Harvest Begins",
             fr: "La vraie puissance de la faux",
@@ -158,6 +169,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "暗杀道",
             de: "Die Kunst des Tötens",
             en: "The Killing Art",
             fr: "La voie du néant",
@@ -172,6 +184,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "贤者的短杖",
             de: "Des Weisen wundersames Werkzeug",
             en: "Sage's Focus",
             fr: "Les armes du sage",
@@ -186,6 +199,7 @@ var zone_info = {
         contentType: 7,
         exVersion: 4,
         name: {
+            cn: "生命瞬逝，术道恒久",
             de: "Das Leben ist kurz, die Kunst ist lang",
             en: "Life Ephemeral, Path Eternal",
             fr: "Existences éphémères et savoir éternel",
