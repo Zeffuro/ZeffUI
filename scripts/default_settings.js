@@ -10,6 +10,7 @@ function checkAndInitializeSetting(settingsObject, setting, defaultValue) {
 // Gets the set language in FFXIV Plugin Settings
 async function getACTLocale() {
     let lang = await callOverlayHandler({ call: "getLanguage" });
+    console.log(`Detected ACT Language: ${lang.language}`);
     switch (lang.language) {
         case "English":
             return "en";
@@ -23,6 +24,8 @@ async function getACTLocale() {
             return "cn";
         case "Korean":
             return "kr";
+        case "TraditionalChinese":
+            return "tc";
         case "default":
             return "en";
     }

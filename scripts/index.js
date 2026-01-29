@@ -1941,6 +1941,7 @@ function checkForParty(e) {
     let combatants = e.combatants;
     if (combatants === undefined || gameState.player === undefined) return;
     let player = combatants.find((x) => x.ID === gameState.player.id);
+	if (!player) return;
     let hasCombatants = false;
     if (Object.prototype.hasOwnProperty.call(player, "PartyType")) {
         hasCombatants = player.PartyType !== 0;
