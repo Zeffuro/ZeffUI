@@ -3543,8 +3543,7 @@ function handleGainEffect(parameters) {
 
     for (ability of mergedAbilityList.filter(
         (x) =>
-            x[`name_${currentSettings.language}`].toLowerCase() ==
-            parameters.effect.toLowerCase(),
+            (x[`name_${currentSettings.language}`] || x.name_en || x.name || "").toLowerCase() == parameters.effect.toLowerCase(),
     )) {
         if (ability === undefined) continue;
         if (
@@ -3705,8 +3704,7 @@ function handleLoseEffect(parameters) {
     );
     for (ability of mergedAbilityList.filter(
         (x) =>
-            x[`name_${currentSettings.language}`].toLowerCase() ==
-            parameters.effect.toLowerCase(),
+           (x[`name_${currentSettings.language}`] || x.name_en || x.name || "").toLowerCase() == parameters.effect.toLowerCase(),
     )) {
         if (ability.name == "Standard Step") return;
         if (ability.name == "Technical Step") return;
