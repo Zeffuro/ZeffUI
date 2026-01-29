@@ -806,6 +806,10 @@ function loadContextMenu() {
                     setUILanguageAndReload("kr");
                     break;
                 }
+                case "tc": {
+                    setUILanguageAndReload("tc");
+                    break;
+                }
             }
             if (key.includes("profile_")) {
                 let profile = key.split("_")[1];
@@ -844,6 +848,7 @@ function loadContextMenu() {
                     jp: { name: "日本語", icon: "jp" },
                     cn: { name: "中文", icon: "cn" },
                     kr: { name: "한국어", icon: "kr" },
+                    tc: { name: "繁體中文", icon: "cn" },
                 },
             },
             sep1: "---------",
@@ -2658,6 +2663,9 @@ function handleAbilityTTS(ability, selector, onYou = true) {
             break;
         case "kr":
             name = ability.name_kr;
+            break;
+        case "tc":
+            name = ability.name_cn;
             break;
         default:
             break;
