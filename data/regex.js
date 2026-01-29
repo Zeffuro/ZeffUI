@@ -20,6 +20,23 @@ var regexList = {
                 regex: /“.*”任务结束了。/,
                 function: "onInstanceEnd",
             },
+            // TRADITIONAL CHINESE
+            {
+                regex: /距離戰鬥開始還有(?<seconds>[0-9]{1,2})秒！\s*（.{1,12}）/,
+                function: "handleCountdownTimer",
+            },
+            {
+                regex: /.{1,12}取消了戰鬥開始倒計時。/,
+                function: "stopCountdownTimer",
+            },
+            {
+                regex: /“.*”任務開始。/,
+                function: "onInstanceStart",
+            },
+            {
+                regex: /“.*”任務結束了。/,
+                function: "onInstanceEnd",
+            },
             // ENGLISH
             {
                 regex: /Battle commencing in (?<seconds>[0-9]{1,2}) seconds! \([a-zA-Z-' ]{2,31}\)/,
