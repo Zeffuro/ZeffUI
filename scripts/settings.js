@@ -759,7 +759,10 @@ function loadCustomCdAbility() {
             ability = currentSettings.customcd.abilities.find(
                 (x) => x.id == id,
             );
-            $("#customcdIconPreview").prop("src", ability.icon);
+            $("#customcdIconPreview").prop(
+                "src",
+                window.getAbilityIconUrl(ability.icon, currentSettings),
+            );
             $("#customcdAbilityId").val(ability.id);
             $("#customcdAbilityEnabled").prop("checked", ability.enabled);
             $("#customcdAbilityTTSEnabled").prop("checked", ability.tts);
@@ -779,7 +782,7 @@ function loadCustomCdAbility() {
             ability = foundAbilities.find((x) => x.ID == id);
             $("#customcdIconPreview").prop(
                 "src",
-                `https://xivapi.com${ability.Icon}`,
+                window.getAbilityIconUrl(ability.Icon, currentSettings),
             );
             $("#customcdAbilityId").val(ability.ID);
             $("#customcdAbilityEnabled").prop("checked", true);
@@ -823,7 +826,7 @@ function addCustomAbility() {
                 duration: parseInt($("#customcdAbilityDuration").val()),
                 cooldown: parseInt($("#customcdAbilityCooldown").val()),
                 type: $("#customcdAbilityType").val(),
-                icon: ability.icon,
+                icon: window.getAbilityIconUrl(ability.icon),
                 color: "--filter-light-blue",
                 order: parseInt($("#customcdAbilityOrder").val()),
                 extra: {
@@ -856,7 +859,7 @@ function addCustomAbility() {
                 duration: $("#customcdAbilityDuration").val(),
                 cooldown: $("#customcdAbilityCooldown").val(),
                 type: $("#customcdAbilityType").val(),
-                icon: `https://xivapi.com${ability.Icon}`,
+                icon: window.getAbilityIconUrl(ability.Icon),
                 color: "--filter-light-blue",
                 order: $("#customcdAbilityOrder").val(),
                 extra: {
@@ -908,7 +911,10 @@ function loadAbility() {
     );
     if (override != null) ability = override;
     $("#abilityEnabled").prop("checked", ability.enabled);
-    $("#abilityIconPreview").prop("src", ability.icon);
+    $("#abilityIconPreview").prop(
+        "src",
+        window.getAbilityIconUrl(ability.icon, currentSettings),
+    );
     $("#abilityOverrideEnabled").prop("checked", override != null);
     switch (ability.type) {
         case "Buff":

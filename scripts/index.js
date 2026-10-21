@@ -1974,18 +1974,9 @@ function startAbilityIconTimers(
     let abilityUsed = abilityHolder === null ? ability : abilityHolder;
     let usingAbilityHolder = abilityHolder !== null;
 
-    if (
-        currentSettings.general.usehdicons &&
-        !ability.icon.includes("_hr1.tex")
-    ) {
-        ability.icon = ability.icon.replace(".tex", "_hr1.tex");
-        if (usingAbilityHolder && !abilityHolder.icon.includes("_hr1.tex"))
-            abilityHolder.icon = abilityHolder.icon.replace(".tex", "_hr1.tex");
-    }
+    ability.icon = processIconUrl(ability.icon);
     if (usingAbilityHolder) {
         abilityHolder.icon = processIconUrl(abilityHolder.icon);
-    } else {
-        ability.icon = processIconUrl(ability.icon);
     }
 
     let selectorProperties = getSelectorProperties(ability.type);
@@ -2143,6 +2134,10 @@ function startAbilityBarTimer(
 
     if (!currentSettings[`${ability.type.toLowerCase()}timerbar`].enabled)
         return;
+    ability.icon = processIconUrl(ability.icon);
+    if (usingAbilityHolder) {
+        abilityHolder.icon = processIconUrl(abilityHolder.icon);
+    }
     let targetBarSelector = `${ability.type.toLowerCase()}-timer-bar`;
     let targetImageSelector = `${ability.type.toLowerCase()}-image`;
     let targetPosition =
@@ -2690,19 +2685,7 @@ function handleAbilityTTS(ability, selector, onYou = true) {
 
 // Replace icon based on settings
 function processIconUrl(icon) {
-    if (
-        currentSettings.general.usehdicons &&
-        !icon.includes("_hr1.tex") &&
-        currentSettings.language != "cn"
-    )
-        icon = icon.replace(".tex", "_hr1.tex");
-    if (currentSettings.language == "cn") {
-        //icon = icon.replace("xivapi", "cafemaker.wakingsands");
-        icon = icon.replace("beta.xivapi.com/api/1/asset/ui/icon", "cafemaker.wakingsands.com/i");
-        icon = icon.replace(".tex?format=png", ".png");
-    }
-
-    return icon;
+    return window.getAbilityIconUrl(icon, currentSettings);
 }
 
 // Originally used for google TTS but this hack stopped working, still relevant for the TTS from Baidu
