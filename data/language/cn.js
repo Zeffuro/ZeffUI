@@ -187,6 +187,7 @@ var language = [
 	{ id: "sam", string: "武士" },
 	{ id: "rpr", string: "钐镰客" },
 	{ id: "vpr", string: "蝰蛇剑士" },
+	{ id: "bst", string: "驯兽师" },
 	{ id: "brd", string: "诗人" },
 	{ id: "arc", string: "弓箭手" },
 	{ id: "mch", string: "机工士" },

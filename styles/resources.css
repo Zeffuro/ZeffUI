@@ -142,6 +142,28 @@
     left: var(--manaFontX);
     top: var(--manaFontY);
 }
+#target-health-bar,
+#target-mana-bar {
+    touch-action: none;
+}
+#target-health-bar::-webkit-progress-value {
+    filter: var(--targetHealthBarColor);
+}
+#target-health-bar:after {
+    font-size: var(--targetHealthFontSize);
+    font-family: var(--targetHealthFont);
+    left: var(--targetHealthFontX);
+    top: var(--targetHealthFontY);
+}
+#target-mana-bar::-webkit-progress-value {
+    filter: var(--targetManaBarColor);
+}
+#target-mana-bar:after {
+    font-size: var(--targetManaFontSize);
+    font-family: var(--targetManaFont);
+    left: var(--targetManaFontX);
+    top: var(--targetManaFontY);
+}
 #mp-ticker-bar::-webkit-progress-value {
     filter: var(--mptickerColor);
 }
