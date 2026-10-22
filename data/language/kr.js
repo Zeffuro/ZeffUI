@@ -187,6 +187,7 @@ var language = [
 	{ id: "sam", string: "사무라이" },
 	{ id: "rpr", string: "리퍼" },
 	{ id: "vpr", string: "바이퍼" },
+	{ id: "bst", string: "마수조련사" },
 	{ id: "brd", string: "음유시인" },
 	{ id: "arc", string: "궁술사" },
 	{ id: "mch", string: "기공사" },

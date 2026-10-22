@@ -2,9 +2,10 @@
   "name": "zeffui",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node build.mjs --watch",
+    "build": "npm run typecheck && node build.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,21 @@
   },
   "homepage": "https://github.com/Zeffuro/ZeffUI#readme",
   "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-plugin-html": "^6.0.0",
-    "prettier": "^2.2.1"
+    "@types/jquery": "4.0.1",
+    "@types/jquery.contextmenu": "1.7.39",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "7.3.1",
+    "bootstrap": "5.3.8",
+    "bootstrap-colorpicker": "3.4.0",
+    "bootswatch": "5.3.8",
+    "html5sortable": "0.14.0",
+    "interactjs": "1.10.28",
+    "jquery": "4.0.0",
+    "jquery-contextmenu": "2.10.2",
+    "js-base64": "3.9.4"
   }
 }

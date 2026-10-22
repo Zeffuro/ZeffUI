@@ -1,24 +1,18 @@
 <!DOCTYPE html lang="en">
 <meta charset="utf-8">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-<script src="https://kit.fontawesome.com/b16930e0bd.js" crossorigin="anonymous"></script>
+<meta name="referrer" content="no-referrer">
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/jquery-contextmenu/jquery.contextMenu.min.js"></script>
+<script src="vendor/interactjs/interact.min.js"></script>
 <script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
-<script src="scripts/icons.js"></script>
-<script src="scripts/index.js"></script>
-<script src="scripts/default_settings.js"></script>
-<script src="data/regex.js"></script>
-<script src="data/abilities.js"></script>
-<script src="data/jobs.js"></script>
-<script src="data/content_type.js"></script>
-<script src="data/zone_info.js"></script>
+<script defer src="overlay.js"></script>
 <link rel="stylesheet" href="styles/index.css" />
 <link rel="stylesheet" href="styles/context-icons.css" />
 <link rel="stylesheet" href="styles/resources.css" />
 <link rel="stylesheet" href="styles/colors.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css" />
+<link rel="stylesheet" href="vendor/jquery-contextmenu/jquery.contextMenu.min.css" />
+<link rel="stylesheet" href="vendor/fontawesome/css/fontawesome.min.css" />
+<link rel="stylesheet" href="vendor/fontawesome/css/solid.min.css" />
 <style id="bar-colors"></style>
 <body>
 	<canvas id="grid"></canvas>
@@ -44,6 +38,8 @@
 	<progress id="timer-bar" class="bar styled-bar" value="10" data-label="Pulltimer"></progress>
 	<progress id="health-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
 	<progress id="mana-bar" class="bar styled-bar" value="1" data-label="10000 / 10000"></progress>
+	<progress id="target-health-bar" class="bar styled-bar" value="0" max="1" style="display: none" data-label=""></progress>
+	<progress id="target-mana-bar" class="bar styled-bar" value="0" max="1" style="display: none" data-label=""></progress>
 	<progress id="mp-ticker-bar" class="bar styled-bar" value="1" data-label=""></progress>
 	<progress id="dot-ticker-bar" class="bar styled-bar" value="1" data-label=""></progress>
 	<progress id="hot-ticker-bar" class="bar styled-bar" value="1" data-label=""></progress>

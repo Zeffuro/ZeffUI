@@ -187,6 +187,7 @@ var language = [
 	{ id: "sam", string: "Samurai" },
 	{ id: "rpr", string: "Reaper" },
 	{ id: "vpr", string: "Rôdeur vipère" },
+	{ id: "bst", string: "Dresseur" },
 	{ id: "brd", string: "Bard" },
 	{ id: "arc", string: "Archer" },
 	{ id: "mch", string: "Machinist" },

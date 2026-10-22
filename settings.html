@@ -2,29 +2,29 @@
 <html lang="en">
 	<head>
   		<meta charset="utf-8">
-		<link href="styles/settings.css" rel="stylesheet" />
+		<meta name="referrer" content="no-referrer">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link href="styles/colors.css" rel="stylesheet" />
 		<link href="styles/resources.css" rel="stylesheet" />
-		<link href="https://cdn.jsdelivr.net/npm/bootswatch@5.0.1/dist/slate/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.2.0/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/html5sortable/0.10.0/html5sortable.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.9.2/jquery.contextMenu.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/3.4.0/js/bootstrap-colorpicker.min.js"></script>
-		<script src="https://kit.fontawesome.com/2a15db2084.js"></script>
+		<link href="vendor/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+		<link href="vendor/fontawesome/css/solid.min.css" rel="stylesheet" />
+		<link href="vendor/bootswatch/bootstrap.min.css" rel="stylesheet">
+		<link href="vendor/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+		<link href="styles/settings.css" rel="stylesheet" />
+		<script src="vendor/jquery/jquery.min.js"></script>
+		<script src="vendor/bootstrap/bootstrap.bundle.min.js"></script>
+		<script src="vendor/html5sortable/html5sortable.min.js"></script>
+		<script src="vendor/js-base64/base64.min.js"></script>
+		<script src="vendor/bootstrap-colorpicker/bootstrap-colorpicker.min.js"></script>
 		<script src="https://ngld.github.io/OverlayPlugin/assets/shared/common.min.js"></script>
-		<script src="scripts/default_settings.js"></script>
-		<script src="scripts/icons.js"></script>
-		<script src="scripts/settings.js"></script>
-		<script src="data/abilities.js"></script>
-		<script src="data/jobs.js"></script>
+		<script defer src="settings.js"></script>
 		<title>ZeffUI Settings</title>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
 			<div class="container-fluid">
+				<a class="navbar-brand" href="#anchor_general">ZeffUI</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle settings navigation"><span class="navbar-toggler-icon"></span></button>
 				<div class="collapse navbar-collapse" id="navbarColor01">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item">
@@ -35,6 +35,8 @@
 							<div class="dropdown-menu">
 								<a class="nav-link" href="#anchor_healthbar" id="lang_healthbar_2">Healthbar</a>
 								<a class="nav-link" href="#anchor_manabar" id="lang_manabar_2">Manabar</a>
+								<a class="nav-link" href="#anchor_targethealthbar">Target health bar</a>
+								<a class="nav-link" href="#anchor_targetmanabar">Target mana bar</a>
 							</div>
 				  		</li>
 						<li class="nav-item dropdown">
@@ -75,8 +77,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#anchor_importexport" id="lang_importexport_2">Import / Export</a>
 						</li>
-						<li>
-							<a class="nav-link" id="lang_savesettings_2" onclick="saveSettingsAndProfile(true, true)">Save Settings</a>
+						<li class="nav-item settings-actions">
+							<button class="nav-link settings-save" type="button" id="lang_savesettings_2" onclick="saveSettingsAndProfile(true, true)">Save Settings</button>
+							<span id="settings-dirty-state" class="settings-dirty-state" role="status" aria-live="polite"></span>
 						</li>
 					</ul>
 			  	</div>
@@ -87,7 +90,8 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="page-header">
-						<h1 id="lang_settingsheader">Settings</h1>
+						<div><p class="settings-eyebrow">ZeffUI · Customize your overlay</p><h1 id="lang_settingsheader">Settings</h1></div>
+						<div class="settings-live"><span class="live-dot" aria-hidden="true"></span><span id="settings-status" role="status">Changes appear live as you edit.</span></div>
 					</div>
 				</div>
 			</div>
@@ -103,10 +107,33 @@
 						<div class="card-body">
 							<p id="lang_generaldescription" class="card-text">Here you can find general options for ZeffUI.</p>
 							<div class="form-group row text-right">
-								<label id="lang_language" class="control-label col-sm-4" for="langSelect">Language</label>
+								<label class="control-label col-sm-4" for="langSelect">UI language</label>
 								<div class="col-sm-6">
 									<select class="form-select form-select-sm" id="langSelect" onchange="loadLanguage()">                                        
 										<option selected="" value="en">English (default)</option>
+										<option value="de">Deutsch</option>
+										<option value="fr">Français</option>
+										<option value="jp">日本語</option>
+										<option value="cn">中文</option>
+										<option value="kr">한국어</option>
+										<option value="tc">繁體中文</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-6">
+									<div class="form-check form-switch">
+									<input type="checkbox" class="form-check-input" id="linkGameLanguage" checked>
+									<label class="form-check-label" for="linkGameLanguage">Use UI language for the game</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<label class="control-label col-sm-4" for="gameLangSelect">Game language</label>
+								<div class="col-sm-6">
+									<select class="form-select form-select-sm" id="gameLangSelect" disabled>
+										<option value="en">English</option>
 										<option value="de">Deutsch</option>
 										<option value="fr">Français</option>
 										<option value="jp">日本語</option>
@@ -158,10 +185,55 @@
 									<label id="lang_usehdicons" class="custom-control-label" for="useHDIcons">Use HD Icons</label>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="form-check form-switch">
-									<input type="checkbox" class="form-check-input" id="useWebTTS">
-									<label id="lang_usewebtts" class="custom-control-label" for="useWebTTS">Use Google/Baidu TTS</label>
+						</div>
+					</div>
+					<div class="card text-white bg-dark mb-3" id="anchor_tts">
+						<div class="card-header">TTS</div>
+						<div class="card-body">
+							<div class="form-group row text-right">
+								<label class="control-label col-sm-4" for="useWebTTS">Speech provider</label>
+								<div class="col-sm-6">
+									<select class="form-select form-select-sm" id="useWebTTS">
+										<option value="act">ACT</option>
+										<option value="baidu">Baidu</option>
+									</select>
+								</div>
+							</div>
+							<div id="baiduSpeechOptions" hidden>
+								<div class="form-group row text-right">
+									<label class="control-label col-sm-4" for="webTTSLanguage">Voice language</label>
+									<div class="col-sm-6">
+										<select class="form-select form-select-sm" id="webTTSLanguage">
+											<option value="game">Follow game language</option>
+											<option value="en">English</option>
+											<option value="de">Deutsch</option>
+											<option value="fr">Français</option>
+											<option value="jp">日本語</option>
+											<option value="cn">中文</option>
+											<option value="kr">한국어</option>
+											<option value="tc">繁體中文</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="form-check form-switch">
+										<input type="checkbox" class="form-check-input" id="ttsFallback" checked>
+										<label class="form-check-label" for="ttsFallback">Use ACT if Baidu speech fails</label>
+									</div>
+								</div>
+								<p class="form-text">Baidu availability varies by language. When enabled, ACT fallback handles playback failures.</p>
+							</div>
+							<div class="form-group row text-right">
+								<label class="control-label col-sm-4" for="speechTestText">Test text</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control form-control-sm" id="speechTestText" value="ZeffUI speech test.">
+								</div>
+							</div>
+							<div class="form-group row text-right">
+								<div class="col-sm-4"></div>
+								<div class="col-sm-6">
+									<button type="button" class="btn btn-primary btn-sm" id="speechTestButton">Test speech</button>
+									<p class="form-text" id="speechTestStatus" role="status" aria-live="polite"></p>
 								</div>
 							</div>
 							<div class="form-group">
@@ -176,6 +248,11 @@
 									<input type="number" step="0.1" class="form-control form-control-sm" placeholder="Default input" id="ttsEarly">
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="card text-white bg-dark mb-3" id="anchor_partyorder">
+						<div class="card-header">Party Order</div>
+						<div class="card-body">
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="includeAlliance">
@@ -183,8 +260,8 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="form-check form-switch">
-									<label id="lang_partyorder" for="partyOrder">Party Order (drag and drop)</label>
+								<div>
+									<label id="lang_partyorder" for="partyRole">Party Order (drag and drop)</label>
 									<div class="col-sm-4">
 										<select class="form-select form-select-sm" id="partyRole" onchange="setPartyOrder()">											
 											<option id="lang_tank" value="tank">Tank</option>
@@ -193,18 +270,14 @@
 											<option id="lang_other" value="other">Other</option>
 										</select>                                    
 									</div>
+									<div class="party-order-list">
 									<table id="partyOrderTable" class="table table-sm" style="width:100%">
 										<tbody id="partyOrder">
 										</tbody>                                        
 									</table>
+									</div>
 								</div>
 							</div>							
-							<div class="form-group row text-right">
-								<label id="lang_customcss" class="control-label col-sm-4" for="customcss">Custom CSS</label>
-								<div class="col-sm-6">
-									<textarea class="form-control" id="customcss" rows="3"></textarea>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -321,6 +394,16 @@
 							</div>
 						</div>						
 					</div>
+					<div class="card text-white bg-dark mb-3" id="anchor_customcss">
+						<div id="lang_customcss" class="card-header">Custom CSS</div>
+						<div class="card-body">
+							<div class="form-group row text-right">
+								<div class="col-sm-6">
+									<textarea class="form-control" id="customcss" rows="3" aria-labelledby="lang_customcss"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -337,6 +420,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_healthbardescription" class="card-text">Here you can set your options for your healthbar.</p>
+							<div class="module-preview" data-preview-module="healthbar" data-preview-title="Health bar"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx" class="control-label col-sm-4" for="healthX">Position X</label>
 								<div class="col-sm-6">
@@ -441,10 +525,7 @@
 									</select>
 								</div>                                    
 							</div>
-							<div class="form-group row">
-								<label id="lang_example" class="control-label col-sm-4 text-right" for="healthExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="healthExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
-							</div>                            
+
 						</div>
 					</div>
 				</div>
@@ -458,6 +539,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_manabardescription" class="card-text">Here you can set your options for your manabar.</p>
+							<div class="module-preview" data-preview-module="manabar" data-preview-title="Mana bar"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_1" class="control-label col-sm-4" for="manaX">Position X</label>
 								<div class="col-sm-6">
@@ -562,10 +644,7 @@
 									</select>
 								</div>                                    
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_1" class="control-label col-sm-4 text-right" for="manaExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="manaExample" class="styled-bar" value="5000" max="10000" data-label="5000 / 10000"></progress>
-							</div>
+
 							<br />
 							<div class="form-group">
 								<div class="form-check form-switch">
@@ -592,6 +671,10 @@
 				</div>
 			</div>
 			<div class="row">
+				<div class="col-lg-6 anchor" id="anchor_targethealthbar"></div>
+				<div class="col-lg-6 anchor" id="anchor_targetmanabar"></div>
+			</div>
+			<div class="row">
 				<div class="col-lg-6 anchor" id="anchor_mpticker">
 					<div class="card text-white bg-dark mb-3" style="max-width: 40rem;">
 						<div class="card-header">
@@ -602,6 +685,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_mptickerdescription" class="card-text">Here you can set your options for your MP Ticker.</p>
+							<div class="module-preview" data-preview-module="mpticker" data-preview-title="MP ticker"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_10" class="control-label col-sm-4" for="mptickerX">Position X</label>
 								<div class="col-sm-6">
@@ -655,10 +739,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_4" class="control-label col-sm-4 text-right" for="mptickerExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="mptickerExample" class="styled-bar" value="5000" max="10000"></progress>
-							</div>
+
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="mptickerSpecificJobsEnabled">
@@ -681,6 +762,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_dottickerdescription" class="card-text">Here you can set your options for your DoT Ticker.</p>
+							<div class="module-preview" data-preview-module="dotticker" data-preview-title="DoT ticker"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_11" class="control-label col-sm-4" for="dottickerX">Position X</label>
 								<div class="col-sm-6">
@@ -728,10 +810,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_5" class="control-label col-sm-4 text-right" for="dottickerExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="dottickerExample" class="styled-bar" value="5000" max="10000"></progress>
-							</div>
+
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="dottickerSpecificJobsEnabled">
@@ -752,6 +831,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_hottickerdescription" class="card-text">Here you can set your options for your HoT Ticker.</p>
+							<div class="module-preview" data-preview-module="hotticker" data-preview-title="HoT ticker"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_12" class="control-label col-sm-4" for="hottickerX">Position X</label>
 								<div class="col-sm-6">
@@ -799,10 +879,7 @@
 									</select>
 								</div>
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_6" class="control-label col-sm-4 text-right" for="hottickerExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="10" id="hottickerExample" class="styled-bar" value="5000" max="10000"></progress>
-							</div>
+
 							<div class="form-group">
 								<div class="form-check form-switch">
 									<input type="checkbox" class="form-check-input" id="hottickerSpecificJobsEnabled">
@@ -825,6 +902,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_bufftimersdescription" class="card-text">Here you can set your options for your personal buffs.</p>
+							<div class="module-preview" data-preview-module="bufftimerbar" data-preview-title="Buff timers"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_2" class="control-label col-sm-4" for="buffX">Position Anchor X</label>
 								<div class="col-sm-6">
@@ -866,7 +944,7 @@
 										<option id="lang_down" selected="" value="1">Down</option>
 										<option id="lang_up" value="2">Up</option>
 										<option id="lang_left" value="3">Left</option>
-										<option id="lang_right" value="3">Right</option>
+										<option id="lang_right" value="4">Right</option>
 									</select>
 								</div>                                    
 							</div>
@@ -959,6 +1037,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_dottimersdescription" class="card-text">Here you can set your options for your personal debuffs.</p>
+							<div class="module-preview" data-preview-module="dottimerbar" data-preview-title="DoT timers"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_3" class="control-label col-sm-4" for="dotX">Position Anchor X</label>
 								<div class="col-sm-6">
@@ -1188,10 +1267,7 @@
 									</select>
 								</div>                                    
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_2" class="control-label col-sm-4 text-right" for="pulltimerExample">Example</label>
-								&nbsp;&nbsp;&nbsp;<progress width="154" height="15" id="pulltimerExample" class="styled-bar" value="5800" max="10000" data-label="5.8"></progress>
-							</div>
+							<div class="module-preview" data-preview-module="timerbar" data-preview-title="Pull timer"></div>
 						</div>
 					</div>
 				</div>
@@ -1205,6 +1281,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_stacksbardescription" class="card-text">Here you can set your options for your personal stacks.</p>
+							<div class="module-preview" data-preview-module="stacksbar" data-preview-title="Stacks bar"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_5" class="control-label col-sm-4" for="stacksX">Position X</label>
 								<div class="col-sm-6">
@@ -1236,16 +1313,7 @@
 									</select>
 								</div>                                    
 							</div>
-							<div class="form-group row">
-								<label id="lang_example_3" class="control-label col-sm-4 text-right" for="stacksExample">Example</label>
-								&nbsp;&nbsp;&nbsp;
-								<div id="stacksExample" data-label="Job Stacks Anchor" style="padding-left: 10px">
-									<div class="stack-background"><img id="stacks-1" class="stack-color" src="skins/default/images/arrow-fill.png" /></div>
-									<div class="stack-background"><img id="stacks-2" class="stack-color" src="skins/default/images/arrow-fill.png" /></div>
-									<div class="stack-background"><img id="stacks-3" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
-									<div class="stack-background"><img id="stacks-4" class="stack-color" src="skins/default/images/arrow-fill-empty.png" /></div>
-								</div>
-							</div>                            
+
 						</div>
 					</div>
 				</div>
@@ -1261,6 +1329,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_raidbuffdescription" class="card-text">Here you can set your options for the raidbuffs (DPS Buffs/Debuffs only).</p>
+							<div class="module-preview" data-preview-module="raidbuffs" data-preview-title="Raid buffs"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_6" class="control-label col-sm-4" for="raidbuffX">Position X</label>
 								<div class="col-sm-6">
@@ -1422,6 +1491,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_mitigationdescription" class="card-text">Here you can set your options for your mitigation bar.</p>
+							<div class="module-preview" data-preview-module="mitigation" data-preview-title="Mitigation"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_7" class="control-label col-sm-4" for="mitigationX">Position X</label>
 								<div class="col-sm-6">
@@ -1579,6 +1649,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_partydescription" class="card-text">Here you can set your options for your party cooldowns.</p>
+							<div class="module-preview" data-preview-module="party" data-preview-title="Party cooldowns"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_8" class="control-label col-sm-4" for="partyX">Position X</label>
 								<div class="col-sm-6">
@@ -1728,6 +1799,7 @@
 						</div>
 						<div class="card-body">
 							<p id="lang_customcooldownsdescription" class="card-text">Here you can set your options for your custom cooldowns.</p>
+							<div class="module-preview" data-preview-module="customcd" data-preview-title="Custom cooldowns"></div>
 							<div class="form-group row text-right">
 								<label id="lang_posx_9" class="control-label col-sm-4" for="partyX">Position X</label>
 								<div class="col-sm-6">
