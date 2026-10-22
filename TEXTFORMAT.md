@@ -1,7 +1,7 @@
 The text format function is ElvUI inspired and these are the ones currently implemented:
 
     [health:current] Current HP
-    [health:current-short] Current HP (short format like 132.1k)
+    [health:current-shortvalue] Current HP (short format like 132.1k)
     [health:current-percent] Current HP and percent when not at full HP
     [health:current-percent-short] Current HP and percent when not at full HP (short format like 132.1k)
     [health:current-max] Current HP / Max HP (this is the default Health Format)
